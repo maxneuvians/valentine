@@ -1,0 +1,29 @@
+{
+  "name": "Elixir + Phoenix with Postgres",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "app",
+  "workspaceFolder": "/workspace",
+  "settings": {
+    "terminal.integrated.shell.linux": "/bin/bash",
+    "elixirLS.projectDir": "/valentine",
+  },
+  "extensions": [
+    "jakebecker.elixir-ls",
+    "phoenixframework.phoenix",
+    "mtxr.sqltools",
+    "mtxr.sqltools-driver-pg",
+    "redhat.vscode-yaml",
+    "timonwong.shellcheck",
+    "github.copilot",
+  ],
+  "features": {
+		"ghcr.io/devcontainers/features/docker-in-docker:2": {
+			"version": "latest",
+			"moby": true
+		},
+		"ghcr.io/devcontainers/features/node:1": {}
+	},
+  "postCreateCommand": "",
+  "forwardPorts": [4000],
+  "remoteUser": "vscode"
+}
