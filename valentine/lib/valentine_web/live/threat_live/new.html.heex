@@ -1,0 +1,149 @@
+<.header>
+  New Threat
+  <:actions>
+    <.link navigate={~p"/threats"}>
+      <.button>Back</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<div class="mb-6 p-4 bg-gray-50 rounded-lg">
+  <p class="text-lg font-medium text-gray-900">
+    <%= render_threat_statement(@threat_fields) %>
+  </p>
+</div>
+
+<div class="">
+  <.simple_form :let={f} for={@changeset} phx-submit="validate">
+    <div class="space-y-6 bg-white">
+      <div class="border rounded-lg p-4">
+        <p class="mb-4 text-sm text-gray-600">
+          Start by clicking ANY field you like and work from there...
+        </p>
+
+        <div class="flex flex-wrap items-center gap-2">
+          <input
+            type="hidden"
+            value={Ecto.Changeset.get_field(@changeset, :source)}
+            name="threat[source]"
+          />
+          <.error :if={@changeset.action && f.errors[:source]}>
+            <%= translate_error(f.errors[:source]) %>
+          </.error>
+
+          <input
+            type="hidden"
+            value={Ecto.Changeset.get_field(@changeset, :prerequisite)}
+            name="threat[prerequisite]"
+          />
+          <.error :if={@changeset.action && f.errors[:prerequisite]}>
+            <%= translate_error(f.errors[:prerequisite]) %>
+          </.error>
+
+          <input
+            type="hidden"
+            value={Ecto.Changeset.get_field(@changeset, :action)}
+            name="threat[action]"
+          />
+          <.error :if={@changeset.action && f.errors[:action]}>
+            <%= translate_error(f.errors[:action]) %>
+          </.error>
+
+          <input
+            type="hidden"
+            value={Ecto.Changeset.get_field(@changeset, :impact)}
+            name="threat[impact]"
+          />
+          <.error :if={@changeset.action && f.errors[:impact]}>
+            <%= translate_error(f.errors[:impact]) %>
+          </.error>
+
+          <input
+            type="hidden"
+            value={Ecto.Changeset.get_field(@changeset, :asset)}
+            name="threat[asset]"
+          />
+          <.error :if={@changeset.action && f.errors[:asset]}>
+            <%= translate_error(f.errors[:asset]) %>
+          </.error>
+
+          <span>A</span>
+
+          <.live_component
+            module={ValentineWeb.ThreatLive.ThreatFieldComponent}
+            id="source-field"
+            field={:source}
+            placeholder="threat source"
+            changeset={@changeset}
+          />
+
+          <.live_component
+            module={ValentineWeb.ThreatLive.ThreatFieldComponent}
+            id="prerequisite-field"
+            field={:prerequisite}
+            placeholder="prerequisite"
+            changeset={@changeset}
+          />
+
+          <span>can</span>
+
+          <.live_component
+            module={ValentineWeb.ThreatLive.ThreatFieldComponent}
+            id="action-field"
+            field={:action}
+            placeholder="threat action"
+            changeset={@changeset}
+          />
+
+          <span>which leads to</span>
+
+          <.live_component
+            module={ValentineWeb.ThreatLive.ThreatFieldComponent}
+            id="impact-field"
+            field={:impact}
+            placeholder="threat impact"
+            changeset={@changeset}
+          />
+
+          <span>negatively impacting</span>
+
+          <.live_component
+            module={ValentineWeb.ThreatLive.ThreatFieldComponent}
+            id="asset-field"
+            field={:asset}
+            placeholder="impacted assets"
+            changeset={@changeset}
+          />
+        </div>
+      </div>
+    </div>
+
+    <%= if @active_field do %>
+      <.live_component
+        module={ValentineWeb.ThreatLive.ContextHelpComponent}
+        id="context-help"
+        form={f}
+        active_field={@active_field}
+        title={@context.title}
+        description={@context.description}
+        placeholder={@context.placeholder}
+        examples={@context.examples}
+        show_full_examples={false}
+        mitigation_inputs={[
+          {:source, "Threat source"},
+          {:prerequisite, "Prerequisite"},
+          {:action, "Threat action"}
+        ]}
+        prioritization_inputs={[
+          {:impact, "Threat impact"},
+          {:goal, "Impacted goal"},
+          {:asset, "Impacted assets"}
+        ]}
+      />
+    <% end %>
+
+    <:actions>
+      <.button>Save Threat</.button>
+    </:actions>
+  </.simple_form>
+</div>

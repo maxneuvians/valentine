@@ -18,12 +18,24 @@ defmodule ValentineWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :home
+
+    live "/workspaces", WorkspaceLive.Index, :index
+    live "/workspaces/new", WorkspaceLive.Index, :new
+    live "/workspaces/:id/edit", WorkspaceLive.Index, :edit
+
+    live "/workspaces/:id", WorkspaceLive.Show, :show
+    live "/workspaces/:id/show/edit", WorkspaceLive.Show, :edit
+
+    live "/threats", ThreatLive.Index, :index
+    live "/threats/new", ThreatLive.New, :new
   end
 
   # Other scopes may use custom stacks.
   # scope "/api", ValentineWeb do
   #   pipe_through :api
   # end
+
+
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
   if Application.compile_env(:valentine, :dev_routes) do

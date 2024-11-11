@@ -1,0 +1,41 @@
+<.header>
+  Listing Workspaces
+  <:actions>
+    <.link patch={~p"/workspaces/new"}>
+      <.button>New Workspace</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.table
+  id="workspaces"
+  rows={@streams.workspaces}
+  row_click={fn {_id, workspace} -> JS.navigate(~p"/workspaces/#{workspace}") end}
+>
+  <:col :let={{_id, workspace}} label="Name"><%= workspace.name %></:col>
+  <:action :let={{_id, workspace}}>
+    <div class="sr-only">
+      <.link navigate={~p"/workspaces/#{workspace}"}>Show</.link>
+    </div>
+    <.link patch={~p"/workspaces/#{workspace}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={{id, workspace}}>
+    <.link
+      phx-click={JS.push("delete", value: %{id: workspace.id}) |> hide("##{id}")}
+      data-confirm="Are you sure?"
+    >
+      Delete
+    </.link>
+  </:action>
+</.table>
+
+<.modal :if={@live_action in [:new, :edit]} id="workspace-modal" show on_cancel={JS.patch(~p"/workspaces")}>
+  <.live_component
+    module={ValentineWeb.WorkspaceLive.FormComponent}
+    id={@workspace.id || :new}
+    title={@page_title}
+    action={@live_action}
+    workspace={@workspace}
+    patch={~p"/workspaces"}
+  />
+</.modal>

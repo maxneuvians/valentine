@@ -1,0 +1,30 @@
+<.header>
+  Listing Threats
+  <:actions>
+    <.link navigate={~p"/threats/new"}>
+      <.button>New Threat</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.table
+  id="threats"
+  rows={@streams.threats}
+  row_click={fn {_id, threat} -> JS.navigate(~p"/threats/#{threat}") end}
+>
+  <:col :let={{_id, threat}} label="Name"><%= threat.asset %></:col>
+  <:action :let={{_id, threat}}>
+    <div class="sr-only">
+      <.link navigate={~p"/threats/#{threat}"}>Show</.link>
+    </div>
+    <.link patch={~p"/threats/#{threat}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={{id, threat}}>
+    <.link
+      phx-click={JS.push("delete", value: %{id: threat.id}) |> hide("##{id}")}
+      data-confirm="Are you sure?"
+    >
+      Delete
+    </.link>
+  </:action>
+</.table>
