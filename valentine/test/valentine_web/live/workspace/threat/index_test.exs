@@ -21,7 +21,10 @@ defmodule ValentineWeb.WorkspaceLive.Threat.IndexTest do
           [],
           list_threats_by_workspace: fn @workspace_id -> [%{id: 1, title: "Updated Threat"}] end
         },
-        {Phoenix.LiveView, [], stream: fn _, _, _ -> %{assigns: %{streams: %{threats: []}, workspace_id: @workspace_id}} end}
+        {Phoenix.LiveView, [],
+         stream: fn _, _, _ ->
+           %{assigns: %{streams: %{threats: []}, workspace_id: @workspace_id}}
+         end}
       ]) do
         {:ok, socket} =
           ValentineWeb.WorkspaceLive.Threat.Index.mount(
