@@ -2,7 +2,7 @@
   Workspace <%= @workspace.id %>
   <:subtitle>This is a workspace record from your database.</:subtitle>
   <:actions>
-    <.link patch={~p"/workspaces/#{@workspace}/show/edit"} phx-click={JS.push_focus()}>
+    <.link patch={~p"/workspaces/#{@workspace}/edit"} phx-click={JS.push_focus()}>
       <.button>Edit workspace</.button>
     </.link>
   </:actions>

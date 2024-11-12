@@ -17,7 +17,7 @@ defmodule ValentineWeb.CoreComponents do
   use Phoenix.Component
 
   alias Phoenix.LiveView.JS
-  import ValentineWeb.Gettext
+  use Gettext, backend: ValentineWeb.Gettext
 
   @doc """
   Renders a modal.

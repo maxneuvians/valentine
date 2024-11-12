@@ -1,4 +1,4 @@
-defmodule ValentineWeb.ThreatLive.ThreatFieldComponent do
+defmodule ValentineWeb.WorkspaceLive.Threat.Components.ThreatFieldComponent do
   use ValentineWeb, :live_component
 
   def render(assigns) do

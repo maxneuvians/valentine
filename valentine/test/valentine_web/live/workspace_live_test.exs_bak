@@ -93,7 +93,7 @@ defmodule ValentineWeb.WorkspaceLiveTest do
       assert show_live |> element("a", "Edit") |> render_click() =~
                "Edit Workspace"
 
-      assert_patch(show_live, ~p"/workspaces/#{workspace}/show/edit")
+      assert_patch(show_live, ~p"/workspaces/#{workspace}/edit")
 
       assert show_live
              |> form("#workspace-form", workspace: @invalid_attrs)

@@ -1,16 +1,26 @@
 defmodule Valentine.Composer.Threat do
   use Ecto.Schema
   import Ecto.Changeset
+  import Ecto.Query
 
-  @primary_key {:id, Ecto.UUID, autogenerate: true}
+  @primary_key {:id, :binary_id, autogenerate: true}
+  @foreign_key_type :binary_id
+  @derive {Jason.Encoder, only: [:id, :workspace_id, :numeric_id, :metadata,
+                                :threat_source, :prerequisites, :threat_action, :threat_impact,
+                                :impacted_goal, :impacted_assets, :tags]}
 
   schema "threats" do
-    field :source, :string
-    field :action, :string
-    field :prerequisite, :string
-    field :impact, :string
-    field :goal, :string
-    field :asset, :string
+    belongs_to :workspace, Valentine.Composer.Workspace
+
+    field :metadata, :map
+    field :numeric_id, :integer
+    field :threat_source, :string
+    field :prerequisites, :string
+    field :threat_action, :string
+    field :threat_impact, :string
+    field :impacted_goal, {:array, :string}
+    field :impacted_assets, {:array, :string}
+    field :tags, {:array, :string}
 
     timestamps(type: :utc_datetime)
   end
@@ -18,7 +28,35 @@ defmodule Valentine.Composer.Threat do
   @doc false
   def changeset(threat, attrs) do
     threat
-    |> cast(attrs, [:source, :prerequisite, :action, :impact, :goal, :asset])
-    |> validate_required([:source, :prerequisite, :action, :impact, :asset])
+    |> cast(attrs, [:workspace_id, :metadata, :threat_source, :prerequisites,
+                    :threat_action, :threat_impact, :impacted_goal,
+                    :impacted_assets, :tags])
+    |> validate_required([:workspace_id, :threat_source, :prerequisites,
+                         :threat_action, :threat_impact])
+    |> set_numeric_id()
+    |> unique_constraint(:numeric_id, name: :threats_workspace_id_numeric_id_index)
+    |> unique_constraint(:id)
+    |> foreign_key_constraint(:workspace_id)
+  end
+
+  defp set_numeric_id(changeset) do
+    case get_field(changeset, :numeric_id) do
+      nil ->
+       case get_field(changeset, :workspace_id) do
+        nil ->
+          changeset
+        workspace_id ->
+          last_threat = Valentine.Repo.one(
+            from t in __MODULE__,
+            where: t.workspace_id == ^workspace_id,
+            order_by: [desc: t.numeric_id],
+            limit: 1
+          )
+
+          put_change(changeset, :numeric_id, (last_threat && last_threat.numeric_id + 1) || 1)
+        end
+      _ ->
+        changeset
+    end
   end
 end

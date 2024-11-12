@@ -2,7 +2,7 @@ import Config
 
 # Configure your database
 config :valentine, Valentine.Repo,
-  url: System.get_env("DATABASE_URL"),
+  url: System.get_env("DATABASE_URL") <> "/valentine_dev",
   stacktrace: true,
   show_sensitive_data_on_connection_error: true,
   pool_size: 10

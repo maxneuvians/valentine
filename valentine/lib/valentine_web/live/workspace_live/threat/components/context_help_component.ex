@@ -1,5 +1,5 @@
 # lib/your_app_web/live/components/context_help_component.ex
-defmodule ValentineWeb.ThreatLive.ContextHelpComponent do
+defmodule ValentineWeb.WorkspaceLive.Threat.Components.ContextHelpComponent do
   use ValentineWeb, :live_component
 
   @impl true

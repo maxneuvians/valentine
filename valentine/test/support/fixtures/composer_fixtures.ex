@@ -22,16 +22,24 @@ defmodule Valentine.ComposerFixtures do
   Generate a threat.
   """
   def threat_fixture(attrs \\ %{}) do
+
+    workspace = workspace_fixture()
+
     {:ok, threat} =
       attrs
       |> Enum.into(%{
-        action: "some action",
-        asset: "some asset",
-        goal: "some goal",
-        impact: "some impact",
-        prerequisite: "some prerequisite",
-        source: "some source"
-      })
+        display_order: 42,
+        impacted_assets: ["option1", "option2"],
+        impacted_goal: ["option1", "option2"],
+        metadata: %{},
+        numeric_id: 42,
+        prerequisites: "some prerequisites",
+        threat_action: "some threat_action",
+        threat_impact: "some threat_impact",
+        threat_source: "some threat_source",
+        tags: ["tag1", "tag2"],
+        workspace_id: workspace.id
+        })
       |> Valentine.Composer.create_threat()
 
     threat

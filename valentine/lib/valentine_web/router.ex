@@ -24,10 +24,11 @@ defmodule ValentineWeb.Router do
     live "/workspaces/:id/edit", WorkspaceLive.Index, :edit
 
     live "/workspaces/:id", WorkspaceLive.Show, :show
-    live "/workspaces/:id/show/edit", WorkspaceLive.Show, :edit
 
-    live "/threats", ThreatLive.Index, :index
-    live "/threats/new", ThreatLive.New, :new
+    live "/workspaces/:workspace_id/threats", WorkspaceLive.Threat.Index, :index
+    live "/workspaces/:workspace_id/threats/new", WorkspaceLive.Threat.Show, :new
+    live "/workspaces/:workspace_id/threats/:id", WorkspaceLive.Threat.Show, :edit
+
   end
 
   # Other scopes may use custom stacks.

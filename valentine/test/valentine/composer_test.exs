@@ -62,7 +62,7 @@ defmodule Valentine.ComposerTest do
 
     import Valentine.ComposerFixtures
 
-    @invalid_attrs %{source: nil, action: nil, prerequisite: nil, impact: nil, goal: nil, asset: nil}
+    @invalid_attrs %{metadata: nil, uuid: nil, threat_source: nil, prerequisites: nil, threat_action: nil, threat_impact: nil, impacted_goal: nil, impacted_assets: nil}
 
     test "list_threats/0 returns all threats" do
       threat = threat_fixture()
@@ -75,15 +75,17 @@ defmodule Valentine.ComposerTest do
     end
 
     test "create_threat/1 with valid data creates a threat" do
-      valid_attrs = %{source: "some source", action: "some action", prerequisite: "some prerequisite", impact: "some impact", goal: "some goal", asset: "some asset"}
+      workspace = workspace_fixture()
+      valid_attrs = %{workspace_id: workspace.id, metadata: %{}, threat_source: "some threat_source", prerequisites: "some prerequisites", threat_action: "some threat_action", threat_impact: "some threat_impact", impacted_goal: ["option1", "option2"], impacted_assets: ["option1", "option2"], tags: ["tag1", "tag2"]}
 
       assert {:ok, %Threat{} = threat} = Composer.create_threat(valid_attrs)
-      assert threat.source == "some source"
-      assert threat.action == "some action"
-      assert threat.prerequisite == "some prerequisite"
-      assert threat.impact == "some impact"
-      assert threat.goal == "some goal"
-      assert threat.asset == "some asset"
+      assert threat.metadata == %{}
+      assert threat.threat_source == "some threat_source"
+      assert threat.prerequisites == "some prerequisites"
+      assert threat.threat_action == "some threat_action"
+      assert threat.threat_impact == "some threat_impact"
+      assert threat.impacted_goal == ["option1", "option2"]
+      assert threat.impacted_assets == ["option1", "option2"]
     end
 
     test "create_threat/1 with invalid data returns error changeset" do
@@ -92,15 +94,16 @@ defmodule Valentine.ComposerTest do
 
     test "update_threat/2 with valid data updates the threat" do
       threat = threat_fixture()
-      update_attrs = %{source: "some updated source", action: "some updated action", prerequisite: "some updated prerequisite", impact: "some updated impact", goal: "some updated goal", asset: "some updated asset"}
+      update_attrs = %{metadata: %{}, threat_source: "some updated threat_source", prerequisites: "some updated prerequisites", threat_action: "some updated threat_action", threat_impact: "some updated threat_impact", impacted_goal: ["option1"], impacted_assets: ["option1"], tags: ["tag1", "tag2"]}
 
       assert {:ok, %Threat{} = threat} = Composer.update_threat(threat, update_attrs)
-      assert threat.source == "some updated source"
-      assert threat.action == "some updated action"
-      assert threat.prerequisite == "some updated prerequisite"
-      assert threat.impact == "some updated impact"
-      assert threat.goal == "some updated goal"
-      assert threat.asset == "some updated asset"
+      assert threat.metadata == %{}
+      assert threat.threat_source == "some updated threat_source"
+      assert threat.prerequisites == "some updated prerequisites"
+      assert threat.threat_action == "some updated threat_action"
+      assert threat.threat_impact == "some updated threat_impact"
+      assert threat.impacted_goal == ["option1"]
+      assert threat.impacted_assets == ["option1"]
     end
 
     test "update_threat/2 with invalid data returns error changeset" do

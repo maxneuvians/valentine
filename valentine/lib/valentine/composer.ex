@@ -102,6 +102,7 @@ defmodule Valentine.Composer do
     Workspace.changeset(workspace, attrs)
   end
 
+
   alias Valentine.Composer.Threat
 
   @doc """
@@ -115,6 +116,26 @@ defmodule Valentine.Composer do
   """
   def list_threats do
     Repo.all(Threat)
+  end
+
+  @doc """
+  Returns the list of threats for a specific workspace.
+
+  ## Parameters
+
+    * workspace_id - The UUID of the workspace to filter threats by
+
+  ## Examples
+
+      iex> list_threats_by_workspace("123e4567-e89b-12d3-a456-426614174000")
+      [%Threat{}, ...]
+
+      iex> list_threats_by_workspace("nonexistent-id")
+      []
+  """
+  def list_threats_by_workspace(workspace_id) do
+    from(t in Threat, where: t.workspace_id == ^workspace_id)
+    |> Repo.all()
   end
 
   @doc """
@@ -146,9 +167,16 @@ defmodule Valentine.Composer do
 
   """
   def create_threat(attrs \\ %{}) do
-    %Threat{}
-    |> Threat.changeset(attrs)
-    |> Repo.insert()
+    Ecto.Multi.new()
+    |> Ecto.Multi.insert(:threat, fn _ ->
+      %Threat{}
+      |> Threat.changeset(attrs)
+    end)
+    |> Repo.transaction()
+    |> case do
+      {:ok, %{threat: threat}} -> {:ok, threat}
+      {:error, :threat, changeset, _} -> {:error, changeset}
+    end
   end
 
   @doc """
