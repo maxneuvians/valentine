@@ -29,7 +29,12 @@
   </:action>
 </.table>
 
-<.modal :if={@live_action in [:new, :edit]} id="workspace-modal" show on_cancel={JS.patch(~p"/workspaces")}>
+<.modal
+  :if={@live_action in [:new, :edit]}
+  id="workspace-modal"
+  show
+  on_cancel={JS.patch(~p"/workspaces")}
+>
   <.live_component
     module={ValentineWeb.WorkspaceLive.FormComponent}
     id={@workspace.id || :new}

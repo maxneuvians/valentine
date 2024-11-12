@@ -6,6 +6,7 @@ defmodule ValentineWeb.WorkspaceLive.Threat.Index do
   @impl true
   def mount(%{"workspace_id" => workspace_id} = _params, _session, socket) do
     ValentineWeb.Endpoint.subscribe("workspace_" <> workspace_id)
+
     {:ok,
      socket
      |> assign(:workspace_id, workspace_id)
@@ -28,15 +29,16 @@ defmodule ValentineWeb.WorkspaceLive.Threat.Index do
     case Composer.get_threat!(id) do
       nil ->
         {:noreply, socket |> put_flash(:error, "Threat not found")}
+
       threat ->
         case Composer.delete_threat(threat) do
           {:ok, _} ->
             {:noreply, socket |> put_flash(:info, "Threat deleted successfully")}
+
           {:error, _} ->
             {:noreply, socket |> put_flash(:error, "Failed to delete threat")}
         end
     end
-
   end
 
   @impl true

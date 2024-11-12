@@ -1,5 +1,4 @@
 defmodule ValentineWeb.WorkspaceLive.Threat.Components.StatementExamples do
-
   def content(:threat_source) do
     %{
       title: "Threat source",

@@ -9,7 +9,9 @@ defmodule ValentineWeb.WorkspaceLive.Threat.Components.ThreatFieldComponent do
       phx-value-field={@field}
       tabindex="0"
     >
-      <%= with value <- Ecto.Changeset.get_change(@changeset, @field) || Ecto.Changeset.get_field(@changeset, @field) do
+      <%= with value <-
+                 Ecto.Changeset.get_change(@changeset, @field) ||
+                   Ecto.Changeset.get_field(@changeset, @field) do
         if value == "" || is_nil(value), do: @placeholder, else: value
       end %>
     </div>

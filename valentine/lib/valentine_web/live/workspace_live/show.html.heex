@@ -14,7 +14,12 @@
 
 <.back navigate={~p"/workspaces"}>Back to workspaces</.back>
 
-<.modal :if={@live_action == :edit} id="workspace-modal" show on_cancel={JS.patch(~p"/workspaces/#{@workspace}")}>
+<.modal
+  :if={@live_action == :edit}
+  id="workspace-modal"
+  show
+  on_cancel={JS.patch(~p"/workspaces/#{@workspace}")}
+>
   <.live_component
     module={ValentineWeb.WorkspaceLive.FormComponent}
     id={@workspace.id}

@@ -3,7 +3,9 @@
     Edit Threat Statement
   <% else %>
     New Threat Statement
-  <% end %>  <:actions>
+  <% end %>
+  
+  <:actions>
     <.link navigate={~p"/workspaces/#{assigns[:workspace_id]}/threats"}>
       <.button>Back</.button>
     </.link>

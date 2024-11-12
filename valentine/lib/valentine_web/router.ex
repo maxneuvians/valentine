@@ -28,15 +28,12 @@ defmodule ValentineWeb.Router do
     live "/workspaces/:workspace_id/threats", WorkspaceLive.Threat.Index, :index
     live "/workspaces/:workspace_id/threats/new", WorkspaceLive.Threat.Show, :new
     live "/workspaces/:workspace_id/threats/:id", WorkspaceLive.Threat.Show, :edit
-
   end
 
   # Other scopes may use custom stacks.
   # scope "/api", ValentineWeb do
   #   pipe_through :api
   # end
-
-
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
   if Application.compile_env(:valentine, :dev_routes) do

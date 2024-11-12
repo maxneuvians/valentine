@@ -102,7 +102,6 @@ defmodule Valentine.Composer do
     Workspace.changeset(workspace, attrs)
   end
 
-
   alias Valentine.Composer.Threat
 
   @doc """

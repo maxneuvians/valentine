@@ -62,7 +62,16 @@ defmodule Valentine.ComposerTest do
 
     import Valentine.ComposerFixtures
 
-    @invalid_attrs %{metadata: nil, uuid: nil, threat_source: nil, prerequisites: nil, threat_action: nil, threat_impact: nil, impacted_goal: nil, impacted_assets: nil}
+    @invalid_attrs %{
+      metadata: nil,
+      uuid: nil,
+      threat_source: nil,
+      prerequisites: nil,
+      threat_action: nil,
+      threat_impact: nil,
+      impacted_goal: nil,
+      impacted_assets: nil
+    }
 
     test "list_threats/0 returns all threats" do
       threat = threat_fixture()
@@ -76,7 +85,18 @@ defmodule Valentine.ComposerTest do
 
     test "create_threat/1 with valid data creates a threat" do
       workspace = workspace_fixture()
-      valid_attrs = %{workspace_id: workspace.id, metadata: %{}, threat_source: "some threat_source", prerequisites: "some prerequisites", threat_action: "some threat_action", threat_impact: "some threat_impact", impacted_goal: ["option1", "option2"], impacted_assets: ["option1", "option2"], tags: ["tag1", "tag2"]}
+
+      valid_attrs = %{
+        workspace_id: workspace.id,
+        metadata: %{},
+        threat_source: "some threat_source",
+        prerequisites: "some prerequisites",
+        threat_action: "some threat_action",
+        threat_impact: "some threat_impact",
+        impacted_goal: ["option1", "option2"],
+        impacted_assets: ["option1", "option2"],
+        tags: ["tag1", "tag2"]
+      }
 
       assert {:ok, %Threat{} = threat} = Composer.create_threat(valid_attrs)
       assert threat.metadata == %{}
@@ -94,7 +114,17 @@ defmodule Valentine.ComposerTest do
 
     test "update_threat/2 with valid data updates the threat" do
       threat = threat_fixture()
-      update_attrs = %{metadata: %{}, threat_source: "some updated threat_source", prerequisites: "some updated prerequisites", threat_action: "some updated threat_action", threat_impact: "some updated threat_impact", impacted_goal: ["option1"], impacted_assets: ["option1"], tags: ["tag1", "tag2"]}
+
+      update_attrs = %{
+        metadata: %{},
+        threat_source: "some updated threat_source",
+        prerequisites: "some updated prerequisites",
+        threat_action: "some updated threat_action",
+        threat_impact: "some updated threat_impact",
+        impacted_goal: ["option1"],
+        impacted_assets: ["option1"],
+        tags: ["tag1", "tag2"]
+      }
 
       assert {:ok, %Threat{} = threat} = Composer.update_threat(threat, update_attrs)
       assert threat.metadata == %{}

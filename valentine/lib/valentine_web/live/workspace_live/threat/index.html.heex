@@ -10,7 +10,11 @@
 <.table
   id="threats"
   rows={@streams.threats}
-  row_click={fn {_id, threat} -> JS.navigate(~p"/workspaces/#{assigns[:workspace_id]}/threats/#{threat}") end}
+  row_click={
+    fn {_id, threat} ->
+      JS.navigate(~p"/workspaces/#{assigns[:workspace_id]}/threats/#{threat}")
+    end
+  }
 >
   <:col :let={{_id, threat}} label="Name"><%= threat.threat_source %></:col>
   <:action :let={{_id, threat}}>
