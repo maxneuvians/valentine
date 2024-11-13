@@ -64,4 +64,6 @@ defmodule ValentineWeb.WorkspaceLive.Threat.Components.StatementExamples do
       ]
     }
   end
+
+  def content(_), do: %{}
 end

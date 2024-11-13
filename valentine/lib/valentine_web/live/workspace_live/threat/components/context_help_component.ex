@@ -44,6 +44,7 @@ defmodule ValentineWeb.WorkspaceLive.Threat.Components.ContextHelpComponent do
               id={"#{@id}-#{@active_field}"}
               phx-change="update_field"
               phx-target={@myself}
+              value=""
             />
           </div>
         </div>

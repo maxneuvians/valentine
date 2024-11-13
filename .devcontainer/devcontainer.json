@@ -15,15 +15,18 @@
     "redhat.vscode-yaml",
     "timonwong.shellcheck",
     "github.copilot",
+    "ritwickdey.liveserver",
   ],
   "features": {
-		"ghcr.io/devcontainers/features/docker-in-docker:2": {
-			"version": "latest",
-			"moby": true
-		},
-		"ghcr.io/devcontainers/features/node:1": {}
-	},
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {
+      "version": "latest",
+      "moby": true
+    },
+    "ghcr.io/devcontainers/features/node:1": {}
+  },
   "postCreateCommand": "",
-  "forwardPorts": [4000],
+  "forwardPorts": [
+    4000
+  ],
   "remoteUser": "vscode"
 }

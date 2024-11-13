@@ -1,4 +1,4 @@
-defmodule ValentineWeb.WorkspaceLive.Threat.ShowTemplateTest do
+defmodule ValentineWeb.WorkspaceLive.Threat.ShowViewTest do
   use ValentineWeb.ConnCase
 
   import Phoenix.LiveViewTest
