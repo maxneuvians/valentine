@@ -10,9 +10,9 @@ defmodule ValentineWeb.WorkspaceLive.Threat.Show do
 
     {:ok,
      socket
-     |> assign(:workspace_id, workspace_id)
-     |> assign(:threat, Composer.change_threat(%Threat{}))
-     |> assign(:active_field, nil)}
+     |> assign(:active_type, nil)
+     |> assign(:errors, nil)
+     |> assign(:workspace_id, workspace_id)}
   end
 
   @impl true
@@ -20,55 +20,53 @@ defmodule ValentineWeb.WorkspaceLive.Threat.Show do
     {:noreply, apply_action(socket, socket.assigns.live_action, params)}
   end
 
-  defp apply_action(socket, :new, %{"workspace_id" => workspace_id} = _params) do
+  defp apply_action(socket, :new, _params) do
     socket
     |> assign(:page_title, "Create new threat statement")
-    |> assign(:workspace_id, workspace_id)
-    |> assign(:threat, %Threat{workspace_id: workspace_id})
-    |> assign(:changeset, Composer.change_threat(%Threat{workspace_id: workspace_id}))
+    |> assign(:threat, %Threat{})
+    |> assign(:changes, %{workspace_id: socket.assigns.workspace_id})
   end
 
-  defp apply_action(socket, :edit, %{"id" => id, "workspace_id" => workspace_id} = _params) do
+  defp apply_action(socket, :edit, %{"id" => id} = _params) do
     threat = Composer.get_threat!(id)
 
     socket
     |> assign(:page_title, "Edit threat statement")
-    |> assign(:workspace_id, workspace_id)
     |> assign(:threat, threat)
-    |> assign(:changeset, Composer.change_threat(threat))
+    |> assign(:changes, Map.from_struct(threat))
   end
 
-  def handle_event("validate", %{"threat" => threat_params}, socket) do
+  def handle_event("save", _params, socket) do
     if socket.assigns.threat.id do
-      update_existing_threat(threat_params, socket)
+      update_existing_threat(socket)
     else
-      create_new_threat(threat_params, socket)
+      create_new_threat(socket)
     end
   end
 
   @impl true
-  def handle_event("show_context", %{"field" => field}, socket) do
+  def handle_event("show_context", %{"field" => field, "type" => type}, socket) do
     field = String.to_existing_atom(field)
-    context = ValentineWeb.WorkspaceLive.Threat.Components.StatementExamples.content(field)
+
+    context =
+      ValentineWeb.WorkspaceLive.Threat.Components.StatementExamples.content(field)
 
     {:noreply,
      socket
      |> assign(:active_field, field)
+     |> assign(:active_type, type)
      |> assign(:context, context)}
   end
 
   @impl true
-  def handle_info({:update_field, value}, socket) do
-    field = socket.assigns.active_field
-    changeset = Ecto.Changeset.put_change(socket.assigns.changeset, field, value)
-
+  def handle_event("update_field", %{"value" => value}, socket) do
     {:noreply,
      socket
-     |> assign(:changeset, changeset)}
+     |> assign(:changes, Map.put(socket.assigns.changes, socket.assigns.active_field, value))}
   end
 
-  defp update_existing_threat(threat_params, socket) do
-    case Composer.update_threat(socket.assigns.threat, threat_params) do
+  defp update_existing_threat(socket) do
+    case Composer.update_threat(socket.assigns.threat, socket.assigns.changes) do
       {:ok, threat} ->
         broadcast_threat_change(threat, "threat_updated")
 
@@ -78,12 +76,12 @@ defmodule ValentineWeb.WorkspaceLive.Threat.Show do
          |> push_navigate(to: ~p"/workspaces/#{threat.workspace_id}/threats")}
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        {:noreply, assign(socket, :changeset, changeset)}
+        {:noreply, assign(socket, :errors, changeset.errors)}
     end
   end
 
-  defp create_new_threat(threat_params, socket) do
-    case Composer.create_threat(threat_params) do
+  defp create_new_threat(socket) do
+    case Composer.create_threat(socket.assigns.changes) do
       {:ok, threat} ->
         broadcast_threat_change(threat, "threat_created")
 
@@ -93,7 +91,7 @@ defmodule ValentineWeb.WorkspaceLive.Threat.Show do
          |> push_navigate(to: ~p"/workspaces/#{threat.workspace_id}/threats")}
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        {:noreply, assign(socket, :changeset, changeset)}
+        {:noreply, assign(socket, :errors, changeset.errors)}
     end
   end
 
