@@ -12,6 +12,7 @@ defmodule ValentineWeb.WorkspaceLive.Threat.Show do
      socket
      |> assign(:active_type, nil)
      |> assign(:errors, nil)
+     |> assign(:toggle_goals, false)
      |> assign(:workspace_id, workspace_id)}
   end
 
@@ -59,11 +60,20 @@ defmodule ValentineWeb.WorkspaceLive.Threat.Show do
   end
 
   @impl true
+  def handle_event("toggle_goals", _params, socket) do
+    {:noreply, assign(socket, :toggle_goals, !socket.assigns.toggle_goals)}
+  end
+
+  @impl true
   def handle_event("update_field", %{"value" => value}, socket) do
     {:noreply,
      socket
      |> assign(:changes, Map.put(socket.assigns.changes, socket.assigns.active_field, value))}
   end
+
+  @impl true
+  def handle_info({"update_field", params}, socket),
+    do: handle_event("update_field", params, socket)
 
   defp update_existing_threat(socket) do
     case Composer.update_threat(socket.assigns.threat, socket.assigns.changes) do

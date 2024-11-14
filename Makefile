@@ -12,5 +12,8 @@ dev:
 install:
 	cd valentine && mix deps.get
 
+fmt:
+	cd valentine && mix format
+
 test:
 	cd valentine && mix test

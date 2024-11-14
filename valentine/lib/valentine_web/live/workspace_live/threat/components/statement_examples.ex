@@ -52,6 +52,21 @@ defmodule ValentineWeb.WorkspaceLive.Threat.Components.StatementExamples do
     }
   end
 
+  def content(:impacted_goal) do
+    %{
+      title: "Impacted goal",
+      description:
+        "Which desirable goal for the organisation assets is impacted negatively as a result?",
+      placeholder: "Enter impacted goals",
+      examples: [
+        "availability",
+        "return of investment",
+        "integrity",
+        "confidentiality"
+      ]
+    }
+  end
+
   def content(:impacted_assets) do
     %{
       title: "Impacted assets",

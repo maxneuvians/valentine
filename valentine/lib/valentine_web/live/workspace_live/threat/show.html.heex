@@ -63,6 +63,28 @@
             value={@changes[:threat_impact]}
           />
 
+          <span>
+            ,
+            <%= if @toggle_goals || @changes[:impacted_goal] != [] do %>
+              resulting in reduced
+              <.live_component
+                module={ValentineWeb.WorkspaceLive.Threat.Components.ThreatFieldComponent}
+                id="goal-field"
+                field={:impacted_goal}
+                type={:array}
+                placeholder="impacted goal"
+                value={@changes[:impacted_goal]}
+              />
+            <% end %>
+            <button type="button" phx-click="toggle_goals" class="text-black hover:text-gray-700">
+              <%= if @toggle_goals || @changes[:impacted_goal] != [] do %>
+                <.icon name="hero-minus-circle-solid" />
+              <% else %>
+                <.icon name="hero-plus-circle-solid" />
+              <% end %>
+            </button>
+          </span>
+
           <span>negatively impacting</span>
 
           <.live_component
@@ -137,7 +159,7 @@
               :for={
                 {key, input} <- [
                   {:threat_impact, "Threat impact"},
-                  {:goal, "Impacted goal"},
+                  {:impacted_goal, "Impacted goal"},
                   {:impacted_assets, "Impacted assets"}
                 ]
               }

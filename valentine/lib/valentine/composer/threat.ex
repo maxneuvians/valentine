@@ -55,7 +55,8 @@ defmodule Valentine.Composer.Threat do
       :threat_source,
       :prerequisites,
       :threat_action,
-      :threat_impact
+      :threat_impact,
+      :impacted_assets
     ])
     |> set_numeric_id()
     |> unique_constraint(:numeric_id, name: :threats_workspace_id_numeric_id_index)

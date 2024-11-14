@@ -10,8 +10,16 @@ defmodule ValentineWeb.WorkspaceLive.Threat.Components.ThreatFieldComponent do
       phx-value-type={@type}
       tabindex="0"
     >
-      <%= if @value == "" || is_nil(@value), do: @placeholder, else: @value %>
+      <%= render_value(@value, @placeholder) %>
     </div>
     """
   end
+
+  def render_value(nil, placeholder), do: placeholder
+  def render_value("", placeholder), do: placeholder
+  def render_value([], placeholder), do: placeholder
+  def render_value(value, _) when is_binary(value), do: value
+
+  def render_value(value, _) when is_list(value),
+    do: ValentineWeb.WorkspaceLive.Threat.Components.ThreatHelpers.join_list(value)
 end
