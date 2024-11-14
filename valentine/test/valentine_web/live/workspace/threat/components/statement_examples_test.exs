@@ -24,6 +24,11 @@ defmodule ValentineWeb.WorkspaceLive.Threat.Components.StatementExamplesTest do
       assert StatementExamples.content(:threat_impact).title == expected_title
     end
 
+    test "returns correct title for :impacted_goal" do
+      expected_title = "Impacted goal"
+      assert StatementExamples.content(:impacted_goal).title == expected_title
+    end
+
     test "returns correct title for :impacted_assets" do
       expected_title = "Impacted assets"
       assert StatementExamples.content(:impacted_assets).title == expected_title

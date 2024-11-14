@@ -3,45 +3,64 @@ defmodule ValentineWeb.WorkspaceLive.Threat.Components.ThreatFieldComponentTest 
   import Phoenix.LiveViewTest
 
   alias ValentineWeb.WorkspaceLive.Threat.Components.ThreatFieldComponent
-  alias Valentine.Composer
-  alias Valentine.Composer.Threat
 
-  @valid_changeset Composer.change_threat(%Threat{})
-
-  test "renders placeholder when value is nil" do
+  test "renders properly with a placeholder" do
     assigns = %{
-      changeset: @valid_changeset,
       field: :threat_source,
-      placeholder: "Enter value"
+      type: :text,
+      placeholder: "Placeholder",
+      value: nil
     }
 
     html = render_component(ThreatFieldComponent, assigns)
-    assert html =~ "Enter value"
+    assert html =~ "Placeholder"
   end
 
-  test "renders value from changeset" do
-    changeset = Ecto.Changeset.change(@valid_changeset, threat_source: "Test Value")
-
+  test "renders properly with an empty string" do
     assigns = %{
-      changeset: changeset,
       field: :threat_source,
-      placeholder: "Enter value"
+      type: :text,
+      placeholder: "Placeholder",
+      value: ""
     }
 
     html = render_component(ThreatFieldComponent, assigns)
-    assert html =~ "Test Value"
+    assert html =~ "Placeholder"
   end
 
-  test "renders placeholder when value is empty string" do
-    changeset = Ecto.Changeset.change(@valid_changeset, threat_source: "")
-
+  test "renders properly with an empty list" do
     assigns = %{
-      changeset: changeset,
       field: :threat_source,
-      placeholder: "Enter value"
+      type: :text,
+      placeholder: "Placeholder",
+      value: []
     }
 
     html = render_component(ThreatFieldComponent, assigns)
-    assert html =~ "Enter value"
+    assert html =~ "Placeholder"
+  end
+
+  test "renders properly with a value" do
+    assigns = %{
+      field: :threat_source,
+      type: :text,
+      placeholder: "Placeholder",
+      value: "Value"
+    }
+
+    html = render_component(ThreatFieldComponent, assigns)
+    assert html =~ "Value"
+  end
+
+  test "renders properly with a list value" do
+    assigns = %{
+      field: :threat_source,
+      type: :text,
+      placeholder: "Placeholder",
+      value: ["Value1", "Value2"]
+    }
+
+    html = render_component(ThreatFieldComponent, assigns)
+    assert html =~ "Value1 and Value2"
   end
 end

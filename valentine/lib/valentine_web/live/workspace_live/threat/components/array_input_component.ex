@@ -12,7 +12,6 @@ defmodule ValentineWeb.WorkspaceLive.Threat.Components.ArrayInputComponent do
           <div class="space-y-2">
             <.input
               type="text"
-              placeholder={@context.placeholder}
               class="flex-1 rounded-lg border-gray-300"
               name={"threat[#{@active_field}]"}
               id={"#{@id}-#{@active_field}"}
@@ -44,6 +43,16 @@ defmodule ValentineWeb.WorkspaceLive.Threat.Components.ArrayInputComponent do
               </div>
             <% end %>
           </div>
+          <%= if @context.examples && length(@context.examples) > 0 do %>
+            <div class="mt-4">
+              <h3 class="font-medium mb-2">Examples:</h3>
+              <ul class="list-disc pl-5 space-y-1">
+                <%= for example <- @context.examples do %>
+                  <li class="text-gray-600"><%= example %></li>
+                <% end %>
+              </ul>
+            </div>
+          <% end %>
         </div>
       </div>
     </div>

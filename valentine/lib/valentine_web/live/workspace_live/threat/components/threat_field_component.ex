@@ -15,11 +15,11 @@ defmodule ValentineWeb.WorkspaceLive.Threat.Components.ThreatFieldComponent do
     """
   end
 
-  def render_value(nil, placeholder), do: placeholder
-  def render_value("", placeholder), do: placeholder
-  def render_value([], placeholder), do: placeholder
-  def render_value(value, _) when is_binary(value), do: value
+  defp render_value(nil, placeholder), do: placeholder
+  defp render_value("", placeholder), do: placeholder
+  defp render_value([], placeholder), do: placeholder
+  defp render_value(value, _) when is_binary(value), do: value
 
-  def render_value(value, _) when is_list(value),
+  defp render_value(value, _) when is_list(value),
     do: ValentineWeb.WorkspaceLive.Threat.Components.ThreatHelpers.join_list(value)
 end

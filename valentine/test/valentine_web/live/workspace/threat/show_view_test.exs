@@ -4,24 +4,6 @@ defmodule ValentineWeb.WorkspaceLive.Threat.ShowViewTest do
   import Phoenix.LiveViewTest
   import Valentine.ComposerFixtures
 
-  @create_attrs %{
-    threat_source: "some source",
-    prerequisites: "some prerequisites",
-    threat_action: "some action",
-    threat_impact: "some impact",
-    impacted_assets: ["option1", "option2"],
-    impacted_goal: ["option1", "option2"]
-  }
-  @update_attrs %{
-    threat_source: "some updated source",
-    prerequisites: "some updated prerequisites",
-    threat_action: "some updated action",
-    threat_impact: "some updated impact",
-    impacted_assets: ["option1", "option2"],
-    impacted_goal: ["option1", "option2"]
-  }
-  @invalid_attrs %{threat_source: nil}
-
   defp create_threat(_) do
     threat = threat_fixture()
     %{threat: threat, workspace_id: threat.workspace_id}
@@ -36,42 +18,6 @@ defmodule ValentineWeb.WorkspaceLive.Threat.ShowViewTest do
 
       assert html =~ "Edit Threat Statement"
       assert html =~ threat.threat_source
-    end
-
-    test "saves new threat", %{conn: conn, workspace_id: workspace_id} do
-      {:ok, show_live, html} =
-        live(conn, ~p"/workspaces/#{workspace_id}/threats/new")
-
-      assert html =~ "New Threat Statement"
-
-      assert show_live
-             |> form("#threat-form")
-             |> render_submit(%{threat: @invalid_attrs}) =~ "can&#39;t be blank"
-
-      {:ok, _, html} =
-        assert show_live
-               |> form("#threat-form")
-               |> render_submit(%{threat: Map.merge(@create_attrs, %{workspace_id: workspace_id})})
-               |> follow_redirect(conn, ~p"/workspaces/#{workspace_id}/threats")
-
-      assert html =~ "Threat created successfully"
-      assert html =~ "some source"
-    end
-
-    test "updates threat in listing", %{conn: conn, threat: threat} do
-      {:ok, show_live, html} =
-        live(conn, ~p"/workspaces/#{threat.workspace_id}/threats/#{threat.id}")
-
-      assert html =~ "Edit Threat Statement"
-
-      {:ok, _, html} =
-        assert show_live
-               |> form("#threat-form")
-               |> render_submit(%{threat: @update_attrs})
-               |> follow_redirect(conn, ~p"/workspaces/#{threat.workspace_id}/threats")
-
-      assert html =~ "Threat updated successfully"
-      assert html =~ "some updated source"
     end
   end
 end
