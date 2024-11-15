@@ -13,8 +13,8 @@
 </.header>
 
 <div>
-  <div class="space-y-6 bg-white">
-    <div class="border rounded-lg p-4">
+  <div class="space-y-6 bg-white my-4">
+    <div class="border border-gray-300 rounded-lg p-4">
       <p class="mb-4 text-sm text-gray-600">
         Start by clicking ANY field you like and work from there...
       </p>
@@ -129,54 +129,121 @@
           <% _ -> %>
         <% end %>
       </div>
-      <div class="col-span-1">
-        <div class="border rounded-lg p-6 bg-white">
-          <h3 class="font-medium mb-4">Inputs for mitigation</h3>
-          <ul class="space-y-2">
-            <li
-              :for={
-                {key, input} <- [
-                  {:threat_source, "Threat source"},
-                  {:prerequisites, "prerequisites"},
-                  {:threat_action, "Threat action"}
-                ]
-              }
-              class="flex items-center gap-2"
-            >
-              <%= if !is_nil(@changes[key]) && @changes[key] != "" do %>
-                <.icon name="hero-check-circle-solid" class="text-green-500" />
-              <% else %>
-                <.icon name="hero-minus-circle" />
-              <% end %>
-              <span><%= input %></span>
-            </li>
-          </ul>
-          <div class="border-t my-4"></div>
+      <%= if !is_nil(@active_type) do %>
+        <div class="col-span-1">
+          <div class="border border-gray-300 rounded-lg p-6 bg-white">
+            <h3 class="font-medium mb-4">Inputs for mitigation</h3>
+            <ul class="space-y-2">
+              <li
+                :for={
+                  {key, input} <- [
+                    {:threat_source, "Threat source"},
+                    {:prerequisites, "prerequisites"},
+                    {:threat_action, "Threat action"}
+                  ]
+                }
+                class="flex items-center gap-2"
+              >
+                <%= if !is_nil(@changes[key]) && @changes[key] != "" do %>
+                  <.icon name="hero-check-circle-solid" class="text-green-500" />
+                <% else %>
+                  <.icon name="hero-minus-circle" />
+                <% end %>
+                <span><%= input %></span>
+              </li>
+            </ul>
+            <div class="border-t my-4"></div>
 
-          <h3 class="font-medium mb-4">Inputs for prioritization</h3>
-          <ul class="space-y-2">
-            <li
-              :for={
-                {key, input} <- [
-                  {:threat_impact, "Threat impact"},
-                  {:impacted_goal, "Impacted goal"},
-                  {:impacted_assets, "Impacted assets"}
-                ]
-              }
-              class="flex items-center gap-2"
-            >
-              <%= if !is_nil(@changes[key]) && @changes[key] != "" do %>
-                <.icon name="hero-check-circle-solid" class="text-green-500" />
-              <% else %>
-                <.icon name="hero-minus-circle" />
-              <% end %>
-              <span><%= input %></span>
-            </li>
-          </ul>
+            <h3 class="font-medium mb-4">Inputs for prioritization</h3>
+            <ul class="space-y-2">
+              <li
+                :for={
+                  {key, input} <- [
+                    {:threat_impact, "Threat impact"},
+                    {:impacted_goal, "Impacted goal"},
+                    {:impacted_assets, "Impacted assets"}
+                  ]
+                }
+                class="flex items-center gap-2"
+              >
+                <%= if !is_nil(@changes[key]) && @changes[key] != "" do %>
+                  <.icon name="hero-check-circle-solid" class="text-green-500" />
+                <% else %>
+                  <.icon name="hero-minus-circle" />
+                <% end %>
+                <span><%= input %></span>
+              </li>
+            </ul>
+          </div>
         </div>
-      </div>
+      <% end %>
     </div>
   </div>
 
   <.button phx-click="save">Save Threat</.button>
+
+  <.live_component
+    module={ValentineWeb.WorkspaceLive.Components.DrawerComponent}
+    id="metadata-drawer"
+    title="Metadata"
+  >
+    <:content>
+      <div class="grid grid-cols-3 gap-4">
+        <div class="space-y-2">
+          <label>Status</label>
+          <.input
+            type="select"
+            name="metadata[status]"
+            options={["Resolved", "In Progress", "Open"]}
+            class="w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            value=""
+          />
+        </div>
+
+        <div class="space-y-2">
+          <label>Priority</label>
+          <.input
+            type="select"
+            name="metadata[priority]"
+            options={["High", "Medium", "Low"]}
+            prompt="Select Priority"
+            class="w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            value=""
+          />
+        </div>
+
+        <div class="space-y-2">
+          <label>STRIDE</label>
+          <.input
+            type="select"
+            name="metadata[stride]"
+            options={[
+              "Spoofing",
+              "Tampering",
+              "Repudiation",
+              "Information Disclosure",
+              "Denial of Service",
+              "Elevation of Privilege"
+            ]}
+            multiple={true}
+            prompt="Select STRIDE"
+            class="w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            value=""
+          />
+        </div>
+      </div>
+
+      <div class="space-y-2 mt-4">
+        <label>Comments</label>
+        <.input
+          type="textarea"
+          name="metadata[comments]"
+          rows="4"
+          class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          value=""
+        />
+        <p class="text-sm text-gray-500 italic">Styling with Markdown is supported.</p>
+      </div>
+    </:content>
+  </.live_component>
 </div>
