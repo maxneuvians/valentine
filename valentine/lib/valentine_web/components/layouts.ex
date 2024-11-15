@@ -1,4 +1,6 @@
 defmodule ValentineWeb.Layouts do
+  use PrimerLive
+
   @moduledoc """
   This module holds different layouts used by your application.
 

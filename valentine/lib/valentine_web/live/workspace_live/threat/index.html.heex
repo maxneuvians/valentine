@@ -1,33 +1,45 @@
-<.header>
+<.subhead>
   Listing Threats
   <:actions>
-    <.link navigate={~p"/workspaces/#{assigns[:workspace_id]}/threats/new"}>
-      <.button>New Threat Statement</.button>
+    <.link navigate={~p"/workspaces/#{@workspace_id}/threats/new"}>
+      <.button is_primary>New Threat Statement</.button>
     </.link>
   </:actions>
-</.header>
+</.subhead>
 
-<.table
-  id="threats"
-  rows={@streams.threats}
-  row_click={
-    fn {_id, threat} ->
-      JS.navigate(~p"/workspaces/#{assigns[:workspace_id]}/threats/#{threat}")
-    end
-  }
->
-  <:col :let={{_id, threat}} label="Name"><%= threat.threat_source %></:col>
-  <:action :let={{_id, threat}}>
-    <div class="sr-only">
-      <.link navigate={~p"/workspaces/#{assigns[:workspace_id]}/threats/#{threat}"}>Edit</.link>
-    </div>
-  </:action>
-  <:action :let={{id, threat}}>
-    <.link
-      phx-click={JS.push("delete", value: %{id: threat.id}) |> hide("##{id}")}
-      data-confirm="Are you sure?"
-    >
-      Delete
-    </.link>
-  </:action>
-</.table>
+<%= if length(@streams.threats.inserts) > 0 do %>
+  <.box stream={@streams.threats} id="client-row-slot">
+    <:header>Threat statements</:header>
+    <:row :let={{_dom_id, threat}} class="d-flex flex-items-center flex-justify-between">
+      <.link navigate={~p"/workspaces/#{@workspace_id}/threats/#{threat}"}>
+        <%= threat.threat_source %>
+      </.link>
+
+      <.button
+        is_icon_only
+        aria-label="Delete"
+        phx-click={
+          JS.push("delete", value: %{id: threat.id}) |> hide("#threats-#{@workspace_id}")
+        }
+        data-confirm="Are you sure?"
+      >
+        <.octicon name="x-16" />
+      </.button>
+    </:row>
+  </.box>
+<% else %>
+  <.box class="color-bg-subtle">
+    <.blankslate is_narrow class="color-bg-default">
+      <:octicon name="squirrel-24" />
+      <:heading>
+        Let's write a threat statement!
+      </:heading>
+      <:action>
+        <.link navigate={~p"/workspaces/#{@workspace_id}/threats/new"}>
+          <.button is_primary>Get started</.button>
+        </.link>
+      </:action>
+      <p>Start by clicking the button below and work from there...</p>
+    </.blankslate>
+  </.box>
+<% end %>

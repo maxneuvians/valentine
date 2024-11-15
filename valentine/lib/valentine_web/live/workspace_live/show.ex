@@ -1,5 +1,6 @@
 defmodule ValentineWeb.WorkspaceLive.Show do
   use ValentineWeb, :live_view
+  use PrimerLive
 
   alias Valentine.Composer
 
@@ -13,7 +14,8 @@ defmodule ValentineWeb.WorkspaceLive.Show do
     {:noreply,
      socket
      |> assign(:page_title, page_title(socket.assigns.live_action))
-     |> assign(:workspace, Composer.get_workspace!(id))}
+     |> assign(:workspace, Composer.get_workspace!(id))
+     |> assign(:workspace_id, id)}
   end
 
   defp page_title(:show), do: "Show Workspace"

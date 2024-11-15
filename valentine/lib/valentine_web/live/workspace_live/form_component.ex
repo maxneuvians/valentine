@@ -1,5 +1,6 @@
 defmodule ValentineWeb.WorkspaceLive.FormComponent do
   use ValentineWeb, :live_component
+  use PrimerLive
 
   alias Valentine.Composer
 
@@ -7,23 +8,9 @@ defmodule ValentineWeb.WorkspaceLive.FormComponent do
   def render(assigns) do
     ~H"""
     <div>
-      <.header>
+      <.subhead>
         <%= @title %>
-        <:subtitle>Use this form to manage workspace records in your database.</:subtitle>
-      </.header>
-
-      <.simple_form
-        for={@form}
-        id="workspace-form"
-        phx-target={@myself}
-        phx-change="validate"
-        phx-submit="save"
-      >
-        <.input field={@form[:name]} type="text" label="Name" />
-        <:actions>
-          <.button phx-disable-with="Saving...">Save Workspace</.button>
-        </:actions>
-      </.simple_form>
+      </.subhead>
     </div>
     """
   end

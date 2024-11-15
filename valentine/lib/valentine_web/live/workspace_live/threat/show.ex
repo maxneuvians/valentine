@@ -1,5 +1,6 @@
 defmodule ValentineWeb.WorkspaceLive.Threat.Show do
   use ValentineWeb, :live_view
+  use PrimerLive
 
   alias Valentine.Composer
   alias Valentine.Composer.Threat

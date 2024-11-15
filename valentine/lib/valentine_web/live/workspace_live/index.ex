@@ -1,5 +1,6 @@
 defmodule ValentineWeb.WorkspaceLive.Index do
   use ValentineWeb, :live_view
+  use PrimerLive
 
   alias Valentine.Composer
   alias Valentine.Composer.Workspace
@@ -30,6 +31,7 @@ defmodule ValentineWeb.WorkspaceLive.Index do
     socket
     |> assign(:page_title, "Listing Workspaces")
     |> assign(:workspace, nil)
+    |> assign(:workspace_id, nil)
   end
 
   @impl true

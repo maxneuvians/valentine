@@ -4,7 +4,7 @@ defmodule ValentineWeb.WorkspaceLive.Threat.Components.ThreatFieldComponent do
   def render(assigns) do
     ~H"""
     <div
-      class="inline-block w-auto border border-gray-300 px-2 py-1 min-h-[38px] focus:outline-none focus:ring-2 focus:ring-primary-500"
+      class="float-left border p-1 mx-1"
       phx-focus="show_context"
       phx-value-field={@field}
       phx-value-type={@type}

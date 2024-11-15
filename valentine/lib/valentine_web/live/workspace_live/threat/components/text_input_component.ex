@@ -1,35 +1,41 @@
 defmodule ValentineWeb.WorkspaceLive.Threat.Components.TextInputComponent do
   use ValentineWeb, :live_component
+  use PrimerLive
 
   @impl true
   def render(assigns) do
     ~H"""
-    <div class="border border-gray-300 rounded-lg p-6 bg-white">
-      <h2 class="text-xl font-semibold mb-2"><%= @context.title %></h2>
-      <p class="text-gray-600 mb-4"><%= @context.description %></p>
+    <div>
+      <.styled_html>
+        <h3><%= @context.title %></h3>
+        <p><%= @context.description %></p>
 
-      <div class="space-y-4">
-        <.input
-          type="textarea"
-          rows="4"
-          class="w-full"
+        <.text_input
           id={"#{@id}-#{@active_field}"}
-          name={"threat[#{@active_field}]"}
+          name={"threat-#{@active_field}"}
           phx-window-keyup="update_field"
           value={@current_value}
-        />
-      </div>
+        >
+          <:trailing_action is_visible_with_value>
+            <.button
+              is_close_button
+              aria-label="Clear"
+              onclick={"document.querySelector('[name=threat-#{@active_field}]').value=''"}
+            >
+              <.octicon name="x-16" />
+            </.button>
+          </:trailing_action>
+        </.text_input>
 
-      <%= if @context.examples && length(@context.examples) > 0 do %>
-        <div class="mt-4">
-          <h3 class="font-medium mb-2">Examples:</h3>
-          <ul class="list-disc pl-5 space-y-1">
+        <%= if @context.examples && length(@context.examples) > 0 do %>
+          <h4>Examples:</h4>
+          <ul>
             <%= for example <- @context.examples do %>
-              <li class="text-gray-600"><%= example %></li>
+              <li><%= example %></li>
             <% end %>
           </ul>
-        </div>
-      <% end %>
+        <% end %>
+      </.styled_html>
     </div>
     """
   end

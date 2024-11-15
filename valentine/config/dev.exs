@@ -22,8 +22,7 @@ config :valentine, ValentineWeb.Endpoint,
   debug_errors: true,
   secret_key_base: "LZcrpJerGFAOAk9tmX++gOlapKEvjcahler184AEFKAEpnQPRzKtTN737XXsrdFG",
   watchers: [
-    esbuild: {Esbuild, :install_and_run, [:valentine, ~w(--sourcemap=inline --watch)]},
-    tailwind: {Tailwind, :install_and_run, [:valentine, ~w(--watch)]}
+    esbuild: {Esbuild, :install_and_run, [:valentine, ~w(--sourcemap=inline --watch)]}
   ]
 
 # ## SSL Support

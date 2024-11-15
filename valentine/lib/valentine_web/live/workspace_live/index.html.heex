@@ -1,46 +1,24 @@
-<.header>
-  Listing Workspaces
+<.subhead>
+  Workspaces
   <:actions>
     <.link patch={~p"/workspaces/new"}>
-      <.button>New Workspace</.button>
+      <.button is_primary>New Workspace</.button>
     </.link>
   </:actions>
-</.header>
+</.subhead>
 
-<.table
-  id="workspaces"
-  rows={@streams.workspaces}
-  row_click={fn {_id, workspace} -> JS.navigate(~p"/workspaces/#{workspace}") end}
->
-  <:col :let={{_id, workspace}} label="Name"><%= workspace.name %></:col>
-  <:action :let={{_id, workspace}}>
-    <div class="sr-only">
-      <.link navigate={~p"/workspaces/#{workspace}"}>Show</.link>
-    </div>
-    <.link patch={~p"/workspaces/#{workspace}/edit"}>Edit</.link>
-  </:action>
-  <:action :let={{id, workspace}}>
-    <.link
-      phx-click={JS.push("delete", value: %{id: workspace.id}) |> hide("##{id}")}
+<.box stream={@streams.workspaces} id="client-row-slot">
+  <:header>Your workspaces</:header>
+  <:row :let={{_dom_id, workspace}} class="d-flex flex-items-center flex-justify-between">
+    <.link navigate={~p"/workspaces/#{workspace}"}><%= workspace.name %></.link>
+
+    <.button
+      is_icon_only
+      aria-label="Delete"
+      phx-click={JS.push("delete", value: %{id: workspace.id}) |> hide("##{workspace.id}")}
       data-confirm="Are you sure?"
     >
-      Delete
-    </.link>
-  </:action>
-</.table>
-
-<.modal
-  :if={@live_action in [:new, :edit]}
-  id="workspace-modal"
-  show
-  on_cancel={JS.patch(~p"/workspaces")}
->
-  <.live_component
-    module={ValentineWeb.WorkspaceLive.FormComponent}
-    id={@workspace.id || :new}
-    title={@page_title}
-    action={@live_action}
-    workspace={@workspace}
-    patch={~p"/workspaces"}
-  />
-</.modal>
+      <.octicon name="x-16" />
+    </.button>
+  </:row>
+</.box>
