@@ -63,8 +63,11 @@ defmodule Valentine.ComposerTest do
     import Valentine.ComposerFixtures
 
     @invalid_attrs %{
-      metadata: nil,
       uuid: nil,
+      status: nil,
+      priority: nil,
+      stride: nil,
+      comments: nil,
       threat_source: nil,
       prerequisites: nil,
       threat_action: nil,
@@ -88,7 +91,10 @@ defmodule Valentine.ComposerTest do
 
       valid_attrs = %{
         workspace_id: workspace.id,
-        metadata: %{},
+        status: :identified,
+        priority: :high,
+        stride: [:spoofing],
+        comments: "some comments",
         threat_source: "some threat_source",
         prerequisites: "some prerequisites",
         threat_action: "some threat_action",
@@ -99,7 +105,10 @@ defmodule Valentine.ComposerTest do
       }
 
       assert {:ok, %Threat{} = threat} = Composer.create_threat(valid_attrs)
-      assert threat.metadata == %{}
+      assert threat.status == :identified
+      assert threat.priority == :high
+      assert threat.stride == [:spoofing]
+      assert threat.comments == "some comments"
       assert threat.threat_source == "some threat_source"
       assert threat.prerequisites == "some prerequisites"
       assert threat.threat_action == "some threat_action"
@@ -116,7 +125,10 @@ defmodule Valentine.ComposerTest do
       threat = threat_fixture()
 
       update_attrs = %{
-        metadata: %{},
+        status: :resolved,
+        priority: :low,
+        stride: [:tampering],
+        comments: "some updated comments",
         threat_source: "some updated threat_source",
         prerequisites: "some updated prerequisites",
         threat_action: "some updated threat_action",
@@ -127,7 +139,10 @@ defmodule Valentine.ComposerTest do
       }
 
       assert {:ok, %Threat{} = threat} = Composer.update_threat(threat, update_attrs)
-      assert threat.metadata == %{}
+      assert threat.status == :resolved
+      assert threat.priority == :low
+      assert threat.stride == [:tampering]
+      assert threat.comments == "some updated comments"
       assert threat.threat_source == "some updated threat_source"
       assert threat.prerequisites == "some updated prerequisites"
       assert threat.threat_action == "some updated threat_action"

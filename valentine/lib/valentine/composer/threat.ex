@@ -10,7 +10,10 @@ defmodule Valentine.Composer.Threat do
              :id,
              :workspace_id,
              :numeric_id,
-             :metadata,
+             :status,
+             :priority,
+             :stride,
+             :comments,
              :threat_source,
              :prerequisites,
              :threat_action,
@@ -23,8 +26,22 @@ defmodule Valentine.Composer.Threat do
   schema "threats" do
     belongs_to :workspace, Valentine.Composer.Workspace
 
-    field :metadata, :map
     field :numeric_id, :integer
+    field :status, Ecto.Enum, values: [:identified, :resolved, :not_usefull]
+    field :priority, Ecto.Enum, values: [:low, :medium, :high]
+
+    field :stride,
+          {:array, Ecto.Enum},
+          values: [
+            :spoofing,
+            :tampering,
+            :repudiation,
+            :information_disclosure,
+            :denial_of_service,
+            :elevation_of_privilege
+          ]
+
+    field :comments, :string
     field :threat_source, :string
     field :prerequisites, :string
     field :threat_action, :string
@@ -41,7 +58,10 @@ defmodule Valentine.Composer.Threat do
     threat
     |> cast(attrs, [
       :workspace_id,
-      :metadata,
+      :status,
+      :priority,
+      :stride,
+      :comments,
       :threat_source,
       :prerequisites,
       :threat_action,

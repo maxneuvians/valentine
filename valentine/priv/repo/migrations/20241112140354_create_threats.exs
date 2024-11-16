@@ -5,7 +5,10 @@ defmodule Valentine.Repo.Migrations.CreateThreats do
     create table(:threats, primary_key: false) do
       add :id, :uuid, primary_key: true, null: false
       add :numeric_id, :integer
-      add :metadata, :map
+      add :status, :string
+      add :priority, :string
+      add :stride, {:array, :string}
+      add :comments, :text
       add :threat_source, :string
       add :prerequisites, :text
       add :threat_action, :text
