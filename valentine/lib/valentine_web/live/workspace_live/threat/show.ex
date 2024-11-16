@@ -73,6 +73,33 @@ defmodule ValentineWeb.WorkspaceLive.Threat.Show do
   end
 
   @impl true
+  def handle_event("update_field", %{"_target" => [field]} = params, socket) do
+    value =
+      cond do
+        is_list(params[field]) ->
+          params[field]
+          |> Enum.reject(&(&1 == "false"))
+          |> Enum.map(&String.to_existing_atom/1)
+
+        field == "comments" ->
+          params[field]
+
+        is_binary(params[field]) ->
+          Phoenix.Naming.underscore(params[field])
+
+        true ->
+          nil
+      end
+
+    {:noreply,
+     socket
+     |> assign(
+       :changes,
+       Map.put(socket.assigns.changes, String.to_existing_atom(field), value)
+     )}
+  end
+
+  @impl true
   def handle_info({"update_field", params}, socket),
     do: handle_event("update_field", params, socket)
 

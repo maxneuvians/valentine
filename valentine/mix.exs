@@ -52,7 +52,8 @@ defmodule Valentine.MixProject do
       {:dns_cluster, "~> 0.1.1"},
       {:bandit, "~> 1.5"},
       {:mock, "~> 0.3.0", only: :test},
-      {:primer_live, "~> 0.9"}
+      {:primer_live, "~> 0.9"},
+      {:mdex, "~> 0.2"}
     ]
   end
 

@@ -183,6 +183,78 @@ defmodule ValentineWeb.WorkspaceLive.Threat.ShowTest do
 
       assert updated_socket.assigns.changes[:threat_source] == "New Threat"
     end
+
+    test "updates field value in changeset if coming from a form and is a list", %{socket: socket} do
+      socket = put_in(socket.assigns.changes, %{})
+
+      {:noreply, updated_socket} =
+        ValentineWeb.WorkspaceLive.Threat.Show.handle_event(
+          "update_field",
+          %{"_target" => ["field"], "field" => ["threat"]},
+          socket
+        )
+
+      assert updated_socket.assigns.changes[:field] == [:threat]
+    end
+
+    test "updates field value in changeset if coming from a form and is a list and filters false values",
+         %{socket: socket} do
+      socket = put_in(socket.assigns.changes, %{})
+
+      {:noreply, updated_socket} =
+        ValentineWeb.WorkspaceLive.Threat.Show.handle_event(
+          "update_field",
+          %{"_target" => ["field"], "field" => ["threat", "false"]},
+          socket
+        )
+
+      assert updated_socket.assigns.changes[:field] == [:threat]
+    end
+
+    test "updates field value in changeset if coming from a form and is a binary", %{
+      socket: socket
+    } do
+      socket = put_in(socket.assigns.changes, %{})
+
+      {:noreply, updated_socket} =
+        ValentineWeb.WorkspaceLive.Threat.Show.handle_event(
+          "update_field",
+          %{"_target" => ["field"], "field" => "Threat"},
+          socket
+        )
+
+      assert updated_socket.assigns.changes[:field] == "threat"
+    end
+
+    test "updates field value in changeset if coming from a form and is a comments field", %{
+      socket: socket
+    } do
+      socket = put_in(socket.assigns.changes, %{})
+
+      {:noreply, updated_socket} =
+        ValentineWeb.WorkspaceLive.Threat.Show.handle_event(
+          "update_field",
+          %{"_target" => ["comments"], "comments" => "Comments"},
+          socket
+        )
+
+      assert updated_socket.assigns.changes[:comments] == "Comments"
+    end
+
+    test "updates field value in changeset to nil if there are no matches", %{
+      socket: socket
+    } do
+      socket = put_in(socket.assigns.changes, %{})
+
+      {:noreply, updated_socket} =
+        ValentineWeb.WorkspaceLive.Threat.Show.handle_event(
+          "update_field",
+          %{"_target" => ["foo"], "bar" => 2},
+          socket
+        )
+
+      assert updated_socket.assigns.changes[:foo] == nil
+    end
   end
 
   describe "handle_info/2" do

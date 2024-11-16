@@ -14,7 +14,8 @@
 <div class="clearfix">
   <div class="float-left col-8">
     <.box class="p-4">
-      <p class="mb-4">
+      <h3>Statement</h3>
+      <p class="my-4">
         Start by clicking ANY field you like and work from there...
       </p>
 
@@ -135,63 +136,88 @@
         <% end %>
       </.box>
     <% end %>
+
+    <.box class="p-4 mt-2">
+      <h3>Comments</h3>
+      <div class="clearfix">
+        <div class="float-left col-6 p-2">
+          <form phx-change="update_field">
+            <.textarea
+              name="comments"
+              class="mt-2"
+              placeholder="Add a comment..."
+              input_id="comments"
+              is_full_width
+              rows="7"
+              value={@changes[:comments]}
+              caption="Markdown is supported"
+            />
+          </form>
+        </div>
+        <div class="float-left col-6 p-2">
+          <div class="markdown-body">
+            <.live_component
+              module={ValentineWeb.WorkspaceLive.Components.MarkdownComponent}
+              id="markdown-component"
+              text={@changes[:comments]}
+            />
+          </div>
+        </div>
+      </div>
+    </.box>
   </div>
   <div class="float-left col-3 pl-4">
     <.action_list_section_divider>
       <:title>Status</:title>
     </.action_list_section_divider>
-    <.select
-      is_full_width
-      name="status"
-      class="mt-2"
-      options={["", "Identified", "Resolved", "Not usefull"]}
-      input_id="status"
-    />
+    <form phx-change="update_field">
+      <.select
+        is_full_width
+        name="status"
+        class="mt-2"
+        options={["", "Identified", "Resolved", "Not usefull"]}
+        input_id="status"
+        selected={Phoenix.Naming.humanize(@changes[:status])}
+      />
+    </form>
     <.action_list_section_divider />
     <.action_list_section_divider>
       <:title>Priority</:title>
     </.action_list_section_divider>
-    <.select
-      is_full_width
-      name="priority"
-      class="mt-2"
-      options={["", "Low", "Medium", "High"]}
-      input_id="priority"
-    />
+    <form phx-change="update_field">
+      <.select
+        is_full_width
+        name="priority"
+        class="mt-2"
+        options={["", "Low", "Medium", "High"]}
+        input_id="priority"
+        selected={Phoenix.Naming.humanize(@changes[:priority])}
+      />
+    </form>
     <.action_list_section_divider />
     <.action_list_section_divider>
       <:title>STRIDE</:title>
     </.action_list_section_divider>
-    <div>
-      <.checkbox name="story_checkbox">
-        <:label style="font-weight: normal">Spoofing</:label>
-      </.checkbox>
-    </div>
-    <div>
-      <.checkbox name="story_checkbox">
-        <:label style="font-weight: normal">Tampering</:label>
-      </.checkbox>
-    </div>
-    <div>
-      <.checkbox name="story_checkbox">
-        <:label style="font-weight: normal">Repudiation</:label>
-      </.checkbox>
-    </div>
-    <div>
-      <.checkbox name="story_checkbox">
-        <:label style="font-weight: normal">Information Disclosure</:label>
-      </.checkbox>
-    </div>
-    <div>
-      <.checkbox name="story_checkbox">
-        <:label style="font-weight: normal">Denial of Service</:label>
-      </.checkbox>
-    </div>
-    <div>
-      <.checkbox name="story_checkbox">
-        <:label style="font-weight: normal">Elevation of Privilege</:label>
-      </.checkbox>
-    </div>
+    <form phx-change="update_field">
+      <%= for value <- [
+            :spoofing,
+            :tampering,
+            :repudiation,
+            :information_disclosure,
+            :denial_of_service,
+            :elevation_of_privilege
+          ] do %>
+        <div>
+          <.checkbox
+            name="stride[]"
+            checked_value={value}
+            checked={@changes[:stride] && value in @changes[:stride]}
+          >
+            <:label style="font-weight: normal"><%= Phoenix.Naming.humanize(value) %></:label>
+          </.checkbox>
+        </div>
+      <% end %>
+    </form>
     <.action_list_section_divider />
     <.action_list_section_divider>
       <:title>Inputs for mitigation</:title>
