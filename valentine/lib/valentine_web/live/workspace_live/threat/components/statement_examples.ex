@@ -5,9 +5,9 @@ defmodule ValentineWeb.WorkspaceLive.Threat.Components.StatementExamples do
       description: "Who or what is initiating the threat?",
       placeholder: "Enter threat source",
       examples: [
-        "a malicious user",
-        "an attacker with network access",
-        "a compromised admin account"
+        "malicious user",
+        "attacker with network access",
+        "compromised admin account"
       ]
     }
   end

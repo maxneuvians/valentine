@@ -31,7 +31,11 @@ defmodule ValentineWeb.WorkspaceLive.Threat.Components.TextInputComponent do
           <h4>Examples:</h4>
           <ul>
             <%= for example <- @context.examples do %>
-              <li><%= example %></li>
+              <li>
+                <.link phx-click="update_field" phx-value-value={example}>
+                  <%= example %>
+                </.link>
+              </li>
             <% end %>
           </ul>
         <% end %>

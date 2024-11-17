@@ -20,7 +20,12 @@
       </p>
 
       <div class="clearfix">
-        <div class="float-left p-1 mt-1">A</div>
+        <div class="float-left p-1 mt-1">
+          <%= ValentineWeb.WorkspaceLive.Threat.Components.ThreatHelpers.a_or_an(
+            @changes[:threat_source],
+            true
+          ) %>
+        </div>
 
         <.live_component
           module={ValentineWeb.WorkspaceLive.Threat.Components.ThreatFieldComponent}

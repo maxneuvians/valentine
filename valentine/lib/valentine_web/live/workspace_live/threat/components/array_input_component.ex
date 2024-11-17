@@ -4,6 +4,13 @@ defmodule ValentineWeb.WorkspaceLive.Threat.Components.ArrayInputComponent do
 
   @impl true
   def render(assigns) do
+    assigns =
+      if assigns[:value] == nil do
+        assign(assigns, :value, "")
+      else
+        assigns
+      end
+
     ~H"""
     <div>
       <.styled_html>
@@ -14,7 +21,7 @@ defmodule ValentineWeb.WorkspaceLive.Threat.Components.ArrayInputComponent do
           name={"threat-#{@active_field}"}
           phx-window-keyup="set_tag"
           phx-target={@myself}
-          value=""
+          value={@value}
         >
           <:group_button>
             <.button phx-click="add_tag" phx-target={@myself}>Add</.button>
@@ -32,7 +39,11 @@ defmodule ValentineWeb.WorkspaceLive.Threat.Components.ArrayInputComponent do
           <h4>Examples:</h4>
           <ul>
             <%= for example <- @context.examples do %>
-              <li><%= example %></li>
+              <li>
+                <.link phx-click="set_tag" phx-value-value={example} phx-target={@myself}>
+                  <%= example %>
+                </.link>
+              </li>
             <% end %>
           </ul>
         <% end %>
@@ -49,7 +60,7 @@ defmodule ValentineWeb.WorkspaceLive.Threat.Components.ArrayInputComponent do
     if tag not in current_tags do
       updated_tags = current_tags ++ [tag]
       send(self(), {"update_field", %{"value" => updated_tags}})
-      {:noreply, assign(socket, :current_value, updated_tags)}
+      {:noreply, assign(socket, :current_value, updated_tags) |> assign(:value, "")}
     else
       {:noreply, socket}
     end
@@ -66,6 +77,6 @@ defmodule ValentineWeb.WorkspaceLive.Threat.Components.ArrayInputComponent do
 
   @impl true
   def handle_event("set_tag", %{"value" => value} = _params, socket) do
-    {:noreply, assign(socket, :tag, value)}
+    {:noreply, assign(socket, :tag, value) |> assign(:value, value)}
   end
 end

@@ -11,20 +11,11 @@
   <.box stream={@streams.threats} id="client-row-slot">
     <:header>Threat statements</:header>
     <:row :let={{_dom_id, threat}} class="d-flex flex-items-center flex-justify-between">
-      <.link navigate={~p"/workspaces/#{@workspace_id}/threats/#{threat}"}>
-        <%= threat.threat_source %>
-      </.link>
-
-      <.button
-        is_icon_only
-        aria-label="Delete"
-        phx-click={
-          JS.push("delete", value: %{id: threat.id}) |> hide("#threats-#{@workspace_id}")
-        }
-        data-confirm="Are you sure?"
-      >
-        <.octicon name="x-16" />
-      </.button>
+      <.live_component
+        module={ValentineWeb.WorkspaceLive.Components.ThreatComponent}
+        id="threat-statement-#{threat.id}"
+        threat={threat}
+      />
     </:row>
   </.box>
 <% else %>

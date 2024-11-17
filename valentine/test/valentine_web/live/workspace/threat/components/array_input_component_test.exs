@@ -43,6 +43,7 @@ defmodule ValentineWeb.WorkspaceLive.Threat.Components.ArrayInputComponentTest d
         assigns: %{
           __changed__: %{},
           current_value: ["Initial value"],
+          value: "New tag",
           tag: "New tag"
         }
       }
@@ -55,6 +56,7 @@ defmodule ValentineWeb.WorkspaceLive.Threat.Components.ArrayInputComponentTest d
         )
 
       assert socket.assigns.current_value == ["Initial value", "New tag"]
+      assert socket.assigns.value == ""
     end
   end
 
@@ -63,6 +65,7 @@ defmodule ValentineWeb.WorkspaceLive.Threat.Components.ArrayInputComponentTest d
       assigns: %{
         __changed__: %{},
         current_value: ["Initial value"],
+        value: "",
         tag: "Initial value"
       }
     }
@@ -75,6 +78,7 @@ defmodule ValentineWeb.WorkspaceLive.Threat.Components.ArrayInputComponentTest d
       )
 
     assert socket.assigns.current_value == ["Initial value"]
+    assert socket.assigns.value == ""
   end
 
   test "does nothing if tag is not set" do
@@ -129,5 +133,6 @@ defmodule ValentineWeb.WorkspaceLive.Threat.Components.ArrayInputComponentTest d
       )
 
     assert socket.assigns.tag == "New tag"
+    assert socket.assigns.value == "New tag"
   end
 end
