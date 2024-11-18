@@ -12,7 +12,7 @@ defmodule ValentineWeb.WorkspaceLive.Components.FilterComponentTest do
       id: "id",
       icon: "icon",
       name: :filter,
-      values: ["one", "two", "three"]
+      values: [:one, :two, :three]
     }
 
     socket = %Phoenix.LiveView.Socket{
@@ -53,12 +53,12 @@ defmodule ValentineWeb.WorkspaceLive.Components.FilterComponentTest do
       {:noreply, socket} =
         FilterComponent.handle_event("select_filter", %{"checked" => "one"}, socket)
 
-      assert socket.assigns.filters[:filter] == ["one"]
+      assert socket.assigns.filters[:filter] == [:one]
     end
 
     test "removes a filter from the filters list", %{socket: socket} do
       socket =
-        Map.put(socket, :assigns, %{__changed__: %{}, filters: %{filter: ["one"]}, name: :filter})
+        Map.put(socket, :assigns, %{__changed__: %{}, filters: %{filter: [:one]}, name: :filter})
 
       {:noreply, socket} =
         FilterComponent.handle_event("select_filter", %{"checked" => "one"}, socket)
@@ -68,12 +68,12 @@ defmodule ValentineWeb.WorkspaceLive.Components.FilterComponentTest do
 
     test "adds an additional filter to the filters list", %{socket: socket} do
       socket =
-        Map.put(socket, :assigns, %{__changed__: %{}, filters: %{filter: ["one"]}, name: :filter})
+        Map.put(socket, :assigns, %{__changed__: %{}, filters: %{filter: [:one]}, name: :filter})
 
       {:noreply, socket} =
         FilterComponent.handle_event("select_filter", %{"checked" => "two"}, socket)
 
-      assert socket.assigns.filters[:filter] == ["two", "one"]
+      assert socket.assigns.filters[:filter] == [:two, :one]
     end
   end
 end

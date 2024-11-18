@@ -45,20 +45,21 @@ defmodule ValentineWeb.WorkspaceLive.Components.FilterComponent do
   @impl true
   def handle_event("select_filter", params, socket) do
     %{filters: filters, name: name} = socket.assigns
+    value = String.to_existing_atom(params["checked"])
 
     filters =
       cond do
         !filters[name] ->
-          Map.put(filters, name, [params["checked"]])
+          Map.put(filters, name, [value])
 
-        params["checked"] in filters[name] ->
+        value in filters[name] ->
           Map.update!(filters, name, fn values ->
-            Enum.reject(values, &(&1 == params["checked"]))
+            Enum.reject(values, &(&1 == value))
           end)
 
         true ->
           Map.update!(filters, name, fn values ->
-            [params["checked"] | values]
+            [value | values]
           end)
       end
 

@@ -117,6 +117,28 @@ defmodule Valentine.Composer do
     Repo.all(Threat)
   end
 
+  def list_threats_with_enum_filters(m, filters) do
+    Enum.reduce(filters, m, fn {f, selected}, queryable ->
+      case Threat.__schema__(:type, f) do
+        {:array, _} ->
+          if is_nil(selected) || selected == [] do
+            queryable
+          else
+            Enum.reduce(selected, queryable, fn s, q ->
+              where(q, [m], ^s in field(m, ^f))
+            end)
+          end
+
+        {:parameterized, _} ->
+          if is_nil(selected) || selected == [] do
+            queryable
+          else
+            where(queryable, [m], field(m, ^f) in ^selected)
+          end
+      end
+    end)
+  end
+
   @doc """
   Returns the list of threats for a specific workspace.
 
@@ -132,8 +154,9 @@ defmodule Valentine.Composer do
       iex> list_threats_by_workspace("nonexistent-id")
       []
   """
-  def list_threats_by_workspace(workspace_id) do
+  def list_threats_by_workspace(workspace_id, enum_filters \\ %{}) do
     from(t in Threat, where: t.workspace_id == ^workspace_id)
+    |> list_threats_with_enum_filters(enum_filters)
     |> Repo.all()
   end
 

@@ -12,7 +12,7 @@ defmodule ValentineWeb.WorkspaceLive.Threat.Index do
      socket
      |> assign(:workspace_id, workspace_id)
      |> assign(:filters, %{})
-     |> stream(:threats, Composer.list_threats_by_workspace(workspace_id))}
+     |> stream(:threats, Composer.list_threats_by_workspace(workspace_id, %{}))}
   end
 
   @impl true
@@ -47,20 +47,27 @@ defmodule ValentineWeb.WorkspaceLive.Threat.Index do
   end
 
   @impl true
-  def handle_info({:update_filter, filter}, socket) do
+  def handle_info({:update_filter, filters}, socket) do
     {
       :noreply,
       socket
-      |> assign(:filters, filter)
+      |> assign(:filters, filters)
       |> stream(
         :threats,
-        Composer.list_threats_by_workspace(socket.assigns.workspace_id)
+        Composer.list_threats_by_workspace(socket.assigns.workspace_id, filters),
+        reset: true
       )
     }
   end
 
   @impl true
   def handle_info(%{topic: "workspace_" <> workspace_id}, socket) do
-    {:noreply, stream(socket, :threats, Composer.list_threats_by_workspace(workspace_id))}
+    {:noreply,
+     stream(
+       socket,
+       :threats,
+       Composer.list_threats_by_workspace(workspace_id, socket.assigns.filters),
+       reset: true
+     )}
   end
 end

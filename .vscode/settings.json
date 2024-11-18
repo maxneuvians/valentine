@@ -1,3 +1,16 @@
 {
-    "editor.formatOnSave": true
+    "editor.formatOnSave": true,
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "server": "DB",
+            "port": 5432,
+            "askForPassword": true,
+            "driver": "PostgreSQL",
+            "name": "DB",
+            "group": "DB",
+            "database": "valentine_dev",
+            "username": "postgres"
+        }
+    ]
 }

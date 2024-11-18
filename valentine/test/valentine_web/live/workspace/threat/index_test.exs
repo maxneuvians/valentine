@@ -15,6 +15,7 @@ defmodule ValentineWeb.WorkspaceLive.Threat.IndexTest do
         assigns: %{
           __changed__: %{},
           live_action: nil,
+          filters: %{},
           flash: %{},
           workspace_id: @workspace_id
         }
@@ -29,7 +30,7 @@ defmodule ValentineWeb.WorkspaceLive.Threat.IndexTest do
         {
           Composer,
           [],
-          list_threats_by_workspace: fn @workspace_id -> [threat] end
+          list_threats_by_workspace: fn @workspace_id, _ -> [threat] end
         },
         {Phoenix.LiveView, [],
          stream: fn _, _, _ ->
@@ -137,9 +138,11 @@ defmodule ValentineWeb.WorkspaceLive.Threat.IndexTest do
         {
           Composer,
           [],
-          list_threats_by_workspace: fn @workspace_id -> [%{id: 1, title: "Updated Threat"}] end
+          list_threats_by_workspace: fn @workspace_id, _ ->
+            [%{id: 1, title: "Updated Threat"}]
+          end
         },
-        {Phoenix.LiveView, [], stream: fn socket, _, _ -> socket end}
+        {Phoenix.LiveView, [], stream: fn socket, _, _, _ -> socket end}
       ]) do
         {:noreply, updated_socket} =
           ValentineWeb.WorkspaceLive.Threat.Index.handle_info(
@@ -156,9 +159,12 @@ defmodule ValentineWeb.WorkspaceLive.Threat.IndexTest do
         {
           Composer,
           [],
-          list_threats_by_workspace: fn @workspace_id -> [%{id: 1, title: "Updated Threat"}] end
+          list_threats_by_workspace: fn @workspace_id, _ ->
+            [%{id: 1, title: "Updated Threat"}]
+          end
         },
-        {Phoenix.LiveView, [], stream: fn _, _, _ -> %{assigns: %{streams: %{threats: []}}} end}
+        {Phoenix.LiveView, [],
+         stream: fn _, _, _, _ -> %{assigns: %{streams: %{threats: []}}} end}
       ]) do
         {:noreply, updated_socket} =
           ValentineWeb.WorkspaceLive.Threat.Index.handle_info(
