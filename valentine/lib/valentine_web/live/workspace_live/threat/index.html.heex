@@ -40,7 +40,7 @@
   </:header>
   <div>
     <div class="stream-row hidden">
-      <%= if @filters do %>
+      <%= if @filters && @filters != %{} do %>
         <.blankslate class="color-bg-default">
           <:octicon name="question-24" />
           <:action>
@@ -63,7 +63,7 @@
       <% end %>
     </div>
     <%= for {_dom_id, threat} <- @streams.threats do %>
-      <div class="stream-row Box-row d-flex flex-items-center flex-justify-between">
+      <div class="Box-row d-flex flex-items-center flex-justify-between">
         <.live_component
           module={ValentineWeb.WorkspaceLive.Components.ThreatComponent}
           id={"threat-statement-#{threat.id}"}
@@ -71,5 +71,14 @@
         />
       </div>
     <% end %>
+    <!-- 
+    <:row :let={{_dom_id, threat}} class="d-flex flex-items-center flex-justify-between">
+    <.live_component
+      module={ValentineWeb.WorkspaceLive.Components.ThreatComponent}
+      id={"threat-statement-#{threat.id}"}
+      threat={threat}
+    />
+  </:row>
+  -->
   </div>
 </.box>
