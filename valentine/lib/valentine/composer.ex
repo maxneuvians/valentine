@@ -124,8 +124,11 @@ defmodule Valentine.Composer do
           if is_nil(selected) || selected == [] do
             queryable
           else
-            Enum.reduce(selected, queryable, fn s, q ->
-              where(q, [m], ^s in field(m, ^f))
+            [first | rest] = selected
+            query = where(queryable, [m], ^first in field(m, ^f))
+
+            Enum.reduce(rest, query, fn s, q ->
+              or_where(q, [m], ^s in field(m, ^f))
             end)
           end
 

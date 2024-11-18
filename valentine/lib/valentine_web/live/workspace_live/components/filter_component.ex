@@ -23,6 +23,10 @@ defmodule ValentineWeb.WorkspaceLive.Components.FilterComponent do
           <% end %>
         </:toggle>
         <.action_list is_multiple_select>
+          <.action_list_item is_inline_description phx-click="clear_filter" phx-target={@myself}>
+            <:description><.octicon name="x-16" /> Clear all</:description>
+          </.action_list_item>
+          <.action_list_section_divider />
           <%= for value <- @values do %>
             <.action_list_item
               field={@name}
@@ -40,6 +44,14 @@ defmodule ValentineWeb.WorkspaceLive.Components.FilterComponent do
       </.action_menu>
     </div>
     """
+  end
+
+  @impl true
+  def handle_event("clear_filter", _params, socket) do
+    %{filters: filters, name: name} = socket.assigns
+    filters = Map.put(filters, name, [])
+    send(self(), {:update_filter, filters})
+    {:noreply, assign(socket, filters: filters)}
   end
 
   @impl true
