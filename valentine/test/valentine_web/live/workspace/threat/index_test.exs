@@ -132,6 +132,30 @@ defmodule ValentineWeb.WorkspaceLive.Threat.IndexTest do
     end
   end
 
+  describe "handle_event/3" do
+    test "clears filters", %{socket: socket} do
+      with_mocks([
+        {
+          Composer,
+          [],
+          list_threats_by_workspace: fn @workspace_id, _ ->
+            [%{id: 1, title: "Updated Threat"}]
+          end
+        },
+        {Phoenix.LiveView, [], stream: fn socket, _, _, _ -> socket end}
+      ]) do
+        {:noreply, updated_socket} =
+          ValentineWeb.WorkspaceLive.Threat.Index.handle_event(
+            "clear_filters",
+            nil,
+            socket
+          )
+
+        assert updated_socket.assigns.filters == %{}
+      end
+    end
+  end
+
   describe "handle_info/2" do
     test "updates filters on filter changes", %{socket: socket} do
       with_mocks([

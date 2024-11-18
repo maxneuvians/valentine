@@ -47,6 +47,18 @@ defmodule ValentineWeb.WorkspaceLive.Threat.Index do
   end
 
   @impl true
+  def handle_event("clear_filters", _params, socket) do
+    {:noreply,
+     socket
+     |> assign(:filters, %{})
+     |> stream(
+       :threats,
+       Composer.list_threats_by_workspace(socket.assigns.workspace_id, %{}),
+       reset: true
+     )}
+  end
+
+  @impl true
   def handle_info({:update_filter, filters}, socket) do
     {
       :noreply,

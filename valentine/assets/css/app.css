@@ -1,5 +1,9 @@
 /* This file is for your main application CSS */
 
-h1 {
-    color: red;
+.hidden {
+    display: none
+}
+
+.stream-row:only-child {
+    display: block
 }

@@ -38,25 +38,38 @@
       filters={@filters}
     />
   </:header>
-  <!--
-  <.blankslate is_narrow class="color-bg-default">
-    <:octicon name="squirrel-24" />
-    <:heading>
-      Let's write a threat statement!
-    </:heading>
-    <:action>
-      <.link navigate={~p"/workspaces/#{@workspace_id}/threats/new"}>
-        <.button is_primary>Get started</.button>
-      </.link>
-    </:action>
-    <p>Start by clicking the button below and work from there...</p>
-  </.blankslate>
-  -->
-  <:row :let={{_dom_id, threat}} class="d-flex flex-items-center flex-justify-between">
-    <.live_component
-      module={ValentineWeb.WorkspaceLive.Components.ThreatComponent}
-      id={"threat-statement-#{threat.id}"}
-      threat={threat}
-    />
-  </:row>
+  <div>
+    <div class="stream-row hidden">
+      <%= if @filters do %>
+        <.blankslate class="color-bg-default">
+          <:octicon name="question-24" />
+          <:action>
+            <.button phx-click="clear_filters">Clear all filters</.button>
+          </:action>
+          <h3>No results found</h3>
+          <p>You may have filters set that are hiding threats</p>
+        </.blankslate>
+      <% else %>
+        <.blankslate class="color-bg-default">
+          <:octicon name="squirrel-24" />
+          <:action>
+            <.link navigate={~p"/workspaces/#{@workspace_id}/threats/new"}>
+              <.button is_primary>Get started</.button>
+            </.link>
+          </:action>
+          <h3>Let's write a threat statement!</h3>
+          <p>Start by clicking the button below and work from there...</p>
+        </.blankslate>
+      <% end %>
+    </div>
+    <%= for {_dom_id, threat} <- @streams.threats do %>
+      <div class="stream-row Box-row d-flex flex-items-center flex-justify-between">
+        <.live_component
+          module={ValentineWeb.WorkspaceLive.Components.ThreatComponent}
+          id={"threat-statement-#{threat.id}"}
+          threat={threat}
+        />
+      </div>
+    <% end %>
+  </div>
 </.box>
