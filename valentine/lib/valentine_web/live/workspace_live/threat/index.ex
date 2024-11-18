@@ -11,6 +11,7 @@ defmodule ValentineWeb.WorkspaceLive.Threat.Index do
     {:ok,
      socket
      |> assign(:workspace_id, workspace_id)
+     |> assign(:filters, %{})
      |> stream(:threats, Composer.list_threats_by_workspace(workspace_id))}
   end
 
@@ -34,7 +35,10 @@ defmodule ValentineWeb.WorkspaceLive.Threat.Index do
       threat ->
         case Composer.delete_threat(threat) do
           {:ok, _} ->
-            {:noreply, socket |> put_flash(:info, "Threat deleted successfully")}
+            {:noreply,
+             socket
+             |> put_flash(:info, "Threat deleted successfully")
+             |> stream_delete(:threats, threat)}
 
           {:error, _} ->
             {:noreply, socket |> put_flash(:error, "Failed to delete threat")}
@@ -43,7 +47,20 @@ defmodule ValentineWeb.WorkspaceLive.Threat.Index do
   end
 
   @impl true
-  def handle_info(%{topic: "workspace" <> workspace_id}, socket) do
+  def handle_info({:update_filter, filter}, socket) do
+    {
+      :noreply,
+      socket
+      |> assign(:filters, filter)
+      |> stream(
+        :threats,
+        Composer.list_threats_by_workspace(socket.assigns.workspace_id)
+      )
+    }
+  end
+
+  @impl true
+  def handle_info(%{topic: "workspace_" <> workspace_id}, socket) do
     {:noreply, stream(socket, :threats, Composer.list_threats_by_workspace(workspace_id))}
   end
 end

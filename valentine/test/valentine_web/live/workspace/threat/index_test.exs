@@ -9,21 +9,31 @@ defmodule ValentineWeb.WorkspaceLive.Threat.IndexTest do
   setup do
     workspace = %{id: @workspace_id, name: "Test Workspace"}
     threat = %{id: @threat_id, title: "Test Threat"}
-    socket = %Phoenix.LiveView.Socket{assigns: %{__changed__: %{}, live_action: nil, flash: %{}}}
+
+    socket =
+      %Phoenix.LiveView.Socket{
+        assigns: %{
+          __changed__: %{},
+          live_action: nil,
+          flash: %{},
+          workspace_id: @workspace_id
+        }
+      }
+
     {:ok, %{workspace: workspace, threat: threat, socket: socket}}
   end
 
   describe "mount/3" do
-    test "assigns workspace_id and initializes threats stream", %{socket: socket} do
+    test "assigns workspace_id and initializes threats stream", %{socket: socket, threat: threat} do
       with_mocks([
         {
           Composer,
           [],
-          list_threats_by_workspace: fn @workspace_id -> [%{id: 1, title: "Updated Threat"}] end
+          list_threats_by_workspace: fn @workspace_id -> [threat] end
         },
         {Phoenix.LiveView, [],
          stream: fn _, _, _ ->
-           %{assigns: %{streams: %{threats: []}, workspace_id: @workspace_id}}
+           %{assigns: %{streams: %{threats: [threat]}, workspace_id: @workspace_id}}
          end}
       ]) do
         {:ok, socket} =
@@ -57,9 +67,29 @@ defmodule ValentineWeb.WorkspaceLive.Threat.IndexTest do
 
   describe "handle_event delete" do
     test "successfully deletes threat", %{socket: socket, threat: threat} do
-      with_mock Composer,
-        get_threat!: fn @threat_id -> threat end,
-        delete_threat: fn _threat -> {:ok, threat} end do
+      with_mocks([
+        {
+          Composer,
+          [],
+          get_threat!: fn _threat_id -> threat end
+        },
+        {
+          Composer,
+          [],
+          delete_threat: fn _threat_id -> {:ok, threat} end
+        },
+        {Phoenix.LiveView, [],
+         put_flash: fn _, _, _ ->
+           %{
+             assigns: %{
+               flash: %{"info" => "deleted successfully"},
+               streams: %{threats: []},
+               workspace_id: @workspace_id
+             }
+           }
+         end},
+        {Phoenix.LiveView, [], stream_delete: fn socket, _, _ -> socket end}
+      ]) do
         {:noreply, updated_socket} =
           ValentineWeb.WorkspaceLive.Threat.Index.handle_event(
             "delete",
@@ -102,6 +132,25 @@ defmodule ValentineWeb.WorkspaceLive.Threat.IndexTest do
   end
 
   describe "handle_info/2" do
+    test "updates filters on filter changes", %{socket: socket} do
+      with_mocks([
+        {
+          Composer,
+          [],
+          list_threats_by_workspace: fn @workspace_id -> [%{id: 1, title: "Updated Threat"}] end
+        },
+        {Phoenix.LiveView, [], stream: fn socket, _, _ -> socket end}
+      ]) do
+        {:noreply, updated_socket} =
+          ValentineWeb.WorkspaceLive.Threat.Index.handle_info(
+            {:update_filter, %{status: "open"}},
+            socket
+          )
+
+        assert updated_socket.assigns.filters == %{status: "open"}
+      end
+    end
+
     test "updates threats stream on workspace changes", %{socket: socket} do
       with_mocks([
         {
@@ -113,7 +162,7 @@ defmodule ValentineWeb.WorkspaceLive.Threat.IndexTest do
       ]) do
         {:noreply, updated_socket} =
           ValentineWeb.WorkspaceLive.Threat.Index.handle_info(
-            %{topic: "workspace" <> @workspace_id},
+            %{topic: "workspace_" <> @workspace_id},
             socket
           )
 

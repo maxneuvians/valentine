@@ -94,7 +94,7 @@
           </.button>
         </div>
 
-        <div class="float-left p-1 mt-1">which leads to negatively impacting</div>
+        <div class="float-left p-1 mt-1">negatively impacting</div>
 
         <.live_component
           module={ValentineWeb.WorkspaceLive.Threat.Components.ThreatFieldComponent}
@@ -104,6 +104,7 @@
           placeholder="impacted assets"
           value={@changes[:impacted_assets]}
         />
+        <div class="float-left p-1 mt-1">.</div>
       </div>
 
       <%= if @errors do %>
@@ -173,7 +174,7 @@
   </div>
   <div class="float-left col-3 pl-4">
     <.action_list_section_divider>
-      <:title>Status</:title>
+      <:title><.octicon name="stack-16" />Status</:title>
     </.action_list_section_divider>
     <form phx-change="update_field">
       <.select
@@ -187,7 +188,7 @@
     </form>
     <.action_list_section_divider />
     <.action_list_section_divider>
-      <:title>Priority</:title>
+      <:title><.octicon name="list-ordered-16" />Priority</:title>
     </.action_list_section_divider>
     <form phx-change="update_field">
       <.select

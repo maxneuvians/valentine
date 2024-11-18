@@ -7,13 +7,42 @@
   </:actions>
 </.subhead>
 
-<%= if length(@streams.threats.inserts) > 0 do %>
+<%= if @streams.threats do %>
   <.box stream={@streams.threats} id="client-row-slot">
-    <:header>Threat statements</:header>
+    <:header class="d-flex flex-items-center">
+      Filters:
+      <.live_component
+        module={ValentineWeb.WorkspaceLive.Components.FilterComponent}
+        id="status-filer"
+        class="mx-1"
+        icon="stack"
+        name={:status}
+        values={Ecto.Enum.dump_values(Valentine.Composer.Threat, :status)}
+        filters={@filters}
+      />
+      <.live_component
+        module={ValentineWeb.WorkspaceLive.Components.FilterComponent}
+        id="priority-filer"
+        class="mx-1"
+        icon="list-ordered"
+        name={:priority}
+        values={Ecto.Enum.dump_values(Valentine.Composer.Threat, :priority)}
+        filters={@filters}
+      />
+      <.live_component
+        module={ValentineWeb.WorkspaceLive.Components.FilterComponent}
+        id="stride-filer"
+        class="mx-1"
+        icon="checkbox"
+        name={:stride}
+        values={Ecto.Enum.dump_values(Valentine.Composer.Threat, :stride)}
+        filters={@filters}
+      />
+    </:header>
     <:row :let={{_dom_id, threat}} class="d-flex flex-items-center flex-justify-between">
       <.live_component
         module={ValentineWeb.WorkspaceLive.Components.ThreatComponent}
-        id="threat-statement-#{threat.id}"
+        id={"threat-statement-#{threat.id}"}
         threat={threat}
       />
     </:row>

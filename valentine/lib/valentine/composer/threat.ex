@@ -27,7 +27,7 @@ defmodule Valentine.Composer.Threat do
     belongs_to :workspace, Valentine.Composer.Workspace
 
     field :numeric_id, :integer
-    field :status, Ecto.Enum, values: [:identified, :resolved, :not_usefull]
+    field :status, Ecto.Enum, values: [:identified, :resolved, :not_useful]
     field :priority, Ecto.Enum, values: [:low, :medium, :high]
 
     field :stride,
