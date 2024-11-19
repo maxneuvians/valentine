@@ -46,4 +46,24 @@ defmodule Valentine.ComposerFixtures do
 
     threat
   end
+
+  @doc """
+  Generate a assumption.
+  """
+  def assumption_fixture(attrs \\ %{}) do
+    workspace = workspace_fixture()
+    
+    {:ok, assumption} =
+      attrs
+      |> Enum.into(%{
+        comments: "some comments",
+        content: "some content",
+        tags: ["option1", "option2"],
+        numeric_id: 42,
+        workspace_id: workspace.id
+      })
+      |> Valentine.Composer.create_assumption()
+
+    assumption
+  end
 end

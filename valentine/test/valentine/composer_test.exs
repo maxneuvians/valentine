@@ -168,4 +168,76 @@ defmodule Valentine.ComposerTest do
       assert %Ecto.Changeset{} = Composer.change_threat(threat)
     end
   end
+
+  describe "assumptions" do
+    alias Valentine.Composer.Assumption
+
+    import Valentine.ComposerFixtures
+
+    @invalid_attrs %{comments: nil, content: nil, tags: nil}
+
+    test "list_assumptions/0 returns all assumptions" do
+      assumption = assumption_fixture()
+      assert Composer.list_assumptions() == [assumption]
+    end
+
+    test "get_assumption!/1 returns the assumption with given id" do
+      assumption = assumption_fixture()
+      assert Composer.get_assumption!(assumption.id) == assumption
+    end
+
+    test "create_assumption/1 with valid data creates a assumption" do
+      workspace = workspace_fixture()
+
+      valid_attrs = %{
+        comments: "some comments",
+        content: "some content",
+        tags: ["option1", "option2"],
+        workspace_id: workspace.id
+      }
+
+      assert {:ok, %Assumption{} = assumption} = Composer.create_assumption(valid_attrs)
+      assert assumption.comments == "some comments"
+      assert assumption.content == "some content"
+      assert assumption.tags == ["option1", "option2"]
+    end
+
+    test "create_assumption/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Composer.create_assumption(@invalid_attrs)
+    end
+
+    test "update_assumption/2 with valid data updates the assumption" do
+      assumption = assumption_fixture()
+
+      update_attrs = %{
+        comments: "some updated comments",
+        content: "some updated content",
+        tags: ["option1"]
+      }
+
+      assert {:ok, %Assumption{} = assumption} =
+               Composer.update_assumption(assumption, update_attrs)
+
+      assert assumption.comments == "some updated comments"
+      assert assumption.content == "some updated content"
+      assert assumption.tags == ["option1"]
+    end
+
+    test "update_assumption/2 with invalid data returns error changeset" do
+      assumption = assumption_fixture()
+      assert {:error, %Ecto.Changeset{}} = Composer.update_assumption(assumption, @invalid_attrs)
+      assert assumption == Composer.get_assumption!(assumption.id)
+    end
+
+    test "delete_assumption/1 deletes the assumption" do
+      assumption = assumption_fixture()
+      assert {:ok, %Assumption{}} = Composer.delete_assumption(assumption)
+      assert_raise Ecto.NoResultsError, fn -> Composer.get_assumption!(assumption.id) end
+    end
+
+    test "change_assumption/1 returns a assumption changeset" do
+      assumption = assumption_fixture()
+      assert %Ecto.Changeset{} = Composer.change_assumption(assumption)
+    end
+  end
 end
