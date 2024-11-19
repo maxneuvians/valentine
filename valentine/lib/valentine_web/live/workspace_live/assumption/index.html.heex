@@ -1,0 +1,39 @@
+<.subhead>
+  Listing Assumptions
+  <:actions>
+    <.button is_primary phx-click={JS.patch(~p"/workspaces/#{@workspace_id}/assumptions/new")}>
+      New Assumption
+    </.button>
+  </:actions>
+</.subhead>
+
+<.box id="client-row-slot" row_id={fn r -> "assumption-#{r.id}" end}>
+  <:header>Your assumptions</:header>
+  <:row
+    :for={assumption <- @assumptions}
+    class="d-flex flex-items-center flex-justify-between"
+    id={"assumption-#{assumption.id}"}
+  >
+    <.link navigate={~p"/workspaces/#{@workspace_id}/assumptions/#{assumption.id}/edit"}>
+      <%= assumption.content %>
+    </.link>
+
+    <.button
+      is_icon_only
+      aria-label="Delete"
+      phx-click={JS.push("delete", value: %{id: assumption.id})}
+      data-confirm="Are you sure?"
+    >
+      <.octicon name="x-16" />
+    </.button>
+  </:row>
+</.box>
+
+<.live_component
+  :if={@live_action in [:new, :edit]}
+  module={ValentineWeb.WorkspaceLive.Assumption.Components.FormComponent}
+  id={@assumption.id || :new}
+  action={@live_action}
+  assumption={@assumption}
+  patch={~p"/workspaces/#{@workspace_id}/assumptions"}
+/>

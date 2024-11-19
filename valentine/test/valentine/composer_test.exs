@@ -81,6 +81,15 @@ defmodule Valentine.ComposerTest do
       assert Composer.list_threats() == [threat]
     end
 
+    test "list_threats_by_workspace/2 returns all threats for a workspace" do
+      threat = threat_fixture()
+      assert Composer.list_threats_by_workspace(threat.workspace_id) == [threat]
+    end
+
+    test "list_threats_by_workspace/2 returns all threats for a workspace adnd not other workspaces" do
+      assert Composer.list_threats_by_workspace("00000000-0000-0000-0000-000000000000") == []
+    end
+
     test "get_threat!/1 returns the threat with given id" do
       threat = threat_fixture()
       assert Composer.get_threat!(threat.id) == threat
@@ -179,6 +188,15 @@ defmodule Valentine.ComposerTest do
     test "list_assumptions/0 returns all assumptions" do
       assumption = assumption_fixture()
       assert Composer.list_assumptions() == [assumption]
+    end
+
+    test "list_assumptions_by_workspace/2 returns all assumptions for a workspace" do
+      assumption = assumption_fixture()
+      assert Composer.list_assumptions_by_workspace(assumption.workspace_id) == [assumption]
+    end
+
+    test "list_assumptions_by_workspace/2 returns all assumptions for a workspace adnd not other workspaces" do
+      assert Composer.list_assumptions_by_workspace("00000000-0000-0000-0000-000000000000") == []
     end
 
     test "get_assumption!/1 returns the assumption with given id" do

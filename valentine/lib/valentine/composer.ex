@@ -117,6 +117,19 @@ defmodule Valentine.Composer do
     Repo.all(Threat)
   end
 
+  @doc """
+  Filters threats based on enum field values.
+
+  Takes a queryable and a map of filters where keys are field names and values are selected enum values.
+  Handles both array and parameterized enum fields.
+
+  ## Examples
+
+      iex> filters = %{severity: ["HIGH", "CRITICAL"], status: ["OPEN"]}
+      iex> list_threats_with_enum_filters(Threat, filters)
+      [%Threat{severity: "HIGH", status: "OPEN"}, ...]
+
+  """
   def list_threats_with_enum_filters(m, filters) do
     Enum.reduce(filters, m, fn {f, selected}, queryable ->
       case Threat.__schema__(:type, f) do
@@ -264,6 +277,20 @@ defmodule Valentine.Composer do
   """
   def list_assumptions do
     Repo.all(Assumption)
+  end
+
+  @doc """
+  Returns the list of assumptions for a specific workspace.
+
+  ## Examples
+
+      iex> list_assumptions_by_workspace(123)
+      [%Assumption{workspace_id: 123}, ...]
+
+  """
+  def list_assumptions_by_workspace(workspace_id) do
+    from(t in Assumption, where: t.workspace_id == ^workspace_id)
+    |> Repo.all()
   end
 
   @doc """
