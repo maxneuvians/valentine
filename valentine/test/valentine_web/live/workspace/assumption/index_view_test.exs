@@ -6,7 +6,6 @@ defmodule ValentineWeb.WorkspaceLive.Assumption.IndexViewTest do
 
   @create_attrs %{content: "some content", workspace_id: nil}
   @update_attrs %{content: "some updated content"}
-  @invalid_attrs %{content: nil}
 
   defp create_assumption(_) do
     assumption = assumption_fixture()
@@ -56,21 +55,21 @@ defmodule ValentineWeb.WorkspaceLive.Assumption.IndexViewTest do
       {:ok, index_live, _html} = live(conn, ~p"/workspaces/#{workspace_id}/assumptions")
 
       assert index_live
-             |> element("#assumption-#{assumption.id} a", assumption.content)
+             |> element("#edit-assumption-#{assumption.id}", assumption.content)
              |> render_click() =~
                "Edit Assumption"
 
       assert_patch(index_live, ~p"/workspaces/#{workspace_id}/assumptions/#{assumption}/edit")
 
       assert index_live
-             |> form("#assumptions-form", assumptions: @update_attrs)
+             |> form("#assumptions-form", assumption: @update_attrs)
              |> render_submit()
 
       assert_patch(index_live, ~p"/workspaces/#{workspace_id}/assumptions")
 
       html = render(index_live)
       assert html =~ "Assumption updated successfully"
-      assert html =~ "some updated name"
+      assert html =~ "some updated content"
     end
 
     test "deletes assumption in listing", %{
@@ -81,7 +80,7 @@ defmodule ValentineWeb.WorkspaceLive.Assumption.IndexViewTest do
       {:ok, index_live, _html} = live(conn, ~p"/workspaces/#{workspace_id}/assumptions")
 
       assert index_live
-             |> element("#assumptions-#{assumption.id} a", "Delete")
+             |> element("#delete-assumption-#{assumption.id}")
              |> render_click()
 
       refute has_element?(index_live, "#assumptions-#{assumption.id}")

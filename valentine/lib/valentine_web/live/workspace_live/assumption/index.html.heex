@@ -9,12 +9,11 @@
 
 <.box id="client-row-slot" row_id={fn r -> "assumption-#{r.id}" end}>
   <:header>Your assumptions</:header>
-  <:row
-    :for={assumption <- @assumptions}
-    class="d-flex flex-items-center flex-justify-between"
-    id={"assumption-#{assumption.id}"}
-  >
-    <.link navigate={~p"/workspaces/#{@workspace_id}/assumptions/#{assumption.id}/edit"}>
+  <:row :for={assumption <- @assumptions} class="d-flex flex-items-center flex-justify-between">
+    <.link
+      phx-click={JS.patch(~p"/workspaces/#{@workspace_id}/assumptions/#{assumption.id}/edit")}
+      id={"edit-assumption-#{assumption.id}"}
+    >
       <%= assumption.content %>
     </.link>
 
@@ -23,6 +22,7 @@
       aria-label="Delete"
       phx-click={JS.push("delete", value: %{id: assumption.id})}
       data-confirm="Are you sure?"
+      id={"delete-assumption-#{assumption.id}"}
     >
       <.octicon name="x-16" />
     </.button>
