@@ -6,13 +6,14 @@ defmodule ValentineWeb.WorkspaceLive.Threat.Index do
 
   @impl true
   def mount(%{"workspace_id" => workspace_id} = _params, _session, socket) do
-    ValentineWeb.Endpoint.subscribe("workspace_" <> workspace_id)
+    workspace = Composer.get_workspace!(workspace_id)
+    ValentineWeb.Endpoint.subscribe("workspace_" <> workspace.id)
 
     {:ok,
      socket
      |> assign(:workspace_id, workspace_id)
      |> assign(:filters, %{})
-     |> stream(:threats, Composer.list_threats_by_workspace(workspace_id, %{}))}
+     |> assign(:threats, Composer.list_threats_by_workspace(workspace.id, %{}))}
   end
 
   @impl true
@@ -38,7 +39,13 @@ defmodule ValentineWeb.WorkspaceLive.Threat.Index do
             {:noreply,
              socket
              |> put_flash(:info, "Threat deleted successfully")
-             |> stream_delete(:threats, threat)}
+             |> assign(
+               :threats,
+               Composer.list_threats_by_workspace(
+                 socket.assigns.workspace_id,
+                 socket.assigns.filters
+               )
+             )}
 
           {:error, _} ->
             {:noreply, socket |> put_flash(:error, "Failed to delete threat")}
@@ -51,10 +58,9 @@ defmodule ValentineWeb.WorkspaceLive.Threat.Index do
     {:noreply,
      socket
      |> assign(:filters, %{})
-     |> stream(
+     |> assign(
        :threats,
-       Composer.list_threats_by_workspace(socket.assigns.workspace_id, %{}),
-       reset: true
+       Composer.list_threats_by_workspace(socket.assigns.workspace_id, %{})
      )}
   end
 
@@ -64,10 +70,9 @@ defmodule ValentineWeb.WorkspaceLive.Threat.Index do
       :noreply,
       socket
       |> assign(:filters, filters)
-      |> stream(
+      |> assign(
         :threats,
-        Composer.list_threats_by_workspace(socket.assigns.workspace_id, filters),
-        reset: true
+        Composer.list_threats_by_workspace(socket.assigns.workspace_id, filters)
       )
     }
   end
@@ -75,11 +80,10 @@ defmodule ValentineWeb.WorkspaceLive.Threat.Index do
   @impl true
   def handle_info(%{topic: "workspace_" <> workspace_id}, socket) do
     {:noreply,
-     stream(
+     assign(
        socket,
        :threats,
-       Composer.list_threats_by_workspace(workspace_id, socket.assigns.filters),
-       reset: true
+       Composer.list_threats_by_workspace(workspace_id, socket.assigns.filters)
      )}
   end
 end

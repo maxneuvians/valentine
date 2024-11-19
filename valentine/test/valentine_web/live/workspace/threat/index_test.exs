@@ -25,17 +25,22 @@ defmodule ValentineWeb.WorkspaceLive.Threat.IndexTest do
   end
 
   describe "mount/3" do
-    test "assigns workspace_id and initializes threats stream", %{socket: socket, threat: threat} do
+    test "assigns workspace_id and initializes threats stream", %{
+      socket: socket,
+      threat: threat,
+      workspace: workspace
+    } do
       with_mocks([
         {
           Composer,
           [],
-          list_threats_by_workspace: fn @workspace_id, _ -> [threat] end
+          get_workspace!: fn @workspace_id -> workspace end
         },
-        {Phoenix.LiveView, [],
-         stream: fn _, _, _ ->
-           %{assigns: %{streams: %{threats: [threat]}, workspace_id: @workspace_id}}
-         end}
+        {
+          Composer,
+          [],
+          list_threats_by_workspace: fn @workspace_id, _ -> [threat] end
+        }
       ]) do
         {:ok, socket} =
           ValentineWeb.WorkspaceLive.Threat.Index.mount(
@@ -45,7 +50,7 @@ defmodule ValentineWeb.WorkspaceLive.Threat.IndexTest do
           )
 
         assert socket.assigns.workspace_id == @workspace_id
-        assert Map.has_key?(socket.assigns.streams, :threats)
+        assert Map.has_key?(socket.assigns, :threats)
       end
     end
   end
@@ -79,17 +84,11 @@ defmodule ValentineWeb.WorkspaceLive.Threat.IndexTest do
           [],
           delete_threat: fn _threat_id -> {:ok, threat} end
         },
-        {Phoenix.LiveView, [],
-         put_flash: fn _, _, _ ->
-           %{
-             assigns: %{
-               flash: %{"info" => "deleted successfully"},
-               streams: %{threats: []},
-               workspace_id: @workspace_id
-             }
-           }
-         end},
-        {Phoenix.LiveView, [], stream_delete: fn socket, _, _ -> socket end}
+        {
+          Composer,
+          [],
+          list_threats_by_workspace: fn _, _ -> [] end
+        }
       ]) do
         {:noreply, updated_socket} =
           ValentineWeb.WorkspaceLive.Threat.Index.handle_event(
@@ -141,8 +140,7 @@ defmodule ValentineWeb.WorkspaceLive.Threat.IndexTest do
           list_threats_by_workspace: fn @workspace_id, _ ->
             [%{id: 1, title: "Updated Threat"}]
           end
-        },
-        {Phoenix.LiveView, [], stream: fn socket, _, _, _ -> socket end}
+        }
       ]) do
         {:noreply, updated_socket} =
           ValentineWeb.WorkspaceLive.Threat.Index.handle_event(
@@ -165,8 +163,7 @@ defmodule ValentineWeb.WorkspaceLive.Threat.IndexTest do
           list_threats_by_workspace: fn @workspace_id, _ ->
             [%{id: 1, title: "Updated Threat"}]
           end
-        },
-        {Phoenix.LiveView, [], stream: fn socket, _, _, _ -> socket end}
+        }
       ]) do
         {:noreply, updated_socket} =
           ValentineWeb.WorkspaceLive.Threat.Index.handle_info(
@@ -186,9 +183,7 @@ defmodule ValentineWeb.WorkspaceLive.Threat.IndexTest do
           list_threats_by_workspace: fn @workspace_id, _ ->
             [%{id: 1, title: "Updated Threat"}]
           end
-        },
-        {Phoenix.LiveView, [],
-         stream: fn _, _, _, _ -> %{assigns: %{streams: %{threats: []}}} end}
+        }
       ]) do
         {:noreply, updated_socket} =
           ValentineWeb.WorkspaceLive.Threat.Index.handle_info(
@@ -196,7 +191,7 @@ defmodule ValentineWeb.WorkspaceLive.Threat.IndexTest do
             socket
           )
 
-        assert Map.has_key?(updated_socket.assigns.streams, :threats)
+        assert Map.has_key?(updated_socket.assigns, :threats)
       end
     end
   end

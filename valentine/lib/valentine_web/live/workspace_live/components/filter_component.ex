@@ -49,7 +49,7 @@ defmodule ValentineWeb.WorkspaceLive.Components.FilterComponent do
   @impl true
   def handle_event("clear_filter", _params, socket) do
     %{filters: filters, name: name} = socket.assigns
-    filters = Map.put(filters, name, [])
+    filters = Map.delete(filters, name)
     send(self(), {:update_filter, filters})
     {:noreply, assign(socket, filters: filters)}
   end
@@ -65,9 +65,16 @@ defmodule ValentineWeb.WorkspaceLive.Components.FilterComponent do
           Map.put(filters, name, [value])
 
         value in filters[name] ->
-          Map.update!(filters, name, fn values ->
-            Enum.reject(values, &(&1 == value))
-          end)
+          filters =
+            Map.update!(filters, name, fn values ->
+              Enum.reject(values, &(&1 == value))
+            end)
+
+          if length(filters[name]) == 0 do
+            Map.delete(filters, name)
+          else
+            filters
+          end
 
         true ->
           Map.update!(filters, name, fn values ->

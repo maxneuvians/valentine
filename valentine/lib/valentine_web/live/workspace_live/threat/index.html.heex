@@ -7,7 +7,7 @@
   </:actions>
 </.subhead>
 
-<.box stream={@streams.threats} id="client-row-slot">
+<.box id="client-row-slot">
   <:header class="d-flex flex-items-center">
     Filters:
     <.live_component
@@ -38,8 +38,8 @@
       filters={@filters}
     />
   </:header>
-  <div>
-    <div class="stream-row hidden">
+  <div class="stream-row hidden">
+    <%= if length(@threats) == 0 do %>
       <%= if @filters && @filters != %{} do %>
         <.blankslate class="color-bg-default">
           <:octicon name="question-24" />
@@ -61,24 +61,13 @@
           <p>Start by clicking the button below and work from there...</p>
         </.blankslate>
       <% end %>
-    </div>
-    <%= for {_dom_id, threat} <- @streams.threats do %>
-      <div class="Box-row d-flex flex-items-center flex-justify-between">
-        <.live_component
-          module={ValentineWeb.WorkspaceLive.Components.ThreatComponent}
-          id={"threat-statement-#{threat.id}"}
-          threat={threat}
-        />
-      </div>
     <% end %>
-    <!-- 
-    <:row :let={{_dom_id, threat}} class="d-flex flex-items-center flex-justify-between">
+  </div>
+  <:row :for={threat <- @threats} class="d-flex flex-items-center flex-justify-between">
     <.live_component
       module={ValentineWeb.WorkspaceLive.Components.ThreatComponent}
       id={"threat-statement-#{threat.id}"}
       threat={threat}
     />
   </:row>
-  -->
-  </div>
 </.box>

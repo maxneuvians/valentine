@@ -56,7 +56,7 @@ defmodule ValentineWeb.WorkspaceLive.Components.FilterComponentTest do
       {:noreply, socket} =
         FilterComponent.handle_event("clear_filter", %{}, socket)
 
-      assert socket.assigns.filters[:filter] == []
+      assert socket.assigns.filters[:filter] == nil
     end
 
     test "adds a new filter to the filters list", %{socket: socket} do
@@ -68,12 +68,26 @@ defmodule ValentineWeb.WorkspaceLive.Components.FilterComponentTest do
 
     test "removes a filter from the filters list", %{socket: socket} do
       socket =
+        Map.put(socket, :assigns, %{
+          __changed__: %{},
+          filters: %{filter: [:one, :two]},
+          name: :filter
+        })
+
+      {:noreply, socket} =
+        FilterComponent.handle_event("select_filter", %{"checked" => "one"}, socket)
+
+      assert socket.assigns.filters[:filter] == [:two]
+    end
+
+    test "removes filter list if no more filters of that type are set", %{socket: socket} do
+      socket =
         Map.put(socket, :assigns, %{__changed__: %{}, filters: %{filter: [:one]}, name: :filter})
 
       {:noreply, socket} =
         FilterComponent.handle_event("select_filter", %{"checked" => "one"}, socket)
 
-      assert socket.assigns.filters[:filter] == []
+      assert socket.assigns.filters[:filter] == nil
     end
 
     test "adds an additional filter to the filters list", %{socket: socket} do
