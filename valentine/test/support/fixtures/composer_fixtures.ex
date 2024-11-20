@@ -78,6 +78,7 @@ defmodule Valentine.ComposerFixtures do
       |> Enum.into(%{
         comments: "some comments",
         content: "some content",
+        status: :identified,
         tags: ["option1", "option2"],
         numeric_id: 42,
         workspace_id: workspace.id

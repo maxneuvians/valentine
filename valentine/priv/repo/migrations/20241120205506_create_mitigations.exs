@@ -7,6 +7,7 @@ defmodule Valentine.Repo.Migrations.CreateMitigations do
       add :numeric_id, :integer
       add :content, :string
       add :comments, :string
+      add :status, :string
       add :tags, {:array, :string}
       add :workspace_id, references(:workspaces, on_delete: :nothing, type: :binary_id)
 

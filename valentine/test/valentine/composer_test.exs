@@ -264,7 +264,7 @@ defmodule Valentine.ComposerTest do
 
     import Valentine.ComposerFixtures
 
-    @invalid_attrs %{comments: nil, content: nil, tags: nil}
+    @invalid_attrs %{comments: nil, content: nil, status: nil, tags: nil}
 
     test "list_mitigations/0 returns all mitigations" do
       mitigation = mitigation_fixture()
@@ -291,6 +291,7 @@ defmodule Valentine.ComposerTest do
       valid_attrs = %{
         comments: "some comments",
         content: "some content",
+        status: :identified,
         tags: ["option1", "option2"],
         workspace_id: workspace.id
       }
@@ -311,6 +312,7 @@ defmodule Valentine.ComposerTest do
       update_attrs = %{
         comments: "some updated comments",
         content: "some updated content",
+        status: :resolved,
         tags: ["option1"]
       }
 
@@ -319,6 +321,7 @@ defmodule Valentine.ComposerTest do
 
       assert mitigation.comments == "some updated comments"
       assert mitigation.content == "some updated content"
+      assert mitigation.status == :resolved
       assert mitigation.tags == ["option1"]
     end
 

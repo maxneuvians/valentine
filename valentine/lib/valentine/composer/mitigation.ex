@@ -12,6 +12,7 @@ defmodule Valentine.Composer.Mitigation do
              :numeric_id,
              :content,
              :comments,
+             :status,
              :tags
            ]}
 
@@ -21,6 +22,7 @@ defmodule Valentine.Composer.Mitigation do
     field :comments, :string
     field :numeric_id, :integer
     field :content, :string
+    field :status, Ecto.Enum, values: [:identified, :in_progress, :resolved, :will_not_action]
     field :tags, {:array, :string}, default: []
 
     timestamps(type: :utc_datetime)
@@ -29,7 +31,7 @@ defmodule Valentine.Composer.Mitigation do
   @doc false
   def changeset(mitigation, attrs) do
     mitigation
-    |> cast(attrs, [:content, :comments, :tags, :workspace_id])
+    |> cast(attrs, [:content, :comments, :status, :tags, :workspace_id])
     |> validate_required([:content, :workspace_id])
     |> set_numeric_id()
     |> unique_constraint(:numeric_id, name: :mitigations_workspace_id_numeric_id_index)
