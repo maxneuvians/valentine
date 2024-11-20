@@ -21,7 +21,7 @@ defmodule Valentine.Composer.Assumption do
     field :numeric_id, :integer
     field :comments, :string
     field :content, :string
-    field :tags, {:array, :string}
+    field :tags, {:array, :string}, default: []
 
     timestamps(type: :utc_datetime)
   end
