@@ -86,7 +86,7 @@ defmodule ValentineWeb.WorkspaceLive.Assumption.Components.FormComponent do
          |> push_patch(to: socket.assigns.patch)}
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        {:noreply, assign(socket, form: to_form(changeset))}
+        {:noreply, assign(socket, changeset: changeset)}
     end
   end
 
