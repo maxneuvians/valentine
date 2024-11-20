@@ -9,23 +9,29 @@
 
 <.box id="client-row-slot" row_id={fn r -> "assumption-#{r.id}" end}>
   <:header>Your assumptions</:header>
+  <div class="stream-row hidden">
+    <%= if length(@assumptions) == 0 do %>
+      <.blankslate class="color-bg-default">
+        <:octicon name="discussion-closed-24" />
+        <:action>
+          <.button
+            phx-click={JS.patch(~p"/workspaces/#{@workspace_id}/assumptions/new")}
+            is_primary
+          >
+            Get started
+          </.button>
+        </:action>
+        <h3>Let's make some assumptions</h3>
+        <p>Start by clicking the button below and work from there...</p>
+      </.blankslate>
+    <% end %>
+  </div>
   <:row :for={assumption <- @assumptions} class="d-flex flex-items-center flex-justify-between">
-    <.link
-      phx-click={JS.patch(~p"/workspaces/#{@workspace_id}/assumptions/#{assumption.id}/edit")}
-      id={"edit-assumption-#{assumption.id}"}
-    >
-      <%= assumption.content %>
-    </.link>
-
-    <.button
-      is_icon_only
-      aria-label="Delete"
-      phx-click={JS.push("delete", value: %{id: assumption.id})}
-      data-confirm="Are you sure?"
-      id={"delete-assumption-#{assumption.id}"}
-    >
-      <.octicon name="x-16" />
-    </.button>
+    <.live_component
+      module={ValentineWeb.WorkspaceLive.Components.AssumptionComponent}
+      id={"assumption-#{assumption.id}"}
+      assumption={assumption}
+    />
   </:row>
 </.box>
 

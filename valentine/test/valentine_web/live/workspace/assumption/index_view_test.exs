@@ -55,7 +55,7 @@ defmodule ValentineWeb.WorkspaceLive.Assumption.IndexViewTest do
       {:ok, index_live, _html} = live(conn, ~p"/workspaces/#{workspace_id}/assumptions")
 
       assert index_live
-             |> element("#edit-assumption-#{assumption.id}", assumption.content)
+             |> element("#edit-assumption-#{assumption.id}")
              |> render_click() =~
                "Edit Assumption"
 

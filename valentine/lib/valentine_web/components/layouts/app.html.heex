@@ -14,26 +14,16 @@
   <:sidebar>
     <.side_nav aria_label="Menu" is_border>
       <:item href="/">
-        Dashboard
+        <.octicon name="rocket-16" /> Dashboard
       </:item>
-      <:item navigate="/workspaces" is_selected={@workspace_id}>
-        Workspaces
+      <:item navigate="/workspaces">
+        <.octicon name="tools-16" /> Workspaces
       </:item>
-      <:item>
-        <%= if @workspace_id do %>
-          <.side_nav
-            is_sub_nav
-            class="color-bg-default border-top py-3"
-            style="padding-left: 16px"
-          >
-            <:item navigate={~p"/workspaces/#{@workspace_id}/assumptions"}>
-              Assumptions
-            </:item>
-            <:item navigate={~p"/workspaces/#{@workspace_id}/threats"}>
-              Threats
-            </:item>
-          </.side_nav>
-        <% end %>
+      <:item :if={@workspace_id} navigate={~p"/workspaces/#{@workspace_id}/assumptions"}>
+        <.octicon name="discussion-closed-16" /> Assumptions
+      </:item>
+      <:item :if={@workspace_id} navigate={~p"/workspaces/#{@workspace_id}/threats"}>
+        <.octicon name="squirrel-16" /> Threats
       </:item>
     </.side_nav>
   </:sidebar>
