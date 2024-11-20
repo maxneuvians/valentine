@@ -39,7 +39,7 @@ defmodule ValentineWeb.WorkspaceLive.Assumption.Index do
 
   defp apply_action(socket, :index, _params) do
     socket
-    |> assign(:page_title, "Listing Assumption")
+    |> assign(:page_title, "Listing Assumptions")
   end
 
   @impl true

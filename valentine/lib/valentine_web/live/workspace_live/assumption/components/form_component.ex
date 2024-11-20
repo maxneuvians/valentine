@@ -20,6 +20,7 @@ defmodule ValentineWeb.WorkspaceLive.Assumption.Components.FormComponent do
           id="assumption-modal"
           is_backdrop
           is_show
+          is_wide
           on_cancel={JS.patch(~p"/workspaces/#{@assumption.workspace_id}/assumptions")}
         >
           <:header_title>
