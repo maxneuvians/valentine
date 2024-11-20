@@ -1,0 +1,45 @@
+<.subhead>
+  Listing Mitigations
+  <:actions>
+    <.button is_primary phx-click={JS.patch(~p"/workspaces/#{@workspace_id}/mitigations/new")}>
+      New Mitigation
+    </.button>
+  </:actions>
+</.subhead>
+
+<.box id="client-row-slot" row_id={fn r -> "mitigation-#{r.id}" end}>
+  <:header>Your mitigations</:header>
+  <div class="stream-row hidden">
+    <%= if length(@mitigations) == 0 do %>
+      <.blankslate class="color-bg-default">
+        <:octicon name="check-circle-24" />
+        <:action>
+          <.button
+            phx-click={JS.patch(~p"/workspaces/#{@workspace_id}/mitigations/new")}
+            is_primary
+          >
+            Get started
+          </.button>
+        </:action>
+        <h3>Let's add some mitigations</h3>
+        <p>Start by clicking the button below and work from there...</p>
+      </.blankslate>
+    <% end %>
+  </div>
+  <:row :for={mitigation <- @mitigations} class="d-flex flex-items-center flex-justify-between">
+    <.live_component
+      module={ValentineWeb.WorkspaceLive.Components.MitigationComponent}
+      id={"mitigation-#{mitigation.id}"}
+      mitigation={mitigation}
+    />
+  </:row>
+</.box>
+
+<.live_component
+  :if={@live_action in [:new, :edit]}
+  module={ValentineWeb.WorkspaceLive.Mitigation.Components.FormComponent}
+  id={@mitigation.id || :new}
+  action={@live_action}
+  mitigation={@mitigation}
+  patch={~p"/workspaces/#{@workspace_id}/mitigations"}
+/>
