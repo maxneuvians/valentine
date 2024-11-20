@@ -52,7 +52,7 @@ defmodule Valentine.ComposerFixtures do
   """
   def assumption_fixture(attrs \\ %{}) do
     workspace = workspace_fixture()
-    
+
     {:ok, assumption} =
       attrs
       |> Enum.into(%{
@@ -65,5 +65,25 @@ defmodule Valentine.ComposerFixtures do
       |> Valentine.Composer.create_assumption()
 
     assumption
+  end
+
+  @doc """
+  Generate a mitigation.
+  """
+  def mitigation_fixture(attrs \\ %{}) do
+    workspace = workspace_fixture()
+
+    {:ok, mitigation} =
+      attrs
+      |> Enum.into(%{
+        comments: "some comments",
+        content: "some content",
+        tags: ["option1", "option2"],
+        numeric_id: 42,
+        workspace_id: workspace.id
+      })
+      |> Valentine.Composer.create_mitigation()
+
+    mitigation
   end
 end

@@ -258,4 +258,85 @@ defmodule Valentine.ComposerTest do
       assert %Ecto.Changeset{} = Composer.change_assumption(assumption)
     end
   end
+
+  describe "mitigations" do
+    alias Valentine.Composer.Mitigation
+
+    import Valentine.ComposerFixtures
+
+    @invalid_attrs %{comments: nil, content: nil, tags: nil}
+
+    test "list_mitigations/0 returns all mitigations" do
+      mitigation = mitigation_fixture()
+      assert Composer.list_mitigations() == [mitigation]
+    end
+
+    test "list_mitigations_by_workspace/2 returns all mitigations for a workspace" do
+      mitigation = mitigation_fixture()
+      assert Composer.list_mitigations_by_workspace(mitigation.workspace_id) == [mitigation]
+    end
+
+    test "list_mitigations_by_workspace/2 returns all mitigations for a workspace adnd not other workspaces" do
+      assert Composer.list_mitigations_by_workspace("00000000-0000-0000-0000-000000000000") == []
+    end
+
+    test "get_mitigation!/1 returns the mitigation with given id" do
+      mitigation = mitigation_fixture()
+      assert Composer.get_mitigation!(mitigation.id) == mitigation
+    end
+
+    test "create_mitigation/1 with valid data creates a mitigation" do
+      workspace = workspace_fixture()
+
+      valid_attrs = %{
+        comments: "some comments",
+        content: "some content",
+        tags: ["option1", "option2"],
+        workspace_id: workspace.id
+      }
+
+      assert {:ok, %Mitigation{} = mitigation} = Composer.create_mitigation(valid_attrs)
+      assert mitigation.comments == "some comments"
+      assert mitigation.content == "some content"
+      assert mitigation.tags == ["option1", "option2"]
+    end
+
+    test "create_mitigation/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Composer.create_mitigation(@invalid_attrs)
+    end
+
+    test "update_mitigation/2 with valid data updates the mitigation" do
+      mitigation = mitigation_fixture()
+
+      update_attrs = %{
+        comments: "some updated comments",
+        content: "some updated content",
+        tags: ["option1"]
+      }
+
+      assert {:ok, %Mitigation{} = mitigation} =
+               Composer.update_mitigation(mitigation, update_attrs)
+
+      assert mitigation.comments == "some updated comments"
+      assert mitigation.content == "some updated content"
+      assert mitigation.tags == ["option1"]
+    end
+
+    test "update_mitigation/2 with invalid data returns error changeset" do
+      mitigation = mitigation_fixture()
+      assert {:error, %Ecto.Changeset{}} = Composer.update_mitigation(mitigation, @invalid_attrs)
+      assert mitigation == Composer.get_mitigation!(mitigation.id)
+    end
+
+    test "delete_mitigation/1 deletes the mitigation" do
+      mitigation = mitigation_fixture()
+      assert {:ok, %Mitigation{}} = Composer.delete_mitigation(mitigation)
+      assert_raise Ecto.NoResultsError, fn -> Composer.get_mitigation!(mitigation.id) end
+    end
+
+    test "change_mitigation/1 returns a mitigation changeset" do
+      mitigation = mitigation_fixture()
+      assert %Ecto.Changeset{} = Composer.change_mitigation(mitigation)
+    end
+  end
 end
