@@ -45,6 +45,7 @@ defmodule Valentine.ComposerFixtures do
       |> Valentine.Composer.create_threat()
 
     threat
+    |> Ecto.reset_fields([:assumptions])
   end
 
   @doc """

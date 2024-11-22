@@ -50,6 +50,9 @@ defmodule Valentine.Composer.Threat do
     field :impacted_assets, {:array, :string}
     field :tags, {:array, :string}
 
+    has_many :assumption_threats, Valentine.Composer.AssumptionThreat, on_replace: :delete
+    has_many :assumptions, through: [:assumption_threats, :assumption]
+
     timestamps(type: :utc_datetime)
   end
 

@@ -7,6 +7,11 @@ defmodule Valentine.Composer do
   alias Valentine.Repo
 
   alias Valentine.Composer.Workspace
+  alias Valentine.Composer.Assumption
+  alias Valentine.Composer.Mitigation
+  alias Valentine.Composer.Threat
+
+  alias Valentine.Composer.AssumptionThreat
 
   @doc """
   Returns the list of workspaces.
@@ -101,8 +106,6 @@ defmodule Valentine.Composer do
   def change_workspace(%Workspace{} = workspace, attrs \\ %{}) do
     Workspace.changeset(workspace, attrs)
   end
-
-  alias Valentine.Composer.Threat
 
   @doc """
   Returns the list of threats.
@@ -264,8 +267,6 @@ defmodule Valentine.Composer do
     Threat.changeset(threat, attrs)
   end
 
-  alias Valentine.Composer.Assumption
-
   @doc """
   Returns the list of assumptions.
 
@@ -381,8 +382,6 @@ defmodule Valentine.Composer do
     Assumption.changeset(assumption, attrs)
   end
 
-  alias Valentine.Composer.Mitigation
-
   @doc """
   Returns the list of mitigations.
 
@@ -489,5 +488,64 @@ defmodule Valentine.Composer do
   """
   def change_mitigation(%Mitigation{} = mitigation, attrs \\ %{}) do
     Mitigation.changeset(mitigation, attrs)
+  end
+
+  @doc """
+  Adds an assumption to an existing threat model.
+
+  This function associates a security assumption with a specific threat,
+  helping document the conditions under which the threat analysis remains valid.
+
+  ## Parameters
+    - threat: The threat structure to which the assumption will be added
+    - assumption: The security assumption to be associated with the threat
+
+  ## Returns
+    Updated threat structure with the new assumption added
+
+  ## Examples
+
+      iex> add_assumption_to_threat(threat, assumption)
+      %Threat{assumptions: [assumption], ...}
+
+  """
+  def add_assumption_to_threat(%Threat{} = threat, %Assumption{} = assumption) do
+    %AssumptionThreat{assumption_id: assumption.id, threat_id: threat.id}
+    |> Repo.insert()
+    |> case do
+      {:ok, _} -> {:ok, threat |> Repo.preload(:assumptions, force: true)}
+      {:error, _} -> {:error, threat}
+    end
+  end
+
+  @doc """
+  Removes a specific assumption from a threat model.
+
+  This function removes an existing security assumption from a threat,
+  maintaining the threat model's accuracy when assumptions no longer apply.
+
+  ## Parameters
+    - threat: The threat structure from which the assumption will be removed
+    - assumption: The security assumption to be removed
+
+  ## Returns
+    Updated threat structure with the specified assumption removed
+
+  ## Examples
+
+      iex> remove_assumption_from_threat(threat, assumption)
+      %Threat{assumptions: [], ...}
+
+  """
+  def remove_assumption_from_threat(%Threat{} = threat, %Assumption{} = assumption) do
+    Repo.delete_all(
+      from(at in AssumptionThreat,
+        where: at.assumption_id == ^assumption.id and at.threat_id == ^threat.id
+      )
+    )
+    |> case do
+      {1, nil} -> {:ok, threat |> Repo.preload(:assumptions, force: true)}
+      {:error, _} -> {:error, threat}
+    end
   end
 end

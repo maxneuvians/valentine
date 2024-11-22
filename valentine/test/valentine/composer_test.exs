@@ -176,6 +176,39 @@ defmodule Valentine.ComposerTest do
       threat = threat_fixture()
       assert %Ecto.Changeset{} = Composer.change_threat(threat)
     end
+
+    test "add_assumption/2 adds an assumption to a threat" do
+      threat = threat_fixture()
+      assumption = assumption_fixture()
+
+      assert {:ok, %Threat{} = threat} = Composer.add_assumption_to_threat(threat, assumption)
+      assert threat.assumptions == [assumption]
+    end
+
+    test "add_assumption_to_threat/2 adds an assumption to existing threat assumptions" do
+      threat = threat_fixture()
+      assumption = assumption_fixture()
+
+      Composer.add_assumption_to_threat(threat, assumption)
+
+      assumption2 = assumption_fixture()
+
+      assert {:ok, %Threat{} = threat} = Composer.add_assumption_to_threat(threat, assumption2)
+      assert threat.assumptions == [assumption, assumption2]
+    end
+
+    test "remove_assumption_from_threat/2 removes an assumption from a threat" do
+      threat = threat_fixture()
+      assumption = assumption_fixture()
+
+      {:ok, %Threat{} = threat} = Composer.add_assumption_to_threat(threat, assumption)
+
+      assert threat.assumptions == [assumption]
+
+      {:ok, %Threat{} = threat} = Composer.remove_assumption_from_threat(threat, assumption)
+
+      assert threat.assumptions == []
+    end
   end
 
   describe "assumptions" do
