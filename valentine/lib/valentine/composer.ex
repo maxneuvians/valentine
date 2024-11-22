@@ -12,6 +12,7 @@ defmodule Valentine.Composer do
   alias Valentine.Composer.Threat
 
   alias Valentine.Composer.AssumptionThreat
+  alias Valentine.Composer.MitigationThreat
 
   @doc """
   Returns the list of workspaces.
@@ -545,6 +546,65 @@ defmodule Valentine.Composer do
     )
     |> case do
       {1, nil} -> {:ok, threat |> Repo.preload(:assumptions, force: true)}
+      {:error, _} -> {:error, threat}
+    end
+  end
+
+  @doc """
+  Adds an mitigation to an existing threat model.
+
+  This function associates a security mitigation with a specific threat,
+  helping document the conditions under which the threat analysis remains valid.
+
+  ## Parameters
+    - threat: The threat structure to which the mitigation will be added
+    - mitigation: The security mitigation to be associated with the threat
+
+  ## Returns
+    Updated threat structure with the new mitigation added
+
+  ## Examples
+
+      iex> add_mitigation_to_threat(threat, mitigation)
+      %Threat{mitigations: [mitigation], ...}
+
+  """
+  def add_mitigation_to_threat(%Threat{} = threat, %Mitigation{} = mitigation) do
+    %MitigationThreat{mitigation_id: mitigation.id, threat_id: threat.id}
+    |> Repo.insert()
+    |> case do
+      {:ok, _} -> {:ok, threat |> Repo.preload(:mitigations, force: true)}
+      {:error, _} -> {:error, threat}
+    end
+  end
+
+  @doc """
+  Removes a specific mitigation from a threat model.
+
+  This function removes an existing security mitigation from a threat,
+  maintaining the threat model's accuracy when mitigations no longer apply.
+
+  ## Parameters
+    - threat: The threat structure from which the mitigation will be removed
+    - mitigation: The security mitigation to be removed
+
+  ## Returns
+    Updated threat structure with the specified mitigation removed
+
+  ## Examples
+
+      iex> remove_mitigation_from_threat(threat, mitigation)
+      %Threat{mitigations: [], ...}
+
+  """
+  def remove_mitigation_from_threat(%Threat{} = threat, %Mitigation{} = mitigation) do
+    Repo.delete_all(
+      from(at in MitigationThreat,
+        where: at.mitigation_id == ^mitigation.id and at.threat_id == ^threat.id
+      )
+    )
+    |> case do
+      {1, nil} -> {:ok, threat |> Repo.preload(:mitigations, force: true)}
       {:error, _} -> {:error, threat}
     end
   end

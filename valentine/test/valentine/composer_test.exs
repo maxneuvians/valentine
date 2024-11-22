@@ -177,7 +177,7 @@ defmodule Valentine.ComposerTest do
       assert %Ecto.Changeset{} = Composer.change_threat(threat)
     end
 
-    test "add_assumption/2 adds an assumption to a threat" do
+    test "add_assumption_to_threat/2 adds an assumption to a threat" do
       threat = threat_fixture()
       assumption = assumption_fixture()
 
@@ -208,6 +208,39 @@ defmodule Valentine.ComposerTest do
       {:ok, %Threat{} = threat} = Composer.remove_assumption_from_threat(threat, assumption)
 
       assert threat.assumptions == []
+    end
+
+    test "add_mitigation_to_threat/2 adds an mitigation to a threat" do
+      threat = threat_fixture()
+      mitigation = mitigation_fixture()
+
+      assert {:ok, %Threat{} = threat} = Composer.add_mitigation_to_threat(threat, mitigation)
+      assert threat.mitigations == [mitigation]
+    end
+
+    test "add_mitigation_to_threat/2 adds an mitigation to existing threat mitigations" do
+      threat = threat_fixture()
+      mitigation = mitigation_fixture()
+
+      Composer.add_mitigation_to_threat(threat, mitigation)
+
+      mitigation2 = mitigation_fixture()
+
+      assert {:ok, %Threat{} = threat} = Composer.add_mitigation_to_threat(threat, mitigation2)
+      assert threat.mitigations == [mitigation, mitigation2]
+    end
+
+    test "remove_mitigation_from_threat/2 removes an mitigation from a threat" do
+      threat = threat_fixture()
+      mitigation = mitigation_fixture()
+
+      {:ok, %Threat{} = threat} = Composer.add_mitigation_to_threat(threat, mitigation)
+
+      assert threat.mitigations == [mitigation]
+
+      {:ok, %Threat{} = threat} = Composer.remove_mitigation_from_threat(threat, mitigation)
+
+      assert threat.mitigations == []
     end
   end
 

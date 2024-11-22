@@ -53,6 +53,9 @@ defmodule Valentine.Composer.Threat do
     has_many :assumption_threats, Valentine.Composer.AssumptionThreat, on_replace: :delete
     has_many :assumptions, through: [:assumption_threats, :assumption]
 
+    has_many :mitigation_threats, Valentine.Composer.MitigationThreat, on_replace: :delete
+    has_many :mitigations, through: [:mitigation_threats, :mitigation]
+
     timestamps(type: :utc_datetime)
   end
 
