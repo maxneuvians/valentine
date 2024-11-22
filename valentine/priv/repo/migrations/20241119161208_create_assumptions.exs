@@ -8,7 +8,7 @@ defmodule Valentine.Repo.Migrations.CreateAssumptions do
       add :content, :string
       add :comments, :string
       add :tags, {:array, :string}
-      add :workspace_id, references(:workspaces, type: :binary_id, on_delete: :nothing)
+      add :workspace_id, references(:workspaces, type: :binary_id, on_delete: :delete_all)
 
       timestamps(type: :utc_datetime)
     end

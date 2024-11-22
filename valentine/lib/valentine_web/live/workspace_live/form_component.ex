@@ -8,9 +8,39 @@ defmodule ValentineWeb.WorkspaceLive.FormComponent do
   def render(assigns) do
     ~H"""
     <div>
-      <.subhead>
-        <%= @title %>
-      </.subhead>
+      <.form
+        :let={f}
+        for={@changeset}
+        id="workspaces-form"
+        phx-target={@myself}
+        phx-change="validate"
+        phx-submit="save"
+      >
+        <.dialog
+          id="workspace-modal"
+          is_backdrop
+          is_show
+          is_wide
+          on_cancel={JS.patch(~p"/workspaces")}
+        >
+          <:header_title>
+            <%= if @workspace.id do %>
+              Edit Workspace
+            <% else %>
+              New Workspace
+            <% end %>
+          </:header_title>
+          <:body>
+            <.text_input form={f} field={:name} class="mt-2" is_full_width is_form_control />
+          </:body>
+          <:footer>
+            <.button is_primary is_submit phx-disable-with="Saving...">
+              Save Workspace
+            </.button>
+            <.button phx-click={cancel_dialog("workspace-modal")}>Cancel</.button>
+          </:footer>
+        </.dialog>
+      </.form>
     </div>
     """
   end
@@ -20,15 +50,13 @@ defmodule ValentineWeb.WorkspaceLive.FormComponent do
     {:ok,
      socket
      |> assign(assigns)
-     |> assign_new(:form, fn ->
-       to_form(Composer.change_workspace(workspace))
-     end)}
+     |> assign(:changeset, Composer.change_workspace(workspace))}
   end
 
   @impl true
   def handle_event("validate", %{"workspace" => workspace_params}, socket) do
     changeset = Composer.change_workspace(socket.assigns.workspace, workspace_params)
-    {:noreply, assign(socket, form: to_form(changeset, action: :validate))}
+    {:noreply, assign(socket, :changeset, changeset)}
   end
 
   def handle_event("save", %{"workspace" => workspace_params}, socket) do
@@ -46,7 +74,7 @@ defmodule ValentineWeb.WorkspaceLive.FormComponent do
          |> push_patch(to: socket.assigns.patch)}
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        {:noreply, assign(socket, form: to_form(changeset))}
+        {:noreply, assign(socket, :changeset, changeset)}
     end
   end
 
@@ -61,7 +89,7 @@ defmodule ValentineWeb.WorkspaceLive.FormComponent do
          |> push_patch(to: socket.assigns.patch)}
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        {:noreply, assign(socket, form: to_form(changeset))}
+        {:noreply, assign(socket, :changeset, changeset)}
     end
   end
 

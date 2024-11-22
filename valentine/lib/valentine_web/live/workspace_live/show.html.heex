@@ -1,10 +1,5 @@
 <.subhead>
-  Workspace <%= @workspace.id %>
-  <:actions>
-    <.link patch={~p"/workspaces/#{@workspace}/edit"} phx-click={JS.push_focus()}>
-      <.button>Edit workspace</.button>
-    </.link>
-  </:actions>
+  Workspace: <%= @workspace.name %>
 </.subhead>
 
 <.list>

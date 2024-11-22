@@ -1,24 +1,42 @@
 <.subhead>
   Workspaces
   <:actions>
-    <.link patch={~p"/workspaces/new"}>
-      <.button is_primary>New Workspace</.button>
-    </.link>
+    <.button is_primary phx-click={JS.patch(~p"/workspaces/new")}>
+      New Workspace
+    </.button>
   </:actions>
 </.subhead>
 
-<.box stream={@streams.workspaces} id="client-row-slot">
+<.box id="workspaces" row_id={fn r -> "workspace-#{r.id}" end}>
   <:header>Your workspaces</:header>
-  <:row :let={{_dom_id, workspace}} class="d-flex flex-items-center flex-justify-between">
-    <.link navigate={~p"/workspaces/#{workspace}"}><%= workspace.name %></.link>
-
-    <.button
-      is_icon_only
-      aria-label="Delete"
-      phx-click={JS.push("delete", value: %{id: workspace.id}) |> hide("##{workspace.id}")}
-      data-confirm="Are you sure?"
-    >
-      <.octicon name="x-16" />
-    </.button>
+  <div class="stream-row hidden">
+    <%= if length(@workspaces) == 0 do %>
+      <.blankslate class="color-bg-default">
+        <:octicon name="tools-24" />
+        <:action>
+          <.button phx-click={JS.patch(~p"/workspaces/new")} is_primary>
+            Get started
+          </.button>
+        </:action>
+        <h3>Let's create a workspace</h3>
+        <p>Start by clicking the button below and work from there...</p>
+      </.blankslate>
+    <% end %>
+  </div>
+  <:row :for={workspace <- @workspaces} class="d-flex flex-items-center flex-justify-between">
+    <.live_component
+      module={ValentineWeb.WorkspaceLive.Components.WorkspaceComponent}
+      id={"workspace-#{workspace.id}"}
+      workspace={workspace}
+    />
   </:row>
 </.box>
+
+<.live_component
+  :if={@live_action in [:new, :edit]}
+  module={ValentineWeb.WorkspaceLive.FormComponent}
+  id={@workspace.id || :new}
+  action={@live_action}
+  workspace={@workspace}
+  patch={~p"/workspaces"}
+/>

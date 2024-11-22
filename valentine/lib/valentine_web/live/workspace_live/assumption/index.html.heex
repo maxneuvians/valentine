@@ -7,7 +7,7 @@
   </:actions>
 </.subhead>
 
-<.box id="client-row-slot" row_id={fn r -> "assumption-#{r.id}" end}>
+<.box id="assumptions" row_id={fn r -> "assumption-#{r.id}" end}>
   <:header>Your assumptions</:header>
   <div class="stream-row hidden">
     <%= if length(@assumptions) == 0 do %>

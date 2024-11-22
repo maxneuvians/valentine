@@ -7,7 +7,7 @@ defmodule ValentineWeb.WorkspaceLive.Index do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, stream(socket, :workspaces, Composer.list_workspaces())}
+    {:ok, assign(socket, :workspaces, Composer.list_workspaces())}
   end
 
   @impl true
@@ -31,19 +31,29 @@ defmodule ValentineWeb.WorkspaceLive.Index do
     socket
     |> assign(:page_title, "Listing Workspaces")
     |> assign(:workspace, nil)
-    |> assign(:workspace_id, nil)
   end
 
   @impl true
-  def handle_info({ValentineWeb.WorkspaceLive.FormComponent, {:saved, workspace}}, socket) do
-    {:noreply, stream_insert(socket, :workspaces, workspace)}
+  def handle_info({ValentineWeb.WorkspaceLive.FormComponent, {:saved, _workspace}}, socket) do
+    {:noreply, assign(socket, :workspaces, Composer.list_workspaces())}
   end
 
   @impl true
   def handle_event("delete", %{"id" => id}, socket) do
     workspace = Composer.get_workspace!(id)
-    {:ok, _} = Composer.delete_workspace(workspace)
 
-    {:noreply, stream_delete(socket, :workspaces, workspace)}
+    case Composer.delete_workspace(workspace) do
+      {:ok, _} ->
+        {:noreply,
+         socket
+         |> put_flash(:info, "Workspace deleted successfully")
+         |> assign(
+           :workspaces,
+           Composer.list_workspaces()
+         )}
+
+      {:error, _} ->
+        {:noreply, socket |> put_flash(:error, "Failed to delete workspace")}
+    end
   end
 end

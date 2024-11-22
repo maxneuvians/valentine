@@ -19,23 +19,28 @@ defmodule ValentineWeb.Router do
 
     get "/", PageController, :home
 
-    live "/workspaces", WorkspaceLive.Index, :index
-    live "/workspaces/new", WorkspaceLive.Index, :new
-    live "/workspaces/:id/edit", WorkspaceLive.Index, :edit
+    live_session :authenticated,
+      on_mount: [
+        ValentineWeb.Helpers.NavHelper
+      ] do
+      live "/workspaces", WorkspaceLive.Index, :index
+      live "/workspaces/new", WorkspaceLive.Index, :new
+      live "/workspaces/:id/edit", WorkspaceLive.Index, :edit
 
-    live "/workspaces/:id", WorkspaceLive.Show, :show
+      live "/workspaces/:id", WorkspaceLive.Show, :show
 
-    live "/workspaces/:workspace_id/assumptions", WorkspaceLive.Assumption.Index, :index
-    live "/workspaces/:workspace_id/assumptions/new", WorkspaceLive.Assumption.Index, :new
-    live "/workspaces/:workspace_id/assumptions/:id/edit", WorkspaceLive.Assumption.Index, :edit
+      live "/workspaces/:workspace_id/assumptions", WorkspaceLive.Assumption.Index, :index
+      live "/workspaces/:workspace_id/assumptions/new", WorkspaceLive.Assumption.Index, :new
+      live "/workspaces/:workspace_id/assumptions/:id/edit", WorkspaceLive.Assumption.Index, :edit
 
-    live "/workspaces/:workspace_id/mitigations", WorkspaceLive.Mitigation.Index, :index
-    live "/workspaces/:workspace_id/mitigations/new", WorkspaceLive.Mitigation.Index, :new
-    live "/workspaces/:workspace_id/mitigations/:id/edit", WorkspaceLive.Mitigation.Index, :edit
+      live "/workspaces/:workspace_id/mitigations", WorkspaceLive.Mitigation.Index, :index
+      live "/workspaces/:workspace_id/mitigations/new", WorkspaceLive.Mitigation.Index, :new
+      live "/workspaces/:workspace_id/mitigations/:id/edit", WorkspaceLive.Mitigation.Index, :edit
 
-    live "/workspaces/:workspace_id/threats", WorkspaceLive.Threat.Index, :index
-    live "/workspaces/:workspace_id/threats/new", WorkspaceLive.Threat.Show, :new
-    live "/workspaces/:workspace_id/threats/:id", WorkspaceLive.Threat.Show, :edit
+      live "/workspaces/:workspace_id/threats", WorkspaceLive.Threat.Index, :index
+      live "/workspaces/:workspace_id/threats/new", WorkspaceLive.Threat.Show, :new
+      live "/workspaces/:workspace_id/threats/:id", WorkspaceLive.Threat.Show, :edit
+    end
   end
 
   # Other scopes may use custom stacks.

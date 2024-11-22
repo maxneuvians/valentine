@@ -7,7 +7,7 @@
   </:actions>
 </.subhead>
 
-<.box id="client-row-slot" row_id={fn r -> "mitigation-#{r.id}" end}>
+<.box id="mitigations" row_id={fn r -> "mitigation-#{r.id}" end}>
   <:header>Your mitigations</:header>
   <div class="stream-row hidden">
     <%= if length(@mitigations) == 0 do %>

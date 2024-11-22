@@ -16,7 +16,7 @@ defmodule Valentine.Repo.Migrations.CreateThreats do
       add :impacted_goal, {:array, :string}
       add :impacted_assets, {:array, :string}
       add :tags, {:array, :string}
-      add :workspace_id, references(:workspaces, type: :binary_id, on_delete: :nothing)
+      add :workspace_id, references(:workspaces, type: :binary_id, on_delete: :delete_all)
 
       timestamps(type: :utc_datetime)
     end

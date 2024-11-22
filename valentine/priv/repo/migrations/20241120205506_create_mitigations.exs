@@ -9,7 +9,7 @@ defmodule Valentine.Repo.Migrations.CreateMitigations do
       add :comments, :string
       add :status, :string
       add :tags, {:array, :string}
-      add :workspace_id, references(:workspaces, on_delete: :nothing, type: :binary_id)
+      add :workspace_id, references(:workspaces, on_delete: :delete_all, type: :binary_id)
 
       timestamps(type: :utc_datetime)
     end

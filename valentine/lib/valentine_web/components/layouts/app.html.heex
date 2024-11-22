@@ -4,28 +4,98 @@
       <.octicon name="heart-24" /> <span>Project Valentine</span>
     </.link>
   </:item>
+  <:item is_full_width />
+  <:item>
+    <.button
+      is_icon_button
+      aria-label="AI assistant"
+      class="btn-invisible"
+      phx-click={JS.toggle(to: "#far_side_drawer")}
+    >
+      <.octicon name="dependabot-16" />
+    </.button>
+  </:item>
+  <:item class="mr-0">
+    <.action_menu is_aligned_end offset_x={3}>
+      <:toggle class="btn btn-invisible">
+        <.octicon name="sun-16" />
+      </:toggle>
+      <.theme_menu_options
+        theme_state={
+          %{
+            color_mode: "light",
+            light_theme: "light",
+            dark_theme: "dark"
+          }
+        }
+        default_theme_state={
+          %{
+            color_mode: "light",
+            light_theme: "light",
+            dark_theme: "dark"
+          }
+        }
+        options={
+          %{
+            color_mode: ~w(light dark auto)
+          }
+        }
+        is_show_group_labels={false}
+        is_show_reset_link={false}
+        id_prefix="icon"
+      />
+    </.action_menu>
+  </:item>
 </.header>
 
 <.layout is_narrow_sidebar class="p-4">
   <:main>
-    <ValentineWeb.WorkspaceLive.Components.FlashComponent.flash_group flash={@flash} />
-    <%= @inner_content %>
+    <div class="d-flex">
+      <div class="flex-auto">
+        <ValentineWeb.WorkspaceLive.Components.FlashComponent.flash_group flash={@flash} />
+        <%= @inner_content %>
+      </div>
+      <div
+        id="far_side_drawer"
+        class="flex-shrink-0 transition-all color-bg-default border-left col-md-3 col-lg-2 ml-md-3"
+        style="display: none;"
+      >
+        <div class="p-3">
+          <%= @active_module %>
+        </div>
+      </div>
+    </div>
   </:main>
   <:sidebar>
     <.side_nav aria_label="Menu" is_border>
       <:item href="/">
         <.octicon name="rocket-16" /> Dashboard
       </:item>
-      <:item navigate="/workspaces">
+      <:item
+        is_selected={@active_module == "Index" || @active_module == "Show"}
+        navigate="/workspaces"
+      >
         <.octicon name="tools-16" /> Workspaces
       </:item>
-      <:item :if={@workspace_id} navigate={~p"/workspaces/#{@workspace_id}/assumptions"}>
+      <:item
+        :if={@workspace_id}
+        is_selected={@active_module == "Assumption"}
+        navigate={~p"/workspaces/#{@workspace_id}/assumptions"}
+      >
         <.octicon name="discussion-closed-16" /> Assumptions
       </:item>
-      <:item :if={@workspace_id} navigate={~p"/workspaces/#{@workspace_id}/threats"}>
+      <:item
+        :if={@workspace_id}
+        is_selected={@active_module == "Threat"}
+        navigate={~p"/workspaces/#{@workspace_id}/threats"}
+      >
         <.octicon name="squirrel-16" /> Threats
       </:item>
-      <:item :if={@workspace_id} navigate={~p"/workspaces/#{@workspace_id}/mitigations"}>
+      <:item
+        :if={@workspace_id}
+        is_selected={@active_module == "Mitigation"}
+        navigate={~p"/workspaces/#{@workspace_id}/mitigations"}
+      >
         <.octicon name="check-circle-16" /> Mitigations
       </:item>
     </.side_nav>
