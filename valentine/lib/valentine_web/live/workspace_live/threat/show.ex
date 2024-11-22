@@ -4,6 +4,7 @@ defmodule ValentineWeb.WorkspaceLive.Threat.Show do
 
   alias Valentine.Composer
   alias Valentine.Composer.Threat
+  alias Valentine.Repo
 
   @impl true
   def mount(%{"workspace_id" => workspace_id} = _params, _session, socket) do
@@ -30,10 +31,15 @@ defmodule ValentineWeb.WorkspaceLive.Threat.Show do
   end
 
   defp apply_action(socket, :edit, %{"id" => id} = _params) do
-    threat = Composer.get_threat!(id)
+    threat =
+      Composer.get_threat!(id)
+      |> Repo.preload(:assumptions)
+
+    assumptions = Composer.list_assumptions_by_workspace(socket.assigns.workspace_id)
 
     socket
     |> assign(:page_title, "Edit threat statement")
+    |> assign(:assumptions, assumptions)
     |> assign(:threat, threat)
     |> assign(:changes, Map.from_struct(threat))
   end
@@ -100,8 +106,27 @@ defmodule ValentineWeb.WorkspaceLive.Threat.Show do
   end
 
   @impl true
+  def handle_event("remove_assumption", %{"id" => id}, socket) do
+    threat = socket.assigns.threat
+    assumption = Composer.get_assumption!(id)
+
+    {:ok, threat} = Composer.remove_assumption_from_threat(threat, assumption)
+
+    {:noreply, assign(socket, :threat, threat)}
+  end
+
+  @impl true
   def handle_info({"update_field", params}, socket),
     do: handle_event("update_field", params, socket)
+
+  def handle_info({"assumptions", :selected_item, selected_item}, socket) do
+    threat = socket.assigns.threat
+    assumption = Composer.get_assumption!(selected_item.id)
+
+    {:ok, threat} = Composer.add_assumption_to_threat(threat, assumption)
+
+    {:noreply, assign(socket, :threat, threat)}
+  end
 
   defp update_existing_threat(socket) do
     case Composer.update_threat(socket.assigns.threat, socket.assigns.changes) do

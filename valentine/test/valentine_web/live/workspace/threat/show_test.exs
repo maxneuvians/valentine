@@ -1,14 +1,14 @@
 defmodule ValentineWeb.WorkspaceLive.Threat.ShowTest do
   use ValentineWeb.ConnCase
   alias Valentine.Composer
+  alias Valentine.Repo
   import Mock
 
-  @workspace_id "123"
-  @threat_id "456"
+  import Valentine.ComposerFixtures
 
   setup do
-    workspace = %Composer.Workspace{id: @workspace_id, name: "Test Workspace"}
-    threat = %Composer.Threat{id: @threat_id, workspace_id: @workspace_id}
+    workspace = workspace_fixture()
+    threat = threat_fixture(%{workspace_id: workspace.id})
 
     socket = %Phoenix.LiveView.Socket{
       assigns: %{
@@ -27,10 +27,10 @@ defmodule ValentineWeb.WorkspaceLive.Threat.ShowTest do
   end
 
   describe "mount/3" do
-    test "assigns workspace_id and initializes view", %{socket: socket} do
+    test "assigns workspace_id and initializes view", %{socket: socket, workspace: workspace} do
       {:ok, socket} =
         ValentineWeb.WorkspaceLive.Threat.Show.mount(
-          %{"workspace_id" => @workspace_id},
+          %{"workspace_id" => workspace.id},
           %{},
           socket
         )
@@ -38,53 +38,57 @@ defmodule ValentineWeb.WorkspaceLive.Threat.ShowTest do
       assert socket.assigns.active_type == nil
       assert socket.assigns.errors == nil
       assert socket.assigns.toggle_goals == false
-      assert socket.assigns.workspace_id == @workspace_id
+      assert socket.assigns.workspace_id == workspace.id
     end
   end
 
   describe "handle_params/3" do
-    test "sets page title for new action", %{socket: socket} do
+    test "sets page title for new action", %{socket: socket, workspace: workspace} do
       socket = put_in(socket.assigns.live_action, :new)
-      socket = put_in(socket.assigns.workspace_id, @workspace_id)
+      socket = put_in(socket.assigns.workspace_id, workspace.id)
 
       {:noreply, updated_socket} =
         ValentineWeb.WorkspaceLive.Threat.Show.handle_params(
-          %{"workspace_id" => @workspace_id},
+          %{"workspace_id" => workspace.id},
           "",
           socket
         )
 
       assert updated_socket.assigns.page_title == "Create new threat statement"
       assert updated_socket.assigns.threat == %Composer.Threat{}
-      assert updated_socket.assigns.changes == %{workspace_id: @workspace_id}
+      assert updated_socket.assigns.changes == %{workspace_id: workspace.id}
     end
 
-    test "sets page title for edit action", %{socket: socket, threat: threat} do
+    test "sets page title for edit action", %{
+      socket: socket,
+      threat: threat,
+      workspace: workspace
+    } do
       socket = put_in(socket.assigns.live_action, :edit)
+      socket = put_in(socket.assigns.workspace_id, workspace.id)
 
-      with_mocks([
-        {Composer, [], [get_threat!: fn @threat_id -> threat end]}
-      ]) do
-        {:noreply, updated_socket} =
-          ValentineWeb.WorkspaceLive.Threat.Show.handle_params(
-            %{"id" => @threat_id, "workspace_id" => @workspace_id},
-            "",
-            socket
-          )
+      {:noreply, updated_socket} =
+        ValentineWeb.WorkspaceLive.Threat.Show.handle_params(
+          %{"id" => threat.id, "workspace_id" => workspace.id},
+          "",
+          socket
+        )
 
-        assert updated_socket.assigns.page_title == "Edit threat statement"
-        assert updated_socket.assigns.threat == threat
-        assert updated_socket.assigns.changes == Map.from_struct(threat)
-      end
+      threat = Repo.preload(threat, :assumptions)
+
+      assert updated_socket.assigns.page_title == "Edit threat statement"
+      assert updated_socket.assigns.threat == threat
+      assert updated_socket.assigns.changes == Map.from_struct(threat)
+      assert updated_socket.assigns.assumptions == []
     end
   end
 
   describe "handle_event save" do
-    test "creates new threat successfully", %{socket: socket} do
-      socket = put_in(socket.assigns.threat, %Composer.Threat{workspace_id: @workspace_id})
+    test "creates new threat successfully", %{socket: socket, workspace: workspace} do
+      socket = put_in(socket.assigns.threat, %Composer.Threat{workspace_id: workspace.id})
 
       with_mock Composer,
-        create_threat: fn _params -> {:ok, %{workspace_id: @workspace_id}} end do
+        create_threat: fn _params -> {:ok, %{workspace_id: workspace.id}} end do
         {:noreply, updated_socket} =
           ValentineWeb.WorkspaceLive.Threat.Show.handle_event(
             "save",
@@ -96,8 +100,8 @@ defmodule ValentineWeb.WorkspaceLive.Threat.ShowTest do
       end
     end
 
-    test "creates new  threat unsuccessfully", %{socket: socket} do
-      socket = put_in(socket.assigns.threat, %Composer.Threat{workspace_id: @workspace_id})
+    test "creates new  threat unsuccessfully", %{socket: socket, workspace: workspace} do
+      socket = put_in(socket.assigns.threat, %Composer.Threat{workspace_id: workspace.id})
 
       with_mock Composer,
         create_threat: fn _params -> {:error, %Ecto.Changeset{}} end do
@@ -257,7 +261,26 @@ defmodule ValentineWeb.WorkspaceLive.Threat.ShowTest do
     end
   end
 
-  describe "handle_info/2" do
+  describe "handle_event removes an assumption" do
+    test "removes an assumption", %{socket: socket, threat: threat} do
+      assumption = assumption_fixture()
+
+      Composer.add_assumption_to_threat(threat, assumption)
+
+      socket = put_in(socket.assigns.threat, threat)
+
+      {:noreply, updated_socket} =
+        ValentineWeb.WorkspaceLive.Threat.Show.handle_event(
+          "remove_assumption",
+          %{"id" => assumption.id},
+          socket
+        )
+
+      assert updated_socket.assigns.threat.assumptions == []
+    end
+  end
+
+  describe "handle_info/2 to update field values" do
     test "updates field value in changeset", %{socket: socket} do
       socket = put_in(socket.assigns.active_field, :threat_source)
       socket = put_in(socket.assigns.changes, %{})
@@ -269,6 +292,22 @@ defmodule ValentineWeb.WorkspaceLive.Threat.ShowTest do
         )
 
       assert updated_socket.assigns.changes[:threat_source] == "New Threat"
+    end
+  end
+
+  describe "handle_info/2 to add an assumption to a thread" do
+    test "adds an assumption to a threat", %{socket: socket, threat: threat} do
+      socket = put_in(socket.assigns.threat, threat)
+
+      assumption = assumption_fixture()
+
+      {:noreply, updated_socket} =
+        ValentineWeb.WorkspaceLive.Threat.Show.handle_info(
+          {"assumptions", :selected_item, assumption},
+          socket
+        )
+
+      assert updated_socket.assigns.threat.assumptions == [assumption]
     end
   end
 end
