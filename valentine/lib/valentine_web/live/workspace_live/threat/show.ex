@@ -33,7 +33,7 @@ defmodule ValentineWeb.WorkspaceLive.Threat.Show do
   defp apply_action(socket, :edit, %{"id" => id} = _params) do
     threat =
       Composer.get_threat!(id)
-      |> Repo.preload(:assumptions)
+      |> Repo.preload([:assumptions, :mitigations])
 
     socket
     |> assign_preloads()
@@ -114,6 +114,16 @@ defmodule ValentineWeb.WorkspaceLive.Threat.Show do
   end
 
   @impl true
+  def handle_event("remove_mitigation", %{"id" => id}, socket) do
+    threat = socket.assigns.threat
+    mitigation = Composer.get_mitigation!(id)
+
+    {:ok, threat} = Composer.remove_mitigation_from_threat(threat, mitigation)
+
+    {:noreply, assign(socket, :threat, threat)}
+  end
+
+  @impl true
   def handle_info({"update_field", params}, socket),
     do: handle_event("update_field", params, socket)
 
@@ -122,6 +132,15 @@ defmodule ValentineWeb.WorkspaceLive.Threat.Show do
     assumption = Composer.get_assumption!(selected_item.id)
 
     {:ok, threat} = Composer.add_assumption_to_threat(threat, assumption)
+
+    {:noreply, assign(socket, :threat, threat)}
+  end
+
+  def handle_info({"mitigations", :selected_item, selected_item}, socket) do
+    threat = socket.assigns.threat
+    mitigation = Composer.get_mitigation!(selected_item.id)
+
+    {:ok, threat} = Composer.add_mitigation_to_threat(threat, mitigation)
 
     {:noreply, assign(socket, :threat, threat)}
   end

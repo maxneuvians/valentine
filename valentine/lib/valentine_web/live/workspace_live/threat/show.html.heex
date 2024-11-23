@@ -201,6 +201,36 @@
         </div>
       </:content>
     </.live_component>
+
+    <.live_component
+      :if={@threat.id}
+      module={ValentineWeb.WorkspaceLive.Components.DrawerComponent}
+      id="mitigation-dropdown"
+      title="Linked Mitigations"
+      count={@threat.mitigations |> Enum.count()}
+    >
+      <:content>
+        <div class="mt-2">
+          <.live_component
+            module={ValentineWeb.WorkspaceLive.Components.DropdownSelectComponent}
+            id="dropdown"
+            name="mitigations"
+            items={
+              (@mitigations -- @threat.mitigations)
+              |> Enum.map(fn a -> %{id: a.id, name: a.content} end)
+            }
+          />
+        </div>
+        <div class="mt-2">
+          <%= for mitigation <- @threat.mitigations || [] do %>
+            <.button phx-click="remove_mitigation" phx-value-id={mitigation.id}>
+              <span><%= mitigation.content %></span>
+              <.octicon name="x-16" />
+            </.button>
+          <% end %>
+        </div>
+      </:content>
+    </.live_component>
   </div>
   <div class="float-left col-3 pl-4">
     <.action_list_section_divider>

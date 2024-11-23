@@ -74,7 +74,7 @@ defmodule ValentineWeb.WorkspaceLive.Threat.ShowTest do
           socket
         )
 
-      threat = Repo.preload(threat, :assumptions)
+      threat = Repo.preload(threat, [:assumptions, :mitigations])
 
       assert updated_socket.assigns.page_title == "Edit threat statement"
       assert updated_socket.assigns.threat == threat
@@ -279,6 +279,25 @@ defmodule ValentineWeb.WorkspaceLive.Threat.ShowTest do
     end
   end
 
+  describe "handle_event removes a mitigation" do
+    test "removes a mitigation", %{socket: socket, threat: threat} do
+      mitigation = mitigation_fixture()
+
+      Composer.add_mitigation_to_threat(threat, mitigation)
+
+      socket = put_in(socket.assigns.threat, threat)
+
+      {:noreply, updated_socket} =
+        ValentineWeb.WorkspaceLive.Threat.Show.handle_event(
+          "remove_mitigation",
+          %{"id" => mitigation.id},
+          socket
+        )
+
+      assert updated_socket.assigns.threat.mitigations == []
+    end
+  end
+
   describe "handle_info/2 to update field values" do
     test "updates field value in changeset", %{socket: socket} do
       socket = put_in(socket.assigns.active_field, :threat_source)
@@ -307,6 +326,22 @@ defmodule ValentineWeb.WorkspaceLive.Threat.ShowTest do
         )
 
       assert updated_socket.assigns.threat.assumptions == [assumption]
+    end
+  end
+
+  describe "handle_info/2 to add a mitigation to a thread" do
+    test "adds an mitigation to a threat", %{socket: socket, threat: threat} do
+      socket = put_in(socket.assigns.threat, threat)
+
+      mitigation = mitigation_fixture()
+
+      {:noreply, updated_socket} =
+        ValentineWeb.WorkspaceLive.Threat.Show.handle_info(
+          {"mitigations", :selected_item, mitigation},
+          socket
+        )
+
+      assert updated_socket.assigns.threat.mitigations == [mitigation]
     end
   end
 end

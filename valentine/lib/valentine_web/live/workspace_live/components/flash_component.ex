@@ -2,7 +2,6 @@ defmodule ValentineWeb.WorkspaceLive.Components.FlashComponent do
   use Phoenix.Component
   use PrimerLive
 
-  # Add JS hook for auto-hiding
   attr :id, :string, default: "flash-group"
   attr :auto_hide, :string, default: "true"
   attr :flash, :map, default: %{}
