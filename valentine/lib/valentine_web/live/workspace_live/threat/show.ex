@@ -35,11 +35,9 @@ defmodule ValentineWeb.WorkspaceLive.Threat.Show do
       Composer.get_threat!(id)
       |> Repo.preload(:assumptions)
 
-    assumptions = Composer.list_assumptions_by_workspace(socket.assigns.workspace_id)
-
     socket
+    |> assign_preloads()
     |> assign(:page_title, "Edit threat statement")
-    |> assign(:assumptions, assumptions)
     |> assign(:threat, threat)
     |> assign(:changes, Map.from_struct(threat))
   end
@@ -136,7 +134,7 @@ defmodule ValentineWeb.WorkspaceLive.Threat.Show do
         {:noreply,
          socket
          |> put_flash(:info, "Threat updated successfully")
-         |> push_navigate(to: ~p"/workspaces/#{threat.workspace_id}/threats")}
+         |> push_navigate(to: ~p"/workspaces/#{threat.workspace_id}/threats/#{threat.id}")}
 
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, assign(socket, :errors, changeset.errors)}
@@ -151,11 +149,20 @@ defmodule ValentineWeb.WorkspaceLive.Threat.Show do
         {:noreply,
          socket
          |> put_flash(:info, "Threat created successfully")
-         |> push_navigate(to: ~p"/workspaces/#{threat.workspace_id}/threats")}
+         |> push_navigate(to: ~p"/workspaces/#{threat.workspace_id}/threats/#{threat.id}")}
 
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, assign(socket, :errors, changeset.errors)}
     end
+  end
+
+  defp assign_preloads(socket) do
+    assumptions = Composer.list_assumptions_by_workspace(socket.assigns.workspace_id)
+    mitigations = Composer.list_mitigations_by_workspace(socket.assigns.workspace_id)
+
+    socket
+    |> assign(:assumptions, assumptions)
+    |> assign(:mitigations, mitigations)
   end
 
   defp broadcast_threat_change(threat, event) do

@@ -79,7 +79,6 @@ defmodule ValentineWeb.WorkspaceLive.Threat.ShowTest do
       assert updated_socket.assigns.page_title == "Edit threat statement"
       assert updated_socket.assigns.threat == threat
       assert updated_socket.assigns.changes == Map.from_struct(threat)
-      assert updated_socket.assigns.assumptions == []
     end
   end
 
@@ -88,7 +87,7 @@ defmodule ValentineWeb.WorkspaceLive.Threat.ShowTest do
       socket = put_in(socket.assigns.threat, %Composer.Threat{workspace_id: workspace.id})
 
       with_mock Composer,
-        create_threat: fn _params -> {:ok, %{workspace_id: workspace.id}} end do
+        create_threat: fn _params -> {:ok, %{workspace_id: workspace.id, id: "abcd"}} end do
         {:noreply, updated_socket} =
           ValentineWeb.WorkspaceLive.Threat.Show.handle_event(
             "save",

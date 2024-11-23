@@ -52,7 +52,11 @@
   <:main>
     <div class="d-flex">
       <div class="flex-auto">
-        <ValentineWeb.WorkspaceLive.Components.FlashComponent.flash_group flash={@flash} />
+        <ValentineWeb.WorkspaceLive.Components.FlashComponent.flash_group
+          flash={@flash}
+          auto_hide="true"
+          hide_after={2000}
+        />
         <%= @inner_content %>
       </div>
       <div
