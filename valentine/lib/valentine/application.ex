@@ -16,6 +16,8 @@ defmodule Valentine.Application do
       {Finch, name: Valentine.Finch},
       # Start a worker by calling: Valentine.Worker.start_link(arg)
       # {Valentine.Worker, arg},
+      # Start the cache
+      {Valentine.Cache, %{}},
       # Start to serve requests, typically the last entry
       ValentineWeb.Endpoint
     ]

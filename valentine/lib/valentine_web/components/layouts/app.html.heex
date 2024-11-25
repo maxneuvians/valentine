@@ -83,6 +83,13 @@
       </:item>
       <:item
         :if={@workspace_id}
+        is_selected={@active_module == "DataFlow"}
+        navigate={~p"/workspaces/#{@workspace_id}/data_flow"}
+      >
+        <.octicon name="git-branch-16" /> Data flow
+      </:item>
+      <:item
+        :if={@workspace_id}
         is_selected={@active_module == "Assumption"}
         navigate={~p"/workspaces/#{@workspace_id}/assumptions"}
       >

@@ -22,13 +22,15 @@ import { Socket } from "phoenix"
 import { LiveSocket } from "phoenix_live_view"
 import topbar from "../vendor/topbar"
 import AutoHideFlash from "../vendor/autohide"
+import CytoscapeHook from "../vendor/cytoscape-hook"
 import "../css/app.css"
 
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
 let liveSocket = new LiveSocket("/live", Socket, {
   hooks: {
     Prompt: window.Prompt,
-    AutoHideFlash
+    AutoHideFlash,
+    Cytoscape: CytoscapeHook
   },
   longPollFallbackMs: 2500,
   params: { _csrf_token: csrfToken }

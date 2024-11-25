@@ -1,0 +1,13 @@
+<.subhead>
+  Data flow diagram <%= @foo %>
+</.subhead>
+
+<div
+  id="cytoscape-hold"
+  phx-hook="Cytoscape"
+  data-nodes={Jason.encode!(Map.values(@dfd.nodes))}
+  data-edges={Jason.encode!(Map.values(@dfd.edges))}
+  user={"user-#{System.unique_integer([:positive])}"}
+>
+  <.live_component module={ValentineWeb.WorkspaceLive.Components.FooComponent} id="foo" />
+</div>
