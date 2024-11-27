@@ -47,7 +47,7 @@ defmodule ValentineWeb.WorkspaceLive.Components.MitigationComponent do
             id={"#{@mitigation.id}-tag-field"}
             name={"#{@mitigation.id}-tag"}
             placeholder="Add a tag"
-            phx-window-keyup="set_tag"
+            phx-keyup="set_tag"
             phx-target={@myself}
             value={@tag}
           >

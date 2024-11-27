@@ -17,8 +17,6 @@ defmodule ValentineWeb.WorkspaceLive.Mitigation.IndexTest do
       }
     }
 
-    {:ok, %{mitigation: mitigation, socket: socket}}
-
     %{mitigation: mitigation, socket: socket, workspace_id: mitigation.workspace_id}
   end
 

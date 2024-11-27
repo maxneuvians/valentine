@@ -22,6 +22,8 @@ defmodule ValentineWeb.WorkspaceLive.DataFlow.Index do
     {:ok,
      socket
      |> assign(:dfd, dfd)
+     |> assign(:selected_id, "")
+     |> assign(:selected_label, "")
      |> assign(:foo, "bar")
      |> assign(:workspace_id, workspace_id)}
   end
@@ -34,6 +36,27 @@ defmodule ValentineWeb.WorkspaceLive.DataFlow.Index do
   defp apply_action(socket, :index, _params) do
     socket
     |> assign(:page_title, "Data flow diagram")
+  end
+
+  # Intercept select and unselect events
+  @impl true
+  def handle_event("select", %{"id" => id, "label" => label}, socket) do
+    Logger.info("Selecting node: #{id}, #{label}")
+
+    {:noreply,
+     socket
+     |> assign(:selected_id, id)
+     |> assign(:selected_label, label)}
+  end
+
+  @impl true
+  def handle_event("unselect", _params, socket) do
+    Logger.info("Unselecting node")
+
+    {:noreply,
+     socket
+     |> assign(:selected_id, "")
+     |> assign(:selected_label, "")}
   end
 
   # Local event from HTML or JS

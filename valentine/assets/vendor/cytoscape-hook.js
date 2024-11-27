@@ -1,7 +1,10 @@
+import cytoscape from 'cytoscape';
+import edgehandles from 'cytoscape-edgehandles';
+
 const CytoscapeHook = {
     mounted() {
         console.log("Cytoscape Hook mounted");
-        cytoscape.use(edgehandles); // register extension
+        cytoscape.use(edgehandles);
         this.initializeCytoscape();
     },
 
@@ -27,17 +30,55 @@ const CytoscapeHook = {
             elements: [...nodes, ...edges],
             style: [
                 {
-                    selector: 'node',
+                    selector: 'node[type="actor"]',
                     style: {
-                        'background-color': '#2da44e',
+                        'background-color': '#fff',
+                        'border-color': '#000',
+                        'border-width': 2,
                         'label': 'data(label)',
-                        'color': '#ffffff',
-                        'text-valign': 'center',
+                        'color': '#000',
+                        'text-valign': 'bottom',
                         'text-halign': 'center',
-                        'width': 100,
-                        'height': 40,
+                        'width': 120,
+                        'height': 50,
                         'shape': 'rectangle',
-                        'font-size': '12px',
+                        'font-size': '18px',
+                        'text-wrap': 'wrap',
+                        'text-max-width': 80
+                    }
+                },
+                {
+                    selector: 'node[type="process"]',
+                    style: {
+                        'background-color': '#fff',
+                        'border-color': '#000',
+                        'border-width': 2,
+                        'label': 'data(label)',
+                        'color': '#000',
+                        'text-valign': 'bottom',
+                        'text-halign': 'center',
+                        'width': 120,
+                        'height': 50,
+                        'shape': 'ellipse',
+                        'font-size': '18px',
+                        'text-wrap': 'wrap',
+                        'text-max-width': 80
+                    }
+                },
+                {
+                    selector: 'node[type="datastore"]',
+                    style: {
+                        'background-color': '#fff',
+                        'border-color': '#000',
+                        'border-width': 2,
+                        'label': 'data(label)',
+                        'color': '#000',
+                        'text-valign': 'bottom',
+                        'text-halign': 'center',
+                        'width': 120,
+                        'height': 50,
+                        'shape': 'round-octagon',
+                        'font-size': '18px',
                         'text-wrap': 'wrap',
                         'text-max-width': 80
                     }
@@ -45,9 +86,9 @@ const CytoscapeHook = {
                 {
                     selector: 'node:selected',
                     style: {
-                        'background-color': '#1a7f37',
-                        'border-width': 2,
-                        'border-color': '#3fb950'
+                        'background-color': 'rgb(219, 241, 254)',
+                        'border-width': 3,
+                        'border-color': 'rgb(86, 189, 249)'
                     }
                 },
                 {
@@ -60,7 +101,42 @@ const CytoscapeHook = {
                         'curve-style': 'bezier',
                         'label': 'data(label)',
                         'font-size': '10px',
-                        'text-rotation': 'autorotate'
+                        'text-rotation': 'autorotate',
+                        'text-background-color': '#ffffff',
+                        'text-background-opacity': 1,
+                        'text-background-padding': 3
+                    }
+                },
+                {
+                    selector: 'edge:selected',
+                    style: {
+                        'line-color': '#3fb950',
+                        'target-arrow-color': '#3fb950',
+                        'width': 3
+                    }
+                },
+                {
+                    selector: '.eh-handle',
+                    style: {
+                        'background-color': '#3fb950',
+                        'width': 12,
+                        'height': 12,
+                        'shape': 'ellipse',
+                        'overlay-opacity': 0
+                    }
+                },
+                {
+                    selector: '.eh-hover',
+                    style: {
+                        'background-color': '#1a7f37'
+                    }
+                },
+                {
+                    selector: '.eh-preview, .eh-ghost-edge',
+                    style: {
+                        'line-color': '#3fb950',
+                        'target-arrow-color': '#3fb950',
+                        'target-arrow-shape': 'triangle'
                     }
                 }
             ],
@@ -70,32 +146,37 @@ const CytoscapeHook = {
             }
         });
 
-        // the default values of each option are outlined below:
         let defaults = {
             canConnect: function (sourceNode, targetNode) {
-                // whether an edge can be created between source and target
-                return !sourceNode.same(targetNode); // e.g. disallow loops
+                return !sourceNode.same(targetNode);
             },
             edgeParams: function (sourceNode, targetNode) {
-                // for edges between the specified source and target
-                // return element object to be passed to cy.add() for edge
-                return {};
+                id = "edge-" + Math.floor(Math.random() * 1000);
+                return { data: { id: id, label: id } };
             },
-            hoverDelay: 150, // time spent hovering over a target node before it is considered selected
-            snap: true, // when enabled, the edge can be drawn by just moving close to a target node (can be confusing on compound graphs)
-            snapThreshold: 50, // the target node must be less than or equal to this many pixels away from the cursor/finger
-            snapFrequency: 15, // the number of times per second (Hz) that snap checks done (lower is less expensive)
-            noEdgeEventsInDraw: true, // set events:no to edges during draws, prevents mouseouts on compounds
-            disableBrowserGestures: true // during an edge drawing gesture, disable browser gestures such as two-finger trackpad swipe and pinch-to-zoom
+            hoverDelay: 150,
+            snap: true,
+            snapThreshold: 50,
+            snapFrequency: 15,
+            noEdgeEventsInDraw: true,
+            disableBrowserGestures: true
         };
 
-        this.eh = cy.edgehandles(defaults);
+        this.eh = this.cy.edgehandles(defaults);
 
         this.bindEvents();
         this.setupEventHandlers();
     },
 
     bindEvents() {
+        this.cy.on("cxttapstart", "node", (evt) => {
+            this.eh.start(evt.target);
+        });
+
+        this.cy.on('ehcomplete', (event, sourceNode, targetNode, addedEdge) => {
+            this.pushEventTo(this.el, "ehcomplete", { localJs: true, edge: { id: addedEdge.id(), source: sourceNode.id(), target: targetNode.id() } });
+        });
+
         this.cy.on("free", "node", (evt) => {
             evt.target.data("active_user", null);
             this.pushEventTo(this.el, "free", { localJs: true, node: { id: evt.target.id() } });
@@ -106,12 +187,27 @@ const CytoscapeHook = {
             this.pushEventTo(this.el, "grab", { localJs: true, node: { id: evt.target.id() }, user: this.user });
         });
 
-
         this.cy.on("position", "node", (evt) => {
             if (evt.target.data("active_user") !== this.user) {
                 return;
             }
             this.pushEventTo(this.el, "position", { localJs: true, node: { id: evt.target.id(), position: evt.target.position() } });
+        });
+
+        this.cy.on("select", "node", (evt) => {
+            this.pushEventTo(this.el, "select", { id: evt.target.id(), label: evt.target.data().label });
+        });
+
+        this.cy.on("unselect", "node", (evt) => {
+            this.pushEventTo(this.el, "unselect", {});
+        });
+
+        this.cy.on("select", "edge", (evt) => {
+            this.pushEventTo(this.el, "select", { id: evt.target.id(), label: evt.target.data().label });
+        });
+
+        this.cy.on("unselect", "edge", (evt) => {
+            this.pushEventTo(this.el, "unselect", {});
         });
     },
 
@@ -123,6 +219,14 @@ const CytoscapeHook = {
                     this.addNode(payload);
                     break;
 
+                case "delete":
+                    this.deleteElement(payload);
+                    break;
+
+                case "fit_view":
+                    this.fitView();
+                    break;
+
                 case "free":
                     this.free(payload);
                     break;
@@ -131,8 +235,15 @@ const CytoscapeHook = {
                     this.grab(payload);
                     break;
 
+                case "ehcomplete":
+                    this.ehcomplete(payload);
+
                 case "position":
                     this.position(payload);
+                    break;
+
+                case "update_label":
+                    this.update_label(payload);
                     break;
 
                 default:
@@ -145,18 +256,37 @@ const CytoscapeHook = {
         const newNode = this.cy.add(node);
     },
 
+    deleteElement(element) {
+        const el = this.cy.getElementById(element.data.id);
+        if (el) {
+            el.remove();
+        }
+    },
+
+    fitView() {
+        this.cy.fit();
+    },
+
     free(node) {
-        // The node has been freed
         this.cy.getElementById(node.data.id).grabify();
     },
 
     grab(node) {
-        // Another user has grabbed the node
         this.cy.getElementById(node.data.id).ungrabify();
+    },
+
+    ehcomplete(edge) {
+        this.cy.add({
+            data: edge.data
+        });
     },
 
     position(node) {
         this.cy.getElementById(node.data.id).position(node.position)
+    },
+
+    update_label(node) {
+        this.cy.getElementById(node.data.id).data("label", node.data.label);
     }
 };
 

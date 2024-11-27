@@ -19,7 +19,7 @@ defmodule ValentineWeb.WorkspaceLive.Threat.Components.ArrayInputComponent do
         <.text_input
           id={"#{@id}-#{@active_field}"}
           name={"threat-#{@active_field}"}
-          phx-window-keyup="set_tag"
+          phx-keyup="set_tag"
           phx-target={@myself}
           value={@value}
         >

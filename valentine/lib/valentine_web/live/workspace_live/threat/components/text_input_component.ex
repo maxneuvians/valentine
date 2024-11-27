@@ -13,7 +13,7 @@ defmodule ValentineWeb.WorkspaceLive.Threat.Components.TextInputComponent do
         <.text_input
           id={"#{@id}-#{@active_field}"}
           name={"threat-#{@active_field}"}
-          phx-window-keyup="update_field"
+          phx-keyup="update_field"
           value={@current_value}
         >
           <:trailing_action is_visible_with_value>

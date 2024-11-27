@@ -42,11 +42,11 @@ defmodule Valentine.Cache do
 
   @impl true
   def handle_call({:delete, key}, _from, state) do
-    {:reply, :ok, Map.delete(state, key), state}
+    {:reply, :ok, Map.delete(state, key)}
   end
 
   @impl true
-  def handle_call({:clear}, _from, state) do
-    {:reply, :ok, %{}, state}
+  def handle_call(:clear, _from, _state) do
+    {:reply, :ok, %{}}
   end
 end

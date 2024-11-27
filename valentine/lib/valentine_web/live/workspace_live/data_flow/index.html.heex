@@ -9,5 +9,17 @@
   data-edges={Jason.encode!(Map.values(@dfd.edges))}
   user={"user-#{System.unique_integer([:positive])}"}
 >
-  <.live_component module={ValentineWeb.WorkspaceLive.Components.FooComponent} id="foo" />
+  <.live_component
+    module={ValentineWeb.WorkspaceLive.Components.DataFlowComponent}
+    id="data_flow_component"
+  />
+</div>
+
+<div class="mt-2">
+  <.text_input
+    id="element-label"
+    phx-keyup="update_label"
+    value={@selected_label}
+    phx-value-id={@selected_id}
+  />
 </div>

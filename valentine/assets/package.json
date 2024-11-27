@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "cytoscape-edgehandles": "^4.0.1"
+  }
+}

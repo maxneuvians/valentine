@@ -47,7 +47,7 @@ defmodule ValentineWeb.WorkspaceLive.Components.AssumptionComponent do
             id={"#{@assumption.id}-tag-field"}
             name={"#{@assumption.id}-tag"}
             placeholder="Add a tag"
-            phx-window-keyup="set_tag"
+            phx-keyup="set_tag"
             phx-target={@myself}
             value={@tag}
           >
