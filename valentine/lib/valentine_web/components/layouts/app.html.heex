@@ -83,6 +83,13 @@
       </:item>
       <:item
         :if={@workspace_id}
+        is_selected={@active_module == "ApplicationInformation"}
+        navigate={~p"/workspaces/#{@workspace_id}/application_information"}
+      >
+        <.octicon name="star-16" /> Application information
+      </:item>
+      <:item
+        :if={@workspace_id}
         is_selected={@active_module == "DataFlow"}
         navigate={~p"/workspaces/#{@workspace_id}/data_flow"}
       >

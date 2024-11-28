@@ -109,7 +109,7 @@ defmodule Valentine.Composer.DataFlowDiagram do
   end
 
   def get(workspace_id) do
-    case Cache.get({__MODULE__, workspace_id}) do
+    case Cache.get({__MODULE__, :dfd, workspace_id}) do
       nil -> new(workspace_id) |> put()
       dfd -> dfd
     end
@@ -151,7 +151,7 @@ defmodule Valentine.Composer.DataFlowDiagram do
   end
 
   def put(dfd) do
-    Cache.put({__MODULE__, dfd.workspace_id}, dfd)
+    Cache.put({__MODULE__, :dfd, dfd.workspace_id}, dfd)
     dfd
   end
 

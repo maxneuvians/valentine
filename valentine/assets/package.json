@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "cytoscape-edgehandles": "^4.0.1"
+    "cytoscape-edgehandles": "^4.0.1",
+    "quill": "^2.0.2"
   }
 }
