@@ -19,11 +19,19 @@ const QuillHook = {
         this.q = new Quill(document.getElementById("quill-editor"), {
             theme: 'snow'
         });
+        this.saveBtn = document.getElementById("quill-save-btn");
         this.bindEvents();
         this.setupEventHandlers();
     },
 
     bindEvents() {
+
+        this.saveBtn.addEventListener("click", () => {
+            this.pushEventTo(this.el, "quill-save", {
+                content: this.q.getSemanticHTML()
+            });
+        });
+
         this.q.on('text-change', (delta, oldDelta, source) => {
             if (source === 'user') {
                 this.pushEventTo(this.el, "quill-change", {
@@ -38,6 +46,10 @@ const QuillHook = {
     setupEventHandlers() {
         this.handleEvent("updateQuill", ({ event, payload }) => {
             switch (event) {
+                case "blob_change":
+                    this.processBlobChange(payload);
+                    break;
+
                 case "text_change":
                     this.processTextChange(payload);
                     break;
@@ -46,6 +58,10 @@ const QuillHook = {
                     console.error("Unknown event:", event);
             }
         });
+    },
+
+    processBlobChange(payload) {
+        this.q.clipboard.dangerouslyPasteHTML(payload)
     },
 
     processTextChange(payload) {

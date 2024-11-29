@@ -27,30 +27,15 @@ defmodule ValentineWeb.WorkspaceLive.Assumption.IndexTest do
       socket: socket,
       assumption: assumption
     } do
-      with_mocks([
-        {
-          Composer,
-          [],
-          get_workspace!: fn _ ->
-            %Composer.Workspace{id: assumption.workspace_id}
-          end
-        },
-        {
-          Composer,
-          [],
-          list_assumptions_by_workspace: fn _ -> [assumption] end
-        }
-      ]) do
-        {:ok, socket} =
-          ValentineWeb.WorkspaceLive.Assumption.Index.mount(
-            %{"workspace_id" => assumption.workspace_id},
-            %{},
-            socket
-          )
+      {:ok, socket} =
+        ValentineWeb.WorkspaceLive.Assumption.Index.mount(
+          %{"workspace_id" => assumption.workspace_id},
+          %{},
+          socket
+        )
 
-        assert socket.assigns.workspace_id == assumption.workspace_id
-        assert Map.has_key?(socket.assigns, :assumptions)
-      end
+      assert socket.assigns.workspace_id == assumption.workspace_id
+      assert socket.assigns.assumptions == [assumption]
     end
   end
 
@@ -89,61 +74,43 @@ defmodule ValentineWeb.WorkspaceLive.Assumption.IndexTest do
 
   describe "handle_event delete" do
     test "successfully deletes assumption", %{socket: socket, assumption: assumption} do
-      with_mocks([
-        {
-          Composer,
-          [],
-          get_assumption!: fn _assumption_id -> assumption end
-        },
-        {
-          Composer,
-          [],
-          delete_assumption: fn _assumption_id -> {:ok, assumption} end
-        },
-        {
-          Composer,
-          [],
-          list_assumptions_by_workspace: fn _ -> [] end
-        }
-      ]) do
-        {:noreply, updated_socket} =
-          ValentineWeb.WorkspaceLive.Assumption.Index.handle_event(
-            "delete",
-            %{"id" => assumption.id},
-            socket
-          )
+      {:noreply, updated_socket} =
+        ValentineWeb.WorkspaceLive.Assumption.Index.handle_event(
+          "delete",
+          %{"id" => assumption.id},
+          socket
+        )
 
-        assert updated_socket.assigns.flash["info"] =~ "deleted successfully"
-      end
+      assert updated_socket.assigns.flash["info"] =~ "deleted successfully"
     end
+  end
 
-    test "handles not found assumption", %{socket: socket, assumption: assumption} do
-      with_mock Composer,
-        get_assumption!: fn _id -> nil end do
-        {:noreply, updated_socket} =
-          ValentineWeb.WorkspaceLive.Assumption.Index.handle_event(
-            "delete",
-            %{"id" => assumption.id},
-            socket
-          )
+  test "handles not found assumption", %{socket: socket, assumption: assumption} do
+    with_mock Composer,
+      get_assumption!: fn _id -> nil end do
+      {:noreply, updated_socket} =
+        ValentineWeb.WorkspaceLive.Assumption.Index.handle_event(
+          "delete",
+          %{"id" => assumption.id},
+          socket
+        )
 
-        assert updated_socket.assigns.flash["error"] =~ "not found"
-      end
+      assert updated_socket.assigns.flash["error"] =~ "not found"
     end
+  end
 
-    test "handles delete error", %{socket: socket, assumption: assumption} do
-      with_mock Composer,
-        get_assumption!: fn _assumption_id -> assumption end,
-        delete_assumption: fn _assumption -> {:error, "some error"} end do
-        {:noreply, updated_socket} =
-          ValentineWeb.WorkspaceLive.Assumption.Index.handle_event(
-            "delete",
-            %{"id" => assumption.id},
-            socket
-          )
+  test "handles delete error", %{socket: socket, assumption: assumption} do
+    with_mock Composer,
+      get_assumption!: fn _assumption_id -> assumption end,
+      delete_assumption: fn _assumption -> {:error, "some error"} end do
+      {:noreply, updated_socket} =
+        ValentineWeb.WorkspaceLive.Assumption.Index.handle_event(
+          "delete",
+          %{"id" => assumption.id},
+          socket
+        )
 
-        assert updated_socket.assigns.flash["error"] =~ "Failed to delete"
-      end
+      assert updated_socket.assigns.flash["error"] =~ "Failed to delete"
     end
   end
 end

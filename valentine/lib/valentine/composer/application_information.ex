@@ -5,6 +5,7 @@ defmodule Valentine.Composer.ApplicationInformation do
   alias Valentine.Cache
 
   @primary_key {:id, Ecto.UUID, autogenerate: true}
+  @foreign_key_type :binary_id
 
   schema "application_informations" do
     belongs_to :workspace, Valentine.Composer.Workspace

@@ -25,30 +25,15 @@ defmodule ValentineWeb.WorkspaceLive.Mitigation.IndexTest do
       socket: socket,
       mitigation: mitigation
     } do
-      with_mocks([
-        {
-          Composer,
-          [],
-          get_workspace!: fn _ ->
-            %Composer.Workspace{id: mitigation.workspace_id}
-          end
-        },
-        {
-          Composer,
-          [],
-          list_mitigations_by_workspace: fn _ -> [mitigation] end
-        }
-      ]) do
-        {:ok, socket} =
-          ValentineWeb.WorkspaceLive.Mitigation.Index.mount(
-            %{"workspace_id" => mitigation.workspace_id},
-            %{},
-            socket
-          )
+      {:ok, socket} =
+        ValentineWeb.WorkspaceLive.Mitigation.Index.mount(
+          %{"workspace_id" => mitigation.workspace_id},
+          %{},
+          socket
+        )
 
-        assert socket.assigns.workspace_id == mitigation.workspace_id
-        assert Map.has_key?(socket.assigns, :mitigations)
-      end
+      assert socket.assigns.workspace_id == mitigation.workspace_id
+      assert Map.has_key?(socket.assigns, :mitigations)
     end
   end
 
@@ -87,32 +72,14 @@ defmodule ValentineWeb.WorkspaceLive.Mitigation.IndexTest do
 
   describe "handle_event delete" do
     test "successfully deletes mitigation", %{socket: socket, mitigation: mitigation} do
-      with_mocks([
-        {
-          Composer,
-          [],
-          get_mitigation!: fn _mitigation_id -> mitigation end
-        },
-        {
-          Composer,
-          [],
-          delete_mitigation: fn _mitigation_id -> {:ok, mitigation} end
-        },
-        {
-          Composer,
-          [],
-          list_mitigations_by_workspace: fn _ -> [] end
-        }
-      ]) do
-        {:noreply, updated_socket} =
-          ValentineWeb.WorkspaceLive.Mitigation.Index.handle_event(
-            "delete",
-            %{"id" => mitigation.id},
-            socket
-          )
+      {:noreply, updated_socket} =
+        ValentineWeb.WorkspaceLive.Mitigation.Index.handle_event(
+          "delete",
+          %{"id" => mitigation.id},
+          socket
+        )
 
-        assert updated_socket.assigns.flash["info"] =~ "deleted successfully"
-      end
+      assert updated_socket.assigns.flash["info"] =~ "deleted successfully"
     end
 
     test "handles not found mitigation", %{socket: socket, mitigation: mitigation} do

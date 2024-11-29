@@ -7,17 +7,15 @@ defmodule ValentineWeb.WorkspaceLive.ApplicationInformation.Index do
 
   @impl true
   def mount(%{"workspace_id" => workspace_id} = _params, _session, socket) do
-    workspace = Composer.get_workspace!(workspace_id)
+    workspace = get_workspace(workspace_id)
 
     # Subscribe to workspace-specific updates
     if connected?(socket) do
       PubSub.subscribe(Valentine.PubSub, "workspace_application_information:#{workspace.id}")
     end
 
-    ops_cache = Composer.ApplicationInformation.get_cache(workspace.id)
-
     socket =
-      ops_cache
+      Composer.ApplicationInformation.get_cache(workspace.id)
       |> Enum.reduce(socket, fn ops, socket ->
         socket
         |> push_event("updateQuill", %{event: "text_change", payload: %{ops: ops}})
@@ -25,7 +23,11 @@ defmodule ValentineWeb.WorkspaceLive.ApplicationInformation.Index do
 
     {:ok,
      socket
-     |> assign(:content, "")
+     |> assign(
+       :application_information,
+       workspace.application_information || %Composer.ApplicationInformation{}
+     )
+     |> assign(:touched, false)
      |> assign(:workspace_id, workspace_id)}
   end
 
@@ -39,6 +41,7 @@ defmodule ValentineWeb.WorkspaceLive.ApplicationInformation.Index do
     |> assign(:page_title, "Application information")
   end
 
+  # Local change
   @impl true
   def handle_info({:quill_change, delta}, socket) do
     Composer.ApplicationInformation.push_cache(socket.assigns.workspace_id, [delta["ops"]])
@@ -48,18 +51,66 @@ defmodule ValentineWeb.WorkspaceLive.ApplicationInformation.Index do
       payload: delta
     })
 
-    {:noreply, socket}
+    {:noreply, socket |> assign(:touched, true)}
   end
 
-  # Remote change
+  # Remote edit change
   @impl true
   def handle_info(%{event: :quill_change, payload: payload}, socket) do
     {:noreply,
      socket
+     |> assign(:touched, true)
      |> push_event("updateQuill", %{event: "text_change", payload: payload})}
+  end
+
+  # Remote save button clicked
+  @impl true
+  def handle_info(%{event: :quill_saved}, socket) do
+    workspace = get_workspace(socket.assigns.workspace_id)
+
+    {:noreply,
+     socket
+     |> assign(:touched, false)
+     |> push_event("updateQuill", %{
+       event: "blob_change",
+       payload: workspace.application_information.content
+     })}
+  end
+
+  # Save button clicked
+  @impl true
+  def handle_info({:quill_save, content}, socket) do
+    # Create or update new application information
+    workspace = get_workspace(socket.assigns.workspace_id)
+
+    case workspace.application_information do
+      nil ->
+        Composer.create_application_information(%{content: content, workspace_id: workspace.id})
+
+      _ ->
+        Composer.update_application_information(workspace.application_information, %{
+          content: content
+        })
+    end
+
+    # Flush the cache
+    Composer.ApplicationInformation.flush_cache(workspace.id)
+
+    # Broadcast the change
+    broadcast("workspace_application_information:#{socket.assigns.workspace_id}", %{
+      event: :quill_saved
+    })
+
+    {:noreply,
+     socket
+     |> assign(:touched, false)}
   end
 
   defp broadcast(topic, payload) do
     PubSub.broadcast_from!(Valentine.PubSub, self(), topic, payload)
+  end
+
+  defp get_workspace(workspace_id) do
+    Composer.get_workspace!(workspace_id, [:application_information])
   end
 end

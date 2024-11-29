@@ -7,6 +7,9 @@ defmodule Valentine.Composer.Workspace do
   schema "workspaces" do
     field :name, :string
 
+    has_one :application_information, Valentine.Composer.ApplicationInformation,
+      on_delete: :delete_all
+
     has_many :assumptions, Valentine.Composer.Assumption, on_delete: :delete_all
     has_many :mitigations, Valentine.Composer.Mitigation, on_delete: :delete_all
     has_many :threats, Valentine.Composer.Threat, on_delete: :delete_all

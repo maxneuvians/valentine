@@ -8,14 +8,16 @@ defmodule ValentineWeb.WorkspaceLive.Threat.Show do
 
   @impl true
   def mount(%{"workspace_id" => workspace_id} = _params, _session, socket) do
-    ValentineWeb.Endpoint.subscribe("workspace_" <> workspace_id)
+    workspace = get_workspace(workspace_id)
+
+    ValentineWeb.Endpoint.subscribe("workspace_" <> workspace.id)
 
     {:ok,
      socket
      |> assign(:active_type, nil)
      |> assign(:errors, nil)
      |> assign(:toggle_goals, false)
-     |> assign(:workspace_id, workspace_id)}
+     |> assign(:workspace_id, workspace.id)}
   end
 
   @impl true
@@ -31,12 +33,15 @@ defmodule ValentineWeb.WorkspaceLive.Threat.Show do
   end
 
   defp apply_action(socket, :edit, %{"id" => id} = _params) do
+    workspace = get_workspace(socket.assigns.workspace_id)
+
     threat =
       Composer.get_threat!(id)
       |> Repo.preload([:assumptions, :mitigations])
 
     socket
-    |> assign_preloads()
+    |> assign(:assumptions, workspace.assumptions)
+    |> assign(:mitigations, workspace.mitigations)
     |> assign(:page_title, "Edit threat statement")
     |> assign(:threat, threat)
     |> assign(:changes, Map.from_struct(threat))
@@ -175,13 +180,8 @@ defmodule ValentineWeb.WorkspaceLive.Threat.Show do
     end
   end
 
-  defp assign_preloads(socket) do
-    assumptions = Composer.list_assumptions_by_workspace(socket.assigns.workspace_id)
-    mitigations = Composer.list_mitigations_by_workspace(socket.assigns.workspace_id)
-
-    socket
-    |> assign(:assumptions, assumptions)
-    |> assign(:mitigations, mitigations)
+  defp get_workspace(id) do
+    Composer.get_workspace!(id, [:assumptions, :mitigations])
   end
 
   defp broadcast_threat_change(threat, event) do

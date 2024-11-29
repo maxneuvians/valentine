@@ -7,14 +7,14 @@ defmodule ValentineWeb.WorkspaceLive.Mitigation.Index do
 
   @impl true
   def mount(%{"workspace_id" => workspace_id} = _params, _session, socket) do
-    workspace = Composer.get_workspace!(workspace_id)
+    workspace = get_workspace(workspace_id)
 
     ValentineWeb.Endpoint.subscribe("workspace_" <> workspace.id)
 
     {:ok,
      socket
      |> assign(:workspace_id, workspace_id)
-     |> assign(:mitigations, Composer.list_mitigations_by_workspace(workspace_id))}
+     |> assign(:mitigations, workspace.mitigations)}
   end
 
   @impl true
@@ -47,9 +47,11 @@ defmodule ValentineWeb.WorkspaceLive.Mitigation.Index do
         {ValentineWeb.WorkspaceLive.Mitigation.Components.FormComponent, {:saved, _mitigation}},
         socket
       ) do
+    workspace = get_workspace(socket.assigns.workspace_id)
+
     {:noreply,
      socket
-     |> assign(:mitigations, Composer.list_mitigations_by_workspace(socket.assigns.workspace_id))}
+     |> assign(:mitigations, workspace.mitigations)}
   end
 
   @impl true
@@ -61,17 +63,23 @@ defmodule ValentineWeb.WorkspaceLive.Mitigation.Index do
       mitigation ->
         case Composer.delete_mitigation(mitigation) do
           {:ok, _} ->
+            workspace = get_workspace(socket.assigns.workspace_id)
+
             {:noreply,
              socket
              |> put_flash(:info, "Mitigation deleted successfully")
              |> assign(
                :mitigations,
-               Composer.list_mitigations_by_workspace(socket.assigns.workspace_id)
+               workspace.mitigations
              )}
 
           {:error, _} ->
             {:noreply, socket |> put_flash(:error, "Failed to delete mitigation")}
         end
     end
+  end
+
+  defp get_workspace(id) do
+    Composer.get_workspace!(id, [:mitigations])
   end
 end

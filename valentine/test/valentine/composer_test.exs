@@ -256,15 +256,6 @@ defmodule Valentine.ComposerTest do
       assert Composer.list_assumptions() == [assumption]
     end
 
-    test "list_assumptions_by_workspace/2 returns all assumptions for a workspace" do
-      assumption = assumption_fixture()
-      assert Composer.list_assumptions_by_workspace(assumption.workspace_id) == [assumption]
-    end
-
-    test "list_assumptions_by_workspace/2 returns all assumptions for a workspace adnd not other workspaces" do
-      assert Composer.list_assumptions_by_workspace("00000000-0000-0000-0000-000000000000") == []
-    end
-
     test "get_assumption!/1 returns the assumption with given id" do
       assumption = assumption_fixture()
       assert Composer.get_assumption!(assumption.id) == assumption
@@ -337,15 +328,6 @@ defmodule Valentine.ComposerTest do
       assert Composer.list_mitigations() == [mitigation]
     end
 
-    test "list_mitigations_by_workspace/2 returns all mitigations for a workspace" do
-      mitigation = mitigation_fixture()
-      assert Composer.list_mitigations_by_workspace(mitigation.workspace_id) == [mitigation]
-    end
-
-    test "list_mitigations_by_workspace/2 returns all mitigations for a workspace adnd not other workspaces" do
-      assert Composer.list_mitigations_by_workspace("00000000-0000-0000-0000-000000000000") == []
-    end
-
     test "get_mitigation!/1 returns the mitigation with given id" do
       mitigation = mitigation_fixture()
       assert Composer.get_mitigation!(mitigation.id) == mitigation
@@ -406,6 +388,83 @@ defmodule Valentine.ComposerTest do
     test "change_mitigation/1 returns a mitigation changeset" do
       mitigation = mitigation_fixture()
       assert %Ecto.Changeset{} = Composer.change_mitigation(mitigation)
+    end
+  end
+
+  describe "application_informations" do
+    alias Valentine.Composer.ApplicationInformation
+
+    import Valentine.ComposerFixtures
+
+    @invalid_attrs %{comments: nil, content: nil, status: nil, tags: nil}
+
+    test "list_application_informations/0 returns all application_informations" do
+      application_information = application_information_fixture()
+      assert Composer.list_application_informations() == [application_information]
+    end
+
+    test "get_application_information!/1 returns the application_information with given id" do
+      application_information = application_information_fixture()
+
+      assert Composer.get_application_information!(application_information.id) ==
+               application_information
+    end
+
+    test "create_application_information/1 with valid data creates a application_information" do
+      workspace = workspace_fixture()
+
+      valid_attrs = %{
+        content: "some content",
+        workspace_id: workspace.id
+      }
+
+      assert {:ok, %ApplicationInformation{} = application_information} =
+               Composer.create_application_information(valid_attrs)
+
+      assert application_information.content == "some content"
+    end
+
+    test "create_application_information/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Composer.create_application_information(@invalid_attrs)
+    end
+
+    test "update_application_information/2 with valid data updates the application_information" do
+      application_information = application_information_fixture()
+
+      update_attrs = %{
+        content: "some updated content"
+      }
+
+      assert {:ok, %ApplicationInformation{} = application_information} =
+               Composer.update_application_information(application_information, update_attrs)
+
+      assert application_information.content == "some updated content"
+    end
+
+    test "update_application_information/2 with invalid data returns error changeset" do
+      application_information = application_information_fixture()
+
+      assert {:error, %Ecto.Changeset{}} =
+               Composer.update_application_information(application_information, @invalid_attrs)
+
+      assert application_information ==
+               Composer.get_application_information!(application_information.id)
+    end
+
+    test "delete_application_information/1 deletes the application_information" do
+      application_information = application_information_fixture()
+
+      assert {:ok, %ApplicationInformation{}} =
+               Composer.delete_application_information(application_information)
+
+      assert_raise Ecto.NoResultsError, fn ->
+        Composer.get_application_information!(application_information.id)
+      end
+    end
+
+    test "change_application_information/1 returns a application_information changeset" do
+      application_information = application_information_fixture()
+      assert %Ecto.Changeset{} = Composer.change_application_information(application_information)
     end
   end
 end

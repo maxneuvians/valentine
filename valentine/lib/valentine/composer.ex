@@ -10,6 +10,7 @@ defmodule Valentine.Composer do
   alias Valentine.Composer.Assumption
   alias Valentine.Composer.Mitigation
   alias Valentine.Composer.Threat
+  alias Valentine.Composer.ApplicationInformation
 
   alias Valentine.Composer.AssumptionThreat
   alias Valentine.Composer.MitigationThreat
@@ -41,7 +42,14 @@ defmodule Valentine.Composer do
       ** (Ecto.NoResultsError)
 
   """
-  def get_workspace!(id), do: Repo.get!(Workspace, id)
+  def get_workspace!(id, _preload \\ nil)
+
+  def get_workspace!(id, preload) when is_list(preload) do
+    Repo.get!(Workspace, id)
+    |> Repo.preload(preload)
+  end
+
+  def get_workspace!(id, preload) when is_nil(preload), do: Repo.get!(Workspace, id)
 
   @doc """
   Creates a workspace.
@@ -282,20 +290,6 @@ defmodule Valentine.Composer do
   end
 
   @doc """
-  Returns the list of assumptions for a specific workspace.
-
-  ## Examples
-
-      iex> list_assumptions_by_workspace(123)
-      [%Assumption{workspace_id: 123}, ...]
-
-  """
-  def list_assumptions_by_workspace(workspace_id) do
-    from(t in Assumption, where: t.workspace_id == ^workspace_id)
-    |> Repo.all()
-  end
-
-  @doc """
   Gets a single assumption.
 
   Raises `Ecto.NoResultsError` if the Assumption does not exist.
@@ -394,20 +388,6 @@ defmodule Valentine.Composer do
   """
   def list_mitigations do
     Repo.all(Mitigation)
-  end
-
-  @doc """
-  Returns the list of mitigations for a specific workspace.
-
-  ## Examples
-
-      iex> list_mitigations_by_workspace(123)
-      [%Mitigation{workspace_id: 123}, ...]
-
-  """
-  def list_mitigations_by_workspace(workspace_id) do
-    from(t in Mitigation, where: t.workspace_id == ^workspace_id)
-    |> Repo.all()
   end
 
   @doc """
@@ -607,5 +587,102 @@ defmodule Valentine.Composer do
       {1, nil} -> {:ok, threat |> Repo.preload(:mitigations, force: true)}
       {:error, _} -> {:error, threat}
     end
+  end
+
+  @doc """
+  Returns the list of application_informations.
+
+  ## Examples
+
+      iex> list_application_informations()
+      [%ApplicationInformation{}, ...]
+
+  """
+  def list_application_informations do
+    Repo.all(ApplicationInformation)
+  end
+
+  @doc """
+  Gets a single application_information.
+
+  Raises `Ecto.NoResultsError` if the ApplicationInformation does not exist.
+
+  ## Examples
+
+      iex> get_application_information!(123)
+      %ApplicationInformation{}
+
+      iex> get_application_information!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_application_information!(id), do: Repo.get!(ApplicationInformation, id)
+
+  @doc """
+  Creates a application_information.
+
+  ## Examples
+
+      iex> create_application_information(%{field: value})
+      {:ok, %ApplicationInformation{}}
+
+      iex> create_application_information(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_application_information(attrs \\ %{}) do
+    %ApplicationInformation{}
+    |> ApplicationInformation.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a application_information.
+
+  ## Examples
+
+      iex> update_application_information(application_information, %{field: new_value})
+      {:ok, %ApplicationInformation{}}
+
+      iex> update_application_information(application_information, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_application_information(%ApplicationInformation{} = application_information, attrs) do
+    application_information
+    |> ApplicationInformation.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a application_information.
+
+  ## Examples
+
+      iex> delete_application_information(application_information)
+      {:ok, %ApplicationInformation{}}
+
+      iex> delete_application_information(application_information)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_application_information(%ApplicationInformation{} = application_information) do
+    Repo.delete(application_information)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking application_information changes.
+
+  ## Examples
+
+      iex> change_application_information(application_information)
+      %Ecto.Changeset{data: %ApplicationInformation{}}
+
+  """
+  def change_application_information(
+        %ApplicationInformation{} = application_information,
+        attrs \\ %{}
+      ) do
+    ApplicationInformation.changeset(application_information, attrs)
   end
 end

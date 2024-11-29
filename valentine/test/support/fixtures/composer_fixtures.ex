@@ -5,6 +5,14 @@ defmodule Valentine.ComposerFixtures do
   """
 
   @doc """
+  Generate a random UUID.
+  """
+  def random_uuid() do
+    Ecto.UUID.generate()
+    |> to_string()
+  end
+
+  @doc """
   Generate a workspace.
   """
   def workspace_fixture(attrs \\ %{}) do
@@ -93,5 +101,22 @@ defmodule Valentine.ComposerFixtures do
     workspace = workspace_fixture()
 
     Valentine.Composer.DataFlowDiagram.get(workspace.id)
+  end
+
+  @doc """
+  Generate an application_information.
+  """
+  def application_information_fixture(attrs \\ %{}) do
+    workspace = workspace_fixture()
+
+    {:ok, application_information} =
+      attrs
+      |> Enum.into(%{
+        content: "some content",
+        workspace_id: workspace.id
+      })
+      |> Valentine.Composer.create_application_information()
+
+    application_information
   end
 end

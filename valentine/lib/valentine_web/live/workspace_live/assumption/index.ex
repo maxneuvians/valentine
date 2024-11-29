@@ -7,14 +7,14 @@ defmodule ValentineWeb.WorkspaceLive.Assumption.Index do
 
   @impl true
   def mount(%{"workspace_id" => workspace_id} = _params, _session, socket) do
-    workspace = Composer.get_workspace!(workspace_id)
+    workspace = get_workspace(workspace_id)
 
     ValentineWeb.Endpoint.subscribe("workspace_" <> workspace.id)
 
     {:ok,
      socket
      |> assign(:workspace_id, workspace_id)
-     |> assign(:assumptions, Composer.list_assumptions_by_workspace(workspace_id))}
+     |> assign(:assumptions, workspace.assumptions)}
   end
 
   @impl true
@@ -47,9 +47,11 @@ defmodule ValentineWeb.WorkspaceLive.Assumption.Index do
         {ValentineWeb.WorkspaceLive.Assumption.Components.FormComponent, {:saved, _assumption}},
         socket
       ) do
+    workspace = get_workspace(socket.assigns.workspace_id)
+
     {:noreply,
      socket
-     |> assign(:assumptions, Composer.list_assumptions_by_workspace(socket.assigns.workspace_id))}
+     |> assign(:assumptions, workspace.assumptions)}
   end
 
   @impl true
@@ -61,17 +63,23 @@ defmodule ValentineWeb.WorkspaceLive.Assumption.Index do
       assumption ->
         case Composer.delete_assumption(assumption) do
           {:ok, _} ->
+            workspace = get_workspace(socket.assigns.workspace_id)
+
             {:noreply,
              socket
              |> put_flash(:info, "Assumption deleted successfully")
              |> assign(
                :assumptions,
-               Composer.list_assumptions_by_workspace(socket.assigns.workspace_id)
+               workspace.assumptions
              )}
 
           {:error, _} ->
             {:noreply, socket |> put_flash(:error, "Failed to delete assumption")}
         end
     end
+  end
+
+  defp get_workspace(id) do
+    Composer.get_workspace!(id, [:assumptions])
   end
 end
