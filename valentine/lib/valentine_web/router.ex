@@ -21,7 +21,8 @@ defmodule ValentineWeb.Router do
 
     live_session :authenticated,
       on_mount: [
-        ValentineWeb.Helpers.NavHelper
+        ValentineWeb.Helpers.NavHelper,
+        ValentineWeb.Helpers.ThemeHelper
       ] do
       live "/workspaces", WorkspaceLive.Index, :index
       live "/workspaces/new", WorkspaceLive.Index, :new

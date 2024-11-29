@@ -54,6 +54,10 @@ defmodule ValentineWeb do
       use Phoenix.LiveView,
         layout: {ValentineWeb.Layouts, :app}
 
+      def handle_event("update_theme", %{"data" => theme}, socket) do
+        {:noreply, assign(socket, :theme, theme)}
+      end
+
       unquote(html_helpers())
     end
   end
