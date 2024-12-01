@@ -16,28 +16,19 @@ defmodule Valentine.Composer.DataFlowDiagramTest do
   test "add_node/2 adds a new node", %{workspace_id: workspace_id} do
     node = DataFlowDiagram.add_node(workspace_id, %{"type" => "test"})
     assert node[:data][:type] == "test"
+    assert node[:data][:label] == "Test"
+    assert node[:data][:parent] == nil
     assert node[:grabbable] == "true"
     assert node[:position][:x] <= 300
     assert node[:position][:y] <= 300
   end
 
-  test "delete/2 deletes a node", %{workspace_id: workspace_id} do
-    node = DataFlowDiagram.add_node(workspace_id, %{"type" => "test"})
-
-    DataFlowDiagram.delete(workspace_id, %{
-      "element" => %{"id" => node[:data][:id], "type" => "node"}
-    })
-
+  test "clear_dfd/2 clears the DataFlowDiagram", %{workspace_id: workspace_id} do
+    DataFlowDiagram.add_node(workspace_id, %{"type" => "test"})
+    DataFlowDiagram.clear_dfd(workspace_id, %{})
     dfd = DataFlowDiagram.get(workspace_id)
-    refute Map.has_key?(dfd.nodes, node[:data][:id])
-  end
-
-  test "delete/2 deletes an edge", %{workspace_id: workspace_id} do
-    edge = %{"id" => "edge-1", "source" => "node-1", "target" => "node-2"}
-    DataFlowDiagram.ehcomplete(workspace_id, %{"edge" => edge})
-    DataFlowDiagram.delete(workspace_id, %{"element" => %{"id" => edge["id"], "type" => "edge"}})
-    dfd = DataFlowDiagram.get(workspace_id)
-    refute Map.has_key?(dfd.edges, edge["id"])
+    assert Kernel.map_size(dfd.nodes) == 0
+    assert Kernel.map_size(dfd.edges) == 0
   end
 
   test "ehcomplete/2 adds a new edge", %{workspace_id: workspace_id} do
@@ -65,6 +56,101 @@ defmodule Valentine.Composer.DataFlowDiagramTest do
     assert updated_node[:grabbable] == "false"
   end
 
+  test "group_nodes/2 returns and empty response if no nodes are selected", %{
+    workspace_id: workspace_id
+  } do
+    assert DataFlowDiagram.group_nodes(workspace_id, %{"selected_elements" => %{"nodes" => %{}}}) ==
+             %{node: %{}, children: []}
+  end
+
+  test "group_nodes/2 groups selected nodes", %{workspace_id: workspace_id} do
+    node1 = DataFlowDiagram.add_node(workspace_id, %{"type" => "test"})
+    node2 = DataFlowDiagram.add_node(workspace_id, %{"type" => "test"})
+    selected_elements = %{"nodes" => %{"node-1" => node1, "node-2" => node2}}
+
+    grouped_nodes =
+      DataFlowDiagram.group_nodes(workspace_id, %{"selected_elements" => selected_elements})
+
+    assert grouped_nodes[:node][:data][:type] == "trust_boundary"
+    assert grouped_nodes[:children] == Map.keys(selected_elements["nodes"])
+  end
+
+  test "merge_group/2 returns an error if none of the selected nodes are a trust boundary", %{
+    workspace_id: workspace_id
+  } do
+    node1 = DataFlowDiagram.add_node(workspace_id, %{"type" => "test"})
+    node2 = DataFlowDiagram.add_node(workspace_id, %{"type" => "test"})
+    nodes = %{}
+    nodes = Map.put(nodes, node1.data.id, node1.data.label)
+    nodes = Map.put(nodes, node2.data.id, node2.data.label)
+    selected_elements = %{"nodes" => nodes}
+
+    assert DataFlowDiagram.merge_group(workspace_id, %{"selected_elements" => selected_elements}) ==
+             {:error, "Only trust boundaries can be merged"}
+  end
+
+  test "merge_group/2 merges selected nodes into a trust boundary", %{workspace_id: workspace_id} do
+    node1 = DataFlowDiagram.add_node(workspace_id, %{"type" => "trust_boundary"})
+    node2 = DataFlowDiagram.add_node(workspace_id, %{"type" => "trust_boundary"})
+    nodes = %{}
+    nodes = Map.put(nodes, node1.data.id, node1.data.label)
+    nodes = Map.put(nodes, node2.data.id, node2.data.label)
+    selected_elements = %{"nodes" => nodes}
+
+    grouped_nodes =
+      DataFlowDiagram.group_nodes(workspace_id, %{"selected_elements" => selected_elements})
+
+    node3 = DataFlowDiagram.add_node(workspace_id, %{"type" => "test"})
+    nodes = %{}
+    nodes = Map.put(nodes, node3.data.id, node3.data.label)
+    nodes = Map.put(nodes, grouped_nodes[:node][:data][:id], grouped_nodes[:node][:data][:label])
+    selected_elements = %{"nodes" => nodes}
+
+    merged_group =
+      DataFlowDiagram.merge_group(workspace_id, %{"selected_elements" => selected_elements})
+
+    assert merged_group[:node] == grouped_nodes[:node][:data][:id]
+    assert merged_group[:children] == [node3.data.id]
+    assert merged_group[:purge] == []
+  end
+
+  test "merge_group/2 merges two selected trust boundaries", %{workspace_id: workspace_id} do
+    node1 = DataFlowDiagram.add_node(workspace_id, %{"type" => "test"})
+    node2 = DataFlowDiagram.add_node(workspace_id, %{"type" => "test"})
+    nodes = %{}
+    nodes = Map.put(nodes, node1.data.id, node1.data.label)
+    nodes = Map.put(nodes, node2.data.id, node2.data.label)
+    selected_elements = %{"nodes" => nodes}
+
+    group1 =
+      DataFlowDiagram.group_nodes(workspace_id, %{"selected_elements" => selected_elements})
+
+    node3 = DataFlowDiagram.add_node(workspace_id, %{"type" => "test"})
+    node4 = DataFlowDiagram.add_node(workspace_id, %{"type" => "test"})
+    nodes = %{}
+    nodes = Map.put(nodes, node3.data.id, node3.data.label)
+    nodes = Map.put(nodes, node4.data.id, node4.data.label)
+    selected_elements = %{"nodes" => nodes}
+
+    group2 =
+      DataFlowDiagram.group_nodes(workspace_id, %{"selected_elements" => selected_elements})
+
+    nodes = %{}
+    nodes = Map.put(nodes, group1[:node][:data][:id], group1[:node][:data][:label])
+    nodes = Map.put(nodes, group2[:node][:data][:id], group2[:node][:data][:label])
+    selected_elements = %{"nodes" => nodes}
+
+    merged_group =
+      DataFlowDiagram.merge_group(workspace_id, %{"selected_elements" => selected_elements})
+
+    assert merged_group[:node] == group1[:node][:data][:id] || group2[:node][:data][:id]
+
+    assert merged_group[:children] == [node1.data.id, node2.data.id] ||
+             [node3.data.id, node4.data.id]
+
+    assert merged_group[:purge] == [group2[:node][:data][:id]] || [group1[:node][:data][:id]]
+  end
+
   test "position/2 updates node position", %{workspace_id: workspace_id} do
     node = DataFlowDiagram.add_node(workspace_id, %{"type" => "test"})
     new_position = %{"x" => 100, "y" => 200}
@@ -76,6 +162,99 @@ defmodule Valentine.Composer.DataFlowDiagramTest do
 
     assert updated_node[:position][:x] == 100
     assert updated_node[:position][:y] == 200
+  end
+
+  test "remove_elements/2 deletes selected nodes and edges", %{workspace_id: workspace_id} do
+    node = DataFlowDiagram.add_node(workspace_id, %{"type" => "test"})
+    edge = %{"id" => "edge-1", "source" => "node-1", "target" => "node-2"}
+    DataFlowDiagram.ehcomplete(workspace_id, %{"edge" => edge})
+
+    selected_elements = %{"nodes" => %{"node-1" => node}, "edges" => %{"edge-1" => edge}}
+
+    removed_elements =
+      DataFlowDiagram.remove_elements(workspace_id, %{"selected_elements" => selected_elements})
+
+    assert removed_elements["nodes"] == %{"node-1" => node}
+    assert removed_elements["edges"] == %{"edge-1" => edge}
+
+    dfd = DataFlowDiagram.get(workspace_id)
+    assert Kernel.map_size(dfd.nodes) == 1
+    assert Kernel.map_size(dfd.edges) == 0
+  end
+
+  test "remove_elements/2 deletes nodes and edges inside a group", %{workspace_id: workspace_id} do
+    node1 = DataFlowDiagram.add_node(workspace_id, %{"type" => "test"})
+    node2 = DataFlowDiagram.add_node(workspace_id, %{"type" => "test"})
+    edge = %{"id" => "edge-1", "source" => node1.data.id, "target" => node2.data.id}
+    DataFlowDiagram.ehcomplete(workspace_id, %{"edge" => edge})
+    nodes = %{}
+    nodes = Map.put(nodes, node1.data.id, node1.data.label)
+    nodes = Map.put(nodes, node2.data.id, node2.data.label)
+    selected_elements = %{"nodes" => nodes}
+
+    grouped_nodes =
+      DataFlowDiagram.group_nodes(workspace_id, %{"selected_elements" => selected_elements})
+
+    nodes = %{}
+    nodes = Map.put(nodes, grouped_nodes[:node][:data][:id], grouped_nodes[:node][:data][:label])
+    selected_elements = %{"nodes" => nodes, "edges" => %{}}
+
+    DataFlowDiagram.remove_elements(workspace_id, %{"selected_elements" => selected_elements})
+
+    dfd = DataFlowDiagram.get(workspace_id)
+    assert Kernel.map_size(dfd.nodes) == 0
+    assert Kernel.map_size(dfd.edges) == 0
+  end
+
+  test "remove_group/2 returns an error if only one node is selected", %{
+    workspace_id: workspace_id
+  } do
+    node1 = DataFlowDiagram.add_node(workspace_id, %{"type" => "test"})
+    node2 = DataFlowDiagram.add_node(workspace_id, %{"type" => "test"})
+    nodes = %{}
+    nodes = Map.put(nodes, node1.data.id, node1.data.label)
+    nodes = Map.put(nodes, node2.data.id, node2.data.label)
+    selected_elements = %{"nodes" => nodes}
+
+    assert DataFlowDiagram.remove_group(workspace_id, %{"selected_elements" => selected_elements}) ==
+             {:error, "Only one trust boundaries can be removed at a time"}
+  end
+
+  test "remove_group/2 returns an error if something other than a trust boundary is removed", %{
+    workspace_id: workspace_id
+  } do
+    node1 = DataFlowDiagram.add_node(workspace_id, %{"type" => "test"})
+    nodes = %{}
+    nodes = Map.put(nodes, node1.data.id, node1.data.label)
+    selected_elements = %{"nodes" => nodes}
+
+    assert DataFlowDiagram.remove_group(workspace_id, %{"selected_elements" => selected_elements}) ==
+             {:error, "Only trust boundaries can be removed"}
+  end
+
+  test "remove_group/2 removes a parent from a set of nodes and removes the parent", %{
+    workspace_id: workspace_id
+  } do
+    node1 = DataFlowDiagram.add_node(workspace_id, %{"type" => "test"})
+    node2 = DataFlowDiagram.add_node(workspace_id, %{"type" => "test"})
+    nodes = %{}
+    nodes = Map.put(nodes, node1.data.id, node1.data.label)
+    nodes = Map.put(nodes, node2.data.id, node2.data.label)
+    selected_elements = %{"nodes" => nodes}
+
+    grouped_nodes =
+      DataFlowDiagram.group_nodes(workspace_id, %{"selected_elements" => selected_elements})
+
+    nodes = %{}
+    nodes = Map.put(nodes, grouped_nodes[:node][:data][:id], grouped_nodes[:node][:data][:label])
+    selected_elements = %{"nodes" => nodes}
+
+    DataFlowDiagram.remove_group(workspace_id, %{"selected_elements" => selected_elements})
+
+    dfd = DataFlowDiagram.get(workspace_id)
+    assert Kernel.map_size(dfd.nodes) == 2
+    assert Kernel.map_size(dfd.edges) == 0
+    refute Map.has_key?(dfd.nodes, grouped_nodes[:node][:data][:id])
   end
 
   test "update_label/2 updates node label", %{workspace_id: workspace_id} do

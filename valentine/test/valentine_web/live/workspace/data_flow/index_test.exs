@@ -11,6 +11,7 @@ defmodule ValentineWeb.WorkspaceLive.DataFlow.IndexTest do
         __changed__: %{},
         live_action: nil,
         flash: %{},
+        selected_elements: %{"nodes" => %{}, "edges" => %{}},
         workspace_id: dfd.workspace_id
       }
     }
@@ -32,8 +33,7 @@ defmodule ValentineWeb.WorkspaceLive.DataFlow.IndexTest do
         )
 
       assert socket.assigns.dfd == dfd
-      assert socket.assigns.selected_id == ""
-      assert socket.assigns.selected_label == ""
+      assert socket.assigns.selected_elements == %{"nodes" => %{}, "edges" => %{}}
       assert socket.assigns.workspace_id == workspace_id
     end
   end
@@ -63,12 +63,11 @@ defmodule ValentineWeb.WorkspaceLive.DataFlow.IndexTest do
       {:noreply, socket} =
         ValentineWeb.WorkspaceLive.DataFlow.Index.handle_event(
           "select",
-          %{"id" => "1", "label" => "Node 1"},
+          %{"id" => "1", "label" => "Node 1", "group" => "nodes"},
           socket
         )
 
-      assert socket.assigns.selected_id == "1"
-      assert socket.assigns.selected_label == "Node 1"
+      assert socket.assigns.selected_elements == %{"nodes" => %{"1" => "Node 1"}, "edges" => %{}}
     end
 
     test "unselect event assigns empty string to selected_id and selected_label", %{
@@ -77,12 +76,11 @@ defmodule ValentineWeb.WorkspaceLive.DataFlow.IndexTest do
       {:noreply, socket} =
         ValentineWeb.WorkspaceLive.DataFlow.Index.handle_event(
           "unselect",
-          %{},
+          %{"id" => "1", "group" => "nodes"},
           socket
         )
 
-      assert socket.assigns.selected_id == ""
-      assert socket.assigns.selected_label == ""
+      assert socket.assigns.selected_elements == %{"nodes" => %{}, "edges" => %{}}
     end
 
     test "handles generic events and applys them to the DFD and pushes the event to the client",

@@ -17,13 +17,13 @@ defmodule ValentineWeb.WorkspaceLive.DataFlow.Index do
       PubSub.subscribe(Valentine.PubSub, "workspace_dataflow:#{workspace.id}")
     end
 
-    dfd = DataFlowDiagram.get(workspace_id)
+    dfd =
+      DataFlowDiagram.get(workspace_id)
 
     {:ok,
      socket
      |> assign(:dfd, dfd)
-     |> assign(:selected_id, "")
-     |> assign(:selected_label, "")
+     |> assign(:selected_elements, %{"nodes" => %{}, "edges" => %{}})
      |> assign(:foo, "bar")
      |> assign(:workspace_id, workspace_id)}
   end
@@ -40,23 +40,21 @@ defmodule ValentineWeb.WorkspaceLive.DataFlow.Index do
 
   # Intercept select and unselect events
   @impl true
-  def handle_event("select", %{"id" => id, "label" => label}, socket) do
-    Logger.info("Selecting node: #{id}, #{label}")
+  def handle_event("select", %{"id" => id, "label" => label, "group" => group}, socket) do
+    selected_elements = put_in(socket.assigns.selected_elements, [group, id], label)
 
     {:noreply,
      socket
-     |> assign(:selected_id, id)
-     |> assign(:selected_label, label)}
+     |> assign(:selected_elements, selected_elements)}
   end
 
   @impl true
-  def handle_event("unselect", _params, socket) do
-    Logger.info("Unselecting node")
+  def handle_event("unselect", %{"id" => id, "group" => group}, socket) do
+    {_, selected_elements} = pop_in(socket.assigns.selected_elements, [group, id])
 
     {:noreply,
      socket
-     |> assign(:selected_id, "")
-     |> assign(:selected_label, "")}
+     |> assign(:selected_elements, selected_elements)}
   end
 
   # Local event from HTML or JS
@@ -64,26 +62,33 @@ defmodule ValentineWeb.WorkspaceLive.DataFlow.Index do
   def handle_event(event, params, socket) do
     Logger.info("Local event: #{inspect(event)}, payload: #{inspect(params)}")
 
-    payload =
-      Kernel.apply(Valentine.Composer.DataFlowDiagram, String.to_existing_atom(event), [
-        socket.assigns.workspace_id,
-        params
-      ])
+    params = Map.put(params, "selected_elements", socket.assigns.selected_elements)
 
-    broadcast("workspace_dataflow:#{socket.assigns.workspace_id}", %{
-      event: event,
-      payload: payload
-    })
+    case Kernel.apply(Valentine.Composer.DataFlowDiagram, String.to_existing_atom(event), [
+           socket.assigns.workspace_id,
+           params
+         ]) do
+      {:error, reason} ->
+        {:noreply,
+         socket
+         |> put_flash(:error, reason)}
 
-    if Map.has_key?(params, "localJs") do
-      {:noreply, socket}
-    else
-      {:noreply,
-       socket
-       |> push_event("updateGraph", %{
-         event: event,
-         payload: payload
-       })}
+      payload ->
+        broadcast("workspace_dataflow:#{socket.assigns.workspace_id}", %{
+          event: event,
+          payload: payload
+        })
+
+        if Map.has_key?(params, "localJs") do
+          {:noreply, socket}
+        else
+          {:noreply,
+           socket
+           |> push_event("updateGraph", %{
+             event: event,
+             payload: payload
+           })}
+        end
     end
   end
 

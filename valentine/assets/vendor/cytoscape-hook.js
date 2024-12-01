@@ -44,7 +44,8 @@ const CytoscapeHook = {
                         'shape': 'rectangle',
                         'font-size': '18px',
                         'text-wrap': 'wrap',
-                        'text-max-width': 80
+                        'text-max-width': 80,
+                        'text-margin-y': 10
                     }
                 },
                 {
@@ -57,12 +58,13 @@ const CytoscapeHook = {
                         'color': '#000',
                         'text-valign': 'bottom',
                         'text-halign': 'center',
-                        'width': 120,
-                        'height': 50,
+                        'width': 100,
+                        'height': 100,
                         'shape': 'ellipse',
                         'font-size': '18px',
                         'text-wrap': 'wrap',
-                        'text-max-width': 80
+                        'text-max-width': 80,
+                        'text-margin-y': 10
                     }
                 },
                 {
@@ -80,7 +82,8 @@ const CytoscapeHook = {
                         'shape': 'round-octagon',
                         'font-size': '18px',
                         'text-wrap': 'wrap',
-                        'text-max-width': 80
+                        'text-max-width': 80,
+                        'text-margin-y': 10
                     }
                 },
                 {
@@ -138,7 +141,22 @@ const CytoscapeHook = {
                         'target-arrow-color': '#3fb950',
                         'target-arrow-shape': 'triangle'
                     }
-                }
+                },
+                {
+                    selector: ':parent',
+                    css: {
+                        'text-valign': 'top',
+                        'text-halign': 'center',
+                        'shape': 'round-rectangle',
+                        'corner-radius': "10",
+                        'padding': 75,
+                        'border-color': '#EE4B2B',
+                        'border-width': 2,
+                        "border-style": "dashed",
+                        'label': 'data(label)',
+                        'text-margin-y': -10
+                    }
+                },
             ],
             layout: {
                 name: 'preset',
@@ -191,27 +209,39 @@ const CytoscapeHook = {
             if (evt.target.data("active_user") !== this.user) {
                 return;
             }
-            this.pushEventTo(this.el, "position", { localJs: true, node: { id: evt.target.id(), position: evt.target.position() } });
+            if (evt.target.data('type') === "trust_boundary") {
+                evt.target.descendants().forEach((node) => {
+                    this.pushEventTo(this.el, "position", { localJs: true, node: { id: node.id(), position: node.position() } });
+                });
+                return;
+            } else {
+                this.pushEventTo(this.el, "position", { localJs: true, node: { id: evt.target.id(), position: evt.target.position() } });
+            }
         });
 
         this.cy.on("select", "node", (evt) => {
-            this.pushEventTo(this.el, "select", { id: evt.target.id(), label: evt.target.data().label });
+            this.pushEventTo(this.el, "select", { id: evt.target.id(), label: evt.target.data().label, group: evt.target.group() });
         });
 
         this.cy.on("unselect", "node", (evt) => {
-            this.pushEventTo(this.el, "unselect", {});
+            this.pushEventTo(this.el, "unselect", { id: evt.target.id(), group: evt.target.group() });
         });
 
         this.cy.on("select", "edge", (evt) => {
-            this.pushEventTo(this.el, "select", { id: evt.target.id(), label: evt.target.data().label });
+            this.pushEventTo(this.el, "select", { id: evt.target.id(), label: evt.target.data().label, group: evt.target.group() });
         });
 
         this.cy.on("unselect", "edge", (evt) => {
-            this.pushEventTo(this.el, "unselect", {});
+            this.pushEventTo(this.el, "unselect", { id: evt.target.id(), group: evt.target.group() });
+
         });
     },
 
     setupEventHandlers() {
+        window.addEventListener('resize', function (event) {
+            this.cy.center();
+        });
+
         this.handleEvent("updateGraph", ({ event, payload }) => {
             console.log("Received updateGraph event:", event, payload);
             switch (event) {
@@ -219,9 +249,16 @@ const CytoscapeHook = {
                     this.addNode(payload);
                     break;
 
+                case "clear_dfd":
+                    this.clearDFD();
+                    break
+
                 case "delete":
                     this.deleteElement(payload);
                     break;
+
+                case "ehcomplete":
+                    this.ehcomplete(payload);
 
                 case "fit_view":
                     this.fitView();
@@ -235,15 +272,28 @@ const CytoscapeHook = {
                     this.grab(payload);
                     break;
 
-                case "ehcomplete":
-                    this.ehcomplete(payload);
+                case "group_nodes":
+                    this.groupNodes(payload);
+                    break;
+
+                case "merge_group":
+                    this.mergeGroup(payload);
+                    break;
 
                 case "position":
                     this.position(payload);
                     break;
 
+                case "remove_elements":
+                    this.removeElements(payload);
+                    break;
+
+                case "remove_group":
+                    this.removeGroup(payload);
+                    break;
+
                 case "update_label":
-                    this.update_label(payload);
+                    this.updateLabel(payload);
                     break;
 
                 default:
@@ -253,7 +303,11 @@ const CytoscapeHook = {
     },
 
     addNode(node) {
-        const newNode = this.cy.add(node);
+        this.cy.add(node);
+    },
+
+    clearDFD() {
+        this.cy.elements().remove();
     },
 
     deleteElement(element) {
@@ -261,6 +315,12 @@ const CytoscapeHook = {
         if (el) {
             el.remove();
         }
+    },
+
+    ehcomplete(edge) {
+        this.cy.add({
+            data: edge.data
+        });
     },
 
     fitView() {
@@ -275,9 +335,24 @@ const CytoscapeHook = {
         this.cy.getElementById(node.data.id).ungrabify();
     },
 
-    ehcomplete(edge) {
-        this.cy.add({
-            data: edge.data
+    groupNodes({ node, children }) {
+        if (children.length === 0) {
+            return;
+        }
+        this.cy.add(node).unselect();
+        children.forEach((childID) => {
+            this.cy.getElementById(childID).move({ parent: node.data.id });
+            this.cy.getElementById(childID).unselect();
+        });
+    },
+
+    mergeGroup({ node, children, purge }) {
+        children.forEach((childID) => {
+            this.cy.getElementById(childID).move({ parent: node });
+        });
+        purge.forEach((id) => {
+            this.cy.getElementById(id).unselect();
+            this.cy.getElementById(id).remove();
         });
     },
 
@@ -285,7 +360,24 @@ const CytoscapeHook = {
         this.cy.getElementById(node.data.id).position(node.position)
     },
 
-    update_label(node) {
+    removeElements(elements) {
+        Object.keys(elements.nodes).forEach((id) => {
+            this.cy.getElementById(id).remove();
+        });
+        Object.keys(elements.edges).forEach((id) => {
+            this.cy.getElementById(id).remove();
+        });
+    },
+
+    removeGroup(node) {
+        this.cy.getElementById(node.data.id).children().forEach((child) => {
+            child.move({ parent: null });
+        });
+        this.cy.getElementById(node.data.id).unselect();
+        this.cy.getElementById(node.data.id).remove();
+    },
+
+    updateLabel(node) {
         this.cy.getElementById(node.data.id).data("label", node.data.label);
     }
 };
