@@ -40,8 +40,8 @@ defmodule ValentineWeb.WorkspaceLive.Components.DataFlowComponent do
         </button>
       </div>
       <div class="Box color-bg-default">
-        <div id="cytoscape-container" class="Box-body" style="height: 500px;">
-          <div id="cy" style="width: 100%; height: 100%;" tabindex="0"></div>
+        <div id="cytoscape-container" class="Box-body">
+          <div id="cy" tabindex="0"></div>
         </div>
       </div>
     </div>

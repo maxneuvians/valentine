@@ -182,30 +182,37 @@ const CytoscapeHook = {
 
         this.eh = this.cy.edgehandles(defaults);
 
-        this.bindEvents();
+        this.bindEvents(this.cy);
         this.setupEventHandlers();
     },
 
-    bindEvents() {
-        this.cy.on("cxttapstart", "node", (evt) => {
+    bindEvents(cy) {
+        window.addEventListener('resize', () => {
+            cy.style.width = '100%';
+            cy.style.height = '100%';
+            cy.resize();
+            cy.fit();
+        });
+
+        cy.on("cxttapstart", "node", (evt) => {
             this.eh.start(evt.target);
         });
 
-        this.cy.on('ehcomplete', (event, sourceNode, targetNode, addedEdge) => {
+        cy.on('ehcomplete', (event, sourceNode, targetNode, addedEdge) => {
             this.pushEventTo(this.el, "ehcomplete", { localJs: true, edge: { id: addedEdge.id(), source: sourceNode.id(), target: targetNode.id() } });
         });
 
-        this.cy.on("free", "node", (evt) => {
+        cy.on("free", "node", (evt) => {
             evt.target.data("active_user", null);
             this.pushEventTo(this.el, "free", { localJs: true, node: { id: evt.target.id() } });
         })
 
-        this.cy.on("grab", "node", (evt) => {
+        cy.on("grab", "node", (evt) => {
             evt.target.data("active_user", this.user);
             this.pushEventTo(this.el, "grab", { localJs: true, node: { id: evt.target.id() }, user: this.user });
         });
 
-        this.cy.on("position", "node", (evt) => {
+        cy.on("position", "node", (evt) => {
             if (evt.target.data("active_user") !== this.user) {
                 return;
             }
@@ -219,29 +226,25 @@ const CytoscapeHook = {
             }
         });
 
-        this.cy.on("select", "node", (evt) => {
+        cy.on("select", "node", (evt) => {
             this.pushEventTo(this.el, "select", { id: evt.target.id(), label: evt.target.data().label, group: evt.target.group() });
         });
 
-        this.cy.on("unselect", "node", (evt) => {
+        cy.on("unselect", "node", (evt) => {
             this.pushEventTo(this.el, "unselect", { id: evt.target.id(), group: evt.target.group() });
         });
 
-        this.cy.on("select", "edge", (evt) => {
+        cy.on("select", "edge", (evt) => {
             this.pushEventTo(this.el, "select", { id: evt.target.id(), label: evt.target.data().label, group: evt.target.group() });
         });
 
-        this.cy.on("unselect", "edge", (evt) => {
+        cy.on("unselect", "edge", (evt) => {
             this.pushEventTo(this.el, "unselect", { id: evt.target.id(), group: evt.target.group() });
 
         });
     },
 
     setupEventHandlers() {
-        window.addEventListener('resize', function (event) {
-            this.cy.center();
-        });
-
         this.handleEvent("updateGraph", ({ event, payload }) => {
             console.log("Received updateGraph event:", event, payload);
             switch (event) {
