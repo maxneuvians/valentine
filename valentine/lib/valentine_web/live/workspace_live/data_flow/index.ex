@@ -24,7 +24,7 @@ defmodule ValentineWeb.WorkspaceLive.DataFlow.Index do
      socket
      |> assign(:dfd, dfd)
      |> assign(:selected_elements, %{"nodes" => %{}, "edges" => %{}})
-     |> assign(:foo, "bar")
+     |> assign(:touched, true)
      |> assign(:workspace_id, workspace_id)}
   end
 
@@ -87,7 +87,8 @@ defmodule ValentineWeb.WorkspaceLive.DataFlow.Index do
            |> push_event("updateGraph", %{
              event: event,
              payload: payload
-           })}
+           })
+           |> assign(:touched, !socket.assigns.touched)}
         end
     end
   end

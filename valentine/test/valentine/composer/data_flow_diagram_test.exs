@@ -19,8 +19,8 @@ defmodule Valentine.Composer.DataFlowDiagramTest do
     assert node[:data][:label] == "Test"
     assert node[:data][:parent] == nil
     assert node[:grabbable] == "true"
-    assert node[:position][:x] <= 300
-    assert node[:position][:y] <= 300
+    assert node[:position][:x] <= 400
+    assert node[:position][:y] <= 400
   end
 
   test "clear_dfd/2 clears the DataFlowDiagram", %{workspace_id: workspace_id} do
@@ -257,25 +257,72 @@ defmodule Valentine.Composer.DataFlowDiagramTest do
     refute Map.has_key?(dfd.nodes, grouped_nodes[:node][:data][:id])
   end
 
-  test "update_label/2 updates node label", %{workspace_id: workspace_id} do
+  test "update_metadata/2 updates node metadata", %{workspace_id: workspace_id} do
     node = DataFlowDiagram.add_node(workspace_id, %{"type" => "test"})
+    new_metadata = %{"id" => node.data.id, "field" => "label", "value" => "New Label"}
 
-    updated_node =
-      DataFlowDiagram.update_label(workspace_id, %{
-        "id" => node[:data][:id],
-        "value" => "New Label"
-      })
+    resp =
+      DataFlowDiagram.update_metadata(
+        workspace_id,
+        new_metadata
+      )
+
+    assert resp == %{"id" => node.data.id, "field" => "label", "value" => "New Label"}
+
+    dfd = DataFlowDiagram.get(workspace_id)
+    updated_node = Map.get(dfd.nodes, node.data.id)
 
     assert updated_node[:data][:label] == "New Label"
   end
 
-  test "update_label/2 updates edge label", %{workspace_id: workspace_id} do
-    edge = %{"id" => "edge-1", "source" => "node-1", "target" => "node-2"}
-    DataFlowDiagram.ehcomplete(workspace_id, %{"edge" => edge})
+  test "update_metadata/2 updates node metadata with a boolean value if value is missing (ex: checkbox boolean)",
+       %{workspace_id: workspace_id} do
+    node = DataFlowDiagram.add_node(workspace_id, %{"type" => "test"})
+    new_metadata = %{"id" => node.data.id, "field" => "checked"}
 
-    updated_edge =
-      DataFlowDiagram.update_label(workspace_id, %{"id" => edge["id"], "value" => "New Label"})
+    resp =
+      DataFlowDiagram.update_metadata(
+        workspace_id,
+        new_metadata
+      )
 
-    assert updated_edge[:data][:label] == "New Label"
+    assert resp == %{"id" => node.data.id, "field" => "checked", "value" => "false"}
+
+    dfd = DataFlowDiagram.get(workspace_id)
+    updated_node = Map.get(dfd.nodes, node.data.id)
+
+    assert updated_node[:data][:checked] == "false"
+  end
+
+  test "update_metadata/2 updates node metadata with multiselect checks", %{
+    workspace_id: workspace_id
+  } do
+    node = DataFlowDiagram.add_node(workspace_id, %{"type" => "test"})
+    new_metadata = %{"id" => node.data.id, "field" => "data_tags", "checked" => "a"}
+
+    resp =
+      DataFlowDiagram.update_metadata(
+        workspace_id,
+        new_metadata
+      )
+
+    assert resp == %{"id" => node.data.id, "field" => "data_tags", "value" => ["a"]}
+
+    dfd = DataFlowDiagram.get(workspace_id)
+    updated_node = Map.get(dfd.nodes, node.data.id)
+
+    assert updated_node[:data][:data_tags] == ["a"]
+
+    # Test removing a value
+
+    DataFlowDiagram.update_metadata(
+      workspace_id,
+      new_metadata
+    )
+
+    dfd = DataFlowDiagram.get(workspace_id)
+    updated_node = Map.get(dfd.nodes, node.data.id)
+
+    assert updated_node[:data][:data_tags] == []
   end
 end

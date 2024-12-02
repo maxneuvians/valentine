@@ -1,5 +1,5 @@
 <.subhead>
-  Data flow diagram <%= @foo %>
+  Data flow diagram
 </.subhead>
 
 <div
@@ -15,11 +15,16 @@
   />
 </div>
 
-<div :if={length(Map.values(@selected_elements)) == 1} class="mt-2">
-  <.text_input
-    id="element-label"
-    phx-keyup="update_label"
-    value={hd(Map.values(@selected_elements))}
-    phx-value-id={hd(Map.keys(@selected_elements))}
+<div
+  :if={Kernel.map_size(Map.merge(@selected_elements["nodes"], @selected_elements["edges"])) == 1}
+  class="mt-2"
+>
+  <.live_component
+    module={ValentineWeb.WorkspaceLive.Components.DataFlowMetadataComponent}
+    id="data_flow_metadata_component"
+    element_id={
+      Map.merge(@selected_elements["nodes"], @selected_elements["edges"]) |> Map.keys() |> hd()
+    }
+    workspace_id={@workspace_id}
   />
 </div>

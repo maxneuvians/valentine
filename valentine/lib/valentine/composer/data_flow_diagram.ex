@@ -26,14 +26,19 @@ defmodule Valentine.Composer.DataFlowDiagram do
       %{
         data: %{
           id: id,
+          data_tags: [],
+          description: nil,
           label: Phoenix.Naming.humanize(type),
+          out_of_scope: "false",
           parent: nil,
+          security_tags: [],
+          technology_tags: [],
           type: type
         },
         grabbable: "true",
         position: %{
-          x: :rand.uniform(300),
-          y: :rand.uniform(300)
+          x: :rand.uniform(400),
+          y: :rand.uniform(400)
         }
       }
 
@@ -56,9 +61,15 @@ defmodule Valentine.Composer.DataFlowDiagram do
       %{
         data: %{
           id: edge["id"],
-          label: edge["id"],
+          data_tags: [],
+          description: nil,
+          label: "Data flow",
+          out_of_scope: "false",
+          security_tags: [],
           source: edge["source"],
-          target: edge["target"]
+          target: edge["target"],
+          technology_tags: [],
+          type: "edge"
         }
       }
 
@@ -284,40 +295,41 @@ defmodule Valentine.Composer.DataFlowDiagram do
     end
   end
 
-  def update_label(workspace_id, %{"id" => id, "value" => value}) do
+  # Catch for check box values
+  def update_metadata(workspace_id, %{"id" => id, "field" => field, "checked" => value}) do
+    update_metadata(workspace_id, %{"id" => id, "field" => field, "value" => [value]})
+  end
+
+  def update_metadata(workspace_id, %{"id" => id, "field" => field, "value" => value}) do
     dfd = get(workspace_id)
 
-    if String.starts_with?(id, "node") do
-      new_node =
-        %{
-          dfd.nodes[id]
-          | data: %{
-              dfd.nodes[id].data
-              | label: value
-            }
-        }
+    cond do
+      String.starts_with?(id, "node") ->
+        dfd
+        |> Map.update!(:nodes, fn nodes ->
+          Map.update!(nodes, id, &update_data(&1, field, value))
+        end)
+        |> put()
 
-      dfd
-      |> Map.update!(:nodes, &Map.put(&1, id, new_node))
-      |> put()
+        %{"id" => id, "field" => field, "value" => value}
 
-      new_node
-    else
-      new_edge =
-        %{
-          dfd.edges[id]
-          | data: %{
-              dfd.edges[id].data
-              | label: value
-            }
-        }
+      String.starts_with?(id, "edge") ->
+        dfd
+        |> Map.update!(:edges, fn edges ->
+          Map.update!(edges, id, &update_data(&1, field, value))
+        end)
+        |> put()
 
-      dfd
-      |> Map.update!(:edges, &Map.put(&1, id, new_edge))
-      |> put()
+        %{"id" => id, "field" => field, "value" => value}
 
-      new_edge
+      true ->
+        {:error, "Invalid element id"}
     end
+  end
+
+  # Catch function if value is undefined (ex. checkboxes)
+  def update_metadata(workspace_id, %{"id" => id, "field" => field}) do
+    update_metadata(workspace_id, %{"id" => id, "field" => field, "value" => "false"})
   end
 
   defp find_children(nodes, parent_id) do
@@ -351,5 +363,20 @@ defmodule Valentine.Composer.DataFlowDiagram do
         |> Map.new()
       end)
     end)
+  end
+
+  defp update_data(element, field, value) when is_list(value) do
+    field = String.to_existing_atom(field)
+    value = hd(value)
+
+    if value in element.data[field] do
+      put_in(element, [:data, field], Enum.reject(element.data[field], &(&1 == value)))
+    else
+      put_in(element, [:data, field], [value | element.data[field]])
+    end
+  end
+
+  defp update_data(element, field, value) do
+    put_in(element, [:data, String.to_existing_atom(field)], value)
   end
 end

@@ -170,7 +170,7 @@ const CytoscapeHook = {
             },
             edgeParams: function (sourceNode, targetNode) {
                 id = "edge-" + Math.floor(Math.random() * 1000);
-                return { data: { id: id, label: id } };
+                return { data: { id: id, label: "Data flow" } };
             },
             hoverDelay: 150,
             snap: true,
@@ -295,8 +295,8 @@ const CytoscapeHook = {
                     this.removeGroup(payload);
                     break;
 
-                case "update_label":
-                    this.updateLabel(payload);
+                case "update_metadata":
+                    this.updateMetadata(payload);
                     break;
 
                 default:
@@ -365,9 +365,11 @@ const CytoscapeHook = {
 
     removeElements(elements) {
         Object.keys(elements.nodes).forEach((id) => {
+            this.cy.getElementById(id).unselect();
             this.cy.getElementById(id).remove();
         });
         Object.keys(elements.edges).forEach((id) => {
+            this.cy.getElementById(id).unselect();
             this.cy.getElementById(id).remove();
         });
     },
@@ -380,8 +382,8 @@ const CytoscapeHook = {
         this.cy.getElementById(node.data.id).remove();
     },
 
-    updateLabel(node) {
-        this.cy.getElementById(node.data.id).data("label", node.data.label);
+    updateMetadata({ id, field, value }) {
+        this.cy.getElementById(id).data(field, value);
     }
 };
 

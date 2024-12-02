@@ -12,6 +12,7 @@ defmodule ValentineWeb.WorkspaceLive.DataFlow.IndexTest do
         live_action: nil,
         flash: %{},
         selected_elements: %{"nodes" => %{}, "edges" => %{}},
+        touched: false,
         workspace_id: dfd.workspace_id
       }
     }
@@ -99,6 +100,8 @@ defmodule ValentineWeb.WorkspaceLive.DataFlow.IndexTest do
                  push_events: [["updateGraph", %{payload: nil, event: "fit_view"}]]
                }
              }
+
+      assert socket.assigns.touched == true
     end
 
     test "handles generic events and applys them to the DFD and does pushes the event to the client if it happend locally",
