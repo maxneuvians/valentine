@@ -1,11 +1,12 @@
 defmodule Valentine.Composer.DataFlowDiagramTest do
-  use ExUnit.Case, async: true
+  use ValentineWeb.ConnCase
 
   alias Valentine.Composer.DataFlowDiagram
+  import Valentine.ComposerFixtures
 
   setup do
-    workspace_id = System.unique_integer([:positive])
-    {:ok, workspace_id: workspace_id}
+    workspace = workspace_fixture()
+    {:ok, workspace_id: workspace.id}
   end
 
   test "new/1 creates a new DataFlowDiagram", %{workspace_id: workspace_id} do

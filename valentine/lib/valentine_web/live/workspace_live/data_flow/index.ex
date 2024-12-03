@@ -61,6 +61,7 @@ defmodule ValentineWeb.WorkspaceLive.DataFlow.Index do
   # Handle the event when the user clicks on the "Save" button
   @impl true
   def handle_event("save", _params, socket) do
+    DataFlowDiagram.save(socket.assigns.workspace_id)
 
     broadcast("workspace_dataflow:#{socket.assigns.workspace_id}", %{
       event: :saved,
@@ -117,7 +118,7 @@ defmodule ValentineWeb.WorkspaceLive.DataFlow.Index do
     {:noreply,
      socket
      |> push_event("updateGraph", %{event: event, payload: payload})
-     |> assign(:saved, (if event == :saved, do: true, else: false))}
+     |> assign(:saved, if(event == :saved, do: true, else: false))}
   end
 
   defp broadcast(topic, payload) do

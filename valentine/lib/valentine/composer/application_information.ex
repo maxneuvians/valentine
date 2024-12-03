@@ -16,8 +16,8 @@ defmodule Valentine.Composer.ApplicationInformation do
   end
 
   @doc false
-  def changeset(workspace, attrs) do
-    workspace
+  def changeset(application_information, attrs) do
+    application_information
     |> cast(attrs, [:content, :workspace_id])
     |> validate_required([:content, :workspace_id])
   end

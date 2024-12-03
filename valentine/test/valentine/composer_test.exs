@@ -467,4 +467,91 @@ defmodule Valentine.ComposerTest do
       assert %Ecto.Changeset{} = Composer.change_application_information(application_information)
     end
   end
+
+  describe "data_flow_diagrams" do
+    alias Valentine.Composer.DataFlowDiagram
+
+    import Valentine.ComposerFixtures
+
+    @invalid_attrs %{comments: nil, content: nil, status: nil, tags: nil}
+
+    test "list_data_flow_diagrams/0 returns all data_flow_diagrams" do
+      data_flow_diagram = data_flow_diagram_fixture()
+
+      assert hd(Composer.list_data_flow_diagrams()).id == data_flow_diagram.id
+    end
+
+    test "get_data_flow_diagram_by_workspace_id/1 returns the data_flow_diagram with given workspace_id" do
+      data_flow_diagram = data_flow_diagram_fixture()
+
+      assert Composer.get_data_flow_diagram_by_workspace_id(data_flow_diagram.workspace_id).id ==
+               data_flow_diagram.id
+    end
+
+    test "get_data_flow_diagram!/1 returns the data_flow_diagram with given id" do
+      data_flow_diagram = data_flow_diagram_fixture()
+
+      assert Composer.get_data_flow_diagram!(data_flow_diagram.id).id ==
+               data_flow_diagram.id
+    end
+
+    test "create_data_flow_diagram/1 with valid data creates a data_flow_diagram" do
+      workspace = workspace_fixture()
+
+      valid_attrs = %{
+        edges: %{},
+        nodes: %{},
+        workspace_id: workspace.id
+      }
+
+      assert {:ok, %DataFlowDiagram{} = data_flow_diagram} =
+               Composer.create_data_flow_diagram(valid_attrs)
+
+      assert data_flow_diagram.edges == %{}
+      assert data_flow_diagram.nodes == %{}
+    end
+
+    test "create_data_flow_diagram/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Composer.create_data_flow_diagram(@invalid_attrs)
+    end
+
+    test "update_data_flow_diagram/2 with valid data updates the data_flow_diagram" do
+      data_flow_diagram = data_flow_diagram_fixture()
+
+      update_attrs = %{
+        edges: %{"foo" => "bar"}
+      }
+
+      assert {:ok, %DataFlowDiagram{} = data_flow_diagram} =
+               Composer.update_data_flow_diagram(data_flow_diagram, update_attrs)
+
+      assert data_flow_diagram.edges == %{"foo" => "bar"}
+    end
+
+    test "update_data_flow_diagram/2 with invalid data returns error changeset" do
+      data_flow_diagram = data_flow_diagram_fixture()
+
+      assert {:error, %Ecto.Changeset{}} =
+               Composer.update_data_flow_diagram(data_flow_diagram, %{edges: nil})
+
+      assert data_flow_diagram ==
+               Composer.get_data_flow_diagram!(data_flow_diagram.id)
+    end
+
+    test "delete_data_flow_diagram/1 deletes the data_flow_diagram" do
+      data_flow_diagram = data_flow_diagram_fixture()
+
+      assert {:ok, %DataFlowDiagram{}} =
+               Composer.delete_data_flow_diagram(data_flow_diagram)
+
+      assert_raise Ecto.NoResultsError, fn ->
+        Composer.get_data_flow_diagram!(data_flow_diagram.id)
+      end
+    end
+
+    test "change_data_flow_diagram/1 returns a data_flow_diagram changeset" do
+      data_flow_diagram = data_flow_diagram_fixture()
+      assert %Ecto.Changeset{} = Composer.change_data_flow_diagram(data_flow_diagram)
+    end
+  end
 end

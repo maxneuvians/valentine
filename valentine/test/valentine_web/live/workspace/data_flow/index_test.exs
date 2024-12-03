@@ -97,6 +97,28 @@ defmodule ValentineWeb.WorkspaceLive.DataFlow.IndexTest do
       assert socket.assigns.saved == true
     end
 
+    test "save event perists changes to the db", %{
+      socket: socket,
+      workspace_id: workspace_id
+    } do
+      assert Valentine.Composer.DataFlowDiagram.get(workspace_id).nodes == %{}
+
+      Valentine.Composer.DataFlowDiagram.add_node(workspace_id, %{"type" => "test"})
+
+      {:noreply, socket} =
+        ValentineWeb.WorkspaceLive.DataFlow.Index.handle_event(
+          "save",
+          %{},
+          socket
+        )
+
+      dfd = Valentine.Composer.DataFlowDiagram.new(workspace_id)
+
+      assert Kernel.map_size(dfd.nodes) == 1
+
+      assert socket.assigns.saved == true
+    end
+
     test "handles generic events and applys them to the DFD and pushes the event to the client",
          %{
            socket: socket

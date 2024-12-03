@@ -1,20 +1,44 @@
 defmodule Valentine.Composer.DataFlowDiagram do
-  defstruct [
-    :id,
-    :workspace_id,
-    :nodes,
-    :edges
-  ]
+  use Ecto.Schema
+  import Ecto.Changeset
 
   alias Valentine.Cache
+  alias Valentine.Composer
+
+  @primary_key {:id, Ecto.UUID, autogenerate: true}
+  @foreign_key_type :binary_id
+
+  schema "data_flow_diagrams" do
+    belongs_to :workspace, Valentine.Composer.Workspace
+
+    field :edges, :map, default: %{}
+    field :nodes, :map, default: %{}
+
+    timestamps(type: :utc_datetime)
+  end
+
+  def changeset(data_flow_diagram, attrs) do
+    data_flow_diagram
+    |> cast(attrs, [:edges, :nodes, :workspace_id])
+    |> validate_required([:edges, :nodes, :workspace_id])
+  end
 
   def new(workspace_id) do
-    %Valentine.Composer.DataFlowDiagram{
-      id: System.unique_integer([:positive]),
-      workspace_id: workspace_id,
-      nodes: %{},
-      edges: %{}
-    }
+    case Composer.get_data_flow_diagram_by_workspace_id(workspace_id) do
+      nil ->
+        {:ok, dfd} =
+          %{
+            workspace_id: workspace_id,
+            nodes: %{},
+            edges: %{}
+          }
+          |> Composer.create_data_flow_diagram()
+
+        dfd
+
+      dfd ->
+        dfd
+    end
   end
 
   def add_node(workspace_id, %{"type" => type}) do
@@ -291,6 +315,14 @@ defmodule Valentine.Composer.DataFlowDiagram do
     else
       {:error, "Only trust boundaries can be removed"}
     end
+  end
+
+  def save(workspace_id) do
+    dfd =
+      get(workspace_id)
+
+    Composer.get_data_flow_diagram!(dfd.id)
+    |> Composer.update_data_flow_diagram(Map.from_struct(dfd))
   end
 
   # Catch for check box values

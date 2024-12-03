@@ -99,7 +99,6 @@ defmodule Valentine.ComposerFixtures do
 
   def data_flow_diagram_fixture() do
     workspace = workspace_fixture()
-
     Valentine.Composer.DataFlowDiagram.get(workspace.id)
   end
 

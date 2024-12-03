@@ -11,6 +11,7 @@ defmodule Valentine.Composer do
   alias Valentine.Composer.Mitigation
   alias Valentine.Composer.Threat
   alias Valentine.Composer.ApplicationInformation
+  alias Valentine.Composer.DataFlowDiagram
 
   alias Valentine.Composer.AssumptionThreat
   alias Valentine.Composer.MitigationThreat
@@ -684,5 +685,106 @@ defmodule Valentine.Composer do
         attrs \\ %{}
       ) do
     ApplicationInformation.changeset(application_information, attrs)
+  end
+
+  @doc """
+  Returns the list of data_flow_diagrams.
+
+  ## Examples
+
+      iex> list_data_flow_diagrams()
+      [%DataFlowDiagram{}, ...]
+
+  """
+  def list_data_flow_diagrams do
+    Repo.all(DataFlowDiagram)
+  end
+
+  def get_data_flow_diagram_by_workspace_id(workspace_id) do
+    Repo.get_by(DataFlowDiagram, workspace_id: workspace_id)
+  end
+
+  @doc """
+  Gets a single data_flow_diagram.
+
+  Raises `Ecto.NoResultsError` if the DataFlowDiagram does not exist.
+
+  ## Examples
+
+      iex> get_data_flow_diagram!(123)
+      %DataFlowDiagram{}
+
+      iex> get_data_flow_diagram!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_data_flow_diagram!(id), do: Repo.get!(DataFlowDiagram, id)
+
+  @doc """
+  Creates a data_flow_diagram.
+
+  ## Examples
+
+      iex> create_data_flow_diagram(%{field: value})
+      {:ok, %DataFlowDiagram{}}
+
+      iex> create_data_flow_diagram(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_data_flow_diagram(attrs \\ %{}) do
+    %DataFlowDiagram{}
+    |> DataFlowDiagram.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a data_flow_diagram.
+
+  ## Examples
+
+      iex> update_data_flow_diagram(data_flow_diagram, %{field: new_value})
+      {:ok, %DataFlowDiagram{}}
+
+      iex> update_data_flow_diagram(data_flow_diagram, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_data_flow_diagram(%DataFlowDiagram{} = data_flow_diagram, attrs) do
+    data_flow_diagram
+    |> DataFlowDiagram.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a data_flow_diagram.
+
+  ## Examples
+
+      iex> delete_data_flow_diagram(data_flow_diagram)
+      {:ok, %DataFlowDiagram{}}
+
+      iex> delete_data_flow_diagram(data_flow_diagram)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_data_flow_diagram(%DataFlowDiagram{} = data_flow_diagram) do
+    Repo.delete(data_flow_diagram)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking data_flow_diagram changes.
+
+  ## Examples
+
+      iex> change_data_flow_diagram(data_flow_diagram)
+      %Ecto.Changeset{data: %DataFlowDiagram{}}
+
+  """
+  def change_data_flow_diagram(
+        %DataFlowDiagram{} = data_flow_diagram,
+        attrs \\ %{}
+      ) do
+    DataFlowDiagram.changeset(data_flow_diagram, attrs)
   end
 end
