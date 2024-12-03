@@ -28,9 +28,9 @@ defmodule ValentineWeb.WorkspaceLive.Components.DataFlowMetadataComponent do
               input_id="data-element-name"
               is_form_control
               autocomplete="off"
-              value={@element.data.label}
+              value={@element["data"]["label"]}
               phx-keyup="update_metadata"
-              phx-value-id={@element.data.id}
+              phx-value-id={@element["data"]["id"]}
               phx-value-field="label"
               is_full_width
               class="mb-4"
@@ -42,18 +42,18 @@ defmodule ValentineWeb.WorkspaceLive.Components.DataFlowMetadataComponent do
               is_full_width
               rows="3"
               is_form_control
-              value={@element.data.description}
+              value={@element["data"]["description"]}
               phx-keyup="update_metadata"
-              phx-value-id={@element.data.id}
+              phx-value-id={@element["data"]["id"]}
               phx-value-field="description"
               class="mb-4"
             />
             <.checkbox
               name="out-of-scope"
               input_id="data-element-out-of-scope"
-              checked={@element.data.out_of_scope == "true"}
+              checked={@element["data"]["out_of_scope"] == "true"}
               phx-click="update_metadata"
-              phx-value-id={@element.data.id}
+              phx-value-id={@element["data"]["id"]}
               phx-value-field="out_of_scope"
             >
               <:label>
@@ -70,14 +70,14 @@ defmodule ValentineWeb.WorkspaceLive.Components.DataFlowMetadataComponent do
             >
               <:toggle>
                 Select data features
-                <%= if is_list(@element.data.data_tags) && length(@element.data.data_tags) > 0 do %>
+                <%= if is_list(@element["data"]["data_tags"]) && length(@element["data"]["data_tags"]) > 0 do %>
                   <.counter>
-                    <%= length(@element.data.data_tags) %>
+                    <%= length(@element["data"]["data_tags"]) %>
                   </.counter>
                 <% end %>
               </:toggle>
               <.action_list is_multiple_select>
-                <%= for {section, values} <- data_options(@element.data.type) do %>
+                <%= for {section, values} <- data_options(@element["data"]["type"]) do %>
                   <.action_list_section_divider>
                     <:title><%= Phoenix.Naming.humanize(section) %></:title>
                   </.action_list_section_divider>
@@ -87,10 +87,10 @@ defmodule ValentineWeb.WorkspaceLive.Components.DataFlowMetadataComponent do
                       checked_value={value}
                       is_multiple_select
                       phx-click="update_metadata"
-                      phx-value-id={@element.data.id}
+                      phx-value-id={@element["data"]["id"]}
                       phx-value-field="data_tags"
                       phx-value-checked={value}
-                      is_selected={value in @element.data.data_tags}
+                      is_selected={value in @element["data"]["data_tags"]}
                     >
                       <%= Phoenix.Naming.humanize(value) %>
                     </.action_list_item>
@@ -106,14 +106,14 @@ defmodule ValentineWeb.WorkspaceLive.Components.DataFlowMetadataComponent do
             >
               <:toggle>
                 Select security features
-                <%= if is_list(@element.data.security_tags) && length(@element.data.security_tags) > 0 do %>
+                <%= if is_list(@element["data"]["security_tags"]) && length(@element["data"]["security_tags"]) > 0 do %>
                   <.counter>
-                    <%= length(@element.data.security_tags) %>
+                    <%= length(@element["data"]["security_tags"]) %>
                   </.counter>
                 <% end %>
               </:toggle>
               <.action_list is_multiple_select>
-                <%= for {section, values} <- security_options(@element.data.type) do %>
+                <%= for {section, values} <- security_options(@element["data"]["type"]) do %>
                   <.action_list_section_divider>
                     <:title><%= Phoenix.Naming.humanize(section) %></:title>
                   </.action_list_section_divider>
@@ -123,10 +123,10 @@ defmodule ValentineWeb.WorkspaceLive.Components.DataFlowMetadataComponent do
                       checked_value={value}
                       is_multiple_select
                       phx-click="update_metadata"
-                      phx-value-id={@element.data.id}
+                      phx-value-id={@element["data"]["id"]}
                       phx-value-field="security_tags"
                       phx-value-checked={value}
-                      is_selected={value in @element.data.security_tags}
+                      is_selected={value in @element["data"]["security_tags"]}
                     >
                       <%= Phoenix.Naming.humanize(value) %>
                     </.action_list_item>
@@ -142,14 +142,14 @@ defmodule ValentineWeb.WorkspaceLive.Components.DataFlowMetadataComponent do
             >
               <:toggle>
                 Select technology features
-                <%= if is_list(@element.data.technology_tags) && length(@element.data.technology_tags) > 0 do %>
+                <%= if is_list(@element["data"]["technology_tags"]) && length(@element["data"]["technology_tags"]) > 0 do %>
                   <.counter>
-                    <%= length(@element.data.technology_tags) %>
+                    <%= length(@element["data"]["technology_tags"]) %>
                   </.counter>
                 <% end %>
               </:toggle>
               <.action_list is_multiple_select>
-                <%= for {section, values} <- technology_options(@element.data.type) do %>
+                <%= for {section, values} <- technology_options(@element["data"]["type"]) do %>
                   <.action_list_section_divider>
                     <:title><%= Phoenix.Naming.humanize(section) %></:title>
                   </.action_list_section_divider>
@@ -159,10 +159,10 @@ defmodule ValentineWeb.WorkspaceLive.Components.DataFlowMetadataComponent do
                       checked_value={value}
                       is_multiple_select
                       phx-click="update_metadata"
-                      phx-value-id={@element.data.id}
+                      phx-value-id={@element["data"]["id"]}
                       phx-value-field="technology_tags"
                       phx-value-checked={value}
-                      is_selected={value in @element.data.technology_tags}
+                      is_selected={value in @element["data"]["technology_tags"]}
                     >
                       <%= Phoenix.Naming.humanize(value) %>
                     </.action_list_item>
@@ -174,10 +174,10 @@ defmodule ValentineWeb.WorkspaceLive.Components.DataFlowMetadataComponent do
           <div class="float-left col-4 p-2 pl-4">
             <div class="mb-2">
               <label>
-                More information about <%= Phoenix.Naming.humanize(@element.data.type) %>
+                More information about <%= Phoenix.Naming.humanize(@element["data"]["type"]) %>
               </label>
             </div>
-            <%= node_description(@element.data.type) |> Phoenix.HTML.raw() %>
+            <%= node_description(@element["data"]["type"]) |> Phoenix.HTML.raw() %>
           </div>
         </div>
       </.box>

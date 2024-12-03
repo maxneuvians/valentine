@@ -15,12 +15,12 @@ defmodule Valentine.Composer.DataFlowDiagramTest do
 
   test "add_node/2 adds a new node", %{workspace_id: workspace_id} do
     node = DataFlowDiagram.add_node(workspace_id, %{"type" => "test"})
-    assert node[:data][:type] == "test"
-    assert node[:data][:label] == "Test"
-    assert node[:data][:parent] == nil
-    assert node[:grabbable] == "true"
-    assert node[:position][:x] <= 400
-    assert node[:position][:y] <= 400
+    assert node["data"]["type"] == "test"
+    assert node["data"]["label"] == "Test"
+    assert node["data"]["parent"] == nil
+    assert node["grabbable"] == "true"
+    assert node["position"]["x"] <= 400
+    assert node["position"]["y"] <= 400
   end
 
   test "clear_dfd/2 clears the DataFlowDiagram", %{workspace_id: workspace_id} do
@@ -34,9 +34,9 @@ defmodule Valentine.Composer.DataFlowDiagramTest do
   test "ehcomplete/2 adds a new edge", %{workspace_id: workspace_id} do
     edge = %{"id" => "edge-1", "source" => "node-1", "target" => "node-2"}
     new_edge = DataFlowDiagram.ehcomplete(workspace_id, %{"edge" => edge})
-    assert new_edge[:data][:id] == edge["id"]
-    assert new_edge[:data][:source] == edge["source"]
-    assert new_edge[:data][:target] == edge["target"]
+    assert new_edge["data"]["id"] == edge["id"]
+    assert new_edge["data"]["source"] == edge["source"]
+    assert new_edge["data"]["target"] == edge["target"]
   end
 
   test "fit_view/2 returns nil", %{workspace_id: workspace_id} do
@@ -45,15 +45,15 @@ defmodule Valentine.Composer.DataFlowDiagramTest do
 
   test "free/2 sets node grabbable to true", %{workspace_id: workspace_id} do
     node = DataFlowDiagram.add_node(workspace_id, %{"type" => "test"})
-    DataFlowDiagram.grab(workspace_id, %{"node" => %{"id" => node[:data][:id]}})
-    updated_node = DataFlowDiagram.free(workspace_id, %{"node" => %{"id" => node[:data][:id]}})
-    assert updated_node[:grabbable] == "true"
+    DataFlowDiagram.grab(workspace_id, %{"node" => %{"id" => node["data"]["id"]}})
+    updated_node = DataFlowDiagram.free(workspace_id, %{"node" => %{"id" => node["data"]["id"]}})
+    assert updated_node["grabbable"] == "true"
   end
 
   test "grab/2 sets node grabbable to false", %{workspace_id: workspace_id} do
     node = DataFlowDiagram.add_node(workspace_id, %{"type" => "test"})
-    updated_node = DataFlowDiagram.grab(workspace_id, %{"node" => %{"id" => node[:data][:id]}})
-    assert updated_node[:grabbable] == "false"
+    updated_node = DataFlowDiagram.grab(workspace_id, %{"node" => %{"id" => node["data"]["id"]}})
+    assert updated_node["grabbable"] == "false"
   end
 
   test "group_nodes/2 returns and empty response if no nodes are selected", %{
@@ -71,7 +71,7 @@ defmodule Valentine.Composer.DataFlowDiagramTest do
     grouped_nodes =
       DataFlowDiagram.group_nodes(workspace_id, %{"selected_elements" => selected_elements})
 
-    assert grouped_nodes[:node][:data][:type] == "trust_boundary"
+    assert grouped_nodes[:node]["data"]["type"] == "trust_boundary"
     assert grouped_nodes[:children] == Map.keys(selected_elements["nodes"])
   end
 
@@ -81,8 +81,8 @@ defmodule Valentine.Composer.DataFlowDiagramTest do
     node1 = DataFlowDiagram.add_node(workspace_id, %{"type" => "test"})
     node2 = DataFlowDiagram.add_node(workspace_id, %{"type" => "test"})
     nodes = %{}
-    nodes = Map.put(nodes, node1.data.id, node1.data.label)
-    nodes = Map.put(nodes, node2.data.id, node2.data.label)
+    nodes = Map.put(nodes, node1["data"]["id"], node1["data"]["label"])
+    nodes = Map.put(nodes, node2["data"]["id"], node2["data"]["label"])
     selected_elements = %{"nodes" => nodes}
 
     assert DataFlowDiagram.merge_group(workspace_id, %{"selected_elements" => selected_elements}) ==
@@ -93,8 +93,8 @@ defmodule Valentine.Composer.DataFlowDiagramTest do
     node1 = DataFlowDiagram.add_node(workspace_id, %{"type" => "trust_boundary"})
     node2 = DataFlowDiagram.add_node(workspace_id, %{"type" => "trust_boundary"})
     nodes = %{}
-    nodes = Map.put(nodes, node1.data.id, node1.data.label)
-    nodes = Map.put(nodes, node2.data.id, node2.data.label)
+    nodes = Map.put(nodes, node1["data"]["id"], node1["data"]["label"])
+    nodes = Map.put(nodes, node2["data"]["id"], node2["data"]["label"])
     selected_elements = %{"nodes" => nodes}
 
     grouped_nodes =
@@ -102,15 +102,18 @@ defmodule Valentine.Composer.DataFlowDiagramTest do
 
     node3 = DataFlowDiagram.add_node(workspace_id, %{"type" => "test"})
     nodes = %{}
-    nodes = Map.put(nodes, node3.data.id, node3.data.label)
-    nodes = Map.put(nodes, grouped_nodes[:node][:data][:id], grouped_nodes[:node][:data][:label])
+    nodes = Map.put(nodes, node3["data"]["id"], node3["data"]["label"])
+
+    nodes =
+      Map.put(nodes, grouped_nodes[:node]["data"]["id"], grouped_nodes[:node]["data"]["label"])
+
     selected_elements = %{"nodes" => nodes}
 
     merged_group =
       DataFlowDiagram.merge_group(workspace_id, %{"selected_elements" => selected_elements})
 
-    assert merged_group[:node] == grouped_nodes[:node][:data][:id]
-    assert merged_group[:children] == [node3.data.id]
+    assert merged_group[:node] == grouped_nodes[:node]["data"]["id"]
+    assert merged_group[:children] == [node3["data"]["id"]]
     assert merged_group[:purge] == []
   end
 
@@ -118,8 +121,8 @@ defmodule Valentine.Composer.DataFlowDiagramTest do
     node1 = DataFlowDiagram.add_node(workspace_id, %{"type" => "test"})
     node2 = DataFlowDiagram.add_node(workspace_id, %{"type" => "test"})
     nodes = %{}
-    nodes = Map.put(nodes, node1.data.id, node1.data.label)
-    nodes = Map.put(nodes, node2.data.id, node2.data.label)
+    nodes = Map.put(nodes, node1["data"]["id"], node1["data"]["label"])
+    nodes = Map.put(nodes, node2["data"]["id"], node2["data"]["label"])
     selected_elements = %{"nodes" => nodes}
 
     group1 =
@@ -128,27 +131,27 @@ defmodule Valentine.Composer.DataFlowDiagramTest do
     node3 = DataFlowDiagram.add_node(workspace_id, %{"type" => "test"})
     node4 = DataFlowDiagram.add_node(workspace_id, %{"type" => "test"})
     nodes = %{}
-    nodes = Map.put(nodes, node3.data.id, node3.data.label)
-    nodes = Map.put(nodes, node4.data.id, node4.data.label)
+    nodes = Map.put(nodes, node3["data"]["id"], node3["data"]["label"])
+    nodes = Map.put(nodes, node4["data"]["id"], node4["data"]["label"])
     selected_elements = %{"nodes" => nodes}
 
     group2 =
       DataFlowDiagram.group_nodes(workspace_id, %{"selected_elements" => selected_elements})
 
     nodes = %{}
-    nodes = Map.put(nodes, group1[:node][:data][:id], group1[:node][:data][:label])
-    nodes = Map.put(nodes, group2[:node][:data][:id], group2[:node][:data][:label])
+    nodes = Map.put(nodes, group1[:node]["data"]["id"], group1[:node]["data"]["label"])
+    nodes = Map.put(nodes, group2[:node]["data"]["id"], group2[:node]["data"]["label"])
     selected_elements = %{"nodes" => nodes}
 
     merged_group =
       DataFlowDiagram.merge_group(workspace_id, %{"selected_elements" => selected_elements})
 
-    assert merged_group[:node] == group1[:node][:data][:id] || group2[:node][:data][:id]
+    assert merged_group[:node] == group1[:node]["data"]["id"] || group2[:node]["data"]["id"]
 
-    assert merged_group[:children] == [node1.data.id, node2.data.id] ||
-             [node3.data.id, node4.data.id]
+    assert merged_group[:children] == [node1["data"]["id"], node2["data"]["id"]] ||
+             [node3["data"]["id"], node4["data"]["id"]]
 
-    assert merged_group[:purge] == [group2[:node][:data][:id]] || [group1[:node][:data][:id]]
+    assert merged_group[:purge] == [group2[:node]["data"]["id"]] || [group1[:node]["data"]["id"]]
   end
 
   test "position/2 updates node position", %{workspace_id: workspace_id} do
@@ -157,11 +160,11 @@ defmodule Valentine.Composer.DataFlowDiagramTest do
 
     updated_node =
       DataFlowDiagram.position(workspace_id, %{
-        "node" => %{"id" => node[:data][:id], "position" => new_position}
+        "node" => %{"id" => node["data"]["id"], "position" => new_position}
       })
 
-    assert updated_node[:position][:x] == 100
-    assert updated_node[:position][:y] == 200
+    assert updated_node["position"]["x"] == 100
+    assert updated_node["position"]["y"] == 200
   end
 
   test "remove_elements/2 deletes selected nodes and edges", %{workspace_id: workspace_id} do
@@ -185,18 +188,21 @@ defmodule Valentine.Composer.DataFlowDiagramTest do
   test "remove_elements/2 deletes nodes and edges inside a group", %{workspace_id: workspace_id} do
     node1 = DataFlowDiagram.add_node(workspace_id, %{"type" => "test"})
     node2 = DataFlowDiagram.add_node(workspace_id, %{"type" => "test"})
-    edge = %{"id" => "edge-1", "source" => node1.data.id, "target" => node2.data.id}
+    edge = %{"id" => "edge-1", "source" => node1["data"]["id"], "target" => node2["data"]["id"]}
     DataFlowDiagram.ehcomplete(workspace_id, %{"edge" => edge})
     nodes = %{}
-    nodes = Map.put(nodes, node1.data.id, node1.data.label)
-    nodes = Map.put(nodes, node2.data.id, node2.data.label)
+    nodes = Map.put(nodes, node1["data"]["id"], node1["data"]["label"])
+    nodes = Map.put(nodes, node2["data"]["id"], node2["data"]["label"])
     selected_elements = %{"nodes" => nodes}
 
     grouped_nodes =
       DataFlowDiagram.group_nodes(workspace_id, %{"selected_elements" => selected_elements})
 
     nodes = %{}
-    nodes = Map.put(nodes, grouped_nodes[:node][:data][:id], grouped_nodes[:node][:data][:label])
+
+    nodes =
+      Map.put(nodes, grouped_nodes[:node]["data"]["id"], grouped_nodes[:node]["data"]["label"])
+
     selected_elements = %{"nodes" => nodes, "edges" => %{}}
 
     DataFlowDiagram.remove_elements(workspace_id, %{"selected_elements" => selected_elements})
@@ -212,8 +218,8 @@ defmodule Valentine.Composer.DataFlowDiagramTest do
     node1 = DataFlowDiagram.add_node(workspace_id, %{"type" => "test"})
     node2 = DataFlowDiagram.add_node(workspace_id, %{"type" => "test"})
     nodes = %{}
-    nodes = Map.put(nodes, node1.data.id, node1.data.label)
-    nodes = Map.put(nodes, node2.data.id, node2.data.label)
+    nodes = Map.put(nodes, node1["data"]["id"], node1["data"]["label"])
+    nodes = Map.put(nodes, node2["data"]["id"], node2["data"]["label"])
     selected_elements = %{"nodes" => nodes}
 
     assert DataFlowDiagram.remove_group(workspace_id, %{"selected_elements" => selected_elements}) ==
@@ -225,7 +231,7 @@ defmodule Valentine.Composer.DataFlowDiagramTest do
   } do
     node1 = DataFlowDiagram.add_node(workspace_id, %{"type" => "test"})
     nodes = %{}
-    nodes = Map.put(nodes, node1.data.id, node1.data.label)
+    nodes = Map.put(nodes, node1["data"]["id"], node1["data"]["label"])
     selected_elements = %{"nodes" => nodes}
 
     assert DataFlowDiagram.remove_group(workspace_id, %{"selected_elements" => selected_elements}) ==
@@ -238,15 +244,18 @@ defmodule Valentine.Composer.DataFlowDiagramTest do
     node1 = DataFlowDiagram.add_node(workspace_id, %{"type" => "test"})
     node2 = DataFlowDiagram.add_node(workspace_id, %{"type" => "test"})
     nodes = %{}
-    nodes = Map.put(nodes, node1.data.id, node1.data.label)
-    nodes = Map.put(nodes, node2.data.id, node2.data.label)
+    nodes = Map.put(nodes, node1["data"]["id"], node1["data"]["label"])
+    nodes = Map.put(nodes, node2["data"]["id"], node2["data"]["label"])
     selected_elements = %{"nodes" => nodes}
 
     grouped_nodes =
       DataFlowDiagram.group_nodes(workspace_id, %{"selected_elements" => selected_elements})
 
     nodes = %{}
-    nodes = Map.put(nodes, grouped_nodes[:node][:data][:id], grouped_nodes[:node][:data][:label])
+
+    nodes =
+      Map.put(nodes, grouped_nodes[:node]["data"]["id"], grouped_nodes[:node]["data"]["label"])
+
     selected_elements = %{"nodes" => nodes}
 
     DataFlowDiagram.remove_group(workspace_id, %{"selected_elements" => selected_elements})
@@ -254,12 +263,12 @@ defmodule Valentine.Composer.DataFlowDiagramTest do
     dfd = DataFlowDiagram.get(workspace_id)
     assert Kernel.map_size(dfd.nodes) == 2
     assert Kernel.map_size(dfd.edges) == 0
-    refute Map.has_key?(dfd.nodes, grouped_nodes[:node][:data][:id])
+    refute Map.has_key?(dfd.nodes, grouped_nodes[:node]["data"]["id"])
   end
 
   test "update_metadata/2 updates node metadata", %{workspace_id: workspace_id} do
     node = DataFlowDiagram.add_node(workspace_id, %{"type" => "test"})
-    new_metadata = %{"id" => node.data.id, "field" => "label", "value" => "New Label"}
+    new_metadata = %{"id" => node["data"]["id"], "field" => "label", "value" => "New Label"}
 
     resp =
       DataFlowDiagram.update_metadata(
@@ -267,18 +276,18 @@ defmodule Valentine.Composer.DataFlowDiagramTest do
         new_metadata
       )
 
-    assert resp == %{"id" => node.data.id, "field" => "label", "value" => "New Label"}
+    assert resp == %{"id" => node["data"]["id"], "field" => "label", "value" => "New Label"}
 
     dfd = DataFlowDiagram.get(workspace_id)
-    updated_node = Map.get(dfd.nodes, node.data.id)
+    updated_node = Map.get(dfd.nodes, node["data"]["id"])
 
-    assert updated_node[:data][:label] == "New Label"
+    assert updated_node["data"]["label"] == "New Label"
   end
 
   test "update_metadata/2 updates node metadata with a boolean value if value is missing (ex: checkbox boolean)",
        %{workspace_id: workspace_id} do
     node = DataFlowDiagram.add_node(workspace_id, %{"type" => "test"})
-    new_metadata = %{"id" => node.data.id, "field" => "checked"}
+    new_metadata = %{"id" => node["data"]["id"], "field" => "checked"}
 
     resp =
       DataFlowDiagram.update_metadata(
@@ -286,19 +295,19 @@ defmodule Valentine.Composer.DataFlowDiagramTest do
         new_metadata
       )
 
-    assert resp == %{"id" => node.data.id, "field" => "checked", "value" => "false"}
+    assert resp == %{"id" => node["data"]["id"], "field" => "checked", "value" => "false"}
 
     dfd = DataFlowDiagram.get(workspace_id)
-    updated_node = Map.get(dfd.nodes, node.data.id)
+    updated_node = Map.get(dfd.nodes, node["data"]["id"])
 
-    assert updated_node[:data][:checked] == "false"
+    assert updated_node["data"]["checked"] == "false"
   end
 
   test "update_metadata/2 updates node metadata with multiselect checks", %{
     workspace_id: workspace_id
   } do
     node = DataFlowDiagram.add_node(workspace_id, %{"type" => "test"})
-    new_metadata = %{"id" => node.data.id, "field" => "data_tags", "checked" => "a"}
+    new_metadata = %{"id" => node["data"]["id"], "field" => "data_tags", "checked" => "a"}
 
     resp =
       DataFlowDiagram.update_metadata(
@@ -306,12 +315,12 @@ defmodule Valentine.Composer.DataFlowDiagramTest do
         new_metadata
       )
 
-    assert resp == %{"id" => node.data.id, "field" => "data_tags", "value" => ["a"]}
+    assert resp == %{"id" => node["data"]["id"], "field" => "data_tags", "value" => ["a"]}
 
     dfd = DataFlowDiagram.get(workspace_id)
-    updated_node = Map.get(dfd.nodes, node.data.id)
+    updated_node = Map.get(dfd.nodes, node["data"]["id"])
 
-    assert updated_node[:data][:data_tags] == ["a"]
+    assert updated_node["data"]["data_tags"] == ["a"]
 
     # Test removing a value
 
@@ -321,9 +330,9 @@ defmodule Valentine.Composer.DataFlowDiagramTest do
     )
 
     dfd = DataFlowDiagram.get(workspace_id)
-    updated_node = Map.get(dfd.nodes, node.data.id)
+    updated_node = Map.get(dfd.nodes, node["data"]["id"])
 
-    assert updated_node[:data][:data_tags] == []
+    assert updated_node["data"]["data_tags"] == []
   end
 
   test "zoom_in/2 returns nil", %{workspace_id: workspace_id} do

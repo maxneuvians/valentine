@@ -84,6 +84,19 @@ defmodule ValentineWeb.WorkspaceLive.DataFlow.IndexTest do
       assert socket.assigns.selected_elements == %{"nodes" => %{}, "edges" => %{}}
     end
 
+    test "save event assigns saved to true", %{
+      socket: socket
+    } do
+      {:noreply, socket} =
+        ValentineWeb.WorkspaceLive.DataFlow.Index.handle_event(
+          "save",
+          %{},
+          socket
+        )
+
+      assert socket.assigns.saved == true
+    end
+
     test "handles generic events and applys them to the DFD and pushes the event to the client",
          %{
            socket: socket
@@ -135,6 +148,34 @@ defmodule ValentineWeb.WorkspaceLive.DataFlow.IndexTest do
                  push_events: [["updateGraph", %{event: "fit_view", payload: nil}]]
                }
              }
+    end
+
+    test "receives remote event and sets saved to true if the event is :saved", %{socket: socket} do
+      {:noreply, socket} =
+        ValentineWeb.WorkspaceLive.DataFlow.Index.handle_info(
+          %{
+            event: :saved,
+            payload: nil
+          },
+          socket
+        )
+
+      assert socket.assigns.saved == true
+    end
+
+    test "receives remote event and sets saved to false if the event is not :saved", %{
+      socket: socket
+    } do
+      {:noreply, socket} =
+        ValentineWeb.WorkspaceLive.DataFlow.Index.handle_info(
+          %{
+            event: "fit_view",
+            payload: nil
+          },
+          socket
+        )
+
+      assert socket.assigns.saved == false
     end
   end
 end

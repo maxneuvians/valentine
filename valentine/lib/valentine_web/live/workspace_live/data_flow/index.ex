@@ -24,6 +24,7 @@ defmodule ValentineWeb.WorkspaceLive.DataFlow.Index do
      socket
      |> assign(:dfd, dfd)
      |> assign(:selected_elements, %{"nodes" => %{}, "edges" => %{}})
+     |> assign(:saved, true)
      |> assign(:touched, true)
      |> assign(:workspace_id, workspace_id)}
   end
@@ -57,6 +58,20 @@ defmodule ValentineWeb.WorkspaceLive.DataFlow.Index do
      |> assign(:selected_elements, selected_elements)}
   end
 
+  # Handle the event when the user clicks on the "Save" button
+  @impl true
+  def handle_event("save", _params, socket) do
+
+    broadcast("workspace_dataflow:#{socket.assigns.workspace_id}", %{
+      event: :saved,
+      payload: %{}
+    })
+
+    {:noreply,
+     socket
+     |> assign(:saved, true)}
+  end
+
   # Local event from HTML or JS
   @impl true
   def handle_event(event, params, socket) do
@@ -80,7 +95,7 @@ defmodule ValentineWeb.WorkspaceLive.DataFlow.Index do
         })
 
         if Map.has_key?(params, "localJs") do
-          {:noreply, socket}
+          {:noreply, socket |> assign(:saved, false)}
         else
           {:noreply,
            socket
@@ -88,7 +103,8 @@ defmodule ValentineWeb.WorkspaceLive.DataFlow.Index do
              event: event,
              payload: payload
            })
-           |> assign(:touched, !socket.assigns.touched)}
+           |> assign(:touched, !socket.assigns.touched)
+           |> assign(:saved, false)}
         end
     end
   end
@@ -100,7 +116,8 @@ defmodule ValentineWeb.WorkspaceLive.DataFlow.Index do
 
     {:noreply,
      socket
-     |> push_event("updateGraph", %{event: event, payload: payload})}
+     |> push_event("updateGraph", %{event: event, payload: payload})
+     |> assign(:saved, (if event == :saved, do: true, else: false))}
   end
 
   defp broadcast(topic, payload) do

@@ -24,21 +24,21 @@ defmodule Valentine.Composer.DataFlowDiagram do
 
     node =
       %{
-        data: %{
-          id: id,
-          data_tags: [],
-          description: nil,
-          label: Phoenix.Naming.humanize(type),
-          out_of_scope: "false",
-          parent: nil,
-          security_tags: [],
-          technology_tags: [],
-          type: type
+        "data" => %{
+          "id" => id,
+          "data_tags" => [],
+          "description" => nil,
+          "label" => Phoenix.Naming.humanize(type),
+          "out_of_scope" => "false",
+          "parent" => nil,
+          "security_tags" => [],
+          "technology_tags" => [],
+          "type" => type
         },
-        grabbable: "true",
-        position: %{
-          x: :rand.uniform(400),
-          y: :rand.uniform(400)
+        "grabbable" => "true",
+        "position" => %{
+          "x" => :rand.uniform(400),
+          "y" => :rand.uniform(400)
         }
       }
 
@@ -59,17 +59,17 @@ defmodule Valentine.Composer.DataFlowDiagram do
 
     new_edge =
       %{
-        data: %{
-          id: edge["id"],
-          data_tags: [],
-          description: nil,
-          label: "Data flow",
-          out_of_scope: "false",
-          security_tags: [],
-          source: edge["source"],
-          target: edge["target"],
-          technology_tags: [],
-          type: "edge"
+        "data" => %{
+          "id" => edge["id"],
+          "data_tags" => [],
+          "description" => nil,
+          "label" => "Data flow",
+          "out_of_scope" => "false",
+          "security_tags" => [],
+          "source" => edge["source"],
+          "target" => edge["target"],
+          "technology_tags" => [],
+          "type" => "edge"
         }
       }
 
@@ -88,7 +88,7 @@ defmodule Valentine.Composer.DataFlowDiagram do
     new_node =
       %{
         dfd.nodes[node["id"]]
-        | grabbable: "true"
+        | "grabbable" => "true"
       }
 
     dfd
@@ -111,7 +111,7 @@ defmodule Valentine.Composer.DataFlowDiagram do
     new_node =
       %{
         dfd.nodes[node["id"]]
-        | grabbable: "false"
+        | "grabbable" => "false"
       }
 
     dfd
@@ -137,9 +137,9 @@ defmodule Valentine.Composer.DataFlowDiagram do
           # Put parent id in node.data
           Map.put(acc, id, %{
             acc[id]
-            | data: %{
-                acc[id].data
-                | parent: parent_node.data.id
+            | "data" => %{
+                acc[id]["data"]
+                | "parent" => parent_node["data"]["id"]
               }
           })
         else
@@ -147,7 +147,7 @@ defmodule Valentine.Composer.DataFlowDiagram do
         end
       end)
     end)
-    |> Map.update!(:nodes, &Map.put(&1, parent_node.data.id, parent_node))
+    |> Map.update!(:nodes, &Map.put(&1, parent_node["data"]["id"], parent_node))
     |> put()
 
     %{node: parent_node, children: Map.keys(selected_elements["nodes"])}
@@ -156,21 +156,21 @@ defmodule Valentine.Composer.DataFlowDiagram do
   def merge_group(workspace_id, %{"selected_elements" => %{"nodes" => nodes}}) do
     dfd = get(workspace_id)
     # Check if any of the selected nodes is a trust boundary if not return an error
-    if Enum.any?(nodes, fn {id, _} -> dfd.nodes[id].data.type == "trust_boundary" end) do
+    if Enum.any?(nodes, fn {id, _} -> dfd.nodes[id]["data"]["type"] == "trust_boundary" end) do
       # Get all nodes that are trust boundaries
       [
         {trust_boundary_id, _}
         | other_boundaries
       ] =
-        Enum.filter(nodes, fn {id, _} -> dfd.nodes[id].data.type == "trust_boundary" end)
+        Enum.filter(nodes, fn {id, _} -> dfd.nodes[id]["data"]["type"] == "trust_boundary" end)
 
       trust_boundary = dfd.nodes[trust_boundary_id]
 
       # Get all the selected elements that do not belong to that trust boundary
       to_merge =
         Enum.filter(nodes, fn {id, _} ->
-          dfd.nodes[id].data.type != "trust_boundary" and
-            dfd.nodes[id].data.parent != trust_boundary.data.id
+          dfd.nodes[id]["data"]["type"] != "trust_boundary" and
+            dfd.nodes[id]["data"]["parent"] != trust_boundary["data"]["id"]
         end)
 
       # Get all the children that belong to the other trust boundaries
@@ -189,9 +189,9 @@ defmodule Valentine.Composer.DataFlowDiagram do
             :nodes,
             &Map.put(&1, id, %{
               acc.nodes[id]
-              | data: %{
-                  acc.nodes[id].data
-                  | parent: trust_boundary.data.id
+              | "data" => %{
+                  acc.nodes[id]["data"]
+                  | "parent" => trust_boundary["data"]["id"]
                 }
             })
           )
@@ -206,7 +206,7 @@ defmodule Valentine.Composer.DataFlowDiagram do
       |> put()
 
       %{
-        node: trust_boundary.data.id,
+        node: trust_boundary["data"]["id"],
         children: Map.keys(Map.new(to_merge ++ children)),
         purge: Map.keys(Map.new(other_boundaries))
       }
@@ -221,9 +221,9 @@ defmodule Valentine.Composer.DataFlowDiagram do
     new_node =
       %{
         dfd.nodes[node["id"]]
-        | position: %{
-            x: node["position"]["x"],
-            y: node["position"]["y"]
+        | "position" => %{
+            "x" => node["position"]["x"],
+            "y" => node["position"]["y"]
           }
       }
 
@@ -268,23 +268,23 @@ defmodule Valentine.Composer.DataFlowDiagram do
     dfd = get(workspace_id)
     node = dfd.nodes[Map.keys(nodes) |> List.first()]
 
-    if node.data.type == "trust_boundary" do
+    if node["data"]["type"] == "trust_boundary" do
       dfd.nodes
-      |> Enum.filter(fn {_, n} -> n.data.parent == node.data.id end)
+      |> Enum.filter(fn {_, n} -> n["data"]["parent"] == node["data"]["id"] end)
       |> Enum.reduce(dfd, fn {id, n}, acc ->
         acc
         |> Map.update!(
           :nodes,
           &Map.put(&1, id, %{
             n
-            | data: %{
-                n.data
-                | parent: nil
+            | "data" => %{
+                n["data"]
+                | "parent" => nil
               }
           })
         )
       end)
-      |> Map.update!(:nodes, &Map.delete(&1, node.data.id))
+      |> Map.update!(:nodes, &Map.delete(&1, node["data"]["id"]))
       |> put()
 
       node
@@ -335,14 +335,14 @@ defmodule Valentine.Composer.DataFlowDiagram do
 
   defp find_children(nodes, parent_id) do
     nodes
-    |> Enum.filter(fn {_, node} -> node.data.parent == parent_id end)
+    |> Enum.filter(fn {_, node} -> node["data"]["parent"] == parent_id end)
   end
 
   defp find_descendents(nodes, parent_id) do
     nodes
     |> Enum.reduce([parent_id], fn {node_id, node}, acc ->
-      case node.data do
-        %{parent: ^parent_id} ->
+      case node["data"] do
+        %{"parent" => ^parent_id} ->
           [node_id | acc ++ find_descendents(nodes, node_id)]
 
         _ ->
@@ -359,7 +359,7 @@ defmodule Valentine.Composer.DataFlowDiagram do
       |> Map.update!(:nodes, &Map.delete(&1, node_id))
       |> Map.update!(:edges, fn edges ->
         Enum.filter(edges, fn {_, edge} ->
-          edge[:data][:source] != node_id and edge[:data][:target] != node_id
+          edge["data"]["source"] != node_id and edge["data"]["target"] != node_id
         end)
         |> Map.new()
       end)
@@ -367,17 +367,16 @@ defmodule Valentine.Composer.DataFlowDiagram do
   end
 
   defp update_data(element, field, value) when is_list(value) do
-    field = String.to_existing_atom(field)
     value = hd(value)
 
-    if value in element.data[field] do
-      put_in(element, [:data, field], Enum.reject(element.data[field], &(&1 == value)))
+    if value in element["data"][field] do
+      put_in(element, ["data", field], Enum.reject(element["data"][field], &(&1 == value)))
     else
-      put_in(element, [:data, field], [value | element.data[field]])
+      put_in(element, ["data", field], [value | element["data"][field]])
     end
   end
 
   defp update_data(element, field, value) do
-    put_in(element, [:data, String.to_existing_atom(field)], value)
+    put_in(element, ["data", field], value)
   end
 end

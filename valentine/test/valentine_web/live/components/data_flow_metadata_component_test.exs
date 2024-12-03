@@ -14,7 +14,7 @@ defmodule ValentineWeb.WorkspaceLive.Components.DataFlowMetadataComponentTest do
     socket = %Phoenix.LiveView.Socket{
       assigns: %{
         __changed__: %{},
-        element_id: node.data.id,
+        element_id: node["data"]["id"],
         workspace_id: dfd.workspace_id
       }
     }
@@ -24,7 +24,7 @@ defmodule ValentineWeb.WorkspaceLive.Components.DataFlowMetadataComponentTest do
 
   test "renders properly", %{node: node, socket: socket} do
     html = render_component(DataFlowMetadataComponent, socket.assigns)
-    assert html =~ node.data.id
+    assert html =~ node["data"]["id"]
   end
 
   describe "update/2" do
