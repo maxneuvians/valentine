@@ -39,7 +39,7 @@ defmodule Valentine.Composer.DataFlowDiagramTest do
     assert new_edge[:data][:target] == edge["target"]
   end
 
-  test "fit_view/2 returns lil", %{workspace_id: workspace_id} do
+  test "fit_view/2 returns nil", %{workspace_id: workspace_id} do
     assert DataFlowDiagram.fit_view(workspace_id, %{}) == nil
   end
 
@@ -324,5 +324,13 @@ defmodule Valentine.Composer.DataFlowDiagramTest do
     updated_node = Map.get(dfd.nodes, node.data.id)
 
     assert updated_node[:data][:data_tags] == []
+  end
+
+  test "zoom_in/2 returns nil", %{workspace_id: workspace_id} do
+    assert DataFlowDiagram.zoom_in(workspace_id, %{}) == nil
+  end
+
+  test "zoom_out/2 returns nil", %{workspace_id: workspace_id} do
+    assert DataFlowDiagram.zoom_out(workspace_id, %{}) == nil
   end
 end

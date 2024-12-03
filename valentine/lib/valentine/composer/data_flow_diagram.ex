@@ -80,9 +80,7 @@ defmodule Valentine.Composer.DataFlowDiagram do
     new_edge
   end
 
-  def fit_view(_workspace_id, _params) do
-    nil
-  end
+  def fit_view(_workspace_id, _params), do: nil
 
   def free(workspace_id, %{"node" => node}) do
     dfd = get(workspace_id)
@@ -331,6 +329,9 @@ defmodule Valentine.Composer.DataFlowDiagram do
   def update_metadata(workspace_id, %{"id" => id, "field" => field}) do
     update_metadata(workspace_id, %{"id" => id, "field" => field, "value" => "false"})
   end
+
+  def zoom_in(_workspace_id, _params), do: nil
+  def zoom_out(_workspace_id, _params), do: nil
 
   defp find_children(nodes, parent_id) do
     nodes

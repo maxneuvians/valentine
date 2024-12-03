@@ -6,6 +6,12 @@ defmodule ValentineWeb.WorkspaceLive.Components.DataFlowComponent do
     ~H"""
     <div>
       <div class="d-flex mb-2">
+        <div class="d-flex flex-column mr-4">
+          <span class="text-small text-bold mb-1">&nbsp;</span>
+          <.button is_primary class="mb-2" id="quill-save-btn">
+            <span>Save</span>
+          </.button>
+        </div>
         <div class="d-flex flex-column mr-2">
           <span class="text-small text-bold mb-1">Entities</span>
           <.button_group class="mr-2">
@@ -72,6 +78,12 @@ defmodule ValentineWeb.WorkspaceLive.Components.DataFlowComponent do
           <.button_group class="mr-2">
             <.button is_icon_button aria-label="Fit View" title="Fit view" phx-click="fit_view">
               <.octicon name="project-template-24" />
+            </.button>
+            <.button is_icon_button aria-label="Zoom in" title="Zoom in" phx-click="zoom_in">
+              <.octicon name="plus-24" />
+            </.button>
+            <.button is_icon_button aria-label="Zoom out" title="Zoom out" phx-click="zoom_out">
+              <.octicon name="horizontal-rule-24" />
             </.button>
           </.button_group>
         </div>

@@ -299,6 +299,14 @@ const CytoscapeHook = {
                     this.updateMetadata(payload);
                     break;
 
+                case "zoom_in":
+                    this.zoomIn();
+                    break;
+
+                case "zoom_out":
+                    this.zoomOut();
+                    break;
+
                 default:
                     console.warn("Unknown update type:", event);
             }
@@ -384,6 +392,14 @@ const CytoscapeHook = {
 
     updateMetadata({ id, field, value }) {
         this.cy.getElementById(id).data(field, value);
+    },
+
+    zoomIn() {
+        this.cy.zoom(this.cy.zoom() * 1.2);
+    },
+
+    zoomOut() {
+        this.cy.zoom(this.cy.zoom() * 0.8);
     }
 };
 
