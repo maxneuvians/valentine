@@ -18,7 +18,7 @@ defmodule ValentineWeb.WorkspaceLive.DataFlow.Index do
     end
 
     dfd =
-      DataFlowDiagram.get(workspace_id)
+      DataFlowDiagram.get(workspace_id, false)
 
     {:ok,
      socket

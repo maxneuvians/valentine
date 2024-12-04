@@ -74,7 +74,11 @@ defmodule Valentine.Composer.DataFlowDiagram do
   end
 
   def clear_dfd(workspace_id, _params) do
-    new(workspace_id) |> put()
+    get(workspace_id)
+    |> Map.put(:nodes, %{})
+    |> Map.put(:edges, %{})
+    |> put()
+
     nil
   end
 
@@ -122,10 +126,14 @@ defmodule Valentine.Composer.DataFlowDiagram do
     new_node
   end
 
-  def get(workspace_id) do
-    case Cache.get({__MODULE__, :dfd, workspace_id}) do
-      nil -> new(workspace_id) |> put()
-      dfd -> dfd
+  def get(workspace_id, from_cache \\ true) do
+    if from_cache do
+      case Cache.get({__MODULE__, :dfd, workspace_id}) do
+        nil -> new(workspace_id) |> put()
+        dfd -> dfd
+      end
+    else
+      new(workspace_id) |> put()
     end
   end
 

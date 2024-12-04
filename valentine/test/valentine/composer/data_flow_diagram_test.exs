@@ -51,6 +51,17 @@ defmodule Valentine.Composer.DataFlowDiagramTest do
     assert updated_node["grabbable"] == "true"
   end
 
+  test "get/2 returns the DataFlowDiagram", %{workspace_id: workspace_id} do
+    dfd = DataFlowDiagram.get(workspace_id)
+    assert %DataFlowDiagram{id: _, workspace_id: ^workspace_id, nodes: %{}, edges: %{}} = dfd
+  end
+
+  test "get/2 returns the DataFlowDiagram skipping the cache", %{workspace_id: workspace_id} do
+    DataFlowDiagram.add_node(workspace_id, %{"type" => "test"})
+    dfd = DataFlowDiagram.get(workspace_id, false)
+    assert %DataFlowDiagram{id: _, workspace_id: ^workspace_id, nodes: %{}, edges: %{}} = dfd
+  end
+
   test "grab/2 sets node grabbable to false", %{workspace_id: workspace_id} do
     node = DataFlowDiagram.add_node(workspace_id, %{"type" => "test"})
     updated_node = DataFlowDiagram.grab(workspace_id, %{"node" => %{"id" => node["data"]["id"]}})
