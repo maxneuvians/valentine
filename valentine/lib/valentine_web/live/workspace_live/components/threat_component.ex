@@ -2,6 +2,9 @@ defmodule ValentineWeb.WorkspaceLive.Components.ThreatComponent do
   use ValentineWeb, :live_component
   use PrimerLive
 
+  alias Valentine.Composer
+
+  @impl true
   def render(assigns) do
     if assigns.threat == nil do
       ""
@@ -61,7 +64,30 @@ defmodule ValentineWeb.WorkspaceLive.Components.ThreatComponent do
               @threat.impacted_assets
             ) %> .
           </p>
-          <div class="clearfix">
+          <div class="clearfix mt-6">
+            <div class="float-left col-2 mr-2">
+              <.text_input
+                id={"#{@threat.id}-tag-field"}
+                name={"#{@threat.id}-tag"}
+                placeholder="Add a tag"
+                phx-keyup="set_tag"
+                phx-target={@myself}
+                value={@tag}
+              >
+                <:group_button>
+                  <.button phx-click="add_tag" phx-target={@myself}>Add</.button>
+                </:group_button>
+              </.text_input>
+            </div>
+
+            <div class="float-left">
+              <%= for tag <- @threat.tags || [] do %>
+                <.button phx-click="remove_tag" phx-value-tag={tag} phx-target={@myself}>
+                  <span><%= tag %></span>
+                  <.octicon name="x-16" />
+                </.button>
+              <% end %>
+            </div>
             <div class="text-bold f4 float-right" style="color:#cecece">
               <%= stride(@threat.stride) %>
             </div>
@@ -70,6 +96,47 @@ defmodule ValentineWeb.WorkspaceLive.Components.ThreatComponent do
       </div>
       """
     end
+  end
+
+  @impl true
+  def update(assigns, socket) do
+    {:ok,
+     socket
+     |> assign(assigns)
+     |> assign(:tag, "")}
+  end
+
+  @impl true
+  def handle_event("add_tag", _params, %{assigns: %{tag: tag}} = socket)
+      when byte_size(tag) > 0 do
+    current_tags = socket.assigns.threat.tags || []
+
+    if tag not in current_tags do
+      updated_tags = current_tags ++ [tag]
+
+      Composer.update_threat(socket.assigns.threat, %{tags: updated_tags})
+
+      {:noreply,
+       socket
+       |> assign(:tag, "")
+       |> assign(:threat, %{socket.assigns.threat | tags: updated_tags})}
+    else
+      {:noreply, socket}
+    end
+  end
+
+  def handle_event("add_tag", _, socket), do: {:noreply, socket}
+
+  @impl true
+  def handle_event("remove_tag", %{"tag" => tag}, socket) do
+    updated_tags = List.delete(socket.assigns.threat.tags, tag)
+    Composer.update_threat(socket.assigns.threat, %{tags: updated_tags})
+    {:noreply, assign(socket, :threat, %{socket.assigns.threat | tags: updated_tags})}
+  end
+
+  @impl true
+  def handle_event("set_tag", %{"value" => value} = _params, socket) do
+    {:noreply, assign(socket, :tag, value)}
   end
 
   def priority_badge(priority) do

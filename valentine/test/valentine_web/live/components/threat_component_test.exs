@@ -8,7 +8,14 @@ defmodule ValentineWeb.WorkspaceLive.Components.ThreatComponentTest do
 
   defp create_threat(_) do
     threat = threat_fixture()
-    %{assigns: %{threat: threat}}
+
+    assigns = %{__changed__: %{}, threat: threat, id: "threat-component"}
+
+    socket = %Phoenix.LiveView.Socket{
+      assigns: assigns
+    }
+
+    %{assigns: assigns, socket: socket}
   end
 
   describe "render" do
@@ -90,6 +97,68 @@ defmodule ValentineWeb.WorkspaceLive.Components.ThreatComponentTest do
       assigns = Map.put(assigns, :threat, Map.put(assigns.threat, :status, :not_useful))
       html = render_component(ThreatComponent, assigns)
       assert html =~ "Not Useful"
+    end
+  end
+
+  describe "update/2" do
+    setup [:create_threat]
+
+    test "assigns an empty tag", %{assigns: assigns, socket: socket} do
+      {:ok, updated_socket} = ThreatComponent.update(assigns, socket)
+      assert updated_socket.assigns.tag == ""
+    end
+  end
+
+  describe "handle_event/3" do
+    setup [:create_threat]
+
+    test "adds a tag to the threat", %{assigns: assigns, socket: socket} do
+      socket = Map.put(socket, :assigns, Map.put(assigns, :tag, "new-tag"))
+
+      {:noreply, updated_socket} =
+        ThreatComponent.handle_event("add_tag", %{}, socket)
+
+      assert Enum.member?(updated_socket.assigns.threat.tags, "new-tag")
+    end
+
+    test "does nothing if tag is not set", %{assigns: assigns, socket: socket} do
+      socket = Map.put(socket, :assigns, Map.delete(assigns, :tag))
+
+      {:noreply, updated_socket} =
+        ThreatComponent.handle_event("add_tag", %{}, socket)
+
+      assert Enum.count(updated_socket.assigns.threat.tags) ==
+               Enum.count(assigns.threat.tags)
+    end
+
+    test "does nothing if tag already exists", %{assigns: assigns, socket: socket} do
+      socket = Map.put(socket, :assigns, Map.put(assigns, :tag, hd(assigns.threat.tags)))
+
+      {:noreply, updated_socket} =
+        ThreatComponent.handle_event("add_tag", %{}, socket)
+
+      assert Enum.count(updated_socket.assigns.threat.tags) ==
+               Enum.count(assigns.threat.tags)
+    end
+
+    test "removes a tag from the threat", %{assigns: assigns, socket: socket} do
+      tag = hd(assigns.threat.tags)
+      socket = Map.put(socket, :assigns, Map.put(assigns, :tag, tag))
+
+      {:noreply, updated_socket} =
+        ThreatComponent.handle_event("remove_tag", %{"tag" => tag}, socket)
+
+      assert !Enum.member?(updated_socket.assigns.threat.tags, tag)
+    end
+
+    test "sets a tag", %{assigns: assigns, socket: socket} do
+      tag = "new-tag"
+      socket = Map.put(socket, :assigns, Map.put(assigns, :tag, tag))
+
+      {:noreply, updated_socket} =
+        ThreatComponent.handle_event("set_tag", %{"value" => tag}, socket)
+
+      assert updated_socket.assigns.tag == tag
     end
   end
 
