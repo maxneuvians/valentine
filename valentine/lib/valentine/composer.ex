@@ -14,6 +14,7 @@ defmodule Valentine.Composer do
   alias Valentine.Composer.DataFlowDiagram
 
   alias Valentine.Composer.AssumptionThreat
+  alias Valentine.Composer.AssumptionMitigation
   alias Valentine.Composer.MitigationThreat
 
   @doc """
@@ -587,6 +588,48 @@ defmodule Valentine.Composer do
     |> case do
       {1, nil} -> {:ok, threat |> Repo.preload(:mitigations, force: true)}
       {:error, _} -> {:error, threat}
+    end
+  end
+
+  def add_assumption_to_mitigation(%Mitigation{} = mitigation, %Assumption{} = assumption) do
+    %AssumptionMitigation{assumption_id: assumption.id, mitigation_id: mitigation.id}
+    |> Repo.insert()
+    |> case do
+      {:ok, _} -> {:ok, mitigation |> Repo.preload(:assumptions, force: true)}
+      {:error, _} -> {:error, mitigation}
+    end
+  end
+
+  def remove_assumption_from_mitigation(%Mitigation{} = mitigation, %Assumption{} = assumption) do
+    Repo.delete_all(
+      from(am in AssumptionMitigation,
+        where: am.assumption_id == ^assumption.id and am.mitigation_id == ^mitigation.id
+      )
+    )
+    |> case do
+      {1, nil} -> {:ok, mitigation |> Repo.preload(:assumptions, force: true)}
+      {:error, _} -> {:error, mitigation}
+    end
+  end
+
+  def add_mitigation_to_assumption(%Assumption{} = assumption, %Mitigation{} = mitigation) do
+    %AssumptionMitigation{assumption_id: assumption.id, mitigation_id: mitigation.id}
+    |> Repo.insert()
+    |> case do
+      {:ok, _} -> {:ok, assumption |> Repo.preload(:mitigations, force: true)}
+      {:error, _} -> {:error, assumption}
+    end
+  end
+
+  def remove_mitigation_from_assumption(%Assumption{} = assumption, %Mitigation{} = mitigation) do
+    Repo.delete_all(
+      from(am in AssumptionMitigation,
+        where: am.assumption_id == ^assumption.id and am.mitigation_id == ^mitigation.id
+      )
+    )
+    |> case do
+      {1, nil} -> {:ok, assumption |> Repo.preload(:mitigations, force: true)}
+      {:error, _} -> {:error, assumption}
     end
   end
 

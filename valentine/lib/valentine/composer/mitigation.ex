@@ -25,6 +25,12 @@ defmodule Valentine.Composer.Mitigation do
     field :status, Ecto.Enum, values: [:identified, :in_progress, :resolved, :will_not_action]
     field :tags, {:array, :string}, default: []
 
+    has_many :assumption_mitigations, Valentine.Composer.AssumptionMitigation, on_replace: :delete
+    has_many :assumptions, through: [:assumption_mitigations, :assumption]
+
+    has_many :mitigation_threats, Valentine.Composer.MitigationThreat, on_replace: :delete
+    has_many :threats, through: [:mitigation_threats, :threat]
+
     timestamps(type: :utc_datetime)
   end
 

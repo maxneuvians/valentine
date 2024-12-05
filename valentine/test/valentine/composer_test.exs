@@ -314,6 +314,45 @@ defmodule Valentine.ComposerTest do
       assumption = assumption_fixture()
       assert %Ecto.Changeset{} = Composer.change_assumption(assumption)
     end
+
+    test "add_mitigation_to_assumption/2 adds an mitigation to a assumption" do
+      assumption = assumption_fixture()
+      mitigation = mitigation_fixture()
+
+      assert {:ok, %Assumption{} = assumption} =
+               Composer.add_mitigation_to_assumption(assumption, mitigation)
+
+      assert assumption.mitigations == [mitigation]
+    end
+
+    test "add_mitigation_to_assumption/2 adds an mitigation to existing assumption mitigations" do
+      assumption = assumption_fixture()
+      mitigation = mitigation_fixture()
+
+      Composer.add_mitigation_to_assumption(assumption, mitigation)
+
+      mitigation2 = mitigation_fixture()
+
+      assert {:ok, %Assumption{} = assumption} =
+               Composer.add_mitigation_to_assumption(assumption, mitigation2)
+
+      assert assumption.mitigations == [mitigation, mitigation2]
+    end
+
+    test "remove_mitigation_from_assumption/2 removes an mitigation from a assumption" do
+      assumption = assumption_fixture()
+      mitigation = mitigation_fixture()
+
+      {:ok, %Assumption{} = assumption} =
+        Composer.add_mitigation_to_assumption(assumption, mitigation)
+
+      assert assumption.mitigations == [mitigation]
+
+      {:ok, %Assumption{} = assumption} =
+        Composer.remove_mitigation_from_assumption(assumption, mitigation)
+
+      assert assumption.mitigations == []
+    end
   end
 
   describe "mitigations" do
@@ -388,6 +427,45 @@ defmodule Valentine.ComposerTest do
     test "change_mitigation/1 returns a mitigation changeset" do
       mitigation = mitigation_fixture()
       assert %Ecto.Changeset{} = Composer.change_mitigation(mitigation)
+    end
+
+    test "add_assumption_to_mitigation/2 adds an assumption to a mitigation" do
+      mitigation = mitigation_fixture()
+      assumption = assumption_fixture()
+
+      assert {:ok, %Mitigation{} = mitigation} =
+               Composer.add_assumption_to_mitigation(mitigation, assumption)
+
+      assert mitigation.assumptions == [assumption]
+    end
+
+    test "add_assumption_to_mitigation/2 adds an assumption to existing mitigation assumptions" do
+      mitigation = mitigation_fixture()
+      assumption = assumption_fixture()
+
+      Composer.add_assumption_to_mitigation(mitigation, assumption)
+
+      assumption2 = assumption_fixture()
+
+      assert {:ok, %Mitigation{} = mitigation} =
+               Composer.add_assumption_to_mitigation(mitigation, assumption2)
+
+      assert mitigation.assumptions == [assumption, assumption2]
+    end
+
+    test "remove_assumption_from_mitigation/2 removes an assumption from a mitigation" do
+      mitigation = mitigation_fixture()
+      assumption = assumption_fixture()
+
+      {:ok, %Mitigation{} = mitigation} =
+        Composer.add_assumption_to_mitigation(mitigation, assumption)
+
+      assert mitigation.assumptions == [assumption]
+
+      {:ok, %Mitigation{} = mitigation} =
+        Composer.remove_assumption_from_mitigation(mitigation, assumption)
+
+      assert mitigation.assumptions == []
     end
   end
 

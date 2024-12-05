@@ -23,7 +23,11 @@ defmodule Valentine.Composer.Assumption do
     field :content, :string
     field :tags, {:array, :string}, default: []
 
-    many_to_many :threats, Valentine.Composer.Threat, join_through: "assumptions_threats"
+    has_many :assumption_mitigations, Valentine.Composer.AssumptionMitigation, on_replace: :delete
+    has_many :mitigations, through: [:assumption_mitigations, :mitigation]
+
+    has_many :assumption_threats, Valentine.Composer.AssumptionThreat, on_replace: :delete
+    has_many :threats, through: [:assumption_threats, :threat]
 
     timestamps(type: :utc_datetime)
   end

@@ -1,9 +1,24 @@
 <.subhead>
   Workspaces
   <:actions>
-    <.button is_primary phx-click={JS.patch(~p"/workspaces/new")}>
-      New Workspace
-    </.button>
+    <.button_group>
+      <.button is_primary phx-click={JS.patch(~p"/workspaces/new")}>
+        New Workspace
+      </.button>
+      <.action_menu is_aligned_end offset_x={3}>
+        <:toggle
+          class="btn btn-primary"
+          style="border-top-left-radius: 0px; border-bottom-left-radius: 0px; border-top-right-radius: 6px; border-bottom-right-radius: 6px;"
+        >
+          <.octicon name="triangle-down-16" />
+        </:toggle>
+        <.action_list>
+          <.action_list_item>
+            Import threat composer file
+          </.action_list_item>
+        </.action_list>
+      </.action_menu>
+    </.button_group>
   </:actions>
 </.subhead>
 
