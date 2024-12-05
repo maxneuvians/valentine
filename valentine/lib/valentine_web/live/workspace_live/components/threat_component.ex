@@ -57,35 +57,36 @@ defmodule ValentineWeb.WorkspaceLive.Components.ThreatComponent do
               @threat.impacted_assets
             ) %> .
           </p>
-          <div class="clearfix mt-6">
-            <div class="float-left col-2 mr-2">
-              <.text_input
-                id={"#{@threat.id}-tag-field"}
-                name={"#{@threat.id}-tag"}
-                placeholder="Add a tag"
-                phx-keyup="set_tag"
-                phx-target={@myself}
-                value={@tag}
-              >
-                <:group_button>
-                  <.button phx-click="add_tag" phx-target={@myself}>Add</.button>
-                </:group_button>
-              </.text_input>
-            </div>
-
-            <div class="float-left">
-              <%= for tag <- @threat.tags || [] do %>
-                <.button phx-click="remove_tag" phx-value-tag={tag} phx-target={@myself}>
-                  <span><%= tag %></span>
-                  <.octicon name="x-16" />
-                </.button>
-              <% end %>
-            </div>
-            <div class="text-bold f4 float-right" style="color:#cecece">
-              <%= stride(@threat.stride) %>
-            </div>
-          </div>
         </.styled_html>
+        <hr />
+        <div class="clearfix mt-4">
+          <div class="float-left col-2 mr-2">
+            <.text_input
+              id={"#{@threat.id}-tag-field"}
+              name={"#{@threat.id}-tag"}
+              placeholder="Add a tag"
+              phx-keyup="set_tag"
+              phx-target={@myself}
+              value={@tag}
+            >
+              <:group_button>
+                <.button phx-click="add_tag" phx-target={@myself}>Add</.button>
+              </:group_button>
+            </.text_input>
+          </div>
+
+          <div class="float-left">
+            <%= for tag <- @threat.tags || [] do %>
+              <.button phx-click="remove_tag" phx-value-tag={tag} phx-target={@myself}>
+                <span><%= tag %></span>
+                <.octicon name="x-16" />
+              </.button>
+            <% end %>
+          </div>
+          <div class="text-bold f4 float-right" style="color:#cecece">
+            <%= stride(@threat.stride) %>
+          </div>
+        </div>
       </div>
       """
     end
