@@ -12,6 +12,7 @@ defmodule Valentine.Composer do
   alias Valentine.Composer.Threat
   alias Valentine.Composer.ApplicationInformation
   alias Valentine.Composer.DataFlowDiagram
+  alias Valentine.Composer.Architecture
 
   alias Valentine.Composer.AssumptionThreat
   alias Valentine.Composer.AssumptionMitigation
@@ -829,5 +830,102 @@ defmodule Valentine.Composer do
         attrs \\ %{}
       ) do
     DataFlowDiagram.changeset(data_flow_diagram, attrs)
+  end
+
+  @doc """
+  Returns the list of architectures.
+
+  ## Examples
+
+      iex> list_architectures()
+      [%Architecture{}, ...]
+
+  """
+  def list_architectures do
+    Repo.all(Architecture)
+  end
+
+  @doc """
+  Gets a single architecture.
+
+  Raises `Ecto.NoResultsError` if the Architecture does not exist.
+
+  ## Examples
+
+      iex> get_architecture!(123)
+      %Architecture{}
+
+      iex> get_architecture!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_architecture!(id), do: Repo.get!(Architecture, id)
+
+  @doc """
+  Creates a architecture.
+
+  ## Examples
+
+      iex> create_architecture(%{field: value})
+      {:ok, %Architecture{}}
+
+      iex> create_architecture(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_architecture(attrs \\ %{}) do
+    %Architecture{}
+    |> Architecture.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a architecture.
+
+  ## Examples
+
+      iex> update_architecture(architecture, %{field: new_value})
+      {:ok, %Architecture{}}
+
+      iex> update_architecture(architecture, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_architecture(%Architecture{} = architecture, attrs) do
+    architecture
+    |> Architecture.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a architecture.
+
+  ## Examples
+
+      iex> delete_architecture(architecture)
+      {:ok, %Architecture{}}
+
+      iex> delete_architecture(architecture)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_architecture(%Architecture{} = architecture) do
+    Repo.delete(architecture)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking architecture changes.
+
+  ## Examples
+
+      iex> change_architecture(architecture)
+      %Ecto.Changeset{data: %Architecture{}}
+
+  """
+  def change_architecture(
+        %Architecture{} = architecture,
+        attrs \\ %{}
+      ) do
+    Architecture.changeset(architecture, attrs)
   end
 end

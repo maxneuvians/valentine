@@ -633,4 +633,81 @@ defmodule Valentine.ComposerTest do
       assert %Ecto.Changeset{} = Composer.change_data_flow_diagram(data_flow_diagram)
     end
   end
+
+  describe "architectures" do
+    alias Valentine.Composer.Architecture
+
+    import Valentine.ComposerFixtures
+
+    @invalid_attrs %{comments: nil, content: nil, status: nil, tags: nil, workspace_id: nil}
+
+    test "list_architectures/0 returns all architectures" do
+      architecture = architecture_fixture()
+      assert Composer.list_architectures() == [architecture]
+    end
+
+    test "get_architecture!/1 returns the architecture with given id" do
+      architecture = architecture_fixture()
+
+      assert Composer.get_architecture!(architecture.id) ==
+               architecture
+    end
+
+    test "create_architecture/1 with valid data creates a architecture" do
+      workspace = workspace_fixture()
+
+      valid_attrs = %{
+        content: "some content",
+        workspace_id: workspace.id
+      }
+
+      assert {:ok, %Architecture{} = architecture} =
+               Composer.create_architecture(valid_attrs)
+
+      assert architecture.content == "some content"
+    end
+
+    test "create_architecture/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Composer.create_architecture(@invalid_attrs)
+    end
+
+    test "update_architecture/2 with valid data updates the architecture" do
+      architecture = architecture_fixture()
+
+      update_attrs = %{
+        content: "some updated content"
+      }
+
+      assert {:ok, %Architecture{} = architecture} =
+               Composer.update_architecture(architecture, update_attrs)
+
+      assert architecture.content == "some updated content"
+    end
+
+    test "update_architecture/2 with invalid data returns error changeset" do
+      architecture = architecture_fixture()
+
+      assert {:error, %Ecto.Changeset{}} =
+               Composer.update_architecture(architecture, @invalid_attrs)
+
+      assert architecture ==
+               Composer.get_architecture!(architecture.id)
+    end
+
+    test "delete_architecture/1 deletes the architecture" do
+      architecture = architecture_fixture()
+
+      assert {:ok, %Architecture{}} =
+               Composer.delete_architecture(architecture)
+
+      assert_raise Ecto.NoResultsError, fn ->
+        Composer.get_architecture!(architecture.id)
+      end
+    end
+
+    test "change_architecture/1 returns a architecture changeset" do
+      architecture = architecture_fixture()
+      assert %Ecto.Changeset{} = Composer.change_architecture(architecture)
+    end
+  end
 end

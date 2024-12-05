@@ -118,4 +118,22 @@ defmodule Valentine.ComposerFixtures do
 
     application_information
   end
+
+  @doc """
+  Generate an architecture.
+  """
+  def architecture_fixture(attrs \\ %{}) do
+    workspace = workspace_fixture()
+
+    {:ok, architecture} =
+      attrs
+      |> Enum.into(%{
+        content: "some content",
+        image: "some image",
+        workspace_id: workspace.id
+      })
+      |> Valentine.Composer.create_architecture()
+
+    architecture
+  end
 end
