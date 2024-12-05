@@ -31,13 +31,6 @@ defmodule ValentineWeb.WorkspaceLive.Components.ThreatComponent do
             </.button>
             <.button
               is_icon_button
-              aria-label="Copy"
-              navigate={~p"/workspaces/#{@threat.workspace_id}/threats/#{@threat.id}"}
-            >
-              <.octicon name="duplicate-16" />
-            </.button>
-            <.button
-              is_icon_button
               is_danger
               aria-label="Delete"
               phx-click={JS.push("delete", value: %{id: @threat.id})}
