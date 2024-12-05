@@ -39,6 +39,10 @@ defmodule ValentineWeb.Router do
            WorkspaceLive.ApplicationInformation.Index,
            :index
 
+      live "/workspaces/:workspace_id/architecture",
+           WorkspaceLive.Architecture.Index,
+           :index
+
       live "/workspaces/:workspace_id/data_flow", WorkspaceLive.DataFlow.Index, :index
 
       live "/workspaces/:workspace_id/mitigations", WorkspaceLive.Mitigation.Index, :index

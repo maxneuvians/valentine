@@ -12,7 +12,10 @@ defmodule ValentineWeb.WorkspaceLive.Import.HelperTest do
       "name": "Test Application",
       "description": "This is a test description"
     },
-    "architecture": {},
+    "architecture": {
+      "description": "This is a test architecture",
+      "image": "base64image"
+    },
     "dataflow": {},
     "assumptions": [
       {
@@ -115,6 +118,11 @@ defmodule ValentineWeb.WorkspaceLive.Import.HelperTest do
       app_info = Repo.get_by(Composer.ApplicationInformation, workspace_id: workspace.id)
       assert app_info.content =~ "This is a test description"
 
+      # Verify architecture
+      architecture = Repo.get_by(Composer.Architecture, workspace_id: workspace.id)
+      assert architecture.content =~ "This is a test architecture"
+      assert architecture.image == "base64image"
+
       # Verify assumption
       assumption = Repo.get_by(Composer.Assumption, workspace_id: workspace.id)
       assert assumption.content == "Test assumption"
@@ -156,7 +164,7 @@ defmodule ValentineWeb.WorkspaceLive.Import.HelperTest do
     test "creates workspace with minimal data" do
       minimal_data = %{
         "schema" => "1.0",
-        "applicationInfo" => %{"description" => ""},
+        "applicationInfo" => %{},
         "architecture" => %{},
         "dataflow" => %{},
         "assumptions" => [],

@@ -10,6 +10,8 @@ defmodule Valentine.Composer.Workspace do
     has_one :application_information, Valentine.Composer.ApplicationInformation,
       on_delete: :delete_all
 
+    has_one :architecture, Valentine.Composer.Architecture, on_delete: :delete_all
+
     has_one :data_flow_diagram, Valentine.Composer.DataFlowDiagram, on_delete: :delete_all
 
     has_many :assumptions, Valentine.Composer.Assumption, on_delete: :delete_all

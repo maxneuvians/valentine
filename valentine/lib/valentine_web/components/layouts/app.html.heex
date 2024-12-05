@@ -91,6 +91,13 @@
         </:item>
         <:item
           :if={@workspace_id}
+          is_selected={@active_module == "Architecture"}
+          navigate={~p"/workspaces/#{@workspace_id}/architecture"}
+        >
+          <.octicon name="container-16" /> Architecture
+        </:item>
+        <:item
+          :if={@workspace_id}
           is_selected={@active_module == "DataFlow"}
           navigate={~p"/workspaces/#{@workspace_id}/data_flow"}
         >

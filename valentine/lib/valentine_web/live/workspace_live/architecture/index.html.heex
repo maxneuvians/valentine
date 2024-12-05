@@ -1,0 +1,20 @@
+<.subhead>
+  Architecture
+</.subhead>
+
+<%= if @touched do %>
+  <.button is_primary class="mb-2" id="quill-save-btn">
+    <.octicon name="clock-16" />
+    <span>Save</span>
+  </.button>
+<% else %>
+  <.button is_disabled class="mb-2" id="quill-save-btn">
+    <.octicon name="check-circle-16" />
+    <span>Saved</span>
+  </.button>
+<% end %>
+<.live_component
+  module={ValentineWeb.WorkspaceLive.Components.QuillComponent}
+  id="quill_component"
+  content={@architecture.content}
+/>

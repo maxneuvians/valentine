@@ -5,6 +5,7 @@ defmodule ValentineWeb.WorkspaceLive.Import.Helper do
   def build_workspace(data) do
     with {:ok, workspace} <- create_base_workspace(data),
          :ok <- create_application_info(workspace.id, data),
+         :ok <- create_architecture(workspace.id, data),
          crosswalks <- create_core_elements(workspace.id, data),
          :ok <- create_relationships(data, crosswalks) do
       {:ok, workspace}
@@ -40,12 +41,26 @@ defmodule ValentineWeb.WorkspaceLive.Import.Helper do
   end
 
   defp create_application_info(workspace_id, data) do
-    description = get_in(data, ["applicationInfo", "description"])
+    description = get_in(data, ["applicationInfo", "description"]) || ""
 
     {:ok, _} =
       Composer.create_application_information(%{
         workspace_id: workspace_id,
         content: MDEx.to_html!(description, extension: [shortcodes: true])
+      })
+
+    :ok
+  end
+
+  defp create_architecture(workspace_id, data) do
+    description = get_in(data, ["architecture", "description"]) || ""
+    image = get_in(data, ["architecture", "image"]) || ""
+
+    {:ok, _} =
+      Composer.create_architecture(%{
+        workspace_id: workspace_id,
+        content: MDEx.to_html!(description, extension: [shortcodes: true]),
+        image: image
       })
 
     :ok
