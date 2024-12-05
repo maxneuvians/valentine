@@ -73,7 +73,8 @@ defmodule Valentine.ComposerTest do
       threat_action: nil,
       threat_impact: nil,
       impacted_goal: nil,
-      impacted_assets: nil
+      impacted_assets: nil,
+      workspace_id: nil
     }
 
     test "list_threats/0 returns all threats" do
@@ -474,7 +475,7 @@ defmodule Valentine.ComposerTest do
 
     import Valentine.ComposerFixtures
 
-    @invalid_attrs %{comments: nil, content: nil, status: nil, tags: nil}
+    @invalid_attrs %{comments: nil, content: nil, status: nil, tags: nil, workspace_id: nil}
 
     test "list_application_informations/0 returns all application_informations" do
       application_information = application_information_fixture()

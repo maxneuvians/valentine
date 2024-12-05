@@ -19,7 +19,7 @@ defmodule Valentine.Composer.ApplicationInformation do
   def changeset(application_information, attrs) do
     application_information
     |> cast(attrs, [:content, :workspace_id])
-    |> validate_required([:content, :workspace_id])
+    |> validate_required([:workspace_id])
   end
 
   def flush_cache(workspace_id) do

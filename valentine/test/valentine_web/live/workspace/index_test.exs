@@ -77,6 +77,20 @@ defmodule ValentineWeb.WorkspaceLive.IndexTest do
       assert updated_socket.assigns.page_title == "Edit Workspace"
       assert updated_socket.assigns.workspace == workspace
     end
+
+    test "sets page title for import action", %{socket: socket, workspace: workspace} do
+      socket = put_in(socket.assigns.live_action, :import)
+
+      {:noreply, updated_socket} =
+        ValentineWeb.WorkspaceLive.Index.handle_params(
+          %{"id" => workspace.id},
+          "",
+          socket
+        )
+
+      assert updated_socket.assigns.page_title == "Import Workspace"
+      assert updated_socket.assigns.workspace == %Valentine.Composer.Workspace{}
+    end
   end
 
   describe "handle_event delete" do

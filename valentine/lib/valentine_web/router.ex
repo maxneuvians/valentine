@@ -25,6 +25,7 @@ defmodule ValentineWeb.Router do
         ValentineWeb.Helpers.ThemeHelper
       ] do
       live "/workspaces", WorkspaceLive.Index, :index
+      live "/workspaces/import", WorkspaceLive.Index, :import
       live "/workspaces/new", WorkspaceLive.Index, :new
       live "/workspaces/:id/edit", WorkspaceLive.Index, :edit
 

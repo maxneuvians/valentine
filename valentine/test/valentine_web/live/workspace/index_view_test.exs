@@ -82,5 +82,18 @@ defmodule ValentineWeb.WorkspaceLive.IndexViewTest do
 
       refute has_element?(index_live, "#workspaces-#{workspace.id}")
     end
+
+    test "imports workspace in listing", %{
+      conn: conn
+    } do
+      {:ok, index_live, _html} = live(conn, ~p"/workspaces")
+
+      assert index_live
+             |> element("#import-workspace-btn")
+             |> render_click() =~
+               "Import Workspace"
+
+      assert_patch(index_live, ~p"/workspaces/import")
+    end
   end
 end

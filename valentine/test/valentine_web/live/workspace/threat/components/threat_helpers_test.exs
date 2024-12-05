@@ -29,6 +29,10 @@ defmodule ValentineWeb.WorkspaceLive.Threat.Components.ThreatHelpersTest do
   end
 
   describe "join_list/2" do
+    test "returns an empty string for a nil list" do
+      assert ThreatHelpers.join_list(nil) == ""
+    end
+
     test "returns an empty string for an empty list" do
       assert ThreatHelpers.join_list([]) == ""
     end

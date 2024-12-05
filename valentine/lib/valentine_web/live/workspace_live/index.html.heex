@@ -13,7 +13,10 @@
           <.octicon name="triangle-down-16" />
         </:toggle>
         <.action_list>
-          <.action_list_item>
+          <.action_list_item
+            id="import-workspace-btn"
+            phx-click={JS.patch(~p"/workspaces/import")}
+          >
             Import threat composer file
           </.action_list_item>
         </.action_list>
@@ -52,6 +55,14 @@
   module={ValentineWeb.WorkspaceLive.FormComponent}
   id={@workspace.id || :new}
   action={@live_action}
+  workspace={@workspace}
+  patch={~p"/workspaces"}
+/>
+
+<.live_component
+  :if={@live_action in [:import]}
+  module={ValentineWeb.WorkspaceLive.ImportComponent}
+  id={:import}
   workspace={@workspace}
   patch={~p"/workspaces"}
 />

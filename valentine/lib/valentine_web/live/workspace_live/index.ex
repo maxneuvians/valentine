@@ -7,7 +7,9 @@ defmodule ValentineWeb.WorkspaceLive.Index do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, :workspaces, Composer.list_workspaces())}
+    {:ok,
+     socket
+     |> assign(:workspaces, Composer.list_workspaces())}
   end
 
   @impl true
@@ -19,6 +21,12 @@ defmodule ValentineWeb.WorkspaceLive.Index do
     socket
     |> assign(:page_title, "Edit Workspace")
     |> assign(:workspace, Composer.get_workspace!(id))
+  end
+
+  defp apply_action(socket, :import, _params) do
+    socket
+    |> assign(:page_title, "Import Workspace")
+    |> assign(:workspace, %Workspace{})
   end
 
   defp apply_action(socket, :new, _params) do
