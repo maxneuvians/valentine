@@ -18,6 +18,8 @@ defmodule ValentineWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :home
+    # TODO: Wrap in auth
+    get "/workspaces/:workspace_id/threat_model/pdf", WorkspaceController, :pdf
 
     live_session :authenticated,
       on_mount: [
@@ -54,6 +56,7 @@ defmodule ValentineWeb.Router do
       live "/workspaces/:workspace_id/threats/:id", WorkspaceLive.Threat.Show, :edit
 
       live "/workspaces/:workspace_id/threat_model", WorkspaceLive.ThreatModel.Index, :index
+      live "/workspaces/:workspace_id/threat_model/pdf", WorkspaceLive.ThreatModel.Index, :pdf
     end
   end
 

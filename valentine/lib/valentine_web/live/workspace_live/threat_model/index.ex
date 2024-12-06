@@ -24,17 +24,6 @@ defmodule ValentineWeb.WorkspaceLive.ThreatModel.Index do
     |> assign(:page_title, "Threat model")
   end
 
-  defp get_assets(threats) do
-    threats
-    |> Enum.filter(&(&1.impacted_assets != [] && &1.impacted_assets != nil))
-    |> Enum.reduce(%{}, fn t, acc ->
-      Enum.reduce(t.impacted_assets, acc, fn asset, a ->
-        Map.update(a, asset, [t.numeric_id], &(&1 ++ [t.numeric_id]))
-      end)
-    end)
-    |> Enum.with_index()
-  end
-
   defp get_workspace(id) do
     Composer.get_workspace!(id, [
       :application_information,
@@ -44,16 +33,5 @@ defmodule ValentineWeb.WorkspaceLive.ThreatModel.Index do
       threats: [:assumptions, :mitigations],
       assumptions: [:threats, :mitigations]
     ])
-  end
-
-  defp optional_content(nil), do: "<i>Not set</i>"
-  defp optional_content(model), do: model.content
-
-  defp stride_to_letter(data) do
-    data
-    |> Enum.map(&Atom.to_string/1)
-    |> Enum.map(&String.upcase/1)
-    |> Enum.map(&String.first/1)
-    |> Enum.join()
   end
 end

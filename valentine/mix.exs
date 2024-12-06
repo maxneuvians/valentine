@@ -53,9 +53,8 @@ defmodule Valentine.MixProject do
       {:bandit, "~> 1.5"},
       {:mock, "~> 0.3.0", only: :test},
       {:primer_live, "~> 0.9"},
-      {:mdex, "~> 0.2"}
-      # {:cytoscape_edgehandles,
-      # github: "cytoscape/cytoscape.js-edgehandles", app: false, compile: false}
+      {:mdex, "~> 0.2"},
+      {:chromic_pdf, "~> 1.17"}
     ]
   end
 
