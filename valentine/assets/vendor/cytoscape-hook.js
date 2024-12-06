@@ -184,6 +184,7 @@ const CytoscapeHook = {
 
         this.bindEvents(this.cy);
         this.setupEventHandlers();
+        this.cy.fit();
     },
 
     bindEvents(cy) {
@@ -295,6 +296,10 @@ const CytoscapeHook = {
                     this.removeGroup(payload);
                     break;
 
+                case "save":
+                    this.save();
+                    break;
+
                 case "update_metadata":
                     this.updateMetadata(payload);
                     break;
@@ -389,6 +394,13 @@ const CytoscapeHook = {
         this.cy.getElementById(node.data.id).unselect();
         this.cy.getElementById(node.data.id).remove();
     },
+
+    save() {
+        this.cy.fit();
+        let base64 = this.cy.png();
+        this.pushEventTo(this.el, "export", { base64: base64 });
+    },
+
 
     updateMetadata({ id, field, value }) {
         this.cy.getElementById(id).data(field, value);

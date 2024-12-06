@@ -70,7 +70,17 @@ defmodule ValentineWeb.WorkspaceLive.DataFlow.Index do
 
     {:noreply,
      socket
+     |> push_event("updateGraph", %{event: "save", payload: nil})
      |> assign(:saved, true)}
+  end
+
+  # Handles the base64 encoded image data sent from the client
+  @impl true
+  def handle_event("export", %{"base64" => base64}, socket) do
+    Composer.get_data_flow_diagram_by_workspace_id(socket.assigns.workspace_id)
+    |> Composer.update_data_flow_diagram(%{raw_image: base64})
+
+    {:noreply, socket}
   end
 
   # Local event from HTML or JS

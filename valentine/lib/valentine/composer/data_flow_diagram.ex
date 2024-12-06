@@ -13,13 +13,14 @@ defmodule Valentine.Composer.DataFlowDiagram do
 
     field :edges, :map, default: %{}
     field :nodes, :map, default: %{}
+    field :raw_image, :string
 
     timestamps(type: :utc_datetime)
   end
 
   def changeset(data_flow_diagram, attrs) do
     data_flow_diagram
-    |> cast(attrs, [:edges, :nodes, :workspace_id])
+    |> cast(attrs, [:edges, :nodes, :raw_image, :workspace_id])
     |> validate_required([:edges, :nodes, :workspace_id])
   end
 

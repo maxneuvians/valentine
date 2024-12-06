@@ -119,6 +119,24 @@ defmodule ValentineWeb.WorkspaceLive.DataFlow.IndexTest do
       assert socket.assigns.saved == true
     end
 
+    test "export event persists image data to the db", %{
+      socket: socket,
+      workspace_id: workspace_id
+    } do
+      assert Valentine.Composer.DataFlowDiagram.get(workspace_id).raw_image == nil
+
+      {:noreply, _socket} =
+        ValentineWeb.WorkspaceLive.DataFlow.Index.handle_event(
+          "export",
+          %{"base64" => "test"},
+          socket
+        )
+
+      dfd = Valentine.Composer.DataFlowDiagram.get(workspace_id, false)
+
+      assert dfd.raw_image == "test"
+    end
+
     test "handles generic events and applys them to the DFD and pushes the event to the client",
          %{
            socket: socket
