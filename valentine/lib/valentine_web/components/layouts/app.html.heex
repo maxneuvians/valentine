@@ -125,6 +125,15 @@
           <.octicon name="check-circle-16" /> Mitigations
         </:item>
       </.side_nav>
+      <.side_nav aria_label="model" class="mt-4" is_border>
+        <:item
+          :if={@workspace_id}
+          is_selected={@active_module == "Report"}
+          navigate={~p"/workspaces/#{@workspace_id}/threat_model"}
+        >
+          <.octicon name="file-badge-16" /> Threat model
+        </:item>
+      </.side_nav>
     </:sidebar>
   </.layout>
 </.theme>

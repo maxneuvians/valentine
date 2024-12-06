@@ -22,3 +22,13 @@
     width: 100%;
     justify-content: left;
 }
+
+.report-table {
+    display: table !important;
+    width: 100% !important;
+}
+
+.report-table thead,
+.report-table tbody {
+    width: 100% !important;
+}
