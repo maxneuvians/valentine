@@ -54,7 +54,8 @@ defmodule Valentine.MixProject do
       {:mock, "~> 0.3.0", only: :test},
       {:primer_live, "~> 0.9"},
       {:mdex, "~> 0.2"},
-      {:chromic_pdf, "~> 1.17"}
+      {:chromic_pdf, "~> 1.17"},
+      {:langchain, "0.3.0-rc.0"}
     ]
   end
 

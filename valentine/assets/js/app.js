@@ -23,6 +23,7 @@ import { LiveSocket } from "phoenix_live_view"
 import topbar from "../vendor/topbar"
 import AutoHideFlash from "../vendor/autohide"
 import CytoscapeHook from "../vendor/cytoscape-hook"
+import EnterSubmitHook from "../vendor/enter-submit-hook"
 import QuillHook from "../vendor/quill-hook"
 import "../css/app.css"
 
@@ -32,6 +33,7 @@ let liveSocket = new LiveSocket("/live", Socket, {
     Prompt: window.Prompt,
     AutoHideFlash,
     Cytoscape: CytoscapeHook,
+    EnterSubmitHook,
     Quill: QuillHook
   },
   longPollFallbackMs: 2500,

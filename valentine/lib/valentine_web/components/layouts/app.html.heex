@@ -62,11 +62,17 @@
         </div>
         <div
           id="far_side_drawer"
-          class="flex-shrink-0 transition-all color-bg-default border-left col-md-3 col-lg-2 ml-md-3"
-          style="display: none;"
+          class="flex-shrink-0 transition-all color-bg-default border-left col-md-3 col-lg-4 ml-md-3"
+          style="display: block;"
         >
           <div class="p-3">
-            <%= @active_module %>
+            <.live_component
+              module={ValentineWeb.WorkspaceLive.Components.ChatComponent}
+              id="chat-component"
+              active_module={@active_module}
+              active_action={@active_action}
+              workspace_id={@workspace_id || nil}
+            />
           </div>
         </div>
       </div>

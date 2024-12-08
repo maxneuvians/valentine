@@ -20,6 +20,7 @@ defmodule ValentineWeb.Helpers.NavHelper do
     {:cont,
      socket
      |> assign(active_module: active_module)
+     |> assign(active_action: socket.assigns.live_action)
      |> assign(:workspace_id, if(params["workspace_id"], do: params["workspace_id"], else: nil))}
   end
 end
