@@ -19,20 +19,23 @@ defmodule ValentineWeb.WorkspaceLive.Components.ChatComponent do
          llm:
            ChatOpenAI.new!(%{
              model: "gpt-4o-mini",
+             max_completion_tokens: 100_000,
              stream: true,
+             stream_options: %{include_usage: true},
              callbacks: [llm_handler(self(), socket.assigns.myself)]
            }),
          callbacks: [llm_handler(self(), socket.assigns.myself)]
        }
        |> LLMChain.new!()
      )
+     |> assign(:usage, nil)
      |> assign(:async_result, %AsyncResult{})}
   end
 
   def render(assigns) do
     ~H"""
     <div class="chat_pane">
-      <div class="chat_messages">
+      <div class="chat_messages" phx-hook="ChatScroll" id="chat-messages">
         <%= if length(@chain.messages) > 0 do %>
           <ul>
             <li
@@ -41,11 +44,11 @@ defmodule ValentineWeb.WorkspaceLive.Components.ChatComponent do
               class="chat_message"
               data-role={message.role}
             >
-              <div class="chat_message_role"><%= message.role %></div>
+              <div class="chat_message_role"><%= role(message.role) %></div>
               <%= format_msg(message.content) %>
             </li>
             <li :if={@chain.delta} class="chat_message" data-role={@chain.delta.role}>
-              <div class="chat_message_role"><%= @chain.delta.role %></div>
+              <div class="chat_message_role"><%= role(@chain.delta.role) %></div>
               <%= format_msg(@chain.delta.content) %>
             </li>
           </ul>
@@ -63,7 +66,7 @@ defmodule ValentineWeb.WorkspaceLive.Components.ChatComponent do
           placeholder="Ask AI Assistant."
           is_full_width
           rows="3"
-          caption="Mistakes are possible. Review output carefully before use."
+          caption={get_caption(@usage)}
           is_form_control
           phx-hook="EnterSubmitHook"
           id="chat_input"
@@ -78,11 +81,15 @@ defmodule ValentineWeb.WorkspaceLive.Components.ChatComponent do
       socket.assigns.chain
       |> LLMChain.apply_delta(data)
 
-    IO.inspect(chain)
-
     {:ok,
      socket
      |> assign(chain: chain)}
+  end
+
+  def update(%{usage_update: usage}, socket) do
+    {:ok,
+     socket
+     |> assign(usage: usage)}
   end
 
   def update(assigns, socket) do
@@ -136,6 +143,22 @@ defmodule ValentineWeb.WorkspaceLive.Components.ChatComponent do
     end)
   end
 
+  defp get_caption(usage) do
+    base = "Mistakes are possible. Review output carefully before use."
+
+    if usage do
+      # In cost $0.150 / 1M input tokens
+      # Out cost $0.600 / 1M output tokens
+
+      # Cost rounded to cents
+      cost = Float.round(usage.input * 0.00000015 + usage.output * 0.0000006, 2)
+
+      base <> " Current token usage: (In: #{usage.input}, Out: #{usage.output}, Cost: $#{cost})"
+    else
+      base
+    end
+  end
+
   defp llm_handler(lc_pid, myself) do
     %{
       on_llm_new_delta: fn _model, %MessageDelta{} = data ->
@@ -144,6 +167,9 @@ defmodule ValentineWeb.WorkspaceLive.Components.ChatComponent do
       end,
       on_message_processed: fn _chain, %Message{} = _data ->
         nil
+      end,
+      on_llm_token_usage: fn _model, usage ->
+        send_update(lc_pid, myself, usage_update: usage)
       end
     }
   end
@@ -269,4 +295,8 @@ defmodule ValentineWeb.WorkspaceLive.Components.ChatComponent do
     ]
     |> Enum.random()
   end
+
+  defp role(:assistant), do: "AI Assistant"
+  defp role(:user), do: "You"
+  defp role(role), do: role
 end

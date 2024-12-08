@@ -22,9 +22,11 @@ import { Socket } from "phoenix"
 import { LiveSocket } from "phoenix_live_view"
 import topbar from "../vendor/topbar"
 import AutoHideFlash from "../vendor/autohide"
+import ChatScroll from "../vendor/chat-scroll-hook"
 import CytoscapeHook from "../vendor/cytoscape-hook"
 import EnterSubmitHook from "../vendor/enter-submit-hook"
 import QuillHook from "../vendor/quill-hook"
+import ResizableDrawer from "../vendor/resizeable-drawer-hook"
 import "../css/app.css"
 
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
@@ -32,9 +34,11 @@ let liveSocket = new LiveSocket("/live", Socket, {
   hooks: {
     Prompt: window.Prompt,
     AutoHideFlash,
+    ChatScroll,
     Cytoscape: CytoscapeHook,
     EnterSubmitHook,
-    Quill: QuillHook
+    Quill: QuillHook,
+    ResizableDrawer,
   },
   longPollFallbackMs: 2500,
   params: { _csrf_token: csrfToken }
