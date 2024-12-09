@@ -3,6 +3,7 @@ defmodule ValentineWeb.WorkspaceLive.Components.ChatComponent do
   use PrimerLive
 
   alias Valentine.Composer
+  alias Valentine.Prompts.PromptRegistry
   alias Phoenix.LiveView.AsyncResult
 
   alias LangChain.Chains.LLMChain
@@ -22,12 +23,15 @@ defmodule ValentineWeb.WorkspaceLive.Components.ChatComponent do
              max_completion_tokens: 100_000,
              stream: true,
              stream_options: %{include_usage: true},
+             type: "json_schema",
+             json_schema: PromptRegistry.response_schema(),
              callbacks: [llm_handler(self(), socket.assigns.myself)]
            }),
          callbacks: [llm_handler(self(), socket.assigns.myself)]
        }
        |> LLMChain.new!()
      )
+     |> assign(:capabilities, nil)
      |> assign(:usage, nil)
      |> assign(:async_result, %AsyncResult{})}
   end
@@ -60,7 +64,18 @@ defmodule ValentineWeb.WorkspaceLive.Components.ChatComponent do
           </.blankslate>
         <% end %>
       </div>
-
+      <div :if={@capabilities && length(@capabilities) > 0} class="capabilities">
+        <div :for={capability <- @capabilities} class="capability">
+          <.button
+            type="button"
+            phx-click="execute_capability"
+            phx-value-id={capability.id}
+            phx-target={@myself}
+          >
+            <%= capability.description %>
+          </.button>
+        </div>
+      </div>
       <div class="chat_input_container">
         <.textarea
           placeholder="Ask AI Assistant."
@@ -74,6 +89,12 @@ defmodule ValentineWeb.WorkspaceLive.Components.ChatComponent do
       </div>
     </div>
     """
+  end
+
+  def update(%{chat_complete: data}, socket) do
+    IO.inspect(data)
+
+    {:ok, socket}
   end
 
   def update(%{chat_response: data}, socket) do
@@ -117,7 +138,9 @@ defmodule ValentineWeb.WorkspaceLive.Components.ChatComponent do
     chain =
       socket.assigns.chain
       |> LLMChain.add_messages([
-        Message.new_system!(system_prompt(active_module, active_action, workspace_id)),
+        Message.new_system!(
+          PromptRegistry.get_system_prompt(active_module, active_action, workspace_id)
+        ),
         Message.new_user!(value)
       ])
 
@@ -125,6 +148,18 @@ defmodule ValentineWeb.WorkspaceLive.Components.ChatComponent do
      socket
      |> assign(chain: chain)
      |> run_chain()}
+  end
+
+  def handle_event("execute_capability", %{"id" => _capability_id}, socket) do
+    # capability = find_capability(socket.assigns.capabilities, capability_id)
+
+    # case execute_capability(capability) do
+    #  {:ok, result} ->
+    #    {:noreply, socket |> put_flash(:info, "Action completed successfully")}
+    #  {:error, reason} ->
+    #    {:noreply, socket |> put_flash(:error, "Failed to complete action: #{reason}")}
+    # end
+    {:noreply, socket}
   end
 
   def run_chain(socket) do
@@ -165,8 +200,8 @@ defmodule ValentineWeb.WorkspaceLive.Components.ChatComponent do
         # we received a piece of data
         send_update(lc_pid, myself, chat_response: data)
       end,
-      on_message_processed: fn _chain, %Message{} = _data ->
-        nil
+      on_message_processed: fn _chain, %Message{} = data ->
+        send_update(lc_pid, myself, chat_complete: data)
       end,
       on_llm_token_usage: fn _model, usage ->
         send_update(lc_pid, myself, usage_update: usage)
@@ -175,125 +210,20 @@ defmodule ValentineWeb.WorkspaceLive.Components.ChatComponent do
   end
 
   defp format_msg(content) do
-    content |> MDEx.to_html!() |> Phoenix.HTML.raw()
+    case Jason.decode(content) do
+      {:ok, %{"content" => content}} ->
+        content |> MDEx.to_html!() |> Phoenix.HTML.raw()
+
+      _ ->
+        content
+        |> String.replace(~r/^\{"content": "/, "")
+        |> MDEx.to_html!()
+        |> Phoenix.HTML.raw()
+    end
   end
 
-  defp system_prompt("ApplicationInformation", :index, workspace_id) do
-    workspace = Composer.get_workspace!(workspace_id, [:application_information])
-
-    """
-    FACTS:
-    1. The current workspace_id is #{workspace.id}
-    2. Application information contains: summary, features, and reference materials
-    3. Application Information is stored as a text field in the database
-    4. The current content is: #{workspace.application_information.content}
-
-    RULES:
-    1. All suggestions must align with the described application type
-    2. Maintain consistency with existing features
-    3. Generated content must be well-structured with clear sections
-    4. Reference materials should be preserved
-
-    CAPABILITIES:
-    1. Analyze Application Summary
-       - Extract key technologies and components
-       - Identify core business objectives
-       - Highlight main use cases
-
-    2. Feature Management
-       - List all current features
-       - Suggest additional relevant features
-       - Identify potential feature gaps
-       - Compare with similar application patterns
-
-    3. Documentation Assistance
-       - Suggest documentation improvements
-       - Generate structured sections
-       - Identify missing critical information
-       - Format content for readability
-
-    4. Architecture Analysis
-       - Extract architecture components
-       - Identify integration points
-       - Suggest security considerations
-       - Map dependencies
-
-    5. Content Generation
-       - Help expand sections
-       - Generate missing sections
-       - Create structured feature lists
-       - Draft technical summaries
-
-    You are an expert application analyst focused on helping users document and understand their applications. Help users maintain clear, comprehensive application documentation while identifying areas for improvement and suggesting relevant additions.
-    """
-  end
-
-  defp system_prompt("Architecture", :index, workspace_id),
-    do: "You are a helpful assistant. When asked the workspace_id is #{workspace_id}"
-
-  defp system_prompt("Assumption", :index, workspace_id),
-    do: "You are a helpful assistant. When asked the workspace_id is #{workspace_id}"
-
-  defp system_prompt("DataFlow", :index, workspace_id),
-    do: "You are a helpful assistant. When asked the workspace_id is #{workspace_id}"
-
-  defp system_prompt("Index", :index, workspace_id),
-    do: "You are a helpful assistant. When asked the workspace_id is #{workspace_id}"
-
-  defp system_prompt("Mitigation", :index, workspace_id),
-    do: "You are a helpful assistant. When asked the workspace_id is #{workspace_id}"
-
-  defp system_prompt("Show", :index, workspace_id),
-    do: "You are a helpful assistant. When asked the workspace_id is #{workspace_id}"
-
-  defp system_prompt("Show", :show, workspace_id),
-    do: "You are a helpful assistant. When asked the workspace_id is #{workspace_id}"
-
-  defp system_prompt("Threat", :index, workspace_id),
-    do: "You are a helpful assistant. When asked the workspace_id is #{workspace_id}"
-
-  defp system_prompt("Threat", :edit, workspace_id),
-    do: "You are a helpful assistant. When asked the workspace_id is #{workspace_id}"
-
-  defp system_prompt("Threat", :new, workspace_id),
-    do: "You are a helpful assistant. When asked the workspace_id is #{workspace_id}"
-
-  defp system_prompt("ThreatModel", :index, workspace_id),
-    do: "You are a helpful assistant. When asked the workspace_id is #{workspace_id}"
-
-  defp system_prompt(_, _, workspace_id),
-    do: "You are a helpful assistant. When asked the workspace_id is #{workspace_id}"
-
-  defp tag_line("ApplicationInformation", :index),
-    do: "Let's work on your application information."
-
-  defp tag_line("Architecture", :index), do: "Arrrrrchitecture, get it?"
-  defp tag_line("Assumption", :index), do: "Let's talk about your assumptions."
-  defp tag_line("DataFlow", :index), do: "Data is flowing, let's talk about it."
-  defp tag_line("Index", :index), do: "Let me help you set up a workspace."
-  defp tag_line("Mitigation", :index), do: "This is how we mitigate threats."
-  defp tag_line("Show", :index), do: "Let's talk about your workspace."
-  defp tag_line("Show", :show), do: "Let's talk about your workspace."
-  defp tag_line("Threat", :index), do: "Let's talk about your threats."
-  defp tag_line("Threat", :edit), do: "Ok down to brass tacks, let's edit this threat."
-  defp tag_line("Threat", :new), do: "Let's create a new threat."
-  defp tag_line("ThreatModel", :index), do: "Now that all the hard work is done..."
-  defp tag_line(_, _), do: random_tag_line()
-
-  defp random_tag_line() do
-    [
-      "The pastry chef kneaded a break from his job.",
-      "Time flies when you're a watchmaker.",
-      "The mathematician counted on his fingers.",
-      "That vegetable gardener really knows how to turnip.",
-      "The optometrist made a spectacle of himself.",
-      "The astronaut needed some space to think.",
-      "Piano teachers always note their students' progress.",
-      "The electrician conducted himself with shocking professionalism.",
-      "The tired calendar just needed a few more dates.",
-      "That cheese joke wasn't very mature."
-    ]
-    |> Enum.random()
+  defp tag_line(module, action) do
+    PromptRegistry.get_tag_line(module, action)
   end
 
   defp role(:assistant), do: "AI Assistant"
