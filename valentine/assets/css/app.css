@@ -303,6 +303,13 @@
     border: 1px solid var(--color-border-default, #d0d7de);
 }
 
+/* Skill styling */
+.chat_pane .skills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
 /* Header adjustments */
 .header {
     position: sticky;

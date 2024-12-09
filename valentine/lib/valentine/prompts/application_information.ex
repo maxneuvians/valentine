@@ -10,7 +10,7 @@ defmodule Valentine.Prompts.ApplicationInformation do
     1. The current workspace_id is #{workspace_id}
     2. Application information contains: summary, features, and reference materials
     3. Application Information is stored as a text field in the database
-    4. The current content is: #{workspace.application_information.content}
+    4. The current content is: #{if workspace.application_information, do: workspace.application_information.content, else: "No content available"}
 
     RULES:
     1. All suggestions must align with the described application type

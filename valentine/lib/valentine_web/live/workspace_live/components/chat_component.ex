@@ -2,7 +2,6 @@ defmodule ValentineWeb.WorkspaceLive.Components.ChatComponent do
   use ValentineWeb, :live_component
   use PrimerLive
 
-  alias Valentine.Composer
   alias Valentine.Prompts.PromptRegistry
   alias Phoenix.LiveView.AsyncResult
 
@@ -23,17 +22,17 @@ defmodule ValentineWeb.WorkspaceLive.Components.ChatComponent do
              max_completion_tokens: 100_000,
              stream: true,
              stream_options: %{include_usage: true},
-             type: "json_schema",
-             json_schema: PromptRegistry.response_schema(),
+             json_response: true,
+             json_schema: Jason.decode!(PromptRegistry.response_schema()),
              callbacks: [llm_handler(self(), socket.assigns.myself)]
            }),
          callbacks: [llm_handler(self(), socket.assigns.myself)]
        }
        |> LLMChain.new!()
      )
-     |> assign(:capabilities, nil)
+     |> assign(:skills, nil)
      |> assign(:usage, nil)
-     |> assign(:async_result, %AsyncResult{})}
+     |> assign(:async_result, AsyncResult.loading())}
   end
 
   def render(assigns) do
@@ -49,11 +48,11 @@ defmodule ValentineWeb.WorkspaceLive.Components.ChatComponent do
               data-role={message.role}
             >
               <div class="chat_message_role"><%= role(message.role) %></div>
-              <%= format_msg(message.content) %>
+              <%= format_msg(message.content, message.role) %>
             </li>
             <li :if={@chain.delta} class="chat_message" data-role={@chain.delta.role}>
               <div class="chat_message_role"><%= role(@chain.delta.role) %></div>
-              <%= format_msg(@chain.delta.content) %>
+              <%= format_msg(@chain.delta.content, @chain.delta.role) %>
             </li>
           </ul>
         <% else %>
@@ -64,21 +63,21 @@ defmodule ValentineWeb.WorkspaceLive.Components.ChatComponent do
           </.blankslate>
         <% end %>
       </div>
-      <div :if={@capabilities && length(@capabilities) > 0} class="capabilities">
-        <div :for={capability <- @capabilities} class="capability">
+      <div :if={@skills && length(@skills) > 0} class="skills">
+        <div :for={skill <- @skills} class="skill">
           <.button
             type="button"
-            phx-click="execute_capability"
-            phx-value-id={capability.id}
+            phx-click="execute_skill"
+            phx-value-id={skill["id"]}
             phx-target={@myself}
           >
-            <%= capability.description %>
+            <%= skill["description"] %>
           </.button>
         </div>
       </div>
       <div class="chat_input_container">
         <.textarea
-          placeholder="Ask AI Assistant."
+          placeholder="Ask AI Assistant"
           is_full_width
           rows="3"
           caption={get_caption(@usage)}
@@ -92,9 +91,11 @@ defmodule ValentineWeb.WorkspaceLive.Components.ChatComponent do
   end
 
   def update(%{chat_complete: data}, socket) do
-    IO.inspect(data)
+    %{"skills" => skills} = Jason.decode!(data.content)
 
-    {:ok, socket}
+    {:ok,
+     socket
+     |> assign(:skills, skills)}
   end
 
   def update(%{chat_response: data}, socket) do
@@ -123,8 +124,8 @@ defmodule ValentineWeb.WorkspaceLive.Components.ChatComponent do
     result = socket.assigns.async_result
 
     case async_fun_result do
-      {:ok, _} ->
-        {:noreply, socket |> assign(:async_result, AsyncResult.ok(result, "initial result"))}
+      {:ok, data} ->
+        {:noreply, socket |> assign(:async_result, AsyncResult.ok(result, data))}
 
       {:error, reason} ->
         {:noreply, socket |> assign(:async_result, AsyncResult.failed(result, reason))}
@@ -150,10 +151,10 @@ defmodule ValentineWeb.WorkspaceLive.Components.ChatComponent do
      |> run_chain()}
   end
 
-  def handle_event("execute_capability", %{"id" => _capability_id}, socket) do
-    # capability = find_capability(socket.assigns.capabilities, capability_id)
+  def handle_event("execute_skill", %{"id" => _skill_id}, socket) do
+    # skill = find_skill(socket.assigns.skills, skill_id)
 
-    # case execute_capability(capability) do
+    # case execute_skill(skill) do
     #  {:ok, result} ->
     #    {:noreply, socket |> put_flash(:info, "Action completed successfully")}
     #  {:error, reason} ->
@@ -178,6 +179,34 @@ defmodule ValentineWeb.WorkspaceLive.Components.ChatComponent do
     end)
   end
 
+  defp extract(input) do
+    case :binary.match(input, "\"content\":\"") do
+      {pos, len} ->
+        start_pos = pos + len
+        content_portion = binary_part(input, start_pos, byte_size(input) - start_pos)
+        extract_until_unescaped_quote(content_portion)
+
+      :nomatch ->
+        ""
+    end
+  end
+
+  defp extract_until_unescaped_quote(<<>>) do
+    ""
+  end
+
+  defp extract_until_unescaped_quote(<<"\\\"", rest::binary>>) do
+    "\\\"" <> extract_until_unescaped_quote(rest)
+  end
+
+  defp extract_until_unescaped_quote(<<"\"", _rest::binary>>) do
+    ""
+  end
+
+  defp extract_until_unescaped_quote(<<char::utf8, rest::binary>>) do
+    <<char::utf8>> <> extract_until_unescaped_quote(rest)
+  end
+
   defp get_caption(usage) do
     base = "Mistakes are possible. Review output carefully before use."
 
@@ -197,7 +226,6 @@ defmodule ValentineWeb.WorkspaceLive.Components.ChatComponent do
   defp llm_handler(lc_pid, myself) do
     %{
       on_llm_new_delta: fn _model, %MessageDelta{} = data ->
-        # we received a piece of data
         send_update(lc_pid, myself, chat_response: data)
       end,
       on_message_processed: fn _chain, %Message{} = data ->
@@ -209,14 +237,16 @@ defmodule ValentineWeb.WorkspaceLive.Components.ChatComponent do
     }
   end
 
-  defp format_msg(content) do
+  defp format_msg(content, :user), do: content
+
+  defp format_msg(content, _) do
     case Jason.decode(content) do
       {:ok, %{"content" => content}} ->
         content |> MDEx.to_html!() |> Phoenix.HTML.raw()
 
       _ ->
         content
-        |> String.replace(~r/^\{"content": "/, "")
+        |> extract()
         |> MDEx.to_html!()
         |> Phoenix.HTML.raw()
     end
