@@ -58,6 +58,10 @@ defmodule ValentineWeb do
         {:noreply, assign(socket, :theme, theme)}
       end
 
+      import ValentineWeb.Helpers.ChatHelper, only: [notify_chat: 4]
+
+      on_mount ValentineWeb.Helpers.FlashHelper
+
       unquote(html_helpers())
     end
   end
@@ -65,6 +69,8 @@ defmodule ValentineWeb do
   def live_component do
     quote do
       use Phoenix.LiveComponent
+
+      import ValentineWeb.Helpers.FlashHelper, only: [put_flash!: 3]
 
       unquote(html_helpers())
     end

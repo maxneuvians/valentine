@@ -30,7 +30,7 @@ defmodule ValentineWeb.WorkspaceLive.Components.ChatComponent do
        }
        |> LLMChain.new!()
      )
-     |> assign(:skills, nil)
+     |> assign(:skills, [])
      |> assign(:usage, nil)
      |> assign(:async_result, AsyncResult.loading())}
   end
@@ -108,6 +108,20 @@ defmodule ValentineWeb.WorkspaceLive.Components.ChatComponent do
      |> assign(chain: chain)}
   end
 
+  def update(%{skill_result: %{id: id, status: status, msg: msg}}, socket) do
+    chain =
+      socket.assigns.chain
+      |> LLMChain.add_messages([
+        Message.new_system!(
+          "The user clicked the button with id: #{id} and the result was: #{status} - #{msg}"
+        )
+      ])
+
+    {:ok,
+     socket
+     |> assign(chain: chain)}
+  end
+
   def update(%{usage_update: usage}, socket) do
     {:ok,
      socket
@@ -151,16 +165,17 @@ defmodule ValentineWeb.WorkspaceLive.Components.ChatComponent do
      |> run_chain()}
   end
 
-  def handle_event("execute_skill", %{"id" => _skill_id}, socket) do
-    # skill = find_skill(socket.assigns.skills, skill_id)
+  def handle_event("execute_skill", %{"id" => skill_id}, socket) do
+    skill = socket.assigns.skills |> Enum.find(&(&1["id"] == skill_id))
 
-    # case execute_skill(skill) do
-    #  {:ok, result} ->
-    #    {:noreply, socket |> put_flash(:info, "Action completed successfully")}
-    #  {:error, reason} ->
-    #    {:noreply, socket |> put_flash(:error, "Failed to complete action: #{reason}")}
-    # end
-    {:noreply, socket}
+    socket = socket |> assign(:skills, [])
+
+    if skill do
+      send(self(), {:execute_skill, skill})
+      {:noreply, socket}
+    else
+      {:noreply, socket |> put_flash!(:error, "Skill not found")}
+    end
   end
 
   def run_chain(socket) do

@@ -16,6 +16,7 @@ defmodule ValentineWeb.WorkspaceLive.Components.ChatComponentTest do
       async_result: Phoenix.LiveView.AsyncResult.loading(),
       chain: %LangChain.Chains.LLMChain{},
       id: "chat-component",
+      skills: [],
       workspace_id: workspace.id
     }
 
@@ -96,7 +97,7 @@ defmodule ValentineWeb.WorkspaceLive.Components.ChatComponentTest do
       socket = Map.put(socket, :assigns, Map.put(socket.assigns, :myself, %{}))
       {:ok, updated_socket} = ChatComponent.mount(socket)
       assert updated_socket.assigns.chain != nil
-      assert updated_socket.assigns.skills == nil
+      assert updated_socket.assigns.skills == []
       assert updated_socket.assigns.usage == nil
       assert updated_socket.assigns.async_result.loading == true
     end
@@ -131,6 +132,19 @@ defmodule ValentineWeb.WorkspaceLive.Components.ChatComponentTest do
 
       {:ok, updated_socket} = ChatComponent.update(%{chat_response: data}, socket)
       assert updated_socket.assigns.chain.delta == data
+    end
+
+    test "updates the socket with the skill_result data", %{socket: socket} do
+      data = %{
+        id: "some_id",
+        status: "some_status",
+        msg: "some_msg"
+      }
+
+      {:ok, updated_socket} = ChatComponent.update(%{skill_result: data}, socket)
+
+      assert hd(updated_socket.assigns.chain.messages).content ==
+               "The user clicked the button with id: some_id and the result was: some_status - some_msg"
     end
 
     test "updates the socket with the usage_update data", %{socket: socket} do
@@ -186,7 +200,35 @@ defmodule ValentineWeb.WorkspaceLive.Components.ChatComponentTest do
       assert hd(tl(updated_socket.assigns.chain.messages)).content == value
     end
 
-    test "executes skills" do
+    test "executes skills if the id is a skill", %{socket: socket} do
+      socket =
+        Map.put(
+          socket,
+          :assigns,
+          Map.put(socket.assigns, :skills, [
+            %{
+              "id" => "some_skill_id",
+              "description" => "some_skill_description"
+            }
+          ])
+        )
+
+      id = "some_skill_id"
+
+      {:noreply, updated_socket} =
+        ChatComponent.handle_event("execute_skill", %{"id" => id}, socket)
+
+      assert updated_socket.assigns.skills == []
+      refute Map.has_key?(updated_socket.assigns, :flash)
+    end
+
+    test "does not execute skills if the id is not a skill", %{socket: socket} do
+      id = "some_id"
+
+      {:noreply, updated_socket} =
+        ChatComponent.handle_event("execute_skill", %{"id" => id}, socket)
+
+      assert updated_socket.assigns.skills == []
     end
   end
 

@@ -310,6 +310,17 @@
     gap: 0.5rem;
 }
 
+.chat_pane .skills button {
+    white-space: normal;
+    text-align: left;
+    display: flex;
+    align-items: flex-start;
+    padding: 8px 16px;
+    box-sizing: border-box;
+    min-height: fit-content;
+    height: auto;
+}
+
 /* Header adjustments */
 .header {
     position: sticky;
