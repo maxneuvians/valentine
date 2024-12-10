@@ -39,6 +39,16 @@ defmodule ValentineWeb.WorkspaceLive.Components.MitigationComponentTest do
   describe "update/2" do
     setup [:create_mitigation]
 
+    test "assigns a value from a label drop down", %{socket: socket} do
+      {:ok, updated_socket} =
+        MitigationComponent.update(
+          %{selected_label_dropdown: {nil, "status", "resolved"}},
+          socket
+        )
+
+      assert updated_socket.assigns.mitigation.status == :resolved
+    end
+
     test "assigns an empty tag", %{assigns: assigns, socket: socket} do
       {:ok, updated_socket} = MitigationComponent.update(assigns, socket)
       assert updated_socket.assigns.tag == ""

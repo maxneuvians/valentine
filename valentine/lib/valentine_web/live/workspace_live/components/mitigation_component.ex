@@ -12,6 +12,21 @@ defmodule ValentineWeb.WorkspaceLive.Components.MitigationComponent do
         <div class="float-left">
           <h3>Mitigation <%= @mitigation.numeric_id %></h3>
         </div>
+        <.live_component
+          module={ValentineWeb.WorkspaceLive.Components.LabelSelectComponent}
+          id={"mitigations-status-#{@mitigation.id}"}
+          parent_id={@myself}
+          icon="stack-16"
+          default_value="Not set"
+          value={@mitigation.status}
+          field="status"
+          items={[
+            {:identified, nil},
+            {:in_progress, "State--merged"},
+            {:resolved, "State--open"},
+            {:will_not_action, "State--closed"}
+          ]}
+        />
         <div class="float-right">
           <.button
             is_icon_button
@@ -68,6 +83,20 @@ defmodule ValentineWeb.WorkspaceLive.Components.MitigationComponent do
       </div>
     </div>
     """
+  end
+
+  @impl true
+  def update(%{selected_label_dropdown: {_id, field, value}}, socket) do
+    {:ok, mitigation} =
+      Composer.update_mitigation(
+        socket.assigns.mitigation,
+        %{}
+        |> Map.put(field, value)
+      )
+
+    {:ok,
+     socket
+     |> assign(:mitigation, mitigation)}
   end
 
   @impl true
