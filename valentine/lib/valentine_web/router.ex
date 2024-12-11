@@ -20,6 +20,7 @@ defmodule ValentineWeb.Router do
     get "/", PageController, :home
     # TODO: Wrap in auth
     get "/workspaces/:workspace_id/threat_model/pdf", WorkspaceController, :pdf
+    post "/session", SessionController, :create
 
     live_session :authenticated,
       on_mount: [

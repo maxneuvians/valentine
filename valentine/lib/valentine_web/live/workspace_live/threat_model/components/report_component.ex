@@ -182,6 +182,8 @@ defmodule ValentineWeb.WorkspaceLive.ThreatModel.Components.ReportComponent do
   defp optional_content(nil), do: "<i>Not set</i>"
   defp optional_content(model), do: model.content
 
+  defp stride_to_letter(nil), do: ""
+
   defp stride_to_letter(data) do
     data
     |> Enum.map(&Atom.to_string/1)

@@ -27,6 +27,7 @@ import CytoscapeHook from "../vendor/cytoscape-hook"
 import EnterSubmitHook from "../vendor/enter-submit-hook"
 import QuillHook from "../vendor/quill-hook"
 import ResizableDrawer from "../vendor/resizeable-drawer-hook"
+import Session from "../vendor/session-hook"
 import "../css/app.css"
 
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
@@ -39,6 +40,7 @@ let liveSocket = new LiveSocket("/live", Socket, {
     EnterSubmitHook,
     Quill: QuillHook,
     ResizableDrawer,
+    Session
   },
   longPollFallbackMs: 2500,
   params: { _csrf_token: csrfToken }
