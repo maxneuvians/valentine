@@ -2,6 +2,7 @@ defmodule ValentineWeb.SessionController do
   use ValentineWeb, :controller
 
   def create(conn, %{"theme" => theme}), do: store_string(conn, :theme, theme)
+  def create(conn, _params), do: conn |> send_resp(400, "")
 
   defp store_string(conn, key, value) do
     conn
