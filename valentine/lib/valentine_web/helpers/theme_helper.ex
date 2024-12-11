@@ -1,5 +1,5 @@
 defmodule ValentineWeb.Helpers.ThemeHelper do
-  use ValentineWeb, :live_view
+  import Phoenix.Component
 
   def on_mount(:default, _params, session, socket) do
     theme = session["theme"] || "dark"

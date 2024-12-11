@@ -11,6 +11,15 @@ const Session = {
                 },
                 body: JSON.stringify(data)
             })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    location.reload();
+                })
+                .catch(error => {
+                    console.error('Error updating session:', error);
+                });
         })
     }
 }

@@ -55,7 +55,6 @@ defmodule ValentineWeb do
         layout: {ValentineWeb.Layouts, :app}
 
       import ValentineWeb.Helpers.ChatHelper, only: [notify_chat: 4]
-      on_mount ValentineWeb.Helpers.FlashHelper
 
       def handle_event("update_theme", %{"data" => theme}, socket) do
         {:noreply,
