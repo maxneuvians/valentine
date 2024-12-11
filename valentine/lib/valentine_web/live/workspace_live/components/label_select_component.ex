@@ -14,17 +14,19 @@ defmodule ValentineWeb.WorkspaceLive.Components.LabelSelectComponent do
           </.state_label>
         </div>
         <%= if @show_dropdown do %>
-          <div class="absolute w-full mt-1 bg-white border rounded-md shadow-lg z-10">
-            <%= for {item, _} <- @items do %>
-              <div
-                class="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                phx-click="select_item"
-                phx-value-id={item}
-                phx-target={@myself}
-              >
-                <%= Phoenix.Naming.humanize(item) %>
-              </div>
-            <% end %>
+          <div class="ActionMenu">
+            <div class="ActionMenu-modal">
+              <%= for {item, _} <- @items do %>
+                <div
+                  class="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                  phx-click="select_item"
+                  phx-value-id={item}
+                  phx-target={@myself}
+                >
+                  <%= Phoenix.Naming.humanize(item) %>
+                </div>
+              <% end %>
+            </div>
           </div>
         <% end %>
       </div>

@@ -35,7 +35,7 @@ defmodule ValentineWeb.WorkspaceLive.Components.LabelSelectComponentTest do
     test "if show_dropdown is true, renders the dropdown", %{assigns: assigns} do
       assigns = Map.put(assigns, :show_dropdown, true)
       html = render_component(LabelSelectComponent, assigns)
-      assert html =~ "bg-white"
+      assert html =~ "ActionMenu-modal"
     end
   end
 
