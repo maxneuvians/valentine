@@ -1,0 +1,62 @@
+## This file is a PO Template file.
+##
+## "msgid"s here are often extracted from source code.
+## Add new messages manually only if they're dynamic
+## messages that can't be statically extracted.
+##
+## Run "mix gettext.extract" to bring this file up to
+## date. Leave "msgstr"s empty as changing them here has no
+## effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+
+#: lib/valentine_web/components/core_components.ex:136
+#, elixir-autogen, elixir-format
+msgid "Actions"
+msgstr ""
+
+#: lib/valentine_web/components/core_components.ex:81
+#, elixir-autogen, elixir-format
+msgid "Attempting to reconnect"
+msgstr ""
+
+#: lib/valentine_web/components/core_components.ex:72
+#, elixir-autogen, elixir-format
+msgid "Error!"
+msgstr ""
+
+#: lib/valentine_web/components/core_components.ex:92
+#, elixir-autogen, elixir-format
+msgid "Hang in there while we get back on track"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/mitigation/index.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Listing Mitigations"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/mitigation/index.html.heex:5
+#, elixir-autogen, elixir-format
+msgid "New Mitigation"
+msgstr ""
+
+#: lib/valentine_web/components/core_components.ex:87
+#, elixir-autogen, elixir-format
+msgid "Something went wrong!"
+msgstr ""
+
+#: lib/valentine_web/components/core_components.ex:71
+#, elixir-autogen, elixir-format
+msgid "Success!"
+msgstr ""
+
+#: lib/valentine_web/components/core_components.ex:76
+#, elixir-autogen, elixir-format
+msgid "We can't find the internet"
+msgstr ""
+
+#: lib/valentine_web/components/core_components.ex:52
+#, elixir-autogen, elixir-format
+msgid "close"
+msgstr ""

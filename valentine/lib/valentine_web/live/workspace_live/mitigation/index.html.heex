@@ -1,8 +1,8 @@
 <.subhead>
-  Listing Mitigations
+  <%= gettext("Listing Mitigations") %>
   <:actions>
     <.button is_primary phx-click={JS.patch(~p"/workspaces/#{@workspace_id}/mitigations/new")}>
-      New Mitigation
+      <%= gettext("New Mitigation") %>
     </.button>
   </:actions>
 </.subhead>

@@ -8,7 +8,6 @@ defmodule ValentineWeb.WorkspaceLive.Mitigation.Index do
   @impl true
   def mount(%{"workspace_id" => workspace_id} = _params, _session, socket) do
     workspace = get_workspace(workspace_id)
-
     ValentineWeb.Endpoint.subscribe("workspace_" <> workspace.id)
 
     {:ok,

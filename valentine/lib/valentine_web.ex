@@ -89,7 +89,7 @@ defmodule ValentineWeb do
       import Phoenix.HTML
       # Core UI components and translation
       import ValentineWeb.CoreComponents
-      import ValentineWeb.Gettext
+      use Gettext, backend: ValentineWeb.Gettext
 
       # Shortcut for generating JS commands
       alias Phoenix.LiveView.JS
