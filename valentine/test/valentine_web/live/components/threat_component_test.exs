@@ -96,12 +96,22 @@ defmodule ValentineWeb.WorkspaceLive.Components.ThreatComponentTest do
     test "displays a :not_useful status badge", %{assigns: assigns} do
       assigns = Map.put(assigns, :threat, Map.put(assigns.threat, :status, :not_useful))
       html = render_component(ThreatComponent, assigns)
-      assert html =~ "Not Useful"
+      assert html =~ "Not useful"
     end
   end
 
   describe "update/2" do
     setup [:create_threat]
+
+    test "assigns a value from a label drop down", %{socket: socket} do
+      {:ok, updated_socket} =
+        ThreatComponent.update(
+          %{selected_label_dropdown: {nil, "status", "not_useful"}},
+          socket
+        )
+
+      assert updated_socket.assigns.threat.status == :not_useful
+    end
 
     test "assigns an empty tag", %{assigns: assigns, socket: socket} do
       {:ok, updated_socket} = ThreatComponent.update(assigns, socket)

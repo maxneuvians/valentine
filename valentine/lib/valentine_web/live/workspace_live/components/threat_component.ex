@@ -15,12 +15,34 @@ defmodule ValentineWeb.WorkspaceLive.Components.ThreatComponent do
           <div class="float-left">
             <h3>Threat <%= @threat.numeric_id %></h3>
           </div>
-          <div class="float-left mt-1 ml-2">
-            <%= priority_badge(@threat.priority) %>
-          </div>
-          <div class="float-left mt-1 ml-2">
-            <%= status_badge(@threat.status) %>
-          </div>
+          <.live_component
+            module={ValentineWeb.WorkspaceLive.Components.LabelSelectComponent}
+            id={"threat-priority-#{@threat.id}"}
+            parent_id={@myself}
+            icon="list-ordered-16"
+            default_value="Not set"
+            value={@threat.priority}
+            field="priority"
+            items={[
+              {:low, "State--open"},
+              {:medium, nil},
+              {:high, "State--closed"}
+            ]}
+          />
+          <.live_component
+            module={ValentineWeb.WorkspaceLive.Components.LabelSelectComponent}
+            id={"threat-status-#{@threat.id}"}
+            parent_id={@myself}
+            icon="stack-16"
+            default_value="Not set"
+            value={@threat.status}
+            field="status"
+            items={[
+              {:identified, "State--closed"},
+              {:resolved, "State--open"},
+              {:not_useful, nil}
+            ]}
+          />
           <div class="float-right">
             <.button
               is_icon_button
@@ -93,6 +115,20 @@ defmodule ValentineWeb.WorkspaceLive.Components.ThreatComponent do
   end
 
   @impl true
+  def update(%{selected_label_dropdown: {_id, field, value}}, socket) do
+    {:ok, threat} =
+      Composer.update_threat(
+        socket.assigns.threat,
+        %{}
+        |> Map.put(field, value)
+      )
+
+    {:ok,
+     socket
+     |> assign(:threat, threat)}
+  end
+
+  @impl true
   def update(assigns, socket) do
     {:ok,
      socket
@@ -131,54 +167,6 @@ defmodule ValentineWeb.WorkspaceLive.Components.ThreatComponent do
   @impl true
   def handle_event("set_tag", %{"value" => value} = _params, socket) do
     {:noreply, assign(socket, :tag, value)}
-  end
-
-  def priority_badge(priority) do
-    assigns = %{}
-
-    case priority do
-      :low ->
-        ~H"""
-        <.state_label is_small is_open><.octicon name="list-ordered-16" /> Low</.state_label>
-        """
-
-      :medium ->
-        ~H"""
-        <.state_label is_small><.octicon name="list-ordered-16" />Medium</.state_label>
-        """
-
-      :high ->
-        ~H"""
-        <.state_label is_small is_closed><.octicon name="list-ordered-16" />High</.state_label>
-        """
-
-      _ ->
-        ""
-    end
-  end
-
-  def status_badge(status) do
-    assigns = %{}
-
-    case status do
-      :identified ->
-        ~H"""
-        <.state_label is_small is_closed><.octicon name="stack-16" />Identified</.state_label>
-        """
-
-      :resolved ->
-        ~H"""
-        <.state_label is_small is_open><.octicon name="stack-16" />Resolved</.state_label>
-        """
-
-      :not_useful ->
-        ~H"""
-        <.state_label is_small><.octicon name="stack-16" />Not Usefull</.state_label>
-        """
-
-      _ ->
-        ""
-    end
   end
 
   def stride(stride) when is_list(stride) do
