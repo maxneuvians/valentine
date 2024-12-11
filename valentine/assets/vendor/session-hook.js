@@ -15,7 +15,6 @@ const Session = {
                     if (!response.ok) {
                         throw new Error(`HTTP error! status: ${response.status}`);
                     }
-                    //location.reload();
                 })
                 .catch(error => {
                     console.error('Error updating session:', error);

@@ -8,8 +8,8 @@ defmodule Valentine.Cache do
     value
   end
 
-  def put(key, value) do
-    {:ok, true} = Cachex.put(:valentine, key, value)
+  def put(key, value, options \\ []) do
+    {:ok, true} = Cachex.put(:valentine, key, value, options)
     :ok
   end
 

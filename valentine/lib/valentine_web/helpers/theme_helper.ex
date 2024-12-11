@@ -6,10 +6,12 @@ defmodule ValentineWeb.Helpers.ThemeHelper do
     {:cont,
      socket
      |> attach_hook(:theme, :handle_event, &maybe_receive_theme/3)
-     |> assign(:theme, session["theme"] || "dark")}
+     |> assign(:theme, Valentine.Cache.get({socket.id, :theme}) || session["theme"] || "dark")}
   end
 
   defp maybe_receive_theme("update_theme", %{"data" => theme}, socket) do
+    Valentine.Cache.put({socket.id, :theme}, theme, expire: :timer.hours(48))
+
     {:halt,
      socket
      |> assign(:theme, theme)
