@@ -55,7 +55,8 @@ defmodule Valentine.MixProject do
       {:primer_live, "~> 0.9"},
       {:mdex, "~> 0.2"},
       {:chromic_pdf, "~> 1.17"},
-      {:langchain, github: "brainlid/langchain"}
+      {:langchain, github: "brainlid/langchain"},
+      {:cachex, "~> 4.0"}
     ]
   end
 

@@ -1,52 +1,25 @@
 defmodule Valentine.Cache do
   @moduledoc """
-  Global cache module for Valentine
+  Wrapper cache module for Valentine
   """
 
-  use GenServer
-
-  def start_link(opts) do
-    GenServer.start_link(__MODULE__, opts, name: __MODULE__)
-  end
-
-  @impl true
-  def init(opts) do
-    {:ok, opts}
-  end
-
   def get(key) do
-    GenServer.call(__MODULE__, {:get, key})
+    {:ok, value} = Cachex.get(:valentine, key)
+    value
   end
 
   def put(key, value) do
-    GenServer.call(__MODULE__, {:put, key, value})
+    {:ok, true} = Cachex.put(:valentine, key, value)
+    :ok
   end
 
   def delete(key) do
-    GenServer.call(__MODULE__, {:delete, key})
+    {:ok, true} = Cachex.del(:valentine, key)
+    :ok
   end
 
   def clear do
-    GenServer.call(__MODULE__, :clear)
-  end
-
-  @impl true
-  def handle_call({:get, key}, _from, state) do
-    {:reply, Map.get(state, key), state}
-  end
-
-  @impl true
-  def handle_call({:put, key, value}, _from, state) do
-    {:reply, :ok, Map.put(state, key, value)}
-  end
-
-  @impl true
-  def handle_call({:delete, key}, _from, state) do
-    {:reply, :ok, Map.delete(state, key)}
-  end
-
-  @impl true
-  def handle_call(:clear, _from, _state) do
-    {:reply, :ok, %{}}
+    {:ok, _} = Cachex.clear(:valentine)
+    :ok
   end
 end

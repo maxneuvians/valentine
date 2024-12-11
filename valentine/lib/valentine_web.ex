@@ -56,13 +56,6 @@ defmodule ValentineWeb do
 
       import ValentineWeb.Helpers.ChatHelper, only: [notify_chat: 4]
 
-      def handle_event("update_theme", %{"data" => theme}, socket) do
-        {:noreply,
-         socket
-         |> assign(:theme, theme)
-         |> push_event("session", %{theme: theme})}
-      end
-
       unquote(html_helpers())
     end
   end
