@@ -91,7 +91,7 @@
         </:item>
         <:item
           is_selected={@active_module == "Index" || @active_module == "Show"}
-          navigate="/workspaces"
+          navigate={"/workspaces/#{@workspace_id}"}
         >
           <.octicon name="tools-16" /> Workspaces
         </:item>
