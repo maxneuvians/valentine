@@ -136,4 +136,23 @@ defmodule Valentine.ComposerFixtures do
 
     architecture
   end
+
+  @doc """
+  Generate an reference_pack_item.
+  """
+  def reference_pack_item_fixture(attrs \\ %{}) do
+    {:ok, reference_pack_item} =
+      attrs
+      |> Enum.into(%{
+        name: "some name",
+        description: "some description",
+        collection_id: random_uuid(),
+        collection_type: :assumption,
+        collection_name: "some collection_name",
+        data: %{}
+      })
+      |> Valentine.Composer.create_reference_pack_item()
+
+    reference_pack_item
+  end
 end

@@ -147,6 +147,15 @@
           <.octicon name="file-badge-16" /> Threat model
         </:item>
       </.side_nav>
+      <.side_nav aria_label="reference-packs" class="mt-4" is_border>
+        <:item
+          :if={@workspace_id}
+          is_selected={@active_module == "Report"}
+          navigate={~p"/workspaces/#{@workspace_id}/threat_model"}
+        >
+          <.octicon name="repo-16" /> Reference packs
+        </:item>
+      </.side_nav>
     </:sidebar>
   </.layout>
 </.theme>

@@ -13,6 +13,7 @@ defmodule Valentine.Composer do
   alias Valentine.Composer.ApplicationInformation
   alias Valentine.Composer.DataFlowDiagram
   alias Valentine.Composer.Architecture
+  alias Valentine.Composer.ReferencePackItem
 
   alias Valentine.Composer.AssumptionThreat
   alias Valentine.Composer.AssumptionMitigation
@@ -927,5 +928,102 @@ defmodule Valentine.Composer do
         attrs \\ %{}
       ) do
     Architecture.changeset(architecture, attrs)
+  end
+
+  @doc """
+  Returns the list of reference_pack_items.
+
+  ## Examples
+
+      iex> list_reference_pack_items()
+      [%ReferencePackItem{}, ...]
+
+  """
+  def list_reference_pack_items do
+    Repo.all(ReferencePackItem)
+  end
+
+  @doc """
+  Gets a single reference_pack_item.
+
+  Raises `Ecto.NoResultsError` if the ReferencePackItem does not exist.
+
+  ## Examples
+
+      iex> get_reference_pack_item!(123)
+      %ReferencePackItem{}
+
+      iex> get_reference_pack_item!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_reference_pack_item!(id), do: Repo.get!(ReferencePackItem, id)
+
+  @doc """
+  Creates a reference_pack_item.
+
+  ## Examples
+
+      iex> create_reference_pack_item(%{field: value})
+      {:ok, %ReferencePackItem{}}
+
+      iex> create_reference_pack_item(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_reference_pack_item(attrs \\ %{}) do
+    %ReferencePackItem{}
+    |> ReferencePackItem.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a reference_pack_item.
+
+  ## Examples
+
+      iex> update_reference_pack_item(reference_pack_item, %{field: new_value})
+      {:ok, %ReferencePackItem{}}
+
+      iex> update_reference_pack_item(reference_pack_item, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_reference_pack_item(%ReferencePackItem{} = reference_pack_item, attrs) do
+    reference_pack_item
+    |> ReferencePackItem.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a reference_pack_item.
+
+  ## Examples
+
+      iex> delete_reference_pack_item(reference_pack_item)
+      {:ok, %ReferencePackItem{}}
+
+      iex> delete_reference_pack_item(reference_pack_item)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_reference_pack_item(%ReferencePackItem{} = reference_pack_item) do
+    Repo.delete(reference_pack_item)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking reference_pack_item changes.
+
+  ## Examples
+
+      iex> change_reference_pack_item(reference_pack_item)
+      %Ecto.Changeset{data: %ReferencePackItem{}}
+
+  """
+  def change_reference_pack_item(
+        %ReferencePackItem{} = reference_pack_item,
+        attrs \\ %{}
+      ) do
+    ReferencePackItem.changeset(reference_pack_item, attrs)
   end
 end

@@ -710,4 +710,90 @@ defmodule Valentine.ComposerTest do
       assert %Ecto.Changeset{} = Composer.change_architecture(architecture)
     end
   end
+
+  describe "reference_pack_items" do
+    alias Valentine.Composer.ReferencePackItem
+
+    import Valentine.ComposerFixtures
+
+    @invalid_attrs %{
+      name: nil,
+      description: nil,
+      collection_id: nil,
+      collection_type: nil,
+      collection_name: nil,
+      data: nil
+    }
+
+    test "list_reference_pack_items/0 returns all reference_pack_items" do
+      reference_pack_item = reference_pack_item_fixture()
+      assert Composer.list_reference_pack_items() == [reference_pack_item]
+    end
+
+    test "get_reference_pack_item!/1 returns the reference_pack_item with given id" do
+      reference_pack_item = reference_pack_item_fixture()
+
+      assert Composer.get_reference_pack_item!(reference_pack_item.id) ==
+               reference_pack_item
+    end
+
+    test "create_reference_pack_item/1 with valid data creates a reference_pack_item" do
+      valid_attrs = %{
+        name: "some name",
+        description: "some description",
+        collection_id: random_uuid(),
+        collection_type: :assumption,
+        collection_name: "some collection_name",
+        data: %{}
+      }
+
+      assert {:ok, %ReferencePackItem{} = reference_pack_item} =
+               Composer.create_reference_pack_item(valid_attrs)
+
+      assert reference_pack_item.name == "some name"
+    end
+
+    test "create_reference_pack_item/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Composer.create_reference_pack_item(@invalid_attrs)
+    end
+
+    test "update_reference_pack_item/2 with valid data updates the reference_pack_item" do
+      reference_pack_item = reference_pack_item_fixture()
+
+      update_attrs = %{
+        name: "some updated name"
+      }
+
+      assert {:ok, %ReferencePackItem{} = reference_pack_item} =
+               Composer.update_reference_pack_item(reference_pack_item, update_attrs)
+
+      assert reference_pack_item.name == "some updated name"
+    end
+
+    test "update_reference_pack_item/2 with invalid data returns error changeset" do
+      reference_pack_item = reference_pack_item_fixture()
+
+      assert {:error, %Ecto.Changeset{}} =
+               Composer.update_reference_pack_item(reference_pack_item, @invalid_attrs)
+
+      assert reference_pack_item ==
+               Composer.get_reference_pack_item!(reference_pack_item.id)
+    end
+
+    test "delete_reference_pack_item/1 deletes the reference_pack_item" do
+      reference_pack_item = reference_pack_item_fixture()
+
+      assert {:ok, %ReferencePackItem{}} =
+               Composer.delete_reference_pack_item(reference_pack_item)
+
+      assert_raise Ecto.NoResultsError, fn ->
+        Composer.get_reference_pack_item!(reference_pack_item.id)
+      end
+    end
+
+    test "change_reference_pack_item/1 returns a reference_pack_item changeset" do
+      reference_pack_item = reference_pack_item_fixture()
+      assert %Ecto.Changeset{} = Composer.change_reference_pack_item(reference_pack_item)
+    end
+  end
 end
