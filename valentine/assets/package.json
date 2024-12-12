@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "apexcharts": "^4.2.0",
     "cytoscape-edgehandles": "^4.0.1",
     "quill": "^2.0.2"
   }

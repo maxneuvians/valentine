@@ -1,9 +1,70 @@
 <.subhead>
   Workspace: <%= @workspace.name %>
+  <:actions>
+    <.button phx-click={JS.patch(~p"/workspaces")}>
+      Back to Workspace
+    </.button>
+  </:actions>
 </.subhead>
-
-<.list>
-  <:item title="Name"><%= @workspace.name %></:item>
-</.list>
-
-<.back navigate={~p"/workspaces"}>Back to workspaces</.back>
+<div class="clearfix">
+  <div class="col-12 col-md-4 float-left p-2">
+    <.box>
+      <:header_title>Details</:header_title>
+      <:body><%= @workspace.name %></:body>
+    </.box>
+  </div>
+  <div class="col-12 col-md-8 float-left">
+    <div class="clearfix">
+      <div class="float-left col-6 p-2">
+        <.box>
+          <:header_title>Threats prioritization</:header_title>
+          <:body>
+            <.live_component
+              module={ValentineWeb.WorkspaceLive.Components.Charts.PieChartComponent}
+              id="threat-prioritization"
+              data={data_by_field(@workspace.threats, :priority)}
+            />
+          </:body>
+        </.box>
+      </div>
+      <div class="float-right col-6 p-2">
+        <.box>
+          <:header_title>Threat status</:header_title>
+          <:body>
+            <.live_component
+              module={ValentineWeb.WorkspaceLive.Components.Charts.PieChartComponent}
+              id="threat-status"
+              data={data_by_field(@workspace.threats, :status)}
+            />
+          </:body>
+        </.box>
+      </div>
+    </div>
+    <div class="clearfix">
+      <div class="float-left col-6 p-2">
+        <.box>
+          <:header_title>Threat STRIDE distribution</:header_title>
+          <:body>
+            <.live_component
+              module={ValentineWeb.WorkspaceLive.Components.Charts.BarChartComponent}
+              id="threat-stride-distribution"
+              data={threat_stride_count(@workspace.threats)}
+            />
+          </:body>
+        </.box>
+      </div>
+      <div class="float-right col-6 p-2">
+        <.box>
+          <:header_title>Mitigation status</:header_title>
+          <:body>
+            <.live_component
+              module={ValentineWeb.WorkspaceLive.Components.Charts.PieChartComponent}
+              id="mitigation-status"
+              data={data_by_field(@workspace.mitigations, :status)}
+            />
+          </:body>
+        </.box>
+      </div>
+    </div>
+  </div>
+</div>

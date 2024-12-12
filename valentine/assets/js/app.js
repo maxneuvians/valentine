@@ -23,6 +23,7 @@ import { LiveSocket } from "phoenix_live_view"
 import topbar from "../vendor/topbar"
 import AutoHideFlash from "../vendor/autohide"
 import ChatScroll from "../vendor/chat-scroll-hook"
+import Chart from "../vendor/chart-hook"
 import CytoscapeHook from "../vendor/cytoscape-hook"
 import EnterSubmitHook from "../vendor/enter-submit-hook"
 import QuillHook from "../vendor/quill-hook"
@@ -36,6 +37,7 @@ let liveSocket = new LiveSocket("/live", Socket, {
     Prompt: window.Prompt,
     AutoHideFlash,
     ChatScroll,
+    Chart,
     Cytoscape: CytoscapeHook,
     EnterSubmitHook,
     Quill: QuillHook,

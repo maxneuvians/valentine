@@ -14,10 +14,38 @@ defmodule ValentineWeb.WorkspaceLive.Show do
     {:noreply,
      socket
      |> assign(:page_title, page_title(socket.assigns.live_action))
-     |> assign(:workspace, Composer.get_workspace!(id))
-     |> assign(:workspace_id, id)}
+     |> assign(:workspace, Composer.get_workspace!(id, [:threats, :mitigations]))}
   end
 
   defp page_title(:show), do: "Show Workspace"
-  defp page_title(:edit), do: "Edit Workspace"
+
+  defp data_by_field(data, field) do
+    data
+    |> Enum.group_by(&get_in(&1, [Access.key!(field)]))
+    |> Enum.map(fn
+      {nil, data} -> {"Not set", Enum.count(data)}
+      {value, data} -> {Phoenix.Naming.humanize(value), Enum.count(data)}
+    end)
+    |> Map.new()
+  end
+
+  defp threat_stride_count(threats) do
+    stride = %{
+      spoofing: 0,
+      tampering: 0,
+      repudiation: 0,
+      information_disclosure: 0,
+      denial_of_service: 0,
+      elevation_of_privilege: 0
+    }
+
+    threats
+    |> Enum.reduce(stride, fn threat, acc ->
+      Enum.reduce(threat.stride, acc, fn category, inner_acc ->
+        Map.update(inner_acc, category, 1, &(&1 + 1))
+      end)
+    end)
+    |> Enum.map(fn {category, count} -> {Phoenix.Naming.humanize(category), count} end)
+    |> Map.new()
+  end
 end
