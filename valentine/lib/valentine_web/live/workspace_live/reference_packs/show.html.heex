@@ -6,6 +6,14 @@
     </.button>
   </:actions>
 </.subhead>
-<.box id="reference_pack" row_id={fn r -> "reference-pack-item-#{r.id}" end}>
-  <:header>Your reference packs</:header>
-</.box>
+<.live_component
+  module={ValentineWeb.WorkspaceLive.Components.PaginatedListComponent}
+  id="paginated-list"
+  title="References"
+  collection={@reference_pack}
+  selectable={true}
+>
+  <:row :let={item}>
+    {item.id}
+  </:row>
+</.live_component>
