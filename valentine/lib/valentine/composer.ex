@@ -943,6 +943,28 @@ defmodule Valentine.Composer do
     Repo.all(ReferencePackItem)
   end
 
+  def list_reference_pack_items_by_collection(collection_id, collection_type) do
+    from(rp in ReferencePackItem,
+      where: rp.collection_type == ^collection_type and rp.collection_id == ^collection_id
+    )
+    |> Repo.all()
+  end
+
+  def list_reference_packs() do
+    # Ecto Query to extart reference packs from reference_pack_items by {:collection_type, :collection_id, collection_name} and count
+    query =
+      from rp in ReferencePackItem,
+        group_by: [rp.collection_type, rp.collection_id, rp.collection_name],
+        select: %{
+          collection_type: rp.collection_type,
+          collection_id: rp.collection_id,
+          collection_name: rp.collection_name,
+          count: count(rp.id)
+        }
+
+    Repo.all(query)
+  end
+
   @doc """
   Gets a single reference_pack_item.
 

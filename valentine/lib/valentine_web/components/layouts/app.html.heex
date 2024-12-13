@@ -2,7 +2,7 @@
   <.header>
     <:item :let={classes}>
       <.link navigate="/" class={[classes.link, "f4"]}>
-        <span> 🍁 Valentine</span>
+        <span> 🍁 GC Threat Modeling</span>
       </.link>
     </:item>
     <:item is_full_width />
@@ -138,20 +138,18 @@
           <.octicon name="check-circle-16" /> Mitigations
         </:item>
       </.side_nav>
-      <.side_nav aria_label="model" class="mt-4" is_border>
+      <.side_nav :if={@workspace_id} aria_label="model" class="mt-4" is_border>
         <:item
-          :if={@workspace_id}
           is_selected={@active_module == "Report"}
           navigate={~p"/workspaces/#{@workspace_id}/threat_model"}
         >
           <.octicon name="file-badge-16" /> Threat model
         </:item>
       </.side_nav>
-      <.side_nav aria_label="reference-packs" class="mt-4" is_border>
+      <.side_nav :if={@workspace_id} aria_label="reference-packs" class="mt-4" is_border>
         <:item
-          :if={@workspace_id}
-          is_selected={@active_module == "Report"}
-          navigate={~p"/workspaces/#{@workspace_id}/threat_model"}
+          is_selected={@active_module == "ReferencePacks"}
+          navigate={~p"/workspaces/#{@workspace_id}/reference_packs"}
         >
           <.octicon name="repo-16" /> Reference packs
         </:item>

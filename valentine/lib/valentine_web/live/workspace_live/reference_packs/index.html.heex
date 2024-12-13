@@ -1,0 +1,44 @@
+<.subhead>
+  Reference packs
+  <:actions>
+    <.button
+      is_primary
+      phx-click={JS.patch(~p"/workspaces/#{@workspace.id}/reference_packs/import")}
+    >
+      Import reference pack
+    </.button>
+  </:actions>
+</.subhead>
+
+<.box id="reference_packs" row_id={fn r -> "reference-pack-#{r.id}" end}>
+  <:header>Your reference packs</:header>
+  <:row
+    :for={reference_pack <- @reference_packs}
+    class="d-flex flex-items-center flex-justify-between"
+  >
+    <div style="width:100%">
+      <div class="clearfix">
+        <div class="float-left">
+          <.link navigate={
+            ~p"/workspaces/#{@workspace.id}/reference_packs/#{reference_pack.collection_id}/#{reference_pack.collection_type}"
+          }>
+            <%= reference_pack.collection_name %>
+          </.link>
+        </div>
+        <div class="float-right">
+          <.state_label is_merged>
+            <%= Phoenix.Naming.humanize(reference_pack.collection_type) |> Inflex.pluralize() %>
+          </.state_label>
+        </div>
+      </div>
+    </div>
+  </:row>
+</.box>
+
+<.live_component
+  :if={@live_action in [:import]}
+  module={ValentineWeb.WorkspaceLive.ReferencePacks.Components.ImportComponent}
+  id={:import}
+  workspace={@workspace}
+  patch={~p"/workspaces/#{@workspace.id}/reference_packs"}
+/>
