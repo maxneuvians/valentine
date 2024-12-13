@@ -1,7 +1,5 @@
 <.subhead>
-  <%= hd(@reference_pack).collection_type |> Phoenix.Naming.humanize() %> pack: <%= hd(
-    @reference_pack
-  ).collection_name %>
+  {hd(@reference_pack).collection_type |> Phoenix.Naming.humanize()} pack: {hd(@reference_pack).collection_name}
   <:actions>
     <.button phx-click={JS.patch(~p"/workspaces/#{@workspace_id}/reference_packs")}>
       Back to all reference packs
@@ -10,17 +8,4 @@
 </.subhead>
 <.box id="reference_pack" row_id={fn r -> "reference-pack-item-#{r.id}" end}>
   <:header>Your reference packs</:header>
-  <:row :for={item <- @reference_pack} class="d-flex flex-items-center flex-justify-between">
-    <div :if={item.collection_type == :mitigation} class="clearfix" style="width:100%">
-      <div class="float-left col-4 ">
-        <h4><.checkbox name={item.id} />
-          <%= item.data["content"] %></h4>
-      </div>
-      <div class="float-left col-8">
-        <.styled_html>
-          <%= get_metadata(item.data["metadata"], "Comments", true) %>
-        </.styled_html>
-      </div>
-    </div>
-  </:row>
 </.box>

@@ -24,7 +24,7 @@ defmodule ValentineWeb.WorkspaceLive.ThreatModel.Components.ReportComponent do
       <%= optional_content(@workspace.architecture) |> Phoenix.HTML.raw() %>
 
       <h3 id="data_flow_diagram">3. Data Flow</h3>
-      <.box :if={@workspace.data_flow_diagram} id="data-flow-diagram-container">
+      <.box :if={@workspace.data_flow_diagram && @workspace.data_flow_diagram.raw_image} id="data-flow-diagram-container">
         <img src={@workspace.data_flow_diagram.raw_image} alt="Data flow diagram" />
       </.box>
       <h3 id="assumptions">4. Assumptions</h3>

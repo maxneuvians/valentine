@@ -2,7 +2,6 @@ defmodule ValentineWeb.WorkspaceLive.ReferencePacks.Components.ImportComponent d
   use ValentineWeb, :live_component
   use PrimerLive
 
-  alias ValentineWeb.WorkspaceLive.Import.Helper
   alias Valentine.Composer
 
   @impl true
@@ -26,13 +25,13 @@ defmodule ValentineWeb.WorkspaceLive.ReferencePacks.Components.ImportComponent d
               :for={err <- upload_errors(@uploads.import)}
               class="FormControl-inlineValidation FormControl-inlineValidation--error"
             >
-              <%= upload_error_to_string(err) %>
+              {upload_error_to_string(err)}
             </div>
             <div
               :for={msg <- @upload_errors}
               class="FormControl-inlineValidation FormControl-inlineValidation--error"
             >
-              <%= msg %>
+              {msg}
             </div>
           </:body>
           <:footer>

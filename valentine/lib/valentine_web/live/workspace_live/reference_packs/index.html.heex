@@ -2,6 +2,7 @@
   Reference packs
   <:actions>
     <.button
+      id="import-reference-pack"
       is_primary
       phx-click={JS.patch(~p"/workspaces/#{@workspace.id}/reference_packs/import")}
     >
@@ -22,12 +23,12 @@
           <.link navigate={
             ~p"/workspaces/#{@workspace.id}/reference_packs/#{reference_pack.collection_id}/#{reference_pack.collection_type}"
           }>
-            <%= reference_pack.collection_name %>
+            {reference_pack.collection_name}
           </.link>
         </div>
         <div class="float-right">
           <.state_label is_merged>
-            <%= Phoenix.Naming.humanize(reference_pack.collection_type) |> Inflex.pluralize() %>
+            {Phoenix.Naming.humanize(reference_pack.collection_type) |> Inflex.pluralize()}
           </.state_label>
         </div>
       </div>

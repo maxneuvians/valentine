@@ -23,14 +23,13 @@ defmodule ValentineWeb.WorkspaceLive.ReferencePacks.Show do
      |> assign(:workspace_id, workspace_id)}
   end
 
-  defp get_metadata(metadata, key, markdown \\ false) do
-    Enum.find(metadata, fn %{"key" => k} -> k == key end)
-    |> case do
-      %{"value" => value} ->
-        if markdown, do: MDEx.to_html!(value) |> Phoenix.HTML.raw(), else: value
+  @impl true
+  def handle_params(params, _url, socket) do
+    {:noreply, apply_action(socket, socket.assigns.live_action, params)}
+  end
 
-      nil ->
-        ""
-    end
+  defp apply_action(socket, :show, _params) do
+    socket
+    |> assign(:page_title, "Reference pack")
   end
 end

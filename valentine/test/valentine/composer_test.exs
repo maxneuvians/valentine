@@ -730,6 +730,28 @@ defmodule Valentine.ComposerTest do
       assert Composer.list_reference_pack_items() == [reference_pack_item]
     end
 
+    test "list_reference_pack_items_by_collection/2 returns all reference_pack_items for a collection_id and collection_type" do
+      reference_pack_item = reference_pack_item_fixture()
+
+      assert Composer.list_reference_pack_items_by_collection(
+               reference_pack_item.collection_id,
+               reference_pack_item.collection_type
+             ) == [reference_pack_item]
+    end
+
+    test "list_reference_packs/1 returns all the reference packs by type, collection, and name count" do
+      reference_pack_item = reference_pack_item_fixture()
+
+      assert Composer.list_reference_packs() == [
+               %{
+                 collection_id: reference_pack_item.collection_id,
+                 collection_name: reference_pack_item.collection_name,
+                 collection_type: reference_pack_item.collection_type,
+                 count: 1
+               }
+             ]
+    end
+
     test "get_reference_pack_item!/1 returns the reference_pack_item with given id" do
       reference_pack_item = reference_pack_item_fixture()
 
