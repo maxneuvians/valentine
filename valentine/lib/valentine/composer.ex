@@ -1085,7 +1085,9 @@ defmodule Valentine.Composer do
 
   """
   def list_controls do
-    Repo.all(Control)
+    # Get all controls and order them by their nist_id
+    from(c in Control, order_by: [asc: c.nist_id])
+    |> Repo.all()
   end
 
   @doc """

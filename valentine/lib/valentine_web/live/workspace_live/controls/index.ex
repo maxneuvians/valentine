@@ -24,6 +24,14 @@ defmodule ValentineWeb.WorkspaceLive.Controls.Index do
     |> assign(:page_title, "NIST Controls")
   end
 
+  defp text_to_html(text) do
+    text
+    |> String.replace(~r/\n/, "<br>")
+    |> String.replace(~r/\s/, "&nbsp;")
+    |> String.replace(~r/\t/, "&nbsp;&nbsp;&nbsp;&nbsp;")
+    |> Phoenix.HTML.raw()
+  end
+
   defp get_workspace(id) do
     Composer.get_workspace!(id)
   end

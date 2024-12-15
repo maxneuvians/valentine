@@ -22,13 +22,13 @@ defmodule ValentineWeb.WorkspaceLive.Components.DrawerComponent do
               <.octicon name="chevron-right-24" />
             <% end %>
           </.button>
-          <%= @title %>
+          {@title}
           <%= if @count > 0 do %>
-            <span class="text-gray-500">(<%= @count %>)</span>
+            <span class="text-gray-500">({@count})</span>
           <% end %>
         </h3>
         <%= if @open_drawer do %>
-          <%= render_slot(@content) %>
+          {render_slot(@content)}
         <% end %>
       </.box>
     </div>

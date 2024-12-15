@@ -54,7 +54,7 @@ defmodule ValentineWeb.WorkspaceLive.Components.PaginatedListComponent do
                 <:label></:label>
               </.checkbox>
             </div>
-            <div class="float-left">
+            <div class="float-left width-full">
               {render_slot(@row, item)}
             </div>
           </div>
