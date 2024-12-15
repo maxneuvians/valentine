@@ -70,6 +70,8 @@ defmodule ValentineWeb.Router do
       live "/workspaces/:workspace_id/reference_packs/:collection_id/:collection_type",
            WorkspaceLive.ReferencePacks.Show,
            :show
+
+      live "/workspaces/:workspace_id/controls", WorkspaceLive.Controls.Index, :index
     end
   end
 

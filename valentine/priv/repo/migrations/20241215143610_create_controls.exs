@@ -8,6 +8,7 @@ defmodule Valentine.Repo.Migrations.CreateControls do
       add :name, :string
       add :nist_id, :string
       add :nist_family, :string
+      add :guidance, :text
       add :stride, {:array, :string}
       add :tags, {:array, :string}
 

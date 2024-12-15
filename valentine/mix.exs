@@ -56,7 +56,8 @@ defmodule Valentine.MixProject do
       {:chromic_pdf, "~> 1.17"},
       {:langchain, github: "brainlid/langchain"},
       {:cachex, "~> 4.0"},
-      {:inflex, "~> 2.0.0"}
+      {:inflex, "~> 2.0.0"},
+      {:csv, "~> 3.2"}
     ]
   end
 

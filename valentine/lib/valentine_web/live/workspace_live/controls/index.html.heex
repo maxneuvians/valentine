@@ -1,0 +1,13 @@
+<.subhead>
+  NIST Controls
+</.subhead>
+<.live_component
+  module={ValentineWeb.WorkspaceLive.Components.PaginatedListComponent}
+  id="paginated-list"
+  title="NIST Controls"
+  collection={@controls}
+>
+  <:row :let={item}>
+    {item.nist_id}: {item.name}
+  </:row>
+</.live_component>

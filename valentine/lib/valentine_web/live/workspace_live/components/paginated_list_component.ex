@@ -21,7 +21,7 @@ defmodule ValentineWeb.WorkspaceLive.Components.PaginatedListComponent do
     <div>
       <.box id={@id}>
         <:header class="d-flex flex-items-center">
-          <.button_group>
+          <.button_group :if={@selectable}>
             <.button is_outline phx-click="select_all" phx-target={@myself}>
               Select all
             </.button>

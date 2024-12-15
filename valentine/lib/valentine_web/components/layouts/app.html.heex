@@ -63,7 +63,7 @@
             auto_hide="true"
             hide_after={2000}
           />
-          <%= @inner_content %>
+          {@inner_content}
         </div>
         <div
           id="far_side_drawer"
@@ -152,6 +152,12 @@
           navigate={~p"/workspaces/#{@workspace_id}/reference_packs"}
         >
           <.octicon name="repo-16" /> Reference packs
+        </:item>
+        <:item
+          is_selected={@active_module == "Controls"}
+          navigate={~p"/workspaces/#{@workspace_id}/controls"}
+        >
+          <.octicon name="shield-lock-16" /> NIST Controls
         </:item>
       </.side_nav>
     </:sidebar>

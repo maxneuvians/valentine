@@ -9,6 +9,7 @@ defmodule Valentine.Composer.Control do
              :id,
              :name,
              :description,
+             :guidance,
              :nist_id,
              :nist_family,
              :stride,
@@ -20,6 +21,7 @@ defmodule Valentine.Composer.Control do
     field :description, :string
     field :nist_id, :string
     field :nist_family, :string
+    field :guidance, :string
 
     field :stride,
           {:array, Ecto.Enum},
@@ -45,6 +47,7 @@ defmodule Valentine.Composer.Control do
       :description,
       :nist_id,
       :nist_family,
+      :guidance,
       :stride,
       :tags
     ])

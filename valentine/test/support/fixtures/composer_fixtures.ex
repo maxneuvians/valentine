@@ -165,6 +165,7 @@ defmodule Valentine.ComposerFixtures do
       |> Enum.into(%{
         name: "some name",
         description: "some description",
+        guidance: "some guidance",
         nist_id: "some nist_id",
         nist_family: "some nist_family",
         stride: [:spoofing],
