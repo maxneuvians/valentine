@@ -8,6 +8,7 @@
     <.link navigate={~p"/workspaces/#{assigns[:workspace_id]}/threats"}>
       <.button>Back</.button>
     </.link>
+    <.button phx-click="save" is_primary>Save</.button>
   </:actions>
 </.subhead>
 
@@ -334,4 +335,3 @@
     </ul>
   </div>
 </div>
-<.button phx-click="save" is_primary class="mt-2">Save Threat</.button>

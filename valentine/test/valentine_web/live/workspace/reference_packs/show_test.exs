@@ -41,7 +41,7 @@ defmodule ValentineWeb.WorkspaceLive.ReferencePacks.ShowTest do
         )
 
       assert socket.assigns.reference_pack == [reference_pack_item]
-
+      assert socket.assigns.selected_references == []
       assert socket.assigns.workspace_id == workspace_id
     end
   end
@@ -61,6 +61,63 @@ defmodule ValentineWeb.WorkspaceLive.ReferencePacks.ShowTest do
         ValentineWeb.WorkspaceLive.ReferencePacks.Show.handle_params(nil, nil, socket)
 
       assert socket.assigns.page_title == "Reference pack"
+    end
+  end
+
+  describe "handle_event/2 adds selected references to the workspace" do
+    test "adds selected references to the workspace" do
+      reference_pack_item = reference_pack_item_fixture()
+      workspace = workspace_fixture()
+
+      socket = %Phoenix.LiveView.Socket{
+        assigns: %{
+          __changed__: %{},
+          live_action: nil,
+          flash: %{},
+          workspace_id: workspace.id,
+          selected_references: [reference_pack_item.id]
+        }
+      }
+
+      {:noreply, socket} =
+        ValentineWeb.WorkspaceLive.ReferencePacks.Show.handle_event(
+          "add_references",
+          nil,
+          socket
+        )
+
+      assert socket.assigns.flash["info"] == "Added 1 reference items to workspace"
+
+      assert socket.redirected ==
+               {:live, :redirect,
+                %{
+                  kind: :push,
+                  to: "/workspaces/#{workspace.id}/reference_packs"
+                }}
+    end
+  end
+
+  describe "handle_info/2" do
+    test "assigns selected references to the socket" do
+      reference_pack_item = reference_pack_item_fixture()
+      workspace = workspace_fixture()
+
+      socket = %Phoenix.LiveView.Socket{
+        assigns: %{
+          __changed__: %{},
+          live_action: nil,
+          flash: %{},
+          workspace_id: workspace.id
+        }
+      }
+
+      {:noreply, socket} =
+        ValentineWeb.WorkspaceLive.ReferencePacks.Show.handle_info(
+          {:selected, [reference_pack_item.id]},
+          socket
+        )
+
+      assert socket.assigns.selected_references == [reference_pack_item.id]
     end
   end
 end

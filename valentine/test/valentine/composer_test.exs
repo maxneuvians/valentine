@@ -712,6 +712,7 @@ defmodule Valentine.ComposerTest do
   end
 
   describe "reference_pack_items" do
+    alias Valentine.Composer.Mitigation
     alias Valentine.Composer.ReferencePackItem
 
     import Valentine.ComposerFixtures
@@ -816,6 +817,18 @@ defmodule Valentine.ComposerTest do
     test "change_reference_pack_item/1 returns a reference_pack_item changeset" do
       reference_pack_item = reference_pack_item_fixture()
       assert %Ecto.Changeset{} = Composer.change_reference_pack_item(reference_pack_item)
+    end
+
+    test "add_reference_pack_item_to_workspace/2 adds a mitigation item to a workspace" do
+      reference_pack_item = reference_pack_item_fixture()
+      workspace = workspace_fixture()
+
+      assert {:ok, %Mitigation{} = mitigation} =
+               Composer.add_reference_pack_item_to_workspace(workspace.id, reference_pack_item)
+
+      workspace = Composer.get_workspace!(workspace.id, [:mitigations])
+
+      assert workspace.mitigations == [mitigation]
     end
   end
 end

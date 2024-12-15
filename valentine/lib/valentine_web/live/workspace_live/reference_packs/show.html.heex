@@ -2,7 +2,14 @@
   {hd(@reference_pack).collection_type |> Phoenix.Naming.humanize()} pack: {hd(@reference_pack).collection_name}
   <:actions>
     <.button phx-click={JS.patch(~p"/workspaces/#{@workspace_id}/reference_packs")}>
-      Back to all reference packs
+      Back
+    </.button>
+    <.button is_primary phx-click="add_references">
+      Add selected
+      <span :if={length(@selected_references) > 0}>
+        {length(@selected_references)}
+      </span>
+      references
     </.button>
   </:actions>
 </.subhead>

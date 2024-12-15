@@ -20,7 +20,22 @@ defmodule ValentineWeb.WorkspaceLive.Components.PaginatedListComponent do
     ~H"""
     <div>
       <.box id={@id}>
-        <:header>{@title}</:header>
+        <:header class="d-flex flex-items-center">
+          <.button_group>
+            <.button is_outline phx-click="select_all" phx-target={@myself}>
+              Select all
+            </.button>
+            <.button is_danger phx-click="deselect_all" phx-target={@myself}>
+              Deselect all
+            </.button>
+          </.button_group>
+        </:header>
+        <:header_title class="flex-auto">
+          {@title}
+          <span :if={length(@selected) > 0} class="Counter Counter--gray">
+            {length(@selected)}
+          </span>
+        </:header_title>
         <:row
           :for={item <- slice_collection(assigns)}
           class="d-flex flex-items-center flex-justify-between"
@@ -32,6 +47,9 @@ defmodule ValentineWeb.WorkspaceLive.Components.PaginatedListComponent do
                 name={item.id}
                 value={item.id}
                 checked={@selected |> Enum.member?(item.id)}
+                phx-click="toggle_select"
+                phx-value-id={item.id}
+                phx-target={@myself}
               >
                 <:label></:label>
               </.checkbox>
@@ -46,9 +64,46 @@ defmodule ValentineWeb.WorkspaceLive.Components.PaginatedListComponent do
         page_count={length(@collection) / @page_size}
         current_page={@current_page}
         link_path={fn page_num -> page_num end}
+        myself={@myself}
       />
     </div>
     """
+  end
+
+  @impl true
+  def handle_event("change_page", %{"page" => page}, socket) do
+    {page, ""} = Integer.parse(page)
+    {:noreply, assign(socket, :current_page, page)}
+  end
+
+  @impl true
+  def handle_event("select_all", _, socket) do
+    selected = socket.assigns.collection |> Enum.map(& &1.id)
+    send(self(), {:selected, selected})
+
+    {:noreply, assign(socket, :selected, selected)}
+  end
+
+  @impl true
+  def handle_event("deselect_all", _, socket) do
+    send(self(), {:selected, []})
+    {:noreply, assign(socket, :selected, [])}
+  end
+
+  @impl true
+  def handle_event("toggle_select", %{"id" => id}, socket) do
+    selected = socket.assigns.selected
+
+    selected =
+      if Enum.member?(selected, id) do
+        Enum.reject(selected, &(&1 == id))
+      else
+        [id | selected]
+      end
+
+    send(self(), {:selected, selected})
+
+    {:noreply, assign(socket, :selected, selected)}
   end
 
   defp slice_collection(%{

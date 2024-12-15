@@ -3,6 +3,8 @@ defmodule ValentineWeb.WorkspaceLive.Components.PaginationComponent do
 
   alias PrimerLive.Helpers.AttributeHelpers
 
+  attr(:myself, :any, required: true, doc: "The current live component.")
+
   attr(:page_count, :integer, required: true, doc: "Result page count.")
   attr(:current_page, :integer, required: true, doc: "Current page number.")
 
@@ -181,11 +183,13 @@ defmodule ValentineWeb.WorkspaceLive.Components.PaginationComponent do
           <%= if @show_prev_next do %>
             <%= if @has_previous_page do %>
               <Phoenix.Component.link
-                navigate={@link_path.(@current_page - 1)}
                 class={@classes.previous_page}
                 rel="previous"
                 aria-label={@labels.aria_label_previous_page}
                 replace={@link_options.replace}
+                phx-click="change_page"
+                phx-value-page={@current_page - 1}
+                phx-target={@myself}
               >
                 <%= @labels.previous_page %>
               </Phoenix.Component.link>
@@ -211,12 +215,14 @@ defmodule ValentineWeb.WorkspaceLive.Components.PaginationComponent do
                   <span class={@classes.gap} phx-no-format><%= @labels.gap %></span>
                 <% else %>
                   <Phoenix.Component.link
-                    navigate={@link_path.(item)}
                     class={@classes.page}
                     aria-label={
                       @labels.aria_label_page |> String.replace("{page_number}", to_string(item))
                     }
                     replace={@link_options.replace}
+                    phx-click="change_page"
+                    phx-value-page={item}
+                    phx-target={@myself}
                   >
                     <%= item %>
                   </Phoenix.Component.link>
@@ -227,11 +233,13 @@ defmodule ValentineWeb.WorkspaceLive.Components.PaginationComponent do
           <%= if @show_prev_next do %>
             <%= if @has_next_page do %>
               <Phoenix.Component.link
-                navigate={@link_path.(@current_page + 1)}
                 class={@classes.next_page}
                 rel="next"
                 aria-label={@labels.aria_label_next_page}
                 replace={@link_options.replace}
+                phx-click="change_page"
+                phx-value-page={@current_page + 1}
+                phx-target={@myself}
               >
                 <%= @labels.next_page %>
               </Phoenix.Component.link>
@@ -334,5 +342,4 @@ defmodule ValentineWeb.WorkspaceLive.Components.PaginationComponent do
   defp limit(num, lower_bound, upper_bound) do
     min(max(num, lower_bound), upper_bound)
   end
-
 end

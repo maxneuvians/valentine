@@ -32,6 +32,8 @@ defmodule ValentineWeb.WorkspaceLive.ReferencePacks.ShowViewTest do
       assert html =~
                Phoenix.Naming.humanize(reference_pack_item.collection_type) <>
                  " pack: " <> reference_pack_item.collection_name
+
+      assert html =~ reference_pack_item.id
     end
   end
 end

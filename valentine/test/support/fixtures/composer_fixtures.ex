@@ -147,9 +147,9 @@ defmodule Valentine.ComposerFixtures do
         name: "some name",
         description: "some description",
         collection_id: random_uuid(),
-        collection_type: :assumption,
+        collection_type: :mitigation,
         collection_name: "some collection_name",
-        data: %{}
+        data: %{"content" => "some content"}
       })
       |> Valentine.Composer.create_reference_pack_item()
 

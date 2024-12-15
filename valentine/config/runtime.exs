@@ -22,7 +22,6 @@ end
 
 # Configure langchain
 config :langchain, openai_key: System.get_env("OPENAI_API_KEY")
-config :langchain, :anthropic_key, System.get_env("ANTHROPIC_API_KEY")
 
 if config_env() == :prod do
   database_url =

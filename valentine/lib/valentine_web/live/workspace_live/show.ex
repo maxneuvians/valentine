@@ -42,9 +42,13 @@ defmodule ValentineWeb.WorkspaceLive.Show do
 
     threats
     |> Enum.reduce(stride, fn threat, acc ->
-      Enum.reduce(threat.stride, acc, fn category, inner_acc ->
-        Map.update(inner_acc, category, 1, &(&1 + 1))
-      end)
+      if threat.stride != nil do
+        Enum.reduce(threat.stride, acc, fn category, inner_acc ->
+          Map.update(inner_acc, category, 1, &(&1 + 1))
+        end)
+      else
+        acc
+      end
     end)
     |> Enum.map(fn {category, count} -> {Phoenix.Naming.humanize(category), count} end)
     |> Map.new()
