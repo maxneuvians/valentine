@@ -831,4 +831,90 @@ defmodule Valentine.ComposerTest do
       assert workspace.mitigations == [mitigation]
     end
   end
+
+  describe "controls" do
+    alias Valentine.Composer.Control
+
+    import Valentine.ComposerFixtures
+
+    @invalid_attrs %{
+      name: nil,
+      description: nil,
+      nist_id: nil,
+      nist_family: nil,
+      stride: nil,
+      tags: nil
+    }
+
+    test "list_controls/0 returns all controls" do
+      control = control_fixture()
+      assert Composer.list_controls() == [control]
+    end
+
+    test "get_control!/1 returns the control with given id" do
+      control = control_fixture()
+
+      assert Composer.get_control!(control.id) ==
+               control
+    end
+
+    test "create_control/1 with valid data creates a control" do
+      valid_attrs = %{
+        name: "some name",
+        description: "some description",
+        nist_id: "some nist_id",
+        nist_family: "some nist_family",
+        stride: [:spoofing],
+        tags: ["tag1", "tag2"]
+      }
+
+      assert {:ok, %Control{} = control} =
+               Composer.create_control(valid_attrs)
+
+      assert control.name == "some name"
+    end
+
+    test "create_control/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Composer.create_control(@invalid_attrs)
+    end
+
+    test "update_control/2 with valid data updates the control" do
+      control = control_fixture()
+
+      update_attrs = %{
+        name: "some updated name"
+      }
+
+      assert {:ok, %Control{} = control} =
+               Composer.update_control(control, update_attrs)
+
+      assert control.name == "some updated name"
+    end
+
+    test "update_control/2 with invalid data returns error changeset" do
+      control = control_fixture()
+
+      assert {:error, %Ecto.Changeset{}} =
+               Composer.update_control(control, @invalid_attrs)
+
+      assert control ==
+               Composer.get_control!(control.id)
+    end
+
+    test "delete_control/1 deletes the control" do
+      control = control_fixture()
+
+      assert {:ok, %Control{}} =
+               Composer.delete_control(control)
+
+      assert_raise Ecto.NoResultsError, fn ->
+        Composer.get_control!(control.id)
+      end
+    end
+
+    test "change_control/1 returns a control changeset" do
+      control = control_fixture()
+      assert %Ecto.Changeset{} = Composer.change_control(control)
+    end
+  end
 end

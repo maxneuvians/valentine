@@ -155,4 +155,23 @@ defmodule Valentine.ComposerFixtures do
 
     reference_pack_item
   end
+
+  @doc """
+  Generate an control.
+  """
+  def control_fixture(attrs \\ %{}) do
+    {:ok, control} =
+      attrs
+      |> Enum.into(%{
+        name: "some name",
+        description: "some description",
+        nist_id: "some nist_id",
+        nist_family: "some nist_family",
+        stride: [:spoofing],
+        tags: ["tag1", "tag2"]
+      })
+      |> Valentine.Composer.create_control()
+
+    control
+  end
 end

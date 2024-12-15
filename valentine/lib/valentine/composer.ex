@@ -14,6 +14,7 @@ defmodule Valentine.Composer do
   alias Valentine.Composer.DataFlowDiagram
   alias Valentine.Composer.Architecture
   alias Valentine.Composer.ReferencePackItem
+  alias Valentine.Composer.Control
 
   alias Valentine.Composer.AssumptionThreat
   alias Valentine.Composer.AssumptionMitigation
@@ -1072,5 +1073,102 @@ defmodule Valentine.Composer do
       _ ->
         {:error, "Invalid collection type"}
     end
+  end
+
+  @doc """
+  Returns the list of controls.
+
+  ## Examples
+
+      iex> list_controls()
+      [%Control{}, ...]
+
+  """
+  def list_controls do
+    Repo.all(Control)
+  end
+
+  @doc """
+  Gets a single control.
+
+  Raises `Ecto.NoResultsError` if the Control does not exist.
+
+  ## Examples
+
+      iex> get_control!(123)
+      %Control{}
+
+      iex> get_control!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_control!(id), do: Repo.get!(Control, id)
+
+  @doc """
+  Creates a control.
+
+  ## Examples
+
+      iex> create_control(%{field: value})
+      {:ok, %Control{}}
+
+      iex> create_control(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_control(attrs \\ %{}) do
+    %Control{}
+    |> Control.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a control.
+
+  ## Examples
+
+      iex> update_control(control, %{field: new_value})
+      {:ok, %Control{}}
+
+      iex> update_control(control, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_control(%Control{} = control, attrs) do
+    control
+    |> Control.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a control.
+
+  ## Examples
+
+      iex> delete_control(control)
+      {:ok, %Control{}}
+
+      iex> delete_control(control)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_control(%Control{} = control) do
+    Repo.delete(control)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking control changes.
+
+  ## Examples
+
+      iex> change_control(control)
+      %Ecto.Changeset{data: %Control{}}
+
+  """
+  def change_control(
+        %Control{} = control,
+        attrs \\ %{}
+      ) do
+    Control.changeset(control, attrs)
   end
 end
