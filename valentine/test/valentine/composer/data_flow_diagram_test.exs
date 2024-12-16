@@ -24,6 +24,37 @@ defmodule Valentine.Composer.DataFlowDiagramTest do
     assert node["position"]["y"] <= 400
   end
 
+  test "add_node/2 adds a new node to a parent node if the selected node is a trust boundary", %{
+    workspace_id: workspace_id
+  } do
+    node = DataFlowDiagram.add_node(workspace_id, %{"type" => "trust_boundary"})
+
+    node2 =
+      DataFlowDiagram.add_node(workspace_id, %{
+        "type" => "test",
+        "selected_elements" => %{"nodes" => %{"#{node["data"]["id"]}" => node}}
+      })
+
+    assert node2["data"]["parent"] == node["data"]["id"]
+  end
+
+  test "add_node/2 does not add a new node to a parent node if more than one node is selected", %{
+    workspace_id: workspace_id
+  } do
+    node1 = DataFlowDiagram.add_node(workspace_id, %{"type" => "test"})
+    node2 = DataFlowDiagram.add_node(workspace_id, %{"type" => "test"})
+
+    node3 =
+      DataFlowDiagram.add_node(workspace_id, %{
+        "type" => "test",
+        "selected_elements" => %{
+          "nodes" => %{"#{node1["data"]["id"]}" => node1, "#{node2["data"]["id"]}" => node2}
+        }
+      })
+
+    assert node3["data"]["parent"] == nil
+  end
+
   test "clear_dfd/2 clears the DataFlowDiagram", %{workspace_id: workspace_id} do
     DataFlowDiagram.add_node(workspace_id, %{"type" => "test"})
     DataFlowDiagram.clear_dfd(workspace_id, %{})

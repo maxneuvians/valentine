@@ -42,7 +42,12 @@ defmodule Valentine.Composer.DataFlowDiagram do
     end
   end
 
-  def add_node(workspace_id, %{"type" => type}) do
+  def add_node(
+        workspace_id,
+        %{
+          "type" => type
+        } = params
+      ) do
     dfd = get(workspace_id)
 
     id = "node-" <> Integer.to_string(System.unique_integer([:positive]))
@@ -66,6 +71,26 @@ defmodule Valentine.Composer.DataFlowDiagram do
           "y" => :rand.uniform(400)
         }
       }
+
+    # Check if one node is selected and if that node is a trust boundary
+    node =
+      if Map.has_key?(params, "selected_elements") &&
+           Kernel.map_size(params["selected_elements"]["nodes"]) == 1 &&
+           dfd.nodes[Map.keys(params["selected_elements"]["nodes"]) |> List.first()]["data"][
+             "type"
+           ] == "trust_boundary" do
+        Map.put(
+          node,
+          "data",
+          Map.put(
+            node["data"],
+            "parent",
+            Map.keys(params["selected_elements"]["nodes"]) |> List.first()
+          )
+        )
+      else
+        node
+      end
 
     dfd
     |> Map.update!(:nodes, &Map.put(&1, id, node))
