@@ -22,10 +22,10 @@
 
       <div class="clearfix">
         <div class="float-left p-1 mt-1">
-          <%= ValentineWeb.WorkspaceLive.Threat.Components.ThreatHelpers.a_or_an(
+          {ValentineWeb.WorkspaceLive.Threat.Components.ThreatHelpers.a_or_an(
             @changes[:threat_source],
             true
-          ) %>
+          )}
         </div>
 
         <.live_component
@@ -113,7 +113,7 @@
           <p><.octicon name="stop-16" /> Error</p>
           <ul class="ml-6">
             <%= for {field, error} <- @errors do %>
-              <li><%= "#{Phoenix.Naming.humanize(field)} #{elem(error, 0)}" %></li>
+              <li>{"#{Phoenix.Naming.humanize(field)} #{elem(error, 0)}"}</li>
             <% end %>
           </ul>
         </.alert>
@@ -146,31 +146,40 @@
 
     <.box class="p-4 mt-2">
       <h3>Comments</h3>
-      <div class="clearfix">
-        <div class="float-left col-6 p-2">
-          <form phx-change="update_field">
-            <.textarea
-              name="comments"
-              class="mt-2"
-              placeholder="Add a comment..."
-              input_id="comments"
-              is_full_width
-              rows="7"
-              value={@changes[:comments]}
-              caption="Markdown is supported"
-            />
-          </form>
-        </div>
-        <div class="float-left col-6 p-2">
-          <div class="markdown-body">
-            <.live_component
-              module={ValentineWeb.WorkspaceLive.Components.MarkdownComponent}
-              id="markdown-component"
-              text={@changes[:comments]}
-            />
-          </div>
-        </div>
-      </div>
+      <.live_component
+        module={ValentineWeb.WorkspaceLive.Components.TabNavComponent}
+        id={"tabs-component-threat-#{@threat.id}"}
+        tabs={[
+          %{label: "Write", id: "tab1"},
+          %{label: "Preview", id: "tab2"}
+        ]}
+      >
+        <:tab_content :let={tab}>
+          <%= case tab do %>
+            <% "tab1" -> %>
+              <form phx-change="update_field">
+                <.textarea
+                  name="comments"
+                  class="mt-2"
+                  placeholder="Add a comment..."
+                  input_id="comments"
+                  is_full_width
+                  rows="7"
+                  value={@changes[:comments]}
+                  caption="Markdown is supported"
+                />
+              </form>
+            <% "tab2" -> %>
+              <div class="markdown-body">
+                <.live_component
+                  module={ValentineWeb.WorkspaceLive.Components.MarkdownComponent}
+                  id="markdown-component"
+                  text={@changes[:comments]}
+                />
+              </div>
+          <% end %>
+        </:tab_content>
+      </.live_component>
     </.box>
 
     <.live_component
@@ -195,7 +204,7 @@
         <div class="mt-2">
           <%= for assumption <- @threat.assumptions || [] do %>
             <.button phx-click="remove_assumption" phx-value-id={assumption.id}>
-              <span><%= assumption.content %></span>
+              <span>{assumption.content}</span>
               <.octicon name="x-16" />
             </.button>
           <% end %>
@@ -225,7 +234,7 @@
         <div class="mt-2">
           <%= for mitigation <- @threat.mitigations || [] do %>
             <.button phx-click="remove_mitigation" phx-value-id={mitigation.id}>
-              <span><%= mitigation.content %></span>
+              <span>{mitigation.content}</span>
               <.octicon name="x-16" />
             </.button>
           <% end %>
@@ -280,7 +289,7 @@
             checked_value={value}
             checked={@changes[:stride] && value in @changes[:stride]}
           >
-            <:label style="font-weight: normal"><%= Phoenix.Naming.humanize(value) %></:label>
+            <:label style="font-weight: normal">{Phoenix.Naming.humanize(value)}</:label>
           </.checkbox>
         </div>
       <% end %>
@@ -302,10 +311,10 @@
       >
         <%= if !is_nil(@changes[key]) && @changes[key] != "" do %>
           <.octicon name="check-circle-16" class="Label--success" />
-          <span class="ml-1"><%= input %></span>
+          <span class="ml-1">{input}</span>
         <% else %>
           <.octicon name="x-circle-16" class="Label--danger" />
-          <span class="ml-1"><%= input %></span>
+          <span class="ml-1">{input}</span>
         <% end %>
       </li>
     </ul>
@@ -326,10 +335,10 @@
       >
         <%= if !is_nil(@changes[key]) && @changes[key] != "" do %>
           <.octicon name="check-circle-16" class="Label--success" />
-          <span class="ml-1"><%= input %></span>
+          <span class="ml-1">{input}</span>
         <% else %>
           <.octicon name="x-circle-16" class="Label--danger" />
-          <span class="ml-1"><%= input %></span>
+          <span class="ml-1">{input}</span>
         <% end %>
       </li>
     </ul>

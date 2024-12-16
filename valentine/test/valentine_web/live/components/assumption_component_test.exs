@@ -96,5 +96,19 @@ defmodule ValentineWeb.WorkspaceLive.Components.AssumptionComponentTest do
 
       assert updated_socket.assigns.tag == tag
     end
+
+    test "updates comments", %{assigns: assigns, socket: socket} do
+      comments = "new comments"
+      socket = Map.put(socket, :assigns, Map.put(assigns, :tag, comments))
+
+      {:noreply, updated_socket} =
+        AssumptionComponent.handle_event(
+          "update_comments",
+          %{"comments" => comments},
+          socket
+        )
+
+      assert updated_socket.assigns.assumption.comments == comments
+    end
   end
 end
