@@ -10,7 +10,7 @@ defmodule ValentineWeb.WorkspaceLive.Components.MitigationComponent do
     <div style="width:100%">
       <div class="clearfix mb-3">
         <div class="float-left">
-          <h3>Mitigation <%= @mitigation.numeric_id %></h3>
+          <h3>Mitigation {@mitigation.numeric_id}</h3>
         </div>
         <.live_component
           module={ValentineWeb.WorkspaceLive.Components.LabelSelectComponent}
@@ -52,9 +52,45 @@ defmodule ValentineWeb.WorkspaceLive.Components.MitigationComponent do
       </div>
       <.styled_html>
         <p>
-          <%= @mitigation.content %>
+          {@mitigation.content}
         </p>
       </.styled_html>
+      <details class="mt-4">
+        <summary>Comments</summary>
+        <.live_component
+          module={ValentineWeb.WorkspaceLive.Components.TabNavComponent}
+          id={"tabs-component-mitigation-#{@mitigation.id}"}
+          tabs={[
+            %{label: "Write", id: "tab1"},
+            %{label: "Preview", id: "tab2"}
+          ]}
+        >
+          <:tab_content :let={tab}>
+            <form phx-value-id={@mitigation.id} phx-submit="update_comments" phx-target={@myself}>
+              <%= case tab do %>
+                <% "tab1" -> %>
+                  <.textarea
+                    name="comments"
+                    class="mt-2"
+                    placeholder="Add a comment..."
+                    input_id="comments"
+                    is_full_width
+                    rows="7"
+                    value={@mitigation.comments}
+                    caption="Markdown is supported"
+                  />
+                <% "tab2" -> %>
+                  <.live_component
+                    module={ValentineWeb.WorkspaceLive.Components.MarkdownComponent}
+                    id={"markdown-component-mitigation-#{@mitigation.id}"}
+                    text={@mitigation.comments}
+                  />
+              <% end %>
+              <.button is_primary class="mt-2" type="submit">Save</.button>
+            </form>
+          </:tab_content>
+        </.live_component>
+      </details>
       <hr />
       <div class="clearfix">
         <div class="float-left col-2 mr-2">
@@ -75,7 +111,7 @@ defmodule ValentineWeb.WorkspaceLive.Components.MitigationComponent do
         <div class="float-left">
           <%= for tag <- @mitigation.tags || [] do %>
             <.button phx-click="remove_tag" phx-value-tag={tag} phx-target={@myself}>
-              <span><%= tag %></span>
+              <span>{tag}</span>
               <.octicon name="x-16" />
             </.button>
           <% end %>
@@ -138,5 +174,11 @@ defmodule ValentineWeb.WorkspaceLive.Components.MitigationComponent do
   @impl true
   def handle_event("set_tag", %{"value" => value} = _params, socket) do
     {:noreply, assign(socket, :tag, value)}
+  end
+
+  @impl true
+  def handle_event("update_comments", %{"comments" => comments}, socket) do
+    Composer.update_mitigation(socket.assigns.mitigation, %{comments: comments})
+    {:noreply, assign(socket, :mitigation, %{socket.assigns.mitigation | comments: comments})}
   end
 end

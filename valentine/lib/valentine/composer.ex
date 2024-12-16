@@ -1086,8 +1086,34 @@ defmodule Valentine.Composer do
   """
   def list_controls do
     # Get all controls and order them by their nist_id
-    from(c in Control, order_by: [asc: c.nist_id])
+    from(c in Control)
+    |> sort_hierarchical_strings(:nist_id)
     |> Repo.all()
+  end
+
+  def sort_hierarchical_strings(query, field) do
+    from record in query,
+      order_by:
+        fragment(
+          """
+          split_part(?, '-', 1),
+          CASE
+            WHEN split_part(split_part(?, '-', 2), '.', 1) ~ '^[0-9]+$'
+            THEN CAST(split_part(split_part(?, '-', 2), '.', 1) AS INTEGER)
+            ELSE 0
+          END,
+          CASE
+            WHEN split_part(split_part(?, '-', 2), '.', 2) ~ '^[0-9]+$'
+            THEN CAST(split_part(split_part(?, '-', 2), '.', 2) AS INTEGER)
+            ELSE 0
+          END
+          """,
+          field(record, ^field),
+          field(record, ^field),
+          field(record, ^field),
+          field(record, ^field),
+          field(record, ^field)
+        )
   end
 
   @doc """
