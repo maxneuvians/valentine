@@ -15,10 +15,10 @@ defmodule ValentineWeb.WorkspaceLive.Components.FilterComponent do
     <div class={@class}>
       <.action_menu is_dropdown_caret id={"#{@id}-dropdown"}>
         <:toggle>
-          <.octicon name={"#{@icon}-16"} /><span><%= Phoenix.Naming.humanize(@name) %></span>
+          <.octicon name={"#{@icon}-16"} /><span>{Phoenix.Naming.humanize(@name)}</span>
           <%= if is_list(@filters[@name]) && length(@filters[@name]) > 0 do %>
             <.counter>
-              <%= length(@filters[@name]) %>
+              {length(@filters[@name])}
             </.counter>
           <% end %>
         </:toggle>
@@ -37,13 +37,24 @@ defmodule ValentineWeb.WorkspaceLive.Components.FilterComponent do
               phx-target={@myself}
               phx-value-checked={value}
             >
-              <%= Phoenix.Naming.humanize(value) %>
+              {humanize(value)}
             </.action_list_item>
           <% end %>
         </.action_list>
       </.action_menu>
     </div>
     """
+  end
+
+  @impl true
+  def update(assigns, socket) do
+    atomic_values =
+      case hd(assigns[:values]) do
+        atom when is_atom(atom) -> true
+        _ -> false
+      end
+
+    {:ok, socket |> assign(assigns) |> assign(:atomic_values, atomic_values)}
   end
 
   @impl true
@@ -57,7 +68,13 @@ defmodule ValentineWeb.WorkspaceLive.Components.FilterComponent do
   @impl true
   def handle_event("select_filter", params, socket) do
     %{filters: filters, name: name} = socket.assigns
-    value = String.to_existing_atom(params["checked"])
+
+    value =
+      if socket.assigns.atomic_values do
+        String.to_existing_atom(params["checked"])
+      else
+        params["checked"]
+      end
 
     filters =
       cond do
@@ -85,4 +102,13 @@ defmodule ValentineWeb.WorkspaceLive.Components.FilterComponent do
     send(self(), {:update_filter, filters})
     {:noreply, assign(socket, filters: filters)}
   end
+
+  defp humanize(value) when is_atom(value) do
+    value
+    |> Atom.to_string()
+    |> String.replace("_", " ")
+    |> String.capitalize()
+  end
+
+  defp humanize(value) when is_binary(value), do: value
 end

@@ -7,6 +7,17 @@
   title="NIST Controls"
   collection={@controls}
 >
+  <:filters>
+    <.live_component
+      module={ValentineWeb.WorkspaceLive.Components.FilterComponent}
+      id="nist-family-filter"
+      icon="filter"
+      class=""
+      name={:nist_family}
+      values={@nist_families}
+      filters={@filters}
+    />
+  </:filters>
   <:row :let={item}>
     <details>
       <summary>

@@ -8,6 +8,7 @@ defmodule ValentineWeb.WorkspaceLive.Components.FilterComponentTest do
     assigns = %{
       __changed__: %{},
       class: "class",
+      atomic_values: true,
       filters: %{filter: []},
       id: "id",
       icon: "icon",
@@ -46,6 +47,34 @@ defmodule ValentineWeb.WorkspaceLive.Components.FilterComponentTest do
     end
   end
 
+  describe "update/2" do
+    setup [:create_filter]
+
+    test "assigns atomic_values to true if the first value is an atom", %{assigns: assigns} do
+      assigns = Map.put(assigns, :values, [:one, :two, :three])
+      assigns = Map.delete(assigns, :atomic_values)
+
+      socket = %Phoenix.LiveView.Socket{
+        assigns: assigns
+      }
+
+      {:ok, socket} = FilterComponent.update(assigns, socket)
+      assert socket.assigns.atomic_values == true
+    end
+
+    test "assigns atomic_values to false if the first value is not an atom", %{assigns: assigns} do
+      assigns = Map.put(assigns, :values, ["one", "two", "three"])
+      assigns = Map.delete(assigns, :atomic_values)
+
+      socket = %Phoenix.LiveView.Socket{
+        assigns: assigns
+      }
+
+      {:ok, socket} = FilterComponent.update(assigns, socket)
+      assert socket.assigns.atomic_values == false
+    end
+  end
+
   describe "handle_event/3" do
     setup [:create_filter]
 
@@ -70,6 +99,7 @@ defmodule ValentineWeb.WorkspaceLive.Components.FilterComponentTest do
       socket =
         Map.put(socket, :assigns, %{
           __changed__: %{},
+          atomic_values: true,
           filters: %{filter: [:one, :two]},
           name: :filter
         })
@@ -82,7 +112,12 @@ defmodule ValentineWeb.WorkspaceLive.Components.FilterComponentTest do
 
     test "removes filter list if no more filters of that type are set", %{socket: socket} do
       socket =
-        Map.put(socket, :assigns, %{__changed__: %{}, filters: %{filter: [:one]}, name: :filter})
+        Map.put(socket, :assigns, %{
+          __changed__: %{},
+          atomic_values: true,
+          filters: %{filter: [:one]},
+          name: :filter
+        })
 
       {:noreply, socket} =
         FilterComponent.handle_event("select_filter", %{"checked" => "one"}, socket)
@@ -92,12 +127,34 @@ defmodule ValentineWeb.WorkspaceLive.Components.FilterComponentTest do
 
     test "adds an additional filter to the filters list", %{socket: socket} do
       socket =
-        Map.put(socket, :assigns, %{__changed__: %{}, filters: %{filter: [:one]}, name: :filter})
+        Map.put(socket, :assigns, %{
+          __changed__: %{},
+          atomic_values: true,
+          filters: %{filter: [:one]},
+          name: :filter
+        })
 
       {:noreply, socket} =
         FilterComponent.handle_event("select_filter", %{"checked" => "two"}, socket)
 
       assert socket.assigns.filters[:filter] == [:two, :one]
+    end
+
+    test "adds an addition filter to the filters list with string values instead of atomic", %{
+      socket: socket
+    } do
+      socket =
+        Map.put(socket, :assigns, %{
+          __changed__: %{},
+          atomic_values: false,
+          filters: %{filter: ["one"]},
+          name: :filter
+        })
+
+      {:noreply, socket} =
+        FilterComponent.handle_event("select_filter", %{"checked" => "two"}, socket)
+
+      assert socket.assigns.filters[:filter] == ["two", "one"]
     end
   end
 end

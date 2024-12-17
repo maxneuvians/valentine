@@ -11,7 +11,9 @@ defmodule ValentineWeb.WorkspaceLive.Controls.Index do
     {:ok,
      socket
      |> assign(:controls, Composer.list_controls())
-     |> assign(:workspace, workspace)}
+     |> assign(:nist_families, Composer.list_control_families())
+     |> assign(:workspace, workspace)
+     |> assign(:filters, %{})}
   end
 
   @impl true
@@ -22,6 +24,21 @@ defmodule ValentineWeb.WorkspaceLive.Controls.Index do
   defp apply_action(socket, :index, _params) do
     socket
     |> assign(:page_title, "NIST Controls")
+  end
+
+  @impl true
+  def handle_info({:update_filter, filters}, socket) do
+    if Kernel.map_size(filters) == 0 do
+      {:noreply,
+       socket
+       |> assign(:controls, Composer.list_controls())
+       |> assign(:filters, filters)}
+    else
+      {:noreply,
+       socket
+       |> assign(:controls, Composer.list_controls_in_families(filters.nist_family))
+       |> assign(:filters, filters)}
+    end
   end
 
   defp text_to_html(text) do

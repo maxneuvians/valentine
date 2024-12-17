@@ -4,7 +4,7 @@ defmodule ValentineWeb.WorkspaceLive.Controls.IndexTest do
   import Valentine.ComposerFixtures
 
   setup do
-    control = control_fixture()
+    control = control_fixture(%{nist_id: "AC-1"})
     workspace = workspace_fixture()
 
     socket = %Phoenix.LiveView.Socket{
@@ -39,6 +39,32 @@ defmodule ValentineWeb.WorkspaceLive.Controls.IndexTest do
       assert socket.assigns.controls == [control]
 
       assert socket.assigns.workspace_id == workspace_id
+    end
+  end
+
+  describe "handle_info/2" do
+    test "updates the controls list when filters are empty", %{
+      control: control,
+      socket: socket
+    } do
+      {:noreply, socket} =
+        ValentineWeb.WorkspaceLive.Controls.Index.handle_info({:update_filter, %{}}, socket)
+
+      assert socket.assigns.controls == [control]
+      assert socket.assigns.filters == %{}
+    end
+
+    test "updates the controls list when filters are not empty", %{
+      socket: socket
+    } do
+      {:noreply, socket} =
+        ValentineWeb.WorkspaceLive.Controls.Index.handle_info(
+          {:update_filter, %{nist_family: ["XY"]}},
+          socket
+        )
+
+      assert socket.assigns.controls == []
+      assert socket.assigns.filters == %{nist_family: ["XY"]}
     end
   end
 

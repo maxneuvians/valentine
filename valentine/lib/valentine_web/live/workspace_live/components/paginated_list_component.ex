@@ -9,6 +9,7 @@ defmodule ValentineWeb.WorkspaceLive.Components.PaginatedListComponent do
      socket
      |> assign(:collection, [])
      |> assign(:current_page, 1)
+     |> assign(:filters, [])
      |> assign(:page_size, 10)
      |> assign(:selectable, false)
      |> assign(:selected, [])
@@ -31,10 +32,15 @@ defmodule ValentineWeb.WorkspaceLive.Components.PaginatedListComponent do
           </.button_group>
         </:header>
         <:header_title class="flex-auto">
-          {@title}
-          <span :if={length(@selected) > 0} class="Counter Counter--gray">
-            {length(@selected)}
-          </span>
+          <div class="float-left mt-2">
+            {@title}
+            <span :if={length(@selected) > 0} class="Counter Counter--gray">
+              {length(@selected)}
+            </span>
+          </div>
+          <div class="float-left ml-2">
+            {render_slot(@filters)}
+          </div>
         </:header_title>
         <:row
           :for={item <- slice_collection(assigns)}

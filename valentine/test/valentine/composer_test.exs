@@ -851,6 +851,17 @@ defmodule Valentine.ComposerTest do
       assert Composer.list_controls() == [control]
     end
 
+    test "list_control_families/0 returns all control families" do
+      control_fixture(%{nist_id: "AC-1"})
+      assert Composer.list_control_families() == ["AC"]
+    end
+
+    test "list_controls_in_families/1 returns all controls for a list of families" do
+      control = control_fixture(%{nist_id: "AC-1"})
+      family = control.nist_id |> String.split("-") |> hd
+      assert Composer.list_controls_in_families([family]) == [control]
+    end
+
     test "get_control!/1 returns the control with given id" do
       control = control_fixture()
 

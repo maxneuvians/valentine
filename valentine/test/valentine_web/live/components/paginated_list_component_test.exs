@@ -18,6 +18,15 @@ defmodule ValentineWeb.WorkspaceLive.Components.PaginatedListComponentTest do
     %{assigns: assigns, socket: socket}
   end
 
+  defp filters_slot do
+    [
+      %{
+        __slot__: :filters,
+        inner_block: fn _, _ -> "Filters" end
+      }
+    ]
+  end
+
   defp row_slot() do
     [
       %{
@@ -57,6 +66,15 @@ defmodule ValentineWeb.WorkspaceLive.Components.PaginatedListComponentTest do
 
       assert html =~ "Row for 1"
       assert html =~ "Row for 2"
+    end
+
+    test "renders the filters slot", %{assigns: assigns} do
+      assigns = Map.merge(assigns, %{filters: filters_slot()})
+
+      html =
+        render_component(PaginatedListComponent, assigns)
+
+      assert html =~ "Filters"
     end
 
     test "renders a checkbox if selectable is true", %{assigns: assigns} do

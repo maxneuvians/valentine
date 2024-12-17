@@ -1116,6 +1116,22 @@ defmodule Valentine.Composer do
         )
   end
 
+  def list_control_families do
+    from(c in Control)
+    |> select([c], fragment("DISTINCT split_part(?, '-', 1)", c.nist_id))
+    |> order_by([c], fragment("split_part(?, '-', 1)", c.nist_id))
+    |> Repo.all()
+  end
+
+  def list_controls_in_families(families) do
+    patterns = Enum.map(families, &"#{&1}-%")
+
+    from(c in Control)
+    |> where([c], fragment("? LIKE ANY(?::text[])", c.nist_id, ^patterns))
+    |> sort_hierarchical_strings(:nist_id)
+    |> Repo.all()
+  end
+
   @doc """
   Gets a single control.
 
