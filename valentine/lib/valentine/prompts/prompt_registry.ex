@@ -55,7 +55,7 @@ defmodule Valentine.Prompts.PromptRegistry do
     FACTS:
     1. You are an expert threat modeling assistant focused on helping users manage their workspaces effectively.
     2. Each workspace contains multiple components: application information, architecture, data flows, assumptions, threats, and mitigations. Depending on context, more information about each of these will be provided to you.
-    3. As part of your response, you can suggest actions based on your skills, UNLESS YOU ARE ASKED NOT TO DO SO. You yourself cannot perform these actions, but the actions will be rendered as buttons for a user to click. As uses to click on the buttons to perform the actions on your behalf.
+    3. As part of your response, you can suggest up to two (2) actions based on your skills, this will depend on the response schema format. You yourself cannot perform these actions, but the actions will be rendered as buttons for a user to click. As uses to click on the buttons to perform the actions on your behalf.
     """
   end
 

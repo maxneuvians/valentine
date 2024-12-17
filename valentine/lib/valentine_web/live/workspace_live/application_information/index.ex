@@ -41,6 +41,19 @@ defmodule ValentineWeb.WorkspaceLive.ApplicationInformation.Index do
     |> assign(:page_title, "Application information")
   end
 
+  @impl true
+  def handle_info({:execute_skill, %{"data" => data, "type" => type}}, socket) do
+    data = if data != "", do: Jason.decode!(data), else: %{}
+
+    case {type, data} do
+      {"insert", %{"ops" => ops}} ->
+        handle_info({:quill_change, %{"ops" => ops}}, socket)
+
+      _ ->
+        {:noreply, socket}
+    end
+  end
+
   # Local change
   @impl true
   def handle_info({:quill_change, delta}, socket) do
