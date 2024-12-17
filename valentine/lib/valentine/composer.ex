@@ -396,6 +396,65 @@ defmodule Valentine.Composer do
   end
 
   @doc """
+  Filters mitigations based on enum field values.
+
+  Takes a queryable and a map of filters where keys are field names and values are selected enum values.
+  Handles both array and parameterized enum fields.
+
+  ## Examples
+
+      iex> filters = %{severity: ["HIGH", "CRITICAL"], status: ["OPEN"]}
+      iex> list_mitigations_with_enum_filters(Mitigation, filters)
+      [%Mitigation{severity: "HIGH", status: "OPEN"}, ...]
+
+  """
+  def list_mitigations_with_enum_filters(m, filters) do
+    Enum.reduce(filters, m, fn {f, selected}, queryable ->
+      case Mitigation.__schema__(:type, f) do
+        {:array, _} ->
+          if is_nil(selected) || selected == [] do
+            queryable
+          else
+            [first | rest] = selected
+            query = where(queryable, [m], ^first in field(m, ^f))
+
+            Enum.reduce(rest, query, fn s, q ->
+              or_where(q, [m], ^s in field(m, ^f))
+            end)
+          end
+
+        {:parameterized, _} ->
+          if is_nil(selected) || selected == [] do
+            queryable
+          else
+            where(queryable, [m], field(m, ^f) in ^selected)
+          end
+      end
+    end)
+  end
+
+  @doc """
+  Returns the list of mitigations for a specific workspace.
+
+  ## Parameters
+
+    * workspace_id - The UUID of the workspace to filter mitigations by
+
+  ## Examples
+
+      iex> list_mitigations_by_workspace("123e4567-e89b-12d3-a456-426614174000")
+      [%Mitigation{}, ...]
+
+      iex> list_mitigations_by_workspace("nonexistent-id")
+      []
+  """
+  def list_mitigations_by_workspace(workspace_id, enum_filters \\ %{}) do
+    from(t in Mitigation, where: t.workspace_id == ^workspace_id)
+    |> list_mitigations_with_enum_filters(enum_filters)
+    |> Repo.all()
+  end
+
+  @doc """
   Gets a single mitigation.
 
   Raises `Ecto.NoResultsError` if the Mitigation does not exist.

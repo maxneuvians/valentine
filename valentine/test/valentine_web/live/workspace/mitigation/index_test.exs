@@ -68,6 +68,26 @@ defmodule ValentineWeb.WorkspaceLive.Mitigation.IndexTest do
 
       assert updated_socket.assigns.mitigations == [mitigation]
     end
+
+    test "updates filters on filter changes", %{socket: socket} do
+      with_mocks([
+        {
+          Composer,
+          [],
+          list_mitigations_by_workspace: fn _, _ ->
+            [%{id: 1, title: "Updated Mitigation"}]
+          end
+        }
+      ]) do
+        {:noreply, updated_socket} =
+          ValentineWeb.WorkspaceLive.Mitigation.Index.handle_info(
+            {:update_filter, %{status: "open"}},
+            socket
+          )
+
+        assert updated_socket.assigns.filters == %{status: "open"}
+      end
+    end
   end
 
   describe "handle_event delete" do
@@ -108,6 +128,27 @@ defmodule ValentineWeb.WorkspaceLive.Mitigation.IndexTest do
           )
 
         assert updated_socket.assigns.flash["error"] =~ "Failed to delete"
+      end
+    end
+
+    test "clears filters", %{socket: socket} do
+      with_mocks([
+        {
+          Composer,
+          [],
+          list_threats_by_workspace: fn _, _ ->
+            [%{id: 1, title: "Updated Threat"}]
+          end
+        }
+      ]) do
+        {:noreply, updated_socket} =
+          ValentineWeb.WorkspaceLive.Threat.Index.handle_event(
+            "clear_filters",
+            nil,
+            socket
+          )
+
+        assert updated_socket.assigns.filters == %{}
       end
     end
   end

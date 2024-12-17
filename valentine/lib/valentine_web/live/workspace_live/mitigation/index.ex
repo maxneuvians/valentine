@@ -13,6 +13,7 @@ defmodule ValentineWeb.WorkspaceLive.Mitigation.Index do
     {:ok,
      socket
      |> assign(:workspace_id, workspace_id)
+     |> assign(:filters, %{})
      |> assign(:mitigations, workspace.mitigations)}
   end
 
@@ -42,18 +43,6 @@ defmodule ValentineWeb.WorkspaceLive.Mitigation.Index do
   end
 
   @impl true
-  def handle_info(
-        {ValentineWeb.WorkspaceLive.Mitigation.Components.FormComponent, {:saved, _mitigation}},
-        socket
-      ) do
-    workspace = get_workspace(socket.assigns.workspace_id)
-
-    {:noreply,
-     socket
-     |> assign(:mitigations, workspace.mitigations)}
-  end
-
-  @impl true
   def handle_event("delete", %{"id" => id}, socket) do
     case Composer.get_mitigation!(id) do
       nil ->
@@ -76,6 +65,42 @@ defmodule ValentineWeb.WorkspaceLive.Mitigation.Index do
             {:noreply, socket |> put_flash(:error, "Failed to delete mitigation")}
         end
     end
+  end
+
+  @impl true
+  def handle_event("clear_filters", _params, socket) do
+    {:noreply,
+     socket
+     |> assign(:filters, %{})
+     |> assign(
+       :mitigations,
+       Composer.list_mitigations_by_workspace(socket.assigns.workspace_id, %{})
+     )}
+  end
+
+  @impl true
+  def handle_info(
+        {ValentineWeb.WorkspaceLive.Mitigation.Components.FormComponent, {:saved, _mitigation}},
+        socket
+      ) do
+    workspace = get_workspace(socket.assigns.workspace_id)
+
+    {:noreply,
+     socket
+     |> assign(:mitigations, workspace.mitigations)}
+  end
+
+  @impl true
+  def handle_info({:update_filter, filters}, socket) do
+    {
+      :noreply,
+      socket
+      |> assign(:filters, filters)
+      |> assign(
+        :mitigations,
+        Composer.list_mitigations_by_workspace(socket.assigns.workspace_id, filters)
+      )
+    }
   end
 
   defp get_workspace(id) do

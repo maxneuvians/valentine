@@ -1,29 +1,51 @@
 <.subhead>
-  <%= gettext("Listing Mitigations") %>
+  {gettext("Listing Mitigations")}
   <:actions>
     <.button is_primary phx-click={JS.patch(~p"/workspaces/#{@workspace_id}/mitigations/new")}>
-      <%= gettext("New Mitigation") %>
+      {gettext("New Mitigation")}
     </.button>
   </:actions>
 </.subhead>
 
 <.box id="mitigations" row_id={fn r -> "mitigation-#{r.id}" end}>
-  <:header>Your mitigations</:header>
+  <:header class="d-flex flex-items-center">
+    Filters:
+    <.live_component
+      module={ValentineWeb.WorkspaceLive.Components.FilterComponent}
+      id="status-filter"
+      class="mx-1"
+      icon="stack"
+      name={:status}
+      values={Ecto.Enum.values(Valentine.Composer.Mitigation, :status)}
+      filters={@filters}
+    />
+  </:header>
   <div class="stream-row hidden">
     <%= if length(@mitigations) == 0 do %>
-      <.blankslate class="color-bg-default">
-        <:octicon name="check-circle-24" />
-        <:action>
-          <.button
-            phx-click={JS.patch(~p"/workspaces/#{@workspace_id}/mitigations/new")}
-            is_primary
-          >
-            Get started
-          </.button>
-        </:action>
-        <h3>Let's add some mitigations</h3>
-        <p>Start by clicking the button below and work from there...</p>
-      </.blankslate>
+      <%= if @filters && @filters != %{} do %>
+        <.blankslate class="color-bg-default">
+          <:octicon name="question-24" />
+          <:action>
+            <.button phx-click="clear_filters">Clear all filters</.button>
+          </:action>
+          <h3>No results found</h3>
+          <p>You may have filters set that are hiding mitigations</p>
+        </.blankslate>
+      <% else %>
+        <.blankslate class="color-bg-default">
+          <:octicon name="check-circle-24" />
+          <:action>
+            <.button
+              phx-click={JS.patch(~p"/workspaces/#{@workspace_id}/mitigations/new")}
+              is_primary
+            >
+              Get started
+            </.button>
+          </:action>
+          <h3>Let's add some mitigations</h3>
+          <p>Start by clicking the button below and work from there...</p>
+        </.blankslate>
+      <% end %>
     <% end %>
   </div>
   <:row :for={mitigation <- @mitigations} class="d-flex flex-items-center flex-justify-between">

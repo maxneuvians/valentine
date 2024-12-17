@@ -368,6 +368,15 @@ defmodule Valentine.ComposerTest do
       assert Composer.list_mitigations() == [mitigation]
     end
 
+    test "list_mitigations_by_workspace/2 returns all mitigations for a workspace" do
+      mitigation = mitigation_fixture()
+      assert Composer.list_mitigations_by_workspace(mitigation.workspace_id) == [mitigation]
+    end
+
+    test "list_mitigations_by_workspace/2 returns all mitigations for a workspace adnd not other workspaces" do
+      assert Composer.list_mitigations_by_workspace("00000000-0000-0000-0000-000000000000") == []
+    end
+
     test "get_mitigation!/1 returns the mitigation with given id" do
       mitigation = mitigation_fixture()
       assert Composer.get_mitigation!(mitigation.id) == mitigation
