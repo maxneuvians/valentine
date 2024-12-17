@@ -1,16 +1,21 @@
 <.subhead>
-  Workspace: <%= @workspace.name %>
+  Workspace: {@workspace.name}
   <:actions>
     <.button phx-click={JS.patch(~p"/workspaces")}>
       Back to all workspaces
     </.button>
+    <a href={"/workspaces/#{@workspace.id}/export"} target="_blank">
+      <.button is_primary>
+        Export
+      </.button>
+    </a>
   </:actions>
 </.subhead>
 <div class="clearfix">
   <div class="col-12 col-md-4 float-left p-2">
     <.box>
       <:header_title>Details</:header_title>
-      <:body><%= @workspace.name %></:body>
+      <:body>{@workspace.name}</:body>
     </.box>
   </div>
   <div class="col-12 col-md-8 float-left">
