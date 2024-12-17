@@ -1,15 +1,15 @@
 defmodule Valentine.Prompts.Workspace do
   alias Valentine.Composer
 
+  def get_skills(_), do: ["create"]
+
   def system_prompt(_workspace_id, :index) do
     workspaces = Composer.list_workspaces()
 
     """
-    Please respond with JSON.
-
     ADDITIONAL FACTS:
     1. A workspace represents a project space for threat modeling
-    3. Workspaces can be created, edited, and deleted, by the user, but you can only create them at this point in time.
+    2. Workspaces can be created, edited, and deleted, by the user, but you can only create them at this point in time.
 
     This is the current list of workspaces with their IDs and names:
     {

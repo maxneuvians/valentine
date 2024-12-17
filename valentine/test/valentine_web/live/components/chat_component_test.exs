@@ -96,7 +96,6 @@ defmodule ValentineWeb.WorkspaceLive.Components.ChatComponentTest do
     test "properly assigns all the right values", %{socket: socket} do
       socket = Map.put(socket, :assigns, Map.put(socket.assigns, :myself, %{}))
       {:ok, updated_socket} = ChatComponent.mount(socket)
-      assert updated_socket.assigns.chain != nil
       assert updated_socket.assigns.skills == []
       assert updated_socket.assigns.usage == nil
       assert updated_socket.assigns.async_result.loading == true
@@ -154,7 +153,11 @@ defmodule ValentineWeb.WorkspaceLive.Components.ChatComponentTest do
     end
 
     test "updates the socket with any assigns", %{socket: socket} do
+      socket = Map.put(socket, :assigns, Map.put(socket.assigns, :myself, %{}))
+
       assigns = %{
+        active_module: "some_active_module",
+        active_action: "some_active_action",
         some_key: "some_value"
       }
 

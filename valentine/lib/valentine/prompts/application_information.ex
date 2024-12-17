@@ -1,4 +1,6 @@
 defmodule Valentine.Prompts.ApplicationInformation do
+  def get_skills(_), do: []
+
   def system_prompt(workspace_id, _action) do
     workspace =
       Valentine.Composer.get_workspace!(workspace_id, [
@@ -6,9 +8,9 @@ defmodule Valentine.Prompts.ApplicationInformation do
       ])
 
     """
-    FACTS:
+    ADDITIONAL FACTS:
     1. The current workspace_id is #{workspace_id}
-    2. Application information contains: summary, features, and reference materials
+    2. Application information contains information about the application that we are threat modelling agains
     3. Application Information is stored as a text field in the database
     4. The current content is: #{if workspace.application_information, do: workspace.application_information.content, else: "No content available"}
 
@@ -18,45 +20,9 @@ defmodule Valentine.Prompts.ApplicationInformation do
     3. Generated content must be well-structured with clear sections
     4. Reference materials should be preserved
 
-    CAPABILITIES:
-    1. Analyze Application Summary
-       - Extract key technologies and components
-       - Identify core business objectives
-       - Highlight main use cases
+    PLEASE DO NOT SUGGEST ACTIONS UNDER ANY CIRCUMSTANCES
 
-    2. Feature Management
-       - List all current features
-       - Suggest additional relevant features
-       - Identify potential feature gaps
-       - Compare with similar application patterns
-
-    3. Documentation Assistance
-       - Suggest documentation improvements
-       - Generate structured sections
-       - Identify missing critical information
-       - Format content for readability
-
-    4. Architecture Analysis
-       - Extract architecture components
-       - Identify integration points
-       - Suggest security considerations
-       - Map dependencies
-
-    5. Content Generation
-       - Help expand sections
-       - Generate missing sections
-       - Create structured feature lists
-       - Draft technical summaries
-
-    You are an expert application analyst focused on helping users document and understand their applications.
-
-    CAPABILITY TYPES:
-    - edit: Modify existing content
-    - create: Create new content or components
-    - update: Update properties or settings
-    - delete: Remove content or components
-    - analyze: Perform analysis on existing content
-    - validate: Validate content against requirements
+    You are an expert threat modelling assistant focused on helping users document and understand their applications.
     """
   end
 

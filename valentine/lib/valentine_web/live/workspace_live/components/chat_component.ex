@@ -13,23 +13,7 @@ defmodule ValentineWeb.WorkspaceLive.Components.ChatComponent do
   def mount(socket) do
     {:ok,
      socket
-     |> assign(
-       :chain,
-       %{
-         llm:
-           ChatOpenAI.new!(%{
-             model: "gpt-4o-mini",
-             max_completion_tokens: 100_000,
-             stream: true,
-             stream_options: %{include_usage: true},
-             json_response: true,
-             json_schema: Jason.decode!(PromptRegistry.response_schema()),
-             callbacks: [llm_handler(self(), socket.assigns.myself)]
-           }),
-         callbacks: [llm_handler(self(), socket.assigns.myself)]
-       }
-       |> LLMChain.new!()
-     )
+     |> assign(:chain, nil)
      |> assign(:skills, [])
      |> assign(:usage, nil)
      |> assign(:async_result, AsyncResult.loading())}
@@ -47,19 +31,19 @@ defmodule ValentineWeb.WorkspaceLive.Components.ChatComponent do
               class="chat_message"
               data-role={message.role}
             >
-              <div class="chat_message_role"><%= role(message.role) %></div>
-              <%= format_msg(message.content, message.role) %>
+              <div class="chat_message_role">{role(message.role)}</div>
+              {format_msg(message.content, message.role)}
             </li>
             <li :if={@chain.delta} class="chat_message" data-role={@chain.delta.role}>
-              <div class="chat_message_role"><%= role(@chain.delta.role) %></div>
-              <%= format_msg(@chain.delta.content, @chain.delta.role) %>
+              <div class="chat_message_role">{role(@chain.delta.role)}</div>
+              {format_msg(@chain.delta.content, @chain.delta.role)}
             </li>
           </ul>
         <% else %>
           <.blankslate class="mt-4">
             <:octicon name="dependabot-24" />
             <h3>Ask AI Assistant</h3>
-            <p><%= tag_line(@active_module, @active_action) %></p>
+            <p>{tag_line(@active_module, @active_action)}</p>
           </.blankslate>
         <% end %>
       </div>
@@ -71,7 +55,7 @@ defmodule ValentineWeb.WorkspaceLive.Components.ChatComponent do
             phx-value-id={skill["id"]}
             phx-target={@myself}
           >
-            <%= skill["description"] %>
+            {skill["description"]}
           </.button>
         </div>
       </div>
@@ -91,7 +75,11 @@ defmodule ValentineWeb.WorkspaceLive.Components.ChatComponent do
   end
 
   def update(%{chat_complete: data}, socket) do
-    %{"skills" => skills} = Jason.decode!(data.content)
+    skills =
+      case Jason.decode!(data.content) do
+        %{"skills" => skills} -> skills
+        _ -> []
+      end
 
     {:ok,
      socket
@@ -131,6 +119,27 @@ defmodule ValentineWeb.WorkspaceLive.Components.ChatComponent do
   def update(assigns, socket) do
     {:ok,
      socket
+     |> assign(
+       :chain,
+       %{
+         llm:
+           ChatOpenAI.new!(%{
+             model: "gpt-4o-mini",
+             max_completion_tokens: 100_000,
+             stream: true,
+             stream_options: %{include_usage: true},
+             json_response: true,
+             json_schema:
+               PromptRegistry.get_schema(
+                 assigns.active_module,
+                 assigns.active_action
+               ),
+             callbacks: [llm_handler(self(), socket.assigns.myself)]
+           }),
+         callbacks: [llm_handler(self(), socket.assigns.myself)]
+       }
+       |> LLMChain.new!()
+     )
      |> assign(assigns)}
   end
 
