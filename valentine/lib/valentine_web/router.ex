@@ -25,6 +25,7 @@ defmodule ValentineWeb.Router do
 
     live_session :authenticated,
       on_mount: [
+        ValentineWeb.Helpers.ChatHelper,
         ValentineWeb.Helpers.FlashHelper,
         ValentineWeb.Helpers.LocaleHelper,
         ValentineWeb.Helpers.NavHelper,
