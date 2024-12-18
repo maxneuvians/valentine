@@ -344,4 +344,31 @@ defmodule ValentineWeb.WorkspaceLive.Threat.ShowTest do
       assert updated_socket.assigns.threat.mitigations == [mitigation]
     end
   end
+
+  describe "get_dfd_data/2" do
+    alias Valentine.Composer.DataFlowDiagram
+
+    test "gets actors for the threat sources field", %{workspace: workspace} do
+      DataFlowDiagram.new(workspace.id)
+      DataFlowDiagram.add_node(workspace.id, %{"type" => "actor"})
+      DataFlowDiagram.add_node(workspace.id, %{"type" => "data_store"})
+
+      assert ValentineWeb.WorkspaceLive.Threat.Show.get_dfd_data(workspace.id, :threat_source) ==
+               ["Actor"]
+    end
+
+    test "gets data stores and processes for the impacted assets field", %{workspace: workspace} do
+      DataFlowDiagram.new(workspace.id)
+      DataFlowDiagram.add_node(workspace.id, %{"type" => "actor"})
+      DataFlowDiagram.add_node(workspace.id, %{"type" => "datastore"})
+      DataFlowDiagram.add_node(workspace.id, %{"type" => "process"})
+
+      assert ValentineWeb.WorkspaceLive.Threat.Show.get_dfd_data(workspace.id, :impacted_assets) ==
+               ["Datastore", "Process"]
+    end
+
+    test "returns an empty list if not a valid field", %{workspace: workspace} do
+      assert ValentineWeb.WorkspaceLive.Threat.Show.get_dfd_data(workspace.id, :foo) == []
+    end
+  end
 end

@@ -14,8 +14,8 @@ defmodule ValentineWeb.WorkspaceLive.Threat.Components.ArrayInputComponent do
     ~H"""
     <div>
       <.styled_html>
-        <h3><%= @context.title %></h3>
-        <p><%= @context.description %></p>
+        <h3>{@context.title}</h3>
+        <p>{@context.description}</p>
         <.text_input
           id={"#{@id}-#{@active_field}"}
           name={"threat-#{@active_field}"}
@@ -30,23 +30,41 @@ defmodule ValentineWeb.WorkspaceLive.Threat.Components.ArrayInputComponent do
         <div class="mt-2">
           <%= for tag <- @current_value do %>
             <.button phx-click="remove_tag" phx-value-tag={tag} phx-target={@myself}>
-              <span><%= tag %></span>
+              <span>{tag}</span>
               <.octicon name="x-16" />
             </.button>
           <% end %>
         </div>
-        <%= if @context.examples && length(@context.examples) > 0 do %>
-          <h4>Examples:</h4>
-          <ul>
-            <%= for example <- @context.examples do %>
-              <li>
-                <.link phx-click="set_tag" phx-value-value={example} phx-target={@myself}>
-                  <%= example %>
-                </.link>
-              </li>
+        <div class="clearfix">
+          <div class="float-left col-6">
+            <%= if @context.examples && length(@context.examples) > 0 do %>
+              <h4>Generic examples:</h4>
+              <ul>
+                <%= for example <- @context.examples do %>
+                  <li>
+                    <.link phx-click="set_tag" phx-value-value={example} phx-target={@myself}>
+                      {example}
+                    </.link>
+                  </li>
+                <% end %>
+              </ul>
             <% end %>
-          </ul>
-        <% end %>
+          </div>
+          <div class="float-left col-6">
+            <%= if @dfd_examples && length(@dfd_examples) > 0 do %>
+              <h4>From data flow diagram:</h4>
+              <ul>
+                <%= for example <- @dfd_examples do %>
+                  <li>
+                    <.link phx-click="set_tag" phx-value-value={example} phx-target={@myself}>
+                      {example}
+                    </.link>
+                  </li>
+                <% end %>
+              </ul>
+            <% end %>
+          </div>
+        </div>
       </.styled_html>
     </div>
     """

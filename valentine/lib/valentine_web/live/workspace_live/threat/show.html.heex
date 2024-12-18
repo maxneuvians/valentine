@@ -5,7 +5,7 @@
     New Threat Statement
   <% end %>
   <:actions>
-    <.link navigate={~p"/workspaces/#{assigns[:workspace_id]}/threats"}>
+    <.link navigate={~p"/workspaces/#{@workspace_id}/threats"}>
       <.button>Back</.button>
     </.link>
     <.button phx-click="save" is_primary>Save</.button>
@@ -130,6 +130,7 @@
               active_field={@active_field}
               current_value={@changes[@active_field]}
               context={@context}
+              dfd_examples={get_dfd_data(@workspace_id, @active_field)}
             />
           <% "array" -> %>
             <.live_component
@@ -138,6 +139,7 @@
               active_field={@active_field}
               current_value={@changes[@active_field] || []}
               context={@context}
+              dfd_examples={get_dfd_data(@workspace_id, @active_field)}
             />
           <% _ -> %>
         <% end %>

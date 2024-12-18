@@ -180,7 +180,37 @@ defmodule ValentineWeb.WorkspaceLive.Threat.Show do
     end
   end
 
-  defp get_workspace(id) do
+  def get_dfd_data(workspace_id, :threat_source) do
+    case Valentine.Composer.DataFlowDiagram.get(workspace_id) do
+      nil ->
+        []
+
+      dfd ->
+        dfd
+        |> Map.get(:nodes)
+        |> Map.values()
+        |> Enum.filter(&(&1["data"]["type"] == "actor"))
+        |> Enum.map(& &1["data"]["label"])
+    end
+  end
+
+  def get_dfd_data(workspace_id, :impacted_assets) do
+    case Valentine.Composer.DataFlowDiagram.get(workspace_id) do
+      nil ->
+        []
+
+      dfd ->
+        dfd
+        |> Map.get(:nodes)
+        |> Map.values()
+        |> Enum.filter(&(&1["data"]["type"] == "process" || &1["data"]["type"] == "datastore"))
+        |> Enum.map(& &1["data"]["label"])
+    end
+  end
+
+  def get_dfd_data(_, _), do: []
+
+  def get_workspace(id) do
     Composer.get_workspace!(id, [:assumptions, :mitigations])
   end
 

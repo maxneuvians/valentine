@@ -14,7 +14,8 @@ defmodule ValentineWeb.WorkspaceLive.Threat.Components.TextInputComponentTest do
     id: "test-id",
     active_field: "test-field",
     current_value: "Initial value",
-    context: @context
+    context: @context,
+    dfd_examples: ["Example 3", "Example 4"]
   }
 
   test "renders the component with context" do
@@ -25,6 +26,8 @@ defmodule ValentineWeb.WorkspaceLive.Threat.Components.TextInputComponentTest do
     assert html =~ "Initial value"
     assert html =~ "Example 1"
     assert html =~ "Example 2"
+    assert html =~ "Example 3"
+    assert html =~ "Example 4"
   end
 
   test "renders the component without examples" do
