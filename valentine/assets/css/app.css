@@ -49,6 +49,10 @@
     height: 100% !important;
 }
 
+div:has(> button.rtl-btn) {
+    direction: rtl;
+}
+
 /* Data element and report table styles */
 .data-element-action-menu button {
     width: 100%;
@@ -301,6 +305,8 @@
     border-radius: 0.75rem;
     background-color: var(--color-canvas-subtle, #f6f8fa);
     border: 1px solid var(--color-border-default, #d0d7de);
+    margin-left: auto;
+    margin-right: auto;
 }
 
 /* Skill styling */
