@@ -1077,6 +1077,14 @@ defmodule Valentine.Composer do
     |> Repo.update()
   end
 
+  def delete_reference_pack_collection(collection_id, collection_type) do
+    Repo.delete_all(
+      from(rp in ReferencePackItem,
+        where: rp.collection_id == ^collection_id and rp.collection_type == ^collection_type
+      )
+    )
+  end
+
   @doc """
   Deletes a reference_pack_item.
 

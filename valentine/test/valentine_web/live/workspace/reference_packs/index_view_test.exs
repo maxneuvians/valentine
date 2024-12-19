@@ -42,5 +42,24 @@ defmodule ValentineWeb.WorkspaceLive.ReferencePacks.IndexViewTest do
 
       assert_patch(index_live, ~p"/workspaces/#{workspace_id}/reference_packs/import")
     end
+
+    test "deletes reference packs", %{
+      conn: conn,
+      reference_pack_item: reference_pack_item,
+      workspace_id: workspace_id
+    } do
+      {:ok, index_live, _html} = live(conn, ~p"/workspaces/#{workspace_id}/reference_packs")
+
+      assert index_live
+             |> element(
+               "#delete-reference-pack-#{reference_pack_item.collection_id}-#{reference_pack_item.collection_type}"
+             )
+             |> render_click()
+
+      refute has_element?(
+               index_live,
+               "#delete-reference-pack-#{reference_pack_item.collection_id}-#{reference_pack_item.collection_type}"
+             )
+    end
   end
 end

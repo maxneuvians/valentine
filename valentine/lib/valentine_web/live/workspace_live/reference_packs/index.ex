@@ -15,6 +15,16 @@ defmodule ValentineWeb.WorkspaceLive.ReferencePacks.Index do
   end
 
   @impl true
+  def handle_event("delete", %{"id" => collection_id, "type" => collection_type}, socket) do
+    Composer.delete_reference_pack_collection(collection_id, collection_type)
+
+    {:noreply,
+     socket
+     |> put_flash(:info, "Reference pack deleted successfully")
+     |> assign(:reference_packs, Composer.list_reference_packs())}
+  end
+
+  @impl true
   def handle_params(params, _url, socket) do
     {:noreply, apply_action(socket, socket.assigns.live_action, params)}
   end

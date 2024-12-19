@@ -823,6 +823,20 @@ defmodule Valentine.ComposerTest do
       end
     end
 
+    test "delete_reference_pack_collection" do
+      reference_pack_item = reference_pack_item_fixture()
+
+      assert {1, nil} =
+               Composer.delete_reference_pack_collection(
+                 reference_pack_item.collection_id,
+                 reference_pack_item.collection_type
+               )
+
+      assert_raise Ecto.NoResultsError, fn ->
+        Composer.get_reference_pack_item!(reference_pack_item.id)
+      end
+    end
+
     test "change_reference_pack_item/1 returns a reference_pack_item changeset" do
       reference_pack_item = reference_pack_item_fixture()
       assert %Ecto.Changeset{} = Composer.change_reference_pack_item(reference_pack_item)

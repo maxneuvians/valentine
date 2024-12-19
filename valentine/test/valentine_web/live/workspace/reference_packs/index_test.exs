@@ -49,6 +49,26 @@ defmodule ValentineWeb.WorkspaceLive.ReferencePacks.IndexTest do
     end
   end
 
+  describe "handle_event/3" do
+    test "deletes a reference pack collection and assigns the correct assigns", %{
+      reference_pack_item: reference_pack_item,
+      socket: socket
+    } do
+      {:noreply, socket} =
+        ValentineWeb.WorkspaceLive.ReferencePacks.Index.handle_event(
+          "delete",
+          %{
+            "id" => reference_pack_item.collection_id,
+            "type" => reference_pack_item.collection_type
+          },
+          socket
+        )
+
+      assert socket.assigns.reference_packs == []
+      assert socket.assigns.flash["info"] == "Reference pack deleted successfully"
+    end
+  end
+
   describe "handle_params/3 assigns the page title to :index action" do
     test "assigns the page title to 'Reference packs' when live_action is :index" do
       socket = %Phoenix.LiveView.Socket{

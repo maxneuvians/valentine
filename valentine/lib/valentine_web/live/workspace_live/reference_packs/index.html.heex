@@ -23,13 +23,24 @@
           <.link navigate={
             ~p"/workspaces/#{@workspace.id}/reference_packs/#{reference_pack.collection_id}/#{reference_pack.collection_type}"
           }>
-            {reference_pack.collection_name}
+            <h4>
+              {Phoenix.Naming.humanize(reference_pack.collection_type)
+              |> Inflex.pluralize()} pack: {reference_pack.collection_name}
+            </h4>
           </.link>
         </div>
         <div class="float-right">
-          <.state_label is_merged>
-            {Phoenix.Naming.humanize(reference_pack.collection_type) |> Inflex.pluralize()}
-          </.state_label>
+          <.button
+            is_icon_button
+            is_danger
+            aria-label="Delete"
+            phx-click={JS.push("delete", value: %{id: reference_pack.collection_id})}
+            phx-value-type={reference_pack.collection_type}
+            data-confirm="Are you sure?"
+            id={"delete-reference-pack-#{reference_pack.collection_id}-#{reference_pack.collection_type}"}
+          >
+            <.octicon name="trash-16" />
+          </.button>
         </div>
       </div>
     </div>
