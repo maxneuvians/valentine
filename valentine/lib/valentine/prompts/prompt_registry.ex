@@ -1,23 +1,23 @@
 defmodule Valentine.Prompts.PromptRegistry do
   alias Valentine.Prompts.{
     ApplicationInformation,
-    # DataFlow,
-    # Architecture,
+    DataFlow,
+    Architecture,
     # Threat,
-    # Assumption,
-    # Mitigation,
+    Assumption,
+    Mitigation,
     # ThreatModel
     Workspace
   }
 
   @modules %{
     "ApplicationInformation" => ApplicationInformation,
-    "Index" => Workspace
-    # "DataFlow" => DataFlow,
-    # "Architecture" => Architecture,
+    "Index" => Workspace,
+    "DataFlow" => DataFlow,
+    "Architecture" => Architecture,
     # "Threat" => Threat,
-    # "Assumption" => Assumption,
-    # "Mitigation" => Mitigation,
+    "Assumption" => Assumption,
+    "Mitigation" => Mitigation
     # "ThreatModel" => ThreatModel
   }
 

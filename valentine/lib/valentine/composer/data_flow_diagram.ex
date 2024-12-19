@@ -359,6 +359,13 @@ defmodule Valentine.Composer.DataFlowDiagram do
     |> Composer.update_data_flow_diagram(Map.from_struct(dfd))
   end
 
+  def to_json(workspace_id) do
+    dfd = get(workspace_id)
+
+    %{nodes: dfd.nodes, edges: dfd.edges}
+    |> Jason.encode!()
+  end
+
   # Catch for check box values
   def update_metadata(workspace_id, %{"id" => id, "field" => field, "checked" => value}) do
     update_metadata(workspace_id, %{"id" => id, "field" => field, "value" => [value]})

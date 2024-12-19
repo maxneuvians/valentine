@@ -18,7 +18,8 @@ defmodule Valentine.Prompts.ApplicationInformation do
     1. All suggestions must align with the described application type
     2. Maintain consistency with existing features
     3. Generated content must be well-structured with clear sections
-    4. Reference materials should be preserved
+    4. Provide clear explanations for recommended actions
+    5. Consider security implications of suggested changes
 
     SKILLS:
     1. INSERT new application information (This ALWAYS requires a workspace_id attribute in the data and delta instructions)

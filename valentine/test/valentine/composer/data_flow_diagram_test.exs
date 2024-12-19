@@ -309,6 +309,10 @@ defmodule Valentine.Composer.DataFlowDiagramTest do
     refute Map.has_key?(dfd.nodes, grouped_nodes[:node]["data"]["id"])
   end
 
+  test "to_json", %{workspace_id: workspace_id} do
+    assert DataFlowDiagram.to_json(workspace_id) == "{\"nodes\":{},\"edges\":{}}"
+  end
+
   test "update_metadata/2 updates node metadata", %{workspace_id: workspace_id} do
     node = DataFlowDiagram.add_node(workspace_id, %{"type" => "test"})
     new_metadata = %{"id" => node["data"]["id"], "field" => "label", "value" => "New Label"}

@@ -13,7 +13,7 @@ defmodule ValentineWeb.WorkspaceLive.Components.ThreatComponent do
       <div style="width:100%">
         <div class="clearfix mb-3">
           <div class="float-left">
-            <h3>Threat <%= @threat.numeric_id %></h3>
+            <h3>Threat {@threat.numeric_id}</h3>
           </div>
           <.live_component
             module={ValentineWeb.WorkspaceLive.Components.LabelSelectComponent}
@@ -63,22 +63,7 @@ defmodule ValentineWeb.WorkspaceLive.Components.ThreatComponent do
           </div>
         </div>
         <.styled_html>
-          <p>
-            <%= ValentineWeb.WorkspaceLive.Threat.Components.ThreatHelpers.a_or_an(
-              @threat.threat_source,
-              true
-            ) %>
-            <%= @threat.threat_source %>
-            <%= @threat.prerequisites %> can <%= @threat.threat_action %> which leads to <%= @threat.threat_impact %>,
-            <%= if @threat.impacted_goal && @threat.impacted_goal != [] do %>
-              result in reduced <%= ValentineWeb.WorkspaceLive.Threat.Components.ThreatHelpers.join_list(
-                @threat.impacted_goal
-              ) %>
-            <% end %>
-            negatively impacting <%= ValentineWeb.WorkspaceLive.Threat.Components.ThreatHelpers.join_list(
-              @threat.impacted_assets
-            ) %> .
-          </p>
+          {Valentine.Composer.Threat.show_statement(@threat)}
         </.styled_html>
         <hr />
         <div class="clearfix mt-4">
@@ -100,13 +85,13 @@ defmodule ValentineWeb.WorkspaceLive.Components.ThreatComponent do
           <div class="float-left">
             <%= for tag <- @threat.tags || [] do %>
               <.button phx-click="remove_tag" phx-value-tag={tag} phx-target={@myself}>
-                <span><%= tag %></span>
+                <span>{tag}</span>
                 <.octicon name="x-16" />
               </.button>
             <% end %>
           </div>
           <div class="text-bold f4 float-right" style="color:#cecece">
-            <%= stride(@threat.stride) %>
+            {stride(@threat.stride)}
           </div>
         </div>
       </div>

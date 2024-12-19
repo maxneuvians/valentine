@@ -108,4 +108,10 @@ defmodule Valentine.Composer.Threat do
         changeset
     end
   end
+
+  def show_statement(threat) do
+    "#{ValentineWeb.WorkspaceLive.Threat.Components.ThreatHelpers.a_or_an(threat.threat_source,
+    true)} #{threat.threat_source} #{threat.prerequisites} can #{threat.threat_action}#{if(threat.threat_impact != nil, do: ", which leads to #{threat.threat_impact}")}#{if(threat.impacted_goal && threat.impacted_goal != [],
+    do: ", resulting in reduced " <> ValentineWeb.WorkspaceLive.Threat.Components.ThreatHelpers.join_list(threat.impacted_goal))} negatively impacting #{ValentineWeb.WorkspaceLive.Threat.Components.ThreatHelpers.join_list(threat.impacted_assets)}."
+  end
 end
