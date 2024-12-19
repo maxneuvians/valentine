@@ -47,7 +47,7 @@ defmodule ValentineWeb.WorkspaceLive.Components.PaginatedListComponent do
           class="d-flex flex-items-center flex-justify-between"
         >
           <div class="clearfix width-full">
-            <div :if={@selectable} class="float-left">
+            <div :if={@selectable} class="float-left mt-1">
               <.checkbox
                 id={item.id}
                 name={item.id}
@@ -60,7 +60,7 @@ defmodule ValentineWeb.WorkspaceLive.Components.PaginatedListComponent do
                 <:label></:label>
               </.checkbox>
             </div>
-            <div class="float-left width-full">
+            <div class="float-left">
               {render_slot(@row, item)}
             </div>
           </div>

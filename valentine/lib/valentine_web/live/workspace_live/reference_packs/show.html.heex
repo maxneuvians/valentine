@@ -21,6 +21,17 @@
   selectable={true}
 >
   <:row :let={item}>
-    {item.id}
+    <%= case item.collection_type do %>
+      <% :assumption -> %>
+        <.styled_html>
+          {item.data["content"]}
+        </.styled_html>
+      <% :mitigation -> %>
+        <.styled_html>
+          {item.data["content"]}
+        </.styled_html>
+      <% _ -> %>
+        {item.id}
+    <% end %>
   </:row>
 </.live_component>

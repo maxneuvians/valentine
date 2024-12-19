@@ -181,6 +181,8 @@ defmodule ValentineWeb.WorkspaceController do
     workspace = get_workspace(workspace_id)
 
     assumptions = %{
+      name: workspace.name,
+      desciption: "Assumptions for #{workspace.name}",
       assumptions:
         serialize_assumptions(workspace.assumptions)
         |> Enum.map(fn assumption ->
@@ -202,6 +204,8 @@ defmodule ValentineWeb.WorkspaceController do
     workspace = get_workspace(workspace_id)
 
     mitigations = %{
+      name: workspace.name,
+      desciption: "Mitigations for #{workspace.name}",
       mitigations:
         serialize_mitigations(workspace.mitigations)
         |> Enum.map(fn mitigation ->
@@ -223,6 +227,8 @@ defmodule ValentineWeb.WorkspaceController do
     workspace = get_workspace(workspace_id)
 
     threats = %{
+      name: workspace.name,
+      desciption: "Threats for #{workspace.name}",
       threats:
         serialize_threats(workspace.threats)
         |> Enum.map(fn threat ->

@@ -92,8 +92,19 @@ defmodule ValentineWeb.WorkspaceLive.ReferencePacks.Components.ImportComponent d
       data: nil
     }
 
+    # Create all the assumptions in this reference pack
+    (data["assumptions"] || [])
+    |> Enum.map(fn assumption ->
+      %{
+        common
+        | collection_type: :assumption,
+          data: assumption
+      }
+    end)
+    |> Enum.each(&Composer.create_reference_pack_item/1)
+
     # Create all the threats in this reference pack
-    data["threats"]
+    (data["threats"] || [])
     |> Enum.map(fn threat ->
       %{
         common
@@ -104,7 +115,7 @@ defmodule ValentineWeb.WorkspaceLive.ReferencePacks.Components.ImportComponent d
     |> Enum.each(&Composer.create_reference_pack_item/1)
 
     # Create all the mitigations in this reference pack
-    data["mitigations"]
+    (data["mitigations"] || [])
     |> Enum.map(fn mitigation ->
       %{
         common

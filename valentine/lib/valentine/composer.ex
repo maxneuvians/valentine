@@ -1123,6 +1123,13 @@ defmodule Valentine.Composer do
       ) do
     # Determin the type of the collection and then add the data of the reference pack item to that workspace with that type
     case reference_pack_item.collection_type do
+      :assumption ->
+        %{
+          "workspace_id" => workspace_id
+        }
+        |> Map.merge(reference_pack_item.data)
+        |> create_assumption()
+
       :threat ->
         %{
           "workspace_id" => workspace_id
