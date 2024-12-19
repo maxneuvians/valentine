@@ -13,7 +13,17 @@ defmodule ValentineWeb.WorkspaceLive.Components.ChatComponent do
   def mount(socket) do
     {:ok,
      socket
-     |> assign(:chain, nil)
+     |> assign(
+       :chain,
+       %{
+         llm:
+           ChatOpenAI.new!(%{
+             model: "gpt-4o-mini",
+             max_completion_tokens: 100_000
+           })
+       }
+       |> LLMChain.new!()
+     )
      |> assign(:skills, [])
      |> assign(:usage, nil)
      |> assign(:async_result, AsyncResult.loading())}
@@ -139,6 +149,7 @@ defmodule ValentineWeb.WorkspaceLive.Components.ChatComponent do
          callbacks: [llm_handler(self(), socket.assigns.myself)]
        }
        |> LLMChain.new!()
+       |> LLMChain.add_messages(socket.assigns.chain.messages)
      )
      |> assign(assigns)}
   end
