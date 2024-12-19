@@ -20,6 +20,9 @@ defmodule ValentineWeb.Router do
     get "/", PageController, :home
     # TODO: Wrap in auth
     get "/workspaces/:workspace_id/export", WorkspaceController, :export
+    get "/workspaces/:workspace_id/export/assumptions", WorkspaceController, :export_assumptions
+    get "/workspaces/:workspace_id/export/mitigations", WorkspaceController, :export_mitigations
+    get "/workspaces/:workspace_id/export/threats", WorkspaceController, :export_threats
     get "/workspaces/:workspace_id/threat_model/pdf", WorkspaceController, :pdf
     post "/session", SessionController, :create
 

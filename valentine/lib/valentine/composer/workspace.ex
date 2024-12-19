@@ -4,6 +4,11 @@ defmodule Valentine.Composer.Workspace do
 
   @primary_key {:id, Ecto.UUID, autogenerate: true}
 
+  @derive {Jason.Encoder,
+           only: [
+             :name
+           ]}
+
   schema "workspaces" do
     field :name, :string
 

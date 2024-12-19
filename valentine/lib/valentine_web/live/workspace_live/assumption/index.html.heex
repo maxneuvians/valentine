@@ -1,6 +1,11 @@
 <.subhead>
   Listing Assumptions
   <:actions>
+    <a href={"/workspaces/#{@workspace_id}/export/assumptions"} target="_blank">
+      <.button is_outline>
+        Export reference pack
+      </.button>
+    </a>
     <.button is_primary phx-click={JS.patch(~p"/workspaces/#{@workspace_id}/assumptions/new")}>
       New Assumption
     </.button>

@@ -177,10 +177,72 @@ defmodule ValentineWeb.WorkspaceController do
     )
   end
 
+  def export_assumptions(conn, %{"workspace_id" => workspace_id}) do
+    workspace = get_workspace(workspace_id)
+
+    assumptions = %{
+      assumptions:
+        serialize_assumptions(workspace.assumptions)
+        |> Enum.map(fn assumption ->
+          assumption
+          |> Map.delete(:threats)
+          |> Map.delete(:mitigations)
+        end)
+    }
+
+    send_download(
+      conn,
+      {:binary, Jason.encode!(assumptions)},
+      content_type: "application/json",
+      filename: "Assumptions_#{workspace.name}_Reference_Pack.json"
+    )
+  end
+
+  def export_mitigations(conn, %{"workspace_id" => workspace_id}) do
+    workspace = get_workspace(workspace_id)
+
+    mitigations = %{
+      mitigations:
+        serialize_mitigations(workspace.mitigations)
+        |> Enum.map(fn mitigation ->
+          mitigation
+          |> Map.delete(:threats)
+          |> Map.delete(:assumptions)
+        end)
+    }
+
+    send_download(
+      conn,
+      {:binary, Jason.encode!(mitigations)},
+      content_type: "application/json",
+      filename: "Mitigations_#{workspace.name}_Reference_Pack.json"
+    )
+  end
+
+  def export_threats(conn, %{"workspace_id" => workspace_id}) do
+    workspace = get_workspace(workspace_id)
+
+    threats = %{
+      threats:
+        serialize_threats(workspace.threats)
+        |> Enum.map(fn threat ->
+          threat
+          |> Map.delete(:assumptions)
+          |> Map.delete(:mitigations)
+        end)
+    }
+
+    send_download(
+      conn,
+      {:binary, Jason.encode!(threats)},
+      content_type: "application/json",
+      filename: "Threats_#{workspace.name}_Reference_Pack.json"
+    )
+  end
+
   defp serialize_workspace(workspace) do
     %{
       workspace: %{
-        id: workspace.id,
         name: workspace.name,
         assumptions: serialize_assumptions(workspace.assumptions),
         mitigations: serialize_mitigations(workspace.mitigations),
