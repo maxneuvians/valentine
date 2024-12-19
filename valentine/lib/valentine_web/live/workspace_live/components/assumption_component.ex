@@ -58,7 +58,7 @@ defmodule ValentineWeb.WorkspaceLive.Components.AssumptionComponent do
                     name="comments"
                     class="mt-2"
                     placeholder="Add a comment..."
-                    input_id="comments"
+                    input_id={"comments-for-#{@assumption.id}"}
                     is_full_width
                     rows="7"
                     value={@assumption.comments}
