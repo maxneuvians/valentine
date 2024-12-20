@@ -1,0 +1,28 @@
+version: '3'
+services:
+  app:
+    build:
+      context: valentine
+      dockerfile: Dockerfile
+    ports:
+      - "4000:4000"
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: "ecto://postgres:postgres@db/postgres"
+      OPENAI_API_KEY: $OPENAI_API_KEY
+      PHX_HOST: "localhost"
+      SECRET_KEY_BASE: "LZcrpJerGFAOAk9tmX++gOlapKEvjcahler184AEFKAEpnQPRzKtTN737XXsrdFG" # Generate a secret key with `mix phx.gen.secret` if you use this in production
+  db:
+    image: postgres:13
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
