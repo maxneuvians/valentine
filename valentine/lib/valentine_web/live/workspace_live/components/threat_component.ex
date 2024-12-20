@@ -67,7 +67,7 @@ defmodule ValentineWeb.WorkspaceLive.Components.ThreatComponent do
         </.styled_html>
         <hr />
         <div class="clearfix mt-4">
-          <div class="float-left col-2 mr-2">
+          <div class="float-left col-2 mr-2 mt-1">
             <.text_input
               id={"#{@threat.id}-tag-field"}
               name={"#{@threat.id}-tag"}
@@ -84,7 +84,7 @@ defmodule ValentineWeb.WorkspaceLive.Components.ThreatComponent do
 
           <div class="float-left">
             <%= for tag <- @threat.tags || [] do %>
-              <.button phx-click="remove_tag" phx-value-tag={tag} phx-target={@myself}>
+              <.button class="mt-1" phx-click="remove_tag" phx-value-tag={tag} phx-target={@myself}>
                 <span>{tag}</span>
                 <.octicon name="x-16" />
               </.button>

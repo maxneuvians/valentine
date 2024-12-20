@@ -93,7 +93,7 @@ defmodule ValentineWeb.WorkspaceLive.Components.MitigationComponent do
       </details>
       <hr />
       <div class="clearfix">
-        <div class="float-left col-2 mr-2">
+        <div class="float-left col-2 mr-2 mt-1">
           <.text_input
             id={"#{@mitigation.id}-tag-field"}
             name={"#{@mitigation.id}-tag"}
@@ -110,7 +110,7 @@ defmodule ValentineWeb.WorkspaceLive.Components.MitigationComponent do
 
         <div class="float-left">
           <%= for tag <- @mitigation.tags || [] do %>
-            <.button phx-click="remove_tag" phx-value-tag={tag} phx-target={@myself}>
+            <.button class="mt-1" phx-click="remove_tag" phx-value-tag={tag} phx-target={@myself}>
               <span>{tag}</span>
               <.octicon name="x-16" />
             </.button>

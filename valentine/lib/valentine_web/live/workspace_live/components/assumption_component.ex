@@ -78,7 +78,7 @@ defmodule ValentineWeb.WorkspaceLive.Components.AssumptionComponent do
       </details>
       <hr />
       <div class="clearfix">
-        <div class="float-left col-2 mr-2">
+        <div class="float-left col-2 mr-2 mt-1">
           <.text_input
             id={"#{@assumption.id}-tag-field"}
             name={"#{@assumption.id}-tag"}
@@ -95,7 +95,7 @@ defmodule ValentineWeb.WorkspaceLive.Components.AssumptionComponent do
 
         <div class="float-left">
           <%= for tag <- @assumption.tags || [] do %>
-            <.button phx-click="remove_tag" phx-value-tag={tag} phx-target={@myself}>
+            <.button class="mt-1" phx-click="remove_tag" phx-value-tag={tag} phx-target={@myself}>
               <span>{tag}</span>
               <.octicon name="x-16" />
             </.button>

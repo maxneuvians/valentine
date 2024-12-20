@@ -19,7 +19,7 @@ defmodule Valentine.Prompts.Assumption do
 
 
     RULES:
-    1. All suggestions must align with the described data flow diagram
+    1. All suggestions must align with the described assumptions and other information
     2. Maintain consistency with existing features
     3. Generated content must be well-structured with clear sections
     4. Provide clear explanations for recommended actions

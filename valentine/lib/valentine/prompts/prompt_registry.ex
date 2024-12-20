@@ -3,7 +3,7 @@ defmodule Valentine.Prompts.PromptRegistry do
     ApplicationInformation,
     DataFlow,
     Architecture,
-    # Threat,
+    Threat,
     Assumption,
     Mitigation,
     # ThreatModel
@@ -15,7 +15,7 @@ defmodule Valentine.Prompts.PromptRegistry do
     "Index" => Workspace,
     "DataFlow" => DataFlow,
     "Architecture" => Architecture,
-    # "Threat" => Threat,
+    "Threat" => Threat,
     "Assumption" => Assumption,
     "Mitigation" => Mitigation
     # "ThreatModel" => ThreatModel

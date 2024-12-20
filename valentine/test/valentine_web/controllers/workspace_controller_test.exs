@@ -43,7 +43,7 @@ defmodule ValentineWeb.WorkspaceControllerTest do
     json = Jason.decode!(conn.resp_body)
 
     assert json["name"] == workspace.name
-    assert json["desciption"] == "Assumptions for #{workspace.name}"
+    assert json["description"] == "Assumptions for #{workspace.name}"
 
     assert json["assumptions"] == [
              %{
@@ -75,7 +75,7 @@ defmodule ValentineWeb.WorkspaceControllerTest do
     json = Jason.decode!(conn.resp_body)
 
     assert json["name"] == workspace.name
-    assert json["desciption"] == "Mitigations for #{workspace.name}"
+    assert json["description"] == "Mitigations for #{workspace.name}"
 
     assert json["mitigations"] == [
              %{
@@ -108,7 +108,7 @@ defmodule ValentineWeb.WorkspaceControllerTest do
     json = Jason.decode!(conn.resp_body)
 
     assert json["name"] == workspace.name
-    assert json["desciption"] == "Threats for #{workspace.name}"
+    assert json["description"] == "Threats for #{workspace.name}"
 
     assert json["threats"] == [
              %{
