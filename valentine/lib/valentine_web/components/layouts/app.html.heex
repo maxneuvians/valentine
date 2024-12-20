@@ -163,4 +163,10 @@
       </.side_nav>
     </:sidebar>
   </.layout>
+  <.live_component
+    :if={@nist_id}
+    module={ValentineWeb.WorkspaceLive.Components.ControlModalComponent}
+    id="control-modal-component"
+    nist_id={@nist_id}
+  />
 </.theme>

@@ -82,14 +82,16 @@ defmodule ValentineWeb.WorkspaceLive.Components.ThreatComponent do
             </.text_input>
           </div>
 
-          <div class="float-left">
-            <%= for tag <- @threat.tags || [] do %>
-              <.button class="mt-1" phx-click="remove_tag" phx-value-tag={tag} phx-target={@myself}>
+          <%= for tag <- @threat.tags || [] do %>
+            <.button_group class="mt-1 float-left mr-2">
+              <.button phx-click="view_control_modal" phx-value-nist_id={tag}>
                 <span>{tag}</span>
+              </.button>
+              <.button is_icon_button phx-click="remove_tag" phx-value-tag={tag} phx-target={@myself}>
                 <.octicon name="x-16" />
               </.button>
-            <% end %>
-          </div>
+            </.button_group>
+          <% end %>
           <div class="text-bold f4 float-right" style="color:#cecece">
             {stride(@threat.stride)}
           </div>

@@ -1222,6 +1222,12 @@ defmodule Valentine.Composer do
   """
   def get_control!(id), do: Repo.get!(Control, id)
 
+  def get_control_by_nist_id(nil), do: nil
+
+  def get_control_by_nist_id(nist_id) do
+    Repo.get_by(Control, nist_id: nist_id)
+  end
+
   @doc """
   Creates a control.
 
