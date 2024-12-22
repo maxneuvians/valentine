@@ -14,6 +14,13 @@ defmodule ValentineWeb.Router do
     plug :accepts, ["json"]
   end
 
+  scope "/auth", ValentineWeb do
+    pipe_through :browser
+
+    get "/google", AuthController, :request
+    get "/google/callback", AuthController, :callback
+  end
+
   scope "/", ValentineWeb do
     pipe_through :browser
 
@@ -24,10 +31,13 @@ defmodule ValentineWeb.Router do
     get "/workspaces/:workspace_id/export/mitigations", WorkspaceController, :export_mitigations
     get "/workspaces/:workspace_id/export/threats", WorkspaceController, :export_threats
     get "/workspaces/:workspace_id/threat_model/pdf", WorkspaceController, :pdf
+
+    get "/logout", SessionController, :logout
     post "/session", SessionController, :create
 
     live_session :authenticated,
       on_mount: [
+        ValentineWeb.Helpers.AuthHelper,
         ValentineWeb.Helpers.ChatHelper,
         ValentineWeb.Helpers.ControlHelper,
         ValentineWeb.Helpers.FlashHelper,

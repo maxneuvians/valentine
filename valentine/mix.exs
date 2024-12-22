@@ -57,7 +57,8 @@ defmodule Valentine.MixProject do
       {:langchain, github: "brainlid/langchain"},
       {:cachex, "~> 4.0"},
       {:inflex, "~> 2.0.0"},
-      {:csv, "~> 3.2"}
+      {:csv, "~> 3.2"},
+      {:ueberauth_google, "~> 0.10"}
     ]
   end
 

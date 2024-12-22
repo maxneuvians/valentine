@@ -1,11 +1,18 @@
-defmodule ValentineWeb.PageController do
-  use ValentineWeb, :controller
+defmodule ValentineWeb.Helpers.AuthHelper do
+  import Phoenix.Component
+  import Phoenix.LiveView
 
-  def home(conn, _params) do
+  def on_mount(:default, _params, session, socket) do
     if auth_active?() do
-      render(conn, :home, layout: false, auth: true)
+      case session["user_id"] do
+        nil ->
+          {:halt, redirect(socket, to: "/")}
+
+        user_id ->
+          {:cont, assign(socket, :current_user, user_id)}
+      end
     else
-      render(conn, :home, layout: false, auth: false)
+      {:cont, assign(socket, :current_user, nil)}
     end
   end
 

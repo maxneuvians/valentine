@@ -1,8 +1,8 @@
 <.theme color_mode={@theme}>
   <.header>
     <:item :let={classes}>
-      <.link navigate="/" class={[classes.link, "f4"]}>
-        <span> 🍁 GC Threat Modeling</span>
+      <.link navigate="/workspaces/" class={[classes.link, "f4"]}>
+        <span> 🍁 Project Valentine</span>
       </.link>
     </:item>
     <:item is_full_width />
@@ -53,6 +53,16 @@
         <.octicon name="gear-16" />
       </.button>
     </:item>
+    <:item :if={@current_user}>
+      <.button
+        is_icon_button
+        aria-label="Logout"
+        class="btn-invisible"
+        phx-click={JS.navigate(~p"/logout")}
+      >
+        <.octicon name="sign-out-16" />
+      </.button>
+    </:item>
   </.header>
 
   <.layout is_narrow_sidebar class="p-4">
@@ -87,9 +97,6 @@
     </:main>
     <:sidebar>
       <.side_nav aria_label="Menu" is_border>
-        <:item href="/">
-          <.octicon name="rocket-16" /> Dashboard
-        </:item>
         <:item
           is_selected={@active_module == "Index" || @active_module == "Show"}
           navigate={"/workspaces/#{@workspace_id}"}

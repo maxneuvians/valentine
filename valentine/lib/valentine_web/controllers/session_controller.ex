@@ -10,4 +10,14 @@ defmodule ValentineWeb.SessionController do
     |> put_session(key, value)
     |> send_resp(200, "")
   end
+
+  def logout(conn, _params) do
+    user_id = get_session(conn, :user_id)
+
+    ValentineWeb.Endpoint.broadcast("users_socket:#{user_id}", "disconnect", %{})
+
+    conn
+    |> configure_session(drop: true)
+    |> redirect(to: "/")
+  end
 end

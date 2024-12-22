@@ -24,7 +24,7 @@ defmodule Valentine.Application do
 
     # Only start ChromicPDF in non-test environments
     children =
-      if System.get_env("MIX_ENV") != "test" do
+      if System.get_env("CI") != "true" do
         children ++
           [
             {ChromicPDF, chromic_pdf_opts()}
