@@ -2,6 +2,7 @@ defmodule ValentineWeb.SessionController do
   use ValentineWeb, :controller
 
   def create(conn, %{"chatbot" => chatbot}), do: store_string(conn, :chatbot, chatbot)
+  def create(conn, %{"locale" => locale}), do: store_string(conn, :locale, locale)
   def create(conn, %{"theme" => theme}), do: store_string(conn, :theme, theme)
   def create(conn, _params), do: conn |> send_resp(400, "")
 

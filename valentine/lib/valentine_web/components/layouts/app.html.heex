@@ -49,9 +49,31 @@
       </.action_menu>
     </:item>
     <:item>
-      <.button is_icon_button aria-label="Change language" class="btn-invisible">
-        <.octicon name="gear-16" />
-      </.button>
+      <.action_menu is_aligned_end offset_x={3}>
+        <:toggle class="btn btn-invisible">
+          <.octicon name="gear-16" />
+        </:toggle>
+        <.action_list>
+          <.action_list_item
+            input_id="change-to-english"
+            phx-click="change_locale"
+            phx-value-locale="en"
+            is_selected={@locale == "en"}
+            is_single_select
+          >
+            {gettext("English")}
+          </.action_list_item>
+          <.action_list_item
+            input_id="change-to-french"
+            phx-click="change_locale"
+            phx-value-locale="fr"
+            is_selected={@locale == "fr"}
+            is_single_select
+          >
+            {gettext("French")}
+          </.action_list_item>
+        </.action_list>
+      </.action_menu>
     </:item>
     <:item :if={@current_user}>
       <.button

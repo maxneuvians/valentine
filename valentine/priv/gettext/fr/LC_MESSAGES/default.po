@@ -60,3 +60,23 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "close"
 msgstr ""
+
+#: lib/valentine_web/components/layouts/app.html.heex:63
+#, elixir-autogen, elixir-format
+msgid "English"
+msgstr "Anglais"
+
+#: lib/valentine_web/components/layouts/app.html.heex:71
+#, elixir-autogen, elixir-format
+msgid "French"
+msgstr "Français"
+
+#: lib/valentine_web/live/workspace_live/index.html.heex:6
+#, elixir-autogen, elixir-format
+msgid "New Workspace"
+msgstr "Nouvel espace de travail"
+
+#: lib/valentine_web/live/workspace_live/index.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Workspaces"
+msgstr "Espaces de travail"
