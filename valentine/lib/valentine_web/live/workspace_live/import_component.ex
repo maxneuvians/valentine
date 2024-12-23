@@ -25,13 +25,13 @@ defmodule ValentineWeb.WorkspaceLive.ImportComponent do
               :for={err <- upload_errors(@uploads.import)}
               class="FormControl-inlineValidation FormControl-inlineValidation--error"
             >
-              <%= upload_error_to_string(err) %>
+              {upload_error_to_string(err)}
             </div>
             <div
               :for={msg <- @upload_errors}
               class="FormControl-inlineValidation FormControl-inlineValidation--error"
             >
-              <%= msg %>
+              {msg}
             </div>
           </:body>
           <:footer>
@@ -64,8 +64,8 @@ defmodule ValentineWeb.WorkspaceLive.ImportComponent do
   @impl true
   def handle_event("save", _params, socket) do
     [{result, msg}] =
-      consume_uploaded_entries(socket, :import, fn %{path: path}, _entry ->
-        Helper.import_file(path)
+      consume_uploaded_entries(socket, :import, fn %{path: path}, %{client_name: client_name} ->
+        Helper.import_file(path, client_name)
       end)
 
     if result == :ok do

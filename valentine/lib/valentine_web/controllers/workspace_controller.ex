@@ -250,6 +250,17 @@ defmodule ValentineWeb.WorkspaceController do
     %{
       workspace: %{
         name: workspace.name,
+        application_information: %{
+          content: get_in(workspace.application_information.content)
+        },
+        architecture: %{
+          content: get_in(workspace.architecture.content),
+          image: get_in(workspace.architecture.image)
+        },
+        data_flow_diagram: %{
+          edges: get_in(workspace.data_flow_diagram.edges),
+          nodes: get_in(workspace.data_flow_diagram.nodes)
+        },
         assumptions: serialize_assumptions(workspace.assumptions),
         mitigations: serialize_mitigations(workspace.mitigations),
         threats: serialize_threats(workspace.threats)
