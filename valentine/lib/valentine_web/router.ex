@@ -10,6 +10,10 @@ defmodule ValentineWeb.Router do
     plug :put_secure_browser_headers
   end
 
+  pipeline :authenticated do
+    plug ValentineWeb.Helpers.AuthHelper
+  end
+
   pipeline :api do
     plug :accepts, ["json"]
   end
@@ -25,6 +29,12 @@ defmodule ValentineWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :home
+  end
+
+  scope "/", ValentineWeb do
+    pipe_through :browser
+    pipe_through :authenticated
+
     # TODO: Wrap in auth
     get "/workspaces/:workspace_id/export", WorkspaceController, :export
     get "/workspaces/:workspace_id/export/assumptions", WorkspaceController, :export_assumptions

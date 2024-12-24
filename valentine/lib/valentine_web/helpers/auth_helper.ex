@@ -1,18 +1,33 @@
 defmodule ValentineWeb.Helpers.AuthHelper do
-  import Phoenix.Component
-  import Phoenix.LiveView
+  def init(default), do: default
+
+  def call(conn, _) do
+    if auth_active?() do
+      case Plug.Conn.get_session(conn, "user_id") do
+        nil ->
+          conn
+          |> Phoenix.Controller.redirect(to: "/")
+          |> Plug.Conn.halt()
+
+        _ ->
+          conn
+      end
+    else
+      conn
+    end
+  end
 
   def on_mount(:default, _params, session, socket) do
     if auth_active?() do
       case session["user_id"] do
         nil ->
-          {:halt, redirect(socket, to: "/")}
+          {:halt, Phoenix.LiveView.redirect(socket, to: "/")}
 
         user_id ->
-          {:cont, assign(socket, :current_user, user_id)}
+          {:cont, Phoenix.Component.assign(socket, :current_user, user_id)}
       end
     else
-      {:cont, assign(socket, :current_user, nil)}
+      {:cont, Phoenix.Component.assign(socket, :current_user, nil)}
     end
   end
 
