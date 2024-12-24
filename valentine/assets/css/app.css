@@ -30,6 +30,22 @@
     padding: 1rem;
 }
 
+.Layout--sidebar-narrow.collapsed-sidebar {
+    --Layout-sidebar-width: 50px;
+}
+
+.Layout--sidebar-narrow.collapsed-sidebar .Layout-sidebar {
+    width: 50px;
+}
+
+.Layout.collapsed-sidebar .Layout-sidebar a {
+    font-size: 0;
+}
+
+.Layout.collapsed-sidebar .Layout-sidebar a h5 {
+    font-size: 0;
+}
+
 /* Cytoscape container styles */
 #cytoscape-container {
     position: relative;

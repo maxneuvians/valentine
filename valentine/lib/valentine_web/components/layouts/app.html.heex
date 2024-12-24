@@ -120,6 +120,13 @@
     <:sidebar>
       <.side_nav aria_label="Menu" is_border>
         <:item
+          href="#"
+          phx-click={JS.toggle_class("collapsed-sidebar ", to: ".Layout--sidebar-narrow")}
+        >
+          <.octicon name="three-bars-16" />
+          <h5>Menu</h5>
+        </:item>
+        <:item
           is_selected={@active_module == "Index" || @active_module == "Show"}
           navigate={"/workspaces/#{@workspace_id}"}
         >
