@@ -56,11 +56,20 @@ defmodule ValentineWeb.WorkspaceLive.Import.TcImport do
     description = get_in(data, ["architecture", "description"]) || ""
     image = get_in(data, ["architecture", "image"]) || ""
 
+    content = MDEx.to_html!(description, extension: [shortcodes: true])
+
+    # Prepend image to content if it exists
+    content =
+      if image != "" do
+        "<p><img src=\"#{image}\" alt=\"Architecture Diagram\" /></p>" <> content
+      else
+        content
+      end
+
     {:ok, _} =
       Composer.create_architecture(%{
         workspace_id: workspace_id,
-        content: MDEx.to_html!(description, extension: [shortcodes: true]),
-        image: image
+        content: content
       })
 
     :ok

@@ -121,7 +121,9 @@ defmodule ValentineWeb.WorkspaceLive.Import.TcImportTest do
       # Verify architecture
       architecture = Repo.get_by(Composer.Architecture, workspace_id: workspace.id)
       assert architecture.content =~ "This is a test architecture"
-      assert architecture.image == "base64image"
+
+      assert architecture.content =~
+               "<p><img src=\"base64image\" alt=\"Architecture Diagram\" /></p>"
 
       # Verify assumption
       assumption = Repo.get_by(Composer.Assumption, workspace_id: workspace.id)

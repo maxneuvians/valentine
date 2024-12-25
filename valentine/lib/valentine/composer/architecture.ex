@@ -11,7 +11,6 @@ defmodule Valentine.Composer.Architecture do
     belongs_to :workspace, Valentine.Composer.Workspace
 
     field :content, :string
-    field :image, :string
 
     timestamps(type: :utc_datetime)
   end
@@ -19,7 +18,7 @@ defmodule Valentine.Composer.Architecture do
   @doc false
   def changeset(architecture, attrs) do
     architecture
-    |> cast(attrs, [:content, :image, :workspace_id])
+    |> cast(attrs, [:content, :workspace_id])
     |> validate_required([:workspace_id])
   end
 
