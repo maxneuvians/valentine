@@ -97,6 +97,8 @@ defmodule ValentineWeb.Router do
            WorkspaceLive.ReferencePacks.Show,
            :show
 
+      live "/workspaces/:workspace_id/srtm", WorkspaceLive.SRTM.Index, :index
+
       live "/workspaces/:workspace_id/controls", WorkspaceLive.Controls.Index, :index
     end
   end

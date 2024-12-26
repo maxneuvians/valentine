@@ -908,6 +908,7 @@ defmodule Valentine.ComposerTest do
     test "create_control/1 with valid data creates a control" do
       valid_attrs = %{
         name: "some name",
+        class: "some class",
         description: "some description",
         nist_id: "some nist_id",
         nist_family: "some nist_family",

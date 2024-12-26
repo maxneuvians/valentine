@@ -4,6 +4,7 @@ defmodule Valentine.Repo.Migrations.CreateControls do
   def change do
     create table(:controls, primary_key: false) do
       add :id, :uuid, primary_key: true, null: false
+      add :class, :string
       add :description, :text
       add :name, :string
       add :nist_id, :string

@@ -8,6 +8,7 @@ defmodule Valentine.Composer.Control do
            only: [
              :id,
              :name,
+             :class,
              :description,
              :guidance,
              :nist_id,
@@ -19,6 +20,7 @@ defmodule Valentine.Composer.Control do
   schema "controls" do
     field :name, :string
     field :description, :string
+    field :class, :string
     field :nist_id, :string
     field :nist_family, :string
     field :guidance, :string
@@ -44,6 +46,7 @@ defmodule Valentine.Composer.Control do
     reference_pack_item
     |> cast(attrs, [
       :name,
+      :class,
       :description,
       :nist_id,
       :nist_family,
@@ -51,7 +54,7 @@ defmodule Valentine.Composer.Control do
       :stride,
       :tags
     ])
-    |> validate_required([:name, :description, :nist_id, :nist_family])
+    |> validate_required([:name, :class, :description, :nist_id, :nist_family])
     |> unique_constraint(:id)
   end
 end

@@ -164,6 +164,7 @@ defmodule Valentine.ComposerFixtures do
       attrs
       |> Enum.into(%{
         name: "some name",
+        class: "some class",
         description: "some description",
         guidance: "some guidance",
         nist_id: "some nist_id",

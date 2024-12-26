@@ -191,6 +191,12 @@
           <.octicon name="repo-16" /> Reference packs
         </:item>
         <:item
+          is_selected={@active_module == "SRTM"}
+          navigate={~p"/workspaces/#{@workspace_id}/srtm"}
+        >
+          <.octicon name="tasklist-16" /> SRTM view
+        </:item>
+        <:item
           is_selected={@active_module == "Controls"}
           navigate={~p"/workspaces/#{@workspace_id}/controls"}
         >
