@@ -8,3 +8,89 @@
     </a>
   </:actions>
 </.subhead>
+
+<.box id="control-list">
+  <:header class="d-flex flex-items-center">
+    Filters:
+    <.live_component
+      module={ValentineWeb.WorkspaceLive.Components.FilterComponent}
+      id="profile-filter"
+      class="mx-1"
+      icon="cloud"
+      name={:profile}
+      values={["CCCS Cloud Low", "CCCS Cloud Medium"]}
+      filters={@filters}
+    />
+    <.live_component
+      module={ValentineWeb.WorkspaceLive.Components.FilterComponent}
+      id="type-filter"
+      class="mx-1"
+      icon="archive"
+      name={:type}
+      values={[
+        "CSP Full Stack",
+        "CSP Stacked PaaS",
+        "CSP Stacked SaaS",
+        "Client IaaS / PaaS",
+        "Client SaaS"
+      ]}
+      filters={@filters}
+    />
+    <.live_component
+      module={ValentineWeb.WorkspaceLive.Components.FilterComponent}
+      id="scope-filter"
+      class="mx-1"
+      icon="meter"
+      name={:scope}
+      values={[
+        :not_allocated,
+        :out_of_scope,
+        :in_scope
+      ]}
+      filters={@filters}
+    />
+  </:header>
+  <:row :for={{scope, controls} <- @controls}>
+    <.styled_html>
+      <h4 class="text-capitalize">{scope}</h4>
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Comment</th>
+          </tr>
+        </thead>
+        <tbody>
+          <%= for {nist_id, items} <- Enum.sort(controls) do %>
+            <%= case {scope, items} do %>
+              <% {:not_allocated, [control]} -> %>
+                <tr>
+                  <td>{control.nist_id}</td>
+                  <td>{control.name}</td>
+                  <td>-</td>
+                </tr>
+              <% {_, [{control, related_items}]} -> %>
+                <tr>
+                  <td>{control.nist_id}</td>
+                  <td>{control.name}</td>
+                  <td>
+                    <%= for item <- related_items do %>
+                      <div class="mb-2">
+                        <details>
+                          <summary>
+                            {item.content}
+                          </summary>
+                          {item.comments}
+                        </details>
+                      </div>
+                    <% end %>
+                  </td>
+                </tr>
+            <% end %>
+          <% end %>
+        </tbody>
+      </table>
+    </.styled_html>
+  </:row>
+</.box>
