@@ -106,6 +106,7 @@ defmodule ValentineWeb.WorkspaceLive.SRTM.Index do
 
   defp get_tagged_controls(collection) do
     collection
+    |> Enum.filter(&(&1.tags != nil))
     |> Enum.reduce(%{}, fn item, acc ->
       item.tags
       |> Enum.filter(&Regex.match?(@nist_id_regex, &1))

@@ -48,7 +48,7 @@ defmodule Valentine.Composer.Threat do
     field :threat_impact, :string
     field :impacted_goal, {:array, :string}
     field :impacted_assets, {:array, :string}
-    field :tags, {:array, :string}
+    field :tags, {:array, :string}, default: []
 
     has_many :assumption_threats, Valentine.Composer.AssumptionThreat, on_replace: :delete
     has_many :assumptions, through: [:assumption_threats, :assumption]
