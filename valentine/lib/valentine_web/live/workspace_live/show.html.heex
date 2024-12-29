@@ -15,7 +15,43 @@
   <div class="col-12 col-md-4 float-left p-2">
     <.box>
       <:header_title>Details</:header_title>
-      <:body>{@workspace.name}</:body>
+      <:body>
+        <span class="f3">{@workspace.name}</span>
+        <table class="summary">
+          <tr>
+            <td>Total threats</td>
+            <td>{length(@workspace.threats)}</td>
+          </tr>
+          <tr>
+            <td class="inset">High threats</td>
+            <td>{length(@workspace.threats |> Enum.filter(&(&1.priority == :high)))}</td>
+          </tr>
+          <tr>
+            <td class="inset">Medium threats</td>
+            <td>{length(@workspace.threats |> Enum.filter(&(&1.priority == :medium)))}</td>
+          </tr>
+          <tr>
+            <td class="inset">Low threats</td>
+            <td>{length(@workspace.threats |> Enum.filter(&(&1.priority == :low)))}</td>
+          </tr>
+          <tr>
+            <td class="inset">Resolved</td>
+            <td>{length(@workspace.threats |> Enum.filter(&(&1.status == :resolved)))}</td>
+          </tr>
+          <tr>
+            <td>Total assumptions</td>
+            <td>{length(@workspace.assumptions)}</td>
+          </tr>
+          <tr>
+            <td>Total mitigations</td>
+            <td>{length(@workspace.mitigations)}</td>
+          </tr>
+          <tr>
+            <td class="inset">Resolved</td>
+            <td>{length(@workspace.mitigations |> Enum.filter(&(&1.status == :resolved)))}</td>
+          </tr>
+        </table>
+      </:body>
     </.box>
   </div>
   <div class="col-12 col-md-8 float-left">

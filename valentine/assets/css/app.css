@@ -429,3 +429,19 @@ div:has(> button.rtl-btn) {
         margin-right: 0;
     }
 }
+
+table.summary {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table.summary th,
+table.summary td {
+    padding: 10px;
+    border: 1px solid #d0d7de;
+}
+
+table.summary td.inset {
+    padding-left: 40px;
+}

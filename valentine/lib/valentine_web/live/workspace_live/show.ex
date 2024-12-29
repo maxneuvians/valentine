@@ -14,7 +14,7 @@ defmodule ValentineWeb.WorkspaceLive.Show do
     {:noreply,
      socket
      |> assign(:page_title, page_title(socket.assigns.live_action))
-     |> assign(:workspace, Composer.get_workspace!(id, [:threats, :mitigations]))
+     |> assign(:workspace, Composer.get_workspace!(id, [:assumptions, :threats, :mitigations]))
      |> assign(:workspace_id, id)}
   end
 
