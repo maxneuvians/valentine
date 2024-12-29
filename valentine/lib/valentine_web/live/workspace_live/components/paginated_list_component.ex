@@ -67,13 +67,21 @@ defmodule ValentineWeb.WorkspaceLive.Components.PaginatedListComponent do
         </:row>
       </.box>
       <ValentineWeb.WorkspaceLive.Components.PaginationComponent.pagination
-        page_count={length(@collection) / @page_size}
+        page_count={length(@collection) / @page_size + 1}
         current_page={@current_page}
         link_path={fn page_num -> page_num end}
         myself={@myself}
       />
     </div>
     """
+  end
+
+  @impl true
+  def update(assigns, socket) do
+    {:ok,
+     socket
+     |> assign(assigns)
+     |> assign(:current_page, 1)}
   end
 
   @impl true
