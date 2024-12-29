@@ -11,15 +11,43 @@ defmodule ValentineWeb.WorkspaceLive.SRTM.Index do
     workspace = get_workspace(workspace_id)
     controls = filter_controls(%{})
 
-    assumed_controls = get_tagged_controls(workspace.assumptions)
-    mitigated_controls = get_tagged_controls(workspace.mitigations)
-    mapped_controls = allocated_controls(controls, assumed_controls, mitigated_controls)
-
     {:ok,
      socket
-     |> assign(:controls, mapped_controls)
+     |> assign(:controls, map_controls(controls, workspace))
      |> assign(:filters, %{})
      |> assign(:workspace, workspace)}
+  end
+
+  @impl true
+  def handle_event("clear_filters", _params, socket) do
+    workspace = socket.assigns.workspace
+    controls = filter_controls(%{})
+
+    {
+      :noreply,
+      socket
+      |> assign(:filters, %{})
+      |> assign(
+        :controls,
+        map_controls(controls, workspace)
+      )
+    }
+  end
+
+  @impl true
+  def handle_info({:update_filter, filters}, socket) do
+    workspace = socket.assigns.workspace
+    controls = filter_controls(filters)
+
+    {
+      :noreply,
+      socket
+      |> assign(:filters, filters)
+      |> assign(
+        :controls,
+        map_controls(controls, workspace)
+      )
+    }
   end
 
   @impl true
@@ -71,6 +99,11 @@ defmodule ValentineWeb.WorkspaceLive.SRTM.Index do
   defp filter_controls(filters) when map_size(filters) == 0,
     do: Composer.list_controls()
 
+  defp filter_controls(filters) do
+    filters = Map.values(filters) |> List.flatten()
+    Composer.list_controls_by_tags(filters)
+  end
+
   defp get_tagged_controls(collection) do
     collection
     |> Enum.reduce(%{}, fn item, acc ->
@@ -88,5 +121,36 @@ defmodule ValentineWeb.WorkspaceLive.SRTM.Index do
       threats: [:assumptions, :mitigations],
       assumptions: [:threats, :mitigations]
     )
+  end
+
+  defp map_controls(controls, workspace) do
+    assumed_controls = get_tagged_controls(workspace.assumptions)
+    mitigated_controls = get_tagged_controls(workspace.mitigations)
+    allocated_controls(controls, assumed_controls, mitigated_controls)
+  end
+
+  defp calculate_percentage(controls, scope) do
+    total_controls =
+      controls
+      |> Map.values()
+      |> Enum.map(&map_size/1)
+      |> Enum.sum()
+
+    case total_controls do
+      0 ->
+        0
+
+      _ ->
+        scope_count = map_size(controls[scope])
+        round(scope_count / total_controls * 100)
+    end
+  end
+
+  defp scope_progress_class(scope) do
+    case scope do
+      :not_allocated -> "error"
+      :out_of_scope -> "info"
+      :in_scope -> "success"
+    end
   end
 end

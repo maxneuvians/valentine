@@ -887,6 +887,16 @@ defmodule Valentine.ComposerTest do
       assert Composer.list_controls() == [control]
     end
 
+    test "list_controls_by_tags/1 returns all controls with given tags" do
+      control = control_fixture(tags: ["tag1", "tag2"])
+      assert Composer.list_controls_by_tags(control.tags) == [control]
+    end
+
+    test "list_controls_by_tags/1 returns all controls with given tags and not other controls" do
+      control_fixture(tags: ["tag1", "tag2"])
+      assert Composer.list_controls_by_tags(["tag3"]) == []
+    end
+
     test "list_control_families/0 returns all control families" do
       control_fixture(%{nist_id: "AC-1"})
       assert Composer.list_control_families() == ["AC"]

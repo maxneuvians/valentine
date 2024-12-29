@@ -1165,6 +1165,15 @@ defmodule Valentine.Composer do
     |> Repo.all()
   end
 
+  def list_controls_by_tags(tags) when is_list(tags) do
+    from(c in Control,
+      where: fragment("?::text[] <@ ?::text[]", ^tags, c.tags)
+    )
+    |> sort_hierarchical_strings(:nist_id)
+    |> Repo.all()
+  end
+
+  @spec sort_hierarchical_strings(any(), atom()) :: Ecto.Query.t()
   def sort_hierarchical_strings(query, field) do
     from record in query,
       order_by:
