@@ -49,3 +49,7 @@ GOOGLE_CLIENT_SECRET=your-client-secret
 You can get these by creating a new project in the Google Developer Console and creating OAuth 2.0 credentials.
 
 In this case to access the `/workspaces` route you need to be authenticated with Google, but visiting `/auth/google`. Currently nothing is done with the user information from Google, but you can use it to restrict access to the app.
+
+## Dev issues with formatting
+
+https://github.com/elixir-lsp/elixir-ls/issues/1110

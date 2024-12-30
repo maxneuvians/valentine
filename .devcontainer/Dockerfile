@@ -1,4 +1,4 @@
-FROM elixir:1.17.3-slim
+FROM elixir:1.18-slim
 
 # Install packages
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
