@@ -21,6 +21,32 @@ defmodule Valentine.Prompts.PromptRegistry do
     # "ThreatModel" => ThreatModel
   }
 
+  def extract_images(content) do
+    # Extract all image tags from the content
+    image_tags = Regex.scan(~r{<img[^>]*>}, content) |> List.flatten()
+
+    # Remove the image tags from the content
+    content = Regex.replace(~r{<img[^>]*>}, content, "")
+
+    [
+      %{
+        "type" => "text",
+        "text" => content
+      }
+    ]
+    |> Enum.concat(
+      Enum.map(image_tags, fn tag ->
+        %{
+          "type" => "image_url",
+          "image_url" => %{"url" => Regex.named_captures(~r{src="(?<url>[^"]+)"}, tag)["url"]}
+        }
+      end)
+    )
+
+    # For now just remove the images to save on tokens while this is being rejigged.
+    content
+  end
+
   def get_schema(module_name, action) do
     case Map.get(@modules, module_name) do
       nil ->
@@ -37,7 +63,7 @@ defmodule Valentine.Prompts.PromptRegistry do
         base_prompt()
 
       module ->
-        base_prompt() <> module.system_prompt(workspace_id, action)
+        extract_images(base_prompt() <> module.system_prompt(workspace_id, action))
     end
   end
 

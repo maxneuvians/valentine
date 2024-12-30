@@ -254,8 +254,7 @@ defmodule ValentineWeb.WorkspaceController do
           content: get_in(workspace.application_information.content)
         },
         architecture: %{
-          content: get_in(workspace.architecture.content),
-          image: get_in(workspace.architecture.image)
+          content: get_in(workspace.architecture.content)
         },
         data_flow_diagram: %{
           edges: get_in(workspace.data_flow_diagram.edges),
