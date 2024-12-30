@@ -13,7 +13,7 @@ defmodule ValentineWeb.WorkspaceLive.Components.MarkdownComponent do
 
     ~H"""
     <div>
-      <%= @markdown %>
+      {@markdown}
     </div>
     """
   end

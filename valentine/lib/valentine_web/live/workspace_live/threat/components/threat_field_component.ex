@@ -10,7 +10,7 @@ defmodule ValentineWeb.WorkspaceLive.Threat.Components.ThreatFieldComponent do
       phx-value-type={@type}
       tabindex="0"
     >
-      <%= render_value(@value, @placeholder) %>
+      {render_value(@value, @placeholder)}
     </div>
     """
   end

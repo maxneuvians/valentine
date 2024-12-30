@@ -8,9 +8,9 @@ defmodule ValentineWeb.WorkspaceLive.Components.LabelSelectComponent do
       <div class="relative ">
         <div class="mt-1 ml-2" phx-click="toggle_dropdown" phx-target={@myself}>
           <.state_label is_small class={get_class(@items, @value)}>
-            <.octicon name={@icon} /> <%= if @value == nil,
+            <.octicon name={@icon} /> {if @value == nil,
               do: @default_value,
-              else: Phoenix.Naming.humanize(@value) %>
+              else: Phoenix.Naming.humanize(@value)}
           </.state_label>
         </div>
         <%= if @show_dropdown do %>
@@ -23,7 +23,7 @@ defmodule ValentineWeb.WorkspaceLive.Components.LabelSelectComponent do
                   phx-value-id={item}
                   phx-target={@myself}
                 >
-                  <%= Phoenix.Naming.humanize(item) %>
+                  {Phoenix.Naming.humanize(item)}
                 </div>
               <% end %>
             </div>

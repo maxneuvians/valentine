@@ -7,7 +7,7 @@ defmodule ValentineWeb.WorkspaceLive.Components.QuillComponent do
   def render(assigns) do
     ~H"""
     <div phx-hook="Quill" id="quill-holder">
-      <div id="quill-editor"><%= Phoenix.HTML.raw(@content) %></div>
+      <div id="quill-editor">{Phoenix.HTML.raw(@content)}</div>
     </div>
     """
   end

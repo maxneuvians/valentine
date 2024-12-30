@@ -27,7 +27,7 @@ defmodule ValentineWeb.WorkspaceLive.Components.DropdownSelectComponent do
                 phx-value-id={item.id}
                 phx-target={@myself}
               >
-                <%= item.name %>
+                {item.name}
               </div>
             <% end %>
           </div>

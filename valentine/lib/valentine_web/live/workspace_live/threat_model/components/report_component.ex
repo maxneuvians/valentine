@@ -18,13 +18,16 @@ defmodule ValentineWeb.WorkspaceLive.ThreatModel.Components.ReportComponent do
       </ol>
 
       <h3 id="application_information">1. Application Information</h3>
-      <%= optional_content(@workspace.application_information) |> Phoenix.HTML.raw() %>
+      {optional_content(@workspace.application_information) |> Phoenix.HTML.raw()}
 
       <h3 id="architecture">2. Architecture</h3>
-      <%= optional_content(@workspace.architecture) |> Phoenix.HTML.raw() %>
+      {optional_content(@workspace.architecture) |> Phoenix.HTML.raw()}
 
       <h3 id="data_flow_diagram">3. Data Flow</h3>
-      <.box :if={@workspace.data_flow_diagram && @workspace.data_flow_diagram.raw_image} id="data-flow-diagram-container">
+      <.box
+        :if={@workspace.data_flow_diagram && @workspace.data_flow_diagram.raw_image}
+        id="data-flow-diagram-container"
+      >
         <img src={@workspace.data_flow_diagram.raw_image} alt="Data flow diagram" />
       </.box>
       <h3 id="assumptions">4. Assumptions</h3>
@@ -40,24 +43,24 @@ defmodule ValentineWeb.WorkspaceLive.ThreatModel.Components.ReportComponent do
         </thead>
         <tbody>
           <tr :for={assumption <- @workspace.assumptions} id={"A-#{assumption.numeric_id}"}>
-            <td>A-<%= assumption.numeric_id %></td>
-            <td><%= assumption.content %></td>
+            <td>A-{assumption.numeric_id}</td>
+            <td>{assumption.content}</td>
             <td>
               <ul>
                 <li :for={threat <- assumption.threats}>
-                  <a href={"#T-#{threat.numeric_id}"}>T-<%= threat.numeric_id %></a>
+                  <a href={"#T-#{threat.numeric_id}"}>T-{threat.numeric_id}</a>
                 </li>
               </ul>
             </td>
             <td>
               <ul>
                 <li :for={mitigation <- assumption.mitigations}>
-                  <a href={"#M-#{mitigation.numeric_id}"}>M-<%= mitigation.numeric_id %></a>
+                  <a href={"#M-#{mitigation.numeric_id}"}>M-{mitigation.numeric_id}</a>
                 </li>
               </ul>
             </td>
             <td>
-              <%= to_markdown(assumption.comments) %>
+              {to_markdown(assumption.comments)}
             </td>
           </tr>
         </tbody>
@@ -79,27 +82,27 @@ defmodule ValentineWeb.WorkspaceLive.ThreatModel.Components.ReportComponent do
         </thead>
         <tbody>
           <tr :for={threat <- @workspace.threats} id={"T-#{threat.numeric_id}"}>
-            <td>T-<%= threat.numeric_id %></td>
+            <td>T-{threat.numeric_id}</td>
             <td></td>
             <td>
               <ul>
                 <li :for={assumption <- threat.assumptions}>
-                  <a href={"#A-#{assumption.numeric_id}"}>A-<%= assumption.numeric_id %></a>
+                  <a href={"#A-#{assumption.numeric_id}"}>A-{assumption.numeric_id}</a>
                 </li>
               </ul>
             </td>
             <td>
               <ul>
                 <li :for={mitigation <- threat.mitigations}>
-                  <a href={"#M-#{mitigation.numeric_id}"}>M-<%= mitigation.numeric_id %></a>
+                  <a href={"#M-#{mitigation.numeric_id}"}>M-{mitigation.numeric_id}</a>
                 </li>
               </ul>
             </td>
-            <td><%= Phoenix.Naming.humanize(threat.status) %></td>
-            <td><%= Phoenix.Naming.humanize(threat.priority) %></td>
-            <td><%= stride_to_letter(threat.stride) %></td>
+            <td>{Phoenix.Naming.humanize(threat.status)}</td>
+            <td>{Phoenix.Naming.humanize(threat.priority)}</td>
+            <td>{stride_to_letter(threat.stride)}</td>
             <td>
-              <%= to_markdown(threat.comments) %>
+              {to_markdown(threat.comments)}
             </td>
           </tr>
         </tbody>
@@ -118,24 +121,24 @@ defmodule ValentineWeb.WorkspaceLive.ThreatModel.Components.ReportComponent do
         </thead>
         <tbody>
           <tr :for={mitigation <- @workspace.mitigations} id={"M-#{mitigation.numeric_id}"}>
-            <td>M-<%= mitigation.numeric_id %></td>
-            <td><%= mitigation.content %></td>
+            <td>M-{mitigation.numeric_id}</td>
+            <td>{mitigation.content}</td>
             <td>
               <ul>
                 <li :for={threat <- mitigation.threats}>
-                  <a href={"#T-#{threat.numeric_id}"}>T-<%= threat.numeric_id %></a>
+                  <a href={"#T-#{threat.numeric_id}"}>T-{threat.numeric_id}</a>
                 </li>
               </ul>
             </td>
             <td>
               <ul>
                 <li :for={assumption <- mitigation.assumptions}>
-                  <a href={"#A-#{assumption.numeric_id}"}>A-<%= assumption.numeric_id %></a>
+                  <a href={"#A-#{assumption.numeric_id}"}>A-{assumption.numeric_id}</a>
                 </li>
               </ul>
             </td>
             <td>
-              <%= to_markdown(mitigation.comments) %>
+              {to_markdown(mitigation.comments)}
             </td>
           </tr>
         </tbody>
@@ -152,12 +155,12 @@ defmodule ValentineWeb.WorkspaceLive.ThreatModel.Components.ReportComponent do
         </thead>
         <tbody>
           <tr :for={{{asset, t_ids}, i} <- get_assets(@workspace.threats)} id={"AS-#{i + 1}"}>
-            <td>AS-<%= i + 1 %></td>
-            <td><%= asset %></td>
+            <td>AS-{i + 1}</td>
+            <td>{asset}</td>
             <td>
               <ul>
                 <li :for={threat_id <- t_ids}>
-                  <a href={"#T-#{threat_id}"}>T-<%= threat_id %></a>
+                  <a href={"#T-#{threat_id}"}>T-{threat_id}</a>
                 </li>
               </ul>
             </td>

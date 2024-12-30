@@ -12,7 +12,6 @@ cd assets
 npm i 
 ```
 
-
 ## Running with docker compose
 
 You can run the app locally using docker compose. It is not recommended to use this in production.
@@ -29,6 +28,14 @@ OPENAI_API_KEY=sk-proj... docker compose up
 
 If you make changes to the source code, then you need to rebuild the image.
 
+## OpenAI on Azure
+
+You can also use OpenAI on Azure. You need to provide the following environment variables:
+
+```
+AZURE_OPENAI_ENDPOINT=
+AZURE_OPENAI_KEY=
+```
 
 ## Optional Google Auth
 

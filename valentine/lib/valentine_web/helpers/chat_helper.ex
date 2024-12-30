@@ -30,7 +30,6 @@ defmodule ValentineWeb.Helpers.ChatHelper do
 
   defp maybe_receive_chatbot(_, _, socket), do: {:cont, socket}
 
-
   def notify_chat(socket, id, status, msg) do
     send_update(ValentineWeb.WorkspaceLive.Components.ChatComponent,
       id: "chat-component",

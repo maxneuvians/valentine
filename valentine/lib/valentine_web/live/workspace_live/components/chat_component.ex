@@ -16,11 +16,7 @@ defmodule ValentineWeb.WorkspaceLive.Components.ChatComponent do
      |> assign(
        :chain,
        %{
-         llm:
-           ChatOpenAI.new!(%{
-             model: "gpt-4o-mini",
-             max_completion_tokens: 100_000
-           })
+         llm: ChatOpenAI.new!(llm_params())
        }
        |> LLMChain.new!()
      )
@@ -133,19 +129,22 @@ defmodule ValentineWeb.WorkspaceLive.Components.ChatComponent do
        :chain,
        %{
          llm:
-           ChatOpenAI.new!(%{
-             model: "gpt-4o-mini",
-             max_completion_tokens: 100_000,
-             stream: true,
-             stream_options: %{include_usage: true},
-             json_response: true,
-             json_schema:
-               PromptRegistry.get_schema(
-                 assigns.active_module,
-                 assigns.active_action
-               ),
-             callbacks: [llm_handler(self(), socket.assigns.myself)]
-           }),
+           ChatOpenAI.new!(
+             Map.merge(
+               %{
+                 stream: true,
+                 stream_options: %{include_usage: true},
+                 json_response: true,
+                 json_schema:
+                   PromptRegistry.get_schema(
+                     assigns.active_module,
+                     assigns.active_action
+                   ),
+                 callbacks: [llm_handler(self(), socket.assigns.myself)]
+               },
+               llm_params()
+             )
+           ),
          callbacks: [llm_handler(self(), socket.assigns.myself)]
        }
        |> LLMChain.new!()
@@ -258,6 +257,21 @@ defmodule ValentineWeb.WorkspaceLive.Components.ChatComponent do
     end
   end
 
+  defp format_msg(content, :user), do: content
+
+  defp format_msg(content, _) do
+    case Jason.decode(content) do
+      {:ok, %{"content" => content}} ->
+        content |> MDEx.to_html!() |> Phoenix.HTML.raw()
+
+      _ ->
+        content
+        |> extract()
+        |> MDEx.to_html!()
+        |> Phoenix.HTML.raw()
+    end
+  end
+
   defp llm_handler(lc_pid, myself) do
     %{
       on_llm_new_delta: fn _model, %MessageDelta{} = data ->
@@ -272,18 +286,23 @@ defmodule ValentineWeb.WorkspaceLive.Components.ChatComponent do
     }
   end
 
-  defp format_msg(content, :user), do: content
+  defp llm_params() do
+    cond do
+      Application.get_env(:langchain, :openai_key) ->
+        %{
+          model: "gpt-4o-mini",
+          max_completion_tokens: 100_000
+        }
 
-  defp format_msg(content, _) do
-    case Jason.decode(content) do
-      {:ok, %{"content" => content}} ->
-        content |> MDEx.to_html!() |> Phoenix.HTML.raw()
+      Application.get_env(:langchain, :azure_openai_endpoint) ->
+        %{
+          endpoint: Application.get_env(:langchain, :azure_openai_endpoint),
+          api_key: Application.get_env(:langchain, :azure_openai_key),
+          max_completion_tokens: 100_000
+        }
 
-      _ ->
-        content
-        |> extract()
-        |> MDEx.to_html!()
-        |> Phoenix.HTML.raw()
+      true ->
+        %{}
     end
   end
 

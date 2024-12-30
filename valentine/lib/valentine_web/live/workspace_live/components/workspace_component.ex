@@ -8,7 +8,7 @@ defmodule ValentineWeb.WorkspaceLive.Components.WorkspaceComponent do
     <div style="width:100%">
       <div class="clearfix">
         <div class="float-left">
-          <.link navigate={~p"/workspaces/#{@workspace}"}><%= @workspace.name %></.link>
+          <.link navigate={~p"/workspaces/#{@workspace}"}>{@workspace.name}</.link>
         </div>
         <div class="float-right">
           <.button

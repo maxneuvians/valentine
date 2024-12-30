@@ -13,7 +13,7 @@ defmodule ValentineWeb.WorkspaceLive.Components.FlashComponent do
       <.alert_messages>
         <%= for {kind, message} <- @flash do %>
           <.alert state={kind} class="mt-2" id={"flash-#{kind}"}>
-            <%= message %>
+            {message}
             <.button class="flash-close" phx-click="lv:clear-flash">
               <.octicon name="x-16" />
             </.button>

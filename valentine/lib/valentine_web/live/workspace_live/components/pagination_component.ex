@@ -191,7 +191,7 @@ defmodule ValentineWeb.WorkspaceLive.Components.PaginationComponent do
                 phx-value-page={@current_page - 1}
                 phx-target={@myself}
               >
-                <%= @labels.previous_page %>
+                {@labels.previous_page}
               </Phoenix.Component.link>
             <% else %>
               <span class={@classes.previous_page} aria-disabled="true" phx-no-format><%= @labels.previous_page %></span>
@@ -208,7 +208,7 @@ defmodule ValentineWeb.WorkspaceLive.Components.PaginationComponent do
                   }
                   class={@classes.current_page}
                 >
-                  <%= @current_page %>
+                  {@current_page}
                 </em>
               <% else %>
                 <%= if item == 0 do %>
@@ -224,7 +224,7 @@ defmodule ValentineWeb.WorkspaceLive.Components.PaginationComponent do
                     phx-value-page={item}
                     phx-target={@myself}
                   >
-                    <%= item %>
+                    {item}
                   </Phoenix.Component.link>
                 <% end %>
               <% end %>
@@ -241,7 +241,7 @@ defmodule ValentineWeb.WorkspaceLive.Components.PaginationComponent do
                 phx-value-page={@current_page + 1}
                 phx-target={@myself}
               >
-                <%= @labels.next_page %>
+                {@labels.next_page}
               </Phoenix.Component.link>
             <% else %>
               <span class={@classes.next_page} aria-disabled="true" phx-no-format><%= @labels.next_page %></span>
