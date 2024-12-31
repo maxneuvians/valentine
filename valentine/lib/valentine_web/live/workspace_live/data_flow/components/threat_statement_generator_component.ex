@@ -190,31 +190,36 @@ defmodule ValentineWeb.WorkspaceLive.DataFlow.Components.ThreatStatementGenerato
         properties: %{
           threat_source: %{
             type: "string",
-            description: "The entity taking action."
+            description:
+              "The entity taking action. This field is part of a sentence, do not capitalize the first letter or end with punctuation."
           },
           prerequisites: %{
             type: "string",
             description:
-              "Conditions or requirements that must be met for a threat source's action to be viable."
+              "Conditions or requirements that must be met for a threat source's action to be viable. This field is part of a sentence, do not capitalize the first letter or end with punctuation."
           },
           threat_action: %{
             type: "string",
-            description: "The action being performed by the threat source."
+            description:
+              "The action being performed by the threat source. This field is part of a sentence, do not capitalize the first letter or end with punctuation."
           },
           threat_impact: %{
             type: "string",
-            description: "The direct impact of a successful threat action. "
+            description:
+              "The direct impact of a successful threat action. This field is part of a sentence, do not capitalize the first letter or end with punctuation."
           },
           impacted_goal: %{
             type: ["array", "null"],
-            description: "The goal that is negatively impacted by the threat action.",
+            description:
+              "The goal that is negatively impacted by the threat action. This field is part of a sentence, do not capitalize the first letter or end with punctuation.",
             items: %{
               type: "string"
             }
           },
           impacted_assets: %{
             type: "array",
-            description: "The assets affected by a successful threat action.",
+            description:
+              "The assets affected by a successful threat action. This field is part of a sentence, do not capitalize the first letter or end with punctuation.",
             items: %{
               type: "string"
             }
@@ -368,7 +373,7 @@ defmodule ValentineWeb.WorkspaceLive.DataFlow.Components.ThreatStatementGenerato
 
       - Nation state cyber threat actors who are often geopolitically motivated.
 
-    VERY IMPORTANT: REVIEW THE STATEMENT TO SEE IF IT MAKES LOGICAL SENSE
+    VERY IMPORTANT: REVIEW THE STATEMENT TO SEE IF IT MAKES GRAMMATICAL AND LOGICAL SENSE AND DO NOT REUSE PREVIOUS STATEMENTS. FOCUS ON THREATS IDENTIFIED BY THE OWASP TOP 10
     """
   end
 

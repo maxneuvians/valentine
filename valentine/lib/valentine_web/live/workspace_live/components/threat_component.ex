@@ -25,7 +25,7 @@ defmodule ValentineWeb.WorkspaceLive.Components.ThreatComponent do
             field="priority"
             items={[
               {:low, "State--open"},
-              {:medium, nil},
+              {:medium, "color-bg-accent-emphasis color-fg-on-emphasis"},
               {:high, "State--closed"}
             ]}
           />
