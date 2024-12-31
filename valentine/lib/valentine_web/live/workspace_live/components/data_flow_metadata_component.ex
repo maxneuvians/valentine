@@ -12,7 +12,19 @@ defmodule ValentineWeb.WorkspaceLive.Components.DataFlowMetadataComponent do
         true -> nil
       end
 
-    {:ok, socket |> assign(:element, element)}
+    threats =
+      if element do
+        element["data"]["linked_threats"]
+        # This should be a batch call
+        |> Enum.map(&Valentine.Composer.get_threat!(&1))
+      else
+        []
+      end
+
+    {:ok,
+     socket
+     |> assign(:element, element)
+     |> assign(:threats, threats)}
   end
 
   def render(assigns) do
@@ -33,7 +45,7 @@ defmodule ValentineWeb.WorkspaceLive.Components.DataFlowMetadataComponent do
               phx-value-id={@element["data"]["id"]}
               phx-value-field="label"
               is_full_width
-              class="mb-4"
+              class="mb-2"
             />
             <.textarea
               name="description"
@@ -46,27 +58,13 @@ defmodule ValentineWeb.WorkspaceLive.Components.DataFlowMetadataComponent do
               phx-keyup="update_metadata"
               phx-value-id={@element["data"]["id"]}
               phx-value-field="description"
-              class="mb-4"
+              class="mb-2"
             />
-            <.checkbox
-              name="out-of-scope"
-              input_id="data-element-out-of-scope"
-              checked={@element["data"]["out_of_scope"] == "true"}
-              phx-click="update_metadata"
-              phx-value-id={@element["data"]["id"]}
-              phx-value-field="out_of_scope"
-            >
-              <:label>
-                Out of scope
-              </:label>
-            </.checkbox>
-          </div>
-          <div class="float-left col-4 p-2 pl-2">
             <label>Data features</label>
             <.action_menu
               is_dropdown_caret
               id="data-element-data-tags"
-              class="mb-4 data-element-action-menu"
+              class="mb-2 data-element-action-menu"
             >
               <:toggle>
                 Select data features
@@ -102,7 +100,7 @@ defmodule ValentineWeb.WorkspaceLive.Components.DataFlowMetadataComponent do
             <.action_menu
               is_dropdown_caret
               id="data-element-security-tags"
-              class="mb-4 data-element-action-menu"
+              class="mb-2 data-element-action-menu"
             >
               <:toggle>
                 Select security features
@@ -138,7 +136,7 @@ defmodule ValentineWeb.WorkspaceLive.Components.DataFlowMetadataComponent do
             <.action_menu
               is_dropdown_caret
               id="data-element-technology-tags"
-              class="data-element-action-menu"
+              class="data-element-action-menu mb-2"
             >
               <:toggle>
                 Select technology features
@@ -170,14 +168,57 @@ defmodule ValentineWeb.WorkspaceLive.Components.DataFlowMetadataComponent do
                 <% end %>
               </.action_list>
             </.action_menu>
+            <.checkbox
+              name="out-of-scope"
+              input_id="data-element-out-of-scope"
+              checked={@element["data"]["out_of_scope"] == "true"}
+              phx-click="update_metadata"
+              phx-value-id={@element["data"]["id"]}
+              phx-value-field="out_of_scope"
+            >
+              <:label>
+                Out of scope
+              </:label>
+            </.checkbox>
           </div>
-          <div class="float-left col-4 p-2 pl-4">
-            <div class="mb-2">
-              <label>
-                More information about {Phoenix.Naming.humanize(@element["data"]["type"])}
-              </label>
-            </div>
-            {node_description(@element["data"]["type"]) |> Phoenix.HTML.raw()}
+          <div class="float-left col-8 p-2 pl-4">
+            <.box>
+              <:header>
+                <label>Associated threat statements</label>
+                <div class="float-right">
+                  <.button
+                    is_primary
+                    is_small
+                    phx-click="toggle_generate_threat_statement"
+                    phx-value-id={@element["data"]["id"]}
+                  >
+                    <.octicon name="dependabot-16" /> Generate threat statement
+                  </.button>
+                </div>
+              </:header>
+              <:row :for={threat <- @threats} class="d-flex flex-items-center flex-justify-between">
+                <div class="mr-2">
+                  <.link
+                    href={~p"/workspaces/#{threat.workspace_id}/threats/#{threat.id}"}
+                    target="_blank"
+                    class="Box-row-link"
+                  >
+                    {Valentine.Composer.Threat.show_statement(threat)}
+                  </.link>
+                </div>
+                <.button
+                  is_danger
+                  phx-click="update_metadata"
+                  phx-value-id={@element["data"]["id"]}
+                  phx-value-value="0"
+                  phx-value-field="linked_threats"
+                  phx-value-checked={threat.id}
+                  data-confirm="Are you sure?"
+                >
+                  <.octicon name="trash-16" />
+                </.button>
+              </:row>
+            </.box>
           </div>
         </div>
       </.box>
@@ -314,51 +355,5 @@ defmodule ValentineWeb.WorkspaceLive.Components.DataFlowMetadataComponent do
       end
 
     Map.merge(generic_options, specific_options)
-  end
-
-  defp node_description(type) do
-    case type do
-      "actor" ->
-        """
-        <p>
-          An actor represents a user or system that interacts with the system. Actors can be internal or external to the system.
-        </p>
-        """
-
-      "datastore" ->
-        """
-        <p>
-          A datastore represents a system that stores data. Datastores can be databases, file systems, or any other system that stores data.
-        </p>
-        """
-
-      "edge" ->
-        """
-        <p>
-          An edge represents a connection between two nodes. Edges can represent data flow, control flow, or any other type of connection between nodes.
-        </p>
-        """
-
-      "process" ->
-        """
-        <p>
-          A process represents a system that processes data. Processes can be services, functions, or any other system that processes data.
-        </p>
-        """
-
-      "trust_boundary" ->
-        """
-        <p>
-          A trust boundary represents a boundary within the system that separates trusted and untrusted components. Trust boundaries are used to protect the system from external threats.
-        </p>
-        """
-
-      _ ->
-        """
-        <p>
-          No description available for this node type.
-        </p>
-        """
-    end
   end
 end

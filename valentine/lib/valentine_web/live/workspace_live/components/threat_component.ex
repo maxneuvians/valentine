@@ -93,7 +93,7 @@ defmodule ValentineWeb.WorkspaceLive.Components.ThreatComponent do
             </.button_group>
           <% end %>
           <div class="text-bold f4 float-right" style="color:#cecece">
-            {stride(@threat.stride)}
+            {Valentine.Composer.Threat.stride_banner(@threat)}
           </div>
         </div>
       </div>
@@ -155,26 +155,4 @@ defmodule ValentineWeb.WorkspaceLive.Components.ThreatComponent do
   def handle_event("set_tag", %{"value" => value} = _params, socket) do
     {:noreply, assign(socket, :tag, value)}
   end
-
-  def stride(stride) when is_list(stride) do
-    [
-      :spoofing,
-      :tampering,
-      :repudiation,
-      :information_disclosure,
-      :denial_of_service,
-      :elevation_of_privilege
-    ]
-    |> Enum.reduce("", fn c, acc ->
-      first_char = Atom.to_string(c) |> String.at(0) |> String.upcase()
-
-      acc <>
-        if Enum.member?(stride, c),
-          do: "<span class=\"Label--accent\">#{first_char}</span>",
-          else: first_char
-    end)
-    |> Phoenix.HTML.raw()
-  end
-
-  def stride(_), do: "STRIDE"
 end

@@ -34,6 +34,27 @@ defmodule ValentineWeb.WorkspaceLive.Components.DataFlowMetadataComponentTest do
     } do
       {:ok, socket} = DataFlowMetadataComponent.update(socket.assigns, socket)
       assert socket.assigns.element == node
+      assert socket.assigns.threats == []
+    end
+
+    test "updates the assigns with the selected node based on element_id and loads linked_threats",
+         %{
+           node: node,
+           socket: socket
+         } do
+      threat = threat_fixture()
+
+      metadata = %{
+        "id" => node["data"]["id"],
+        "field" => "linked_threats",
+        "value" => [threat.id]
+      }
+
+      DataFlowDiagram.update_metadata(socket.assigns.workspace_id, metadata)
+
+      {:ok, socket} = DataFlowMetadataComponent.update(socket.assigns, socket)
+      assert socket.assigns.element["data"]["id"] == node["data"]["id"]
+      assert socket.assigns.threats == [threat]
     end
   end
 end

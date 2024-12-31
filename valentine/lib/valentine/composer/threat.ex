@@ -114,4 +114,30 @@ defmodule Valentine.Composer.Threat do
     true)} #{threat.threat_source} #{threat.prerequisites} can #{threat.threat_action}#{if(threat.threat_impact != nil, do: ", which leads to #{threat.threat_impact}")}#{if(threat.impacted_goal && threat.impacted_goal != [],
     do: ", resulting in reduced " <> ValentineWeb.WorkspaceLive.Threat.Components.ThreatHelpers.join_list(threat.impacted_goal))} negatively impacting #{ValentineWeb.WorkspaceLive.Threat.Components.ThreatHelpers.join_list(threat.impacted_assets)}."
   end
+
+  def stride_banner(threat) do
+    case threat.stride do
+      nil ->
+        "STRIDE"
+
+      stride when is_list(stride) ->
+        [
+          :spoofing,
+          :tampering,
+          :repudiation,
+          :information_disclosure,
+          :denial_of_service,
+          :elevation_of_privilege
+        ]
+        |> Enum.reduce("", fn c, acc ->
+          first_char = Atom.to_string(c) |> String.at(0) |> String.upcase()
+
+          acc <>
+            if Enum.member?(stride, c),
+              do: "<span class=\"Label--accent\">#{first_char}</span>",
+              else: first_char
+        end)
+        |> Phoenix.HTML.raw()
+    end
+  end
 end

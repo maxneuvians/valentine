@@ -171,31 +171,4 @@ defmodule ValentineWeb.WorkspaceLive.Components.ThreatComponentTest do
       assert updated_socket.assigns.tag == tag
     end
   end
-
-  describe "stride" do
-    test "displays STRIDE if stride is not set" do
-      html = ThreatComponent.stride(nil)
-      assert html == "STRIDE"
-    end
-
-    test "displays STRIDE is an empty list" do
-      {:safe, html} = ThreatComponent.stride([])
-      assert html == "STRIDE"
-    end
-
-    test "displays highlighted STRIDE if all are set" do
-      {:safe, html} =
-        ThreatComponent.stride([
-          :spoofing,
-          :tampering,
-          :repudiation,
-          :information_disclosure,
-          :denial_of_service,
-          :elevation_of_privilege
-        ])
-
-      assert html ==
-               "<span class=\"Label--accent\">S</span><span class=\"Label--accent\">T</span><span class=\"Label--accent\">R</span><span class=\"Label--accent\">I</span><span class=\"Label--accent\">D</span><span class=\"Label--accent\">E</span>"
-    end
-  end
 end

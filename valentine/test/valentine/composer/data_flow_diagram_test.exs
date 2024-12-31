@@ -309,6 +309,33 @@ defmodule Valentine.Composer.DataFlowDiagramTest do
     refute Map.has_key?(dfd.nodes, grouped_nodes[:node]["data"]["id"])
   end
 
+  test "remove_linked_threats/2 removes linked threats from a node", %{workspace_id: workspace_id} do
+    node = DataFlowDiagram.add_node(workspace_id, %{"type" => "test"})
+    metadata = %{"id" => node["data"]["id"], "field" => "linked_threats", "value" => ["T1"]}
+    DataFlowDiagram.update_metadata(workspace_id, metadata)
+
+    DataFlowDiagram.remove_linked_threats(workspace_id, "T1")
+
+    dfd = DataFlowDiagram.get(workspace_id)
+
+    assert dfd.nodes[node["data"]["id"]]["data"]["linked_threats"] == []
+  end
+
+  test "remove_linked_threats/2 removes linked threats from edge", %{workspace_id: workspace_id} do
+    node1 = DataFlowDiagram.add_node(workspace_id, %{"type" => "test"})
+    node2 = DataFlowDiagram.add_node(workspace_id, %{"type" => "test"})
+    edge = %{"id" => "edge-1", "source" => node1["data"]["id"], "target" => node2["data"]["id"]}
+    DataFlowDiagram.ehcomplete(workspace_id, %{"edge" => edge})
+    metadata = %{"id" => edge["id"], "field" => "linked_threats", "value" => ["T1"]}
+    DataFlowDiagram.update_metadata(workspace_id, metadata)
+
+    DataFlowDiagram.remove_linked_threats(workspace_id, "T1")
+
+    dfd = DataFlowDiagram.get(workspace_id)
+
+    assert dfd.edges[edge["id"]]["data"]["linked_threats"] == []
+  end
+
   test "to_json", %{workspace_id: workspace_id} do
     assert DataFlowDiagram.to_json(workspace_id) == "{\"nodes\":{},\"edges\":{}}"
   end

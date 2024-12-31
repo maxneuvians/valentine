@@ -59,6 +59,7 @@ defmodule Valentine.Composer.DataFlowDiagram do
           "data_tags" => [],
           "description" => nil,
           "label" => Phoenix.Naming.humanize(type),
+          "linked_threats" => [],
           "out_of_scope" => "false",
           "parent" => nil,
           "security_tags" => [],
@@ -118,6 +119,7 @@ defmodule Valentine.Composer.DataFlowDiagram do
           "data_tags" => [],
           "description" => nil,
           "label" => "Data flow",
+          "linked_threats" => [],
           "out_of_scope" => "false",
           "security_tags" => [],
           "source" => edge["source"],
@@ -349,6 +351,51 @@ defmodule Valentine.Composer.DataFlowDiagram do
     else
       {:error, "Only trust boundaries can be removed"}
     end
+  end
+
+  def remove_linked_threats(workspace_id, threat_id) do
+    dfd = get(workspace_id)
+
+    # Loop through all nodes and remove the threat from the linked_threats list
+    dfd =
+      dfd.nodes
+      |> Enum.reduce(dfd, fn {id, node}, acc ->
+        acc
+        |> Map.update!(
+          :nodes,
+          &Map.put(&1, id, %{
+            node
+            | "data" => %{
+                node["data"]
+                | "linked_threats" =>
+                    Enum.reject(node["data"]["linked_threats"], fn threat ->
+                      threat == threat_id
+                    end)
+              }
+          })
+        )
+      end)
+      |> put()
+
+    # Loop through all edges and remove the threat from the linked_threats list
+    dfd.edges
+    |> Enum.reduce(dfd, fn {id, edge}, acc ->
+      acc
+      |> Map.update!(
+        :edges,
+        &Map.put(&1, id, %{
+          edge
+          | "data" => %{
+              edge["data"]
+              | "linked_threats" =>
+                  Enum.reject(edge["data"]["linked_threats"], fn threat -> threat == threat_id end)
+            }
+        })
+      )
+    end)
+    |> put()
+
+    save(workspace_id)
   end
 
   def save(workspace_id) do

@@ -23,8 +23,9 @@ defmodule ValentineWeb.WorkspaceLive.DataFlow.Index do
     {:ok,
      socket
      |> assign(:dfd, dfd)
-     |> assign(:selected_elements, %{"nodes" => %{}, "edges" => %{}})
      |> assign(:saved, true)
+     |> assign(:selected_elements, %{"nodes" => %{}, "edges" => %{}})
+     |> assign(:show_threat_statement_generator, false)
      |> assign(:touched, true)
      |> assign(:workspace_id, workspace_id)}
   end
@@ -83,6 +84,17 @@ defmodule ValentineWeb.WorkspaceLive.DataFlow.Index do
     {:noreply, socket}
   end
 
+  # Handle generate threat statement event
+  @impl true
+  def handle_event("toggle_generate_threat_statement", _, socket) do
+    # Save the DFD
+    DataFlowDiagram.save(socket.assigns.workspace_id)
+
+    {:noreply,
+     socket
+     |> assign(:show_threat_statement_generator, !socket.assigns.show_threat_statement_generator)}
+  end
+
   # Local event from HTML or JS
   @impl true
   def handle_event(event, params, socket) do
@@ -123,12 +135,23 @@ defmodule ValentineWeb.WorkspaceLive.DataFlow.Index do
   # Remote event from PubSub
   @impl true
   def handle_info(%{event: event, payload: payload}, socket) do
-    Logger.info("Remote event: #{inspect(event)}, Payload: #{inspect(payload)}")
+    Logger.info("Remote event: #{inspect(event)}, payload: #{inspect(payload)}")
 
     {:noreply,
      socket
      |> push_event("updateGraph", %{event: event, payload: payload})
      |> assign(:saved, if(event == :saved, do: true, else: false))}
+  end
+
+  # Handle info from components
+  @impl true
+  def handle_info({:toggle_generate_threat_statement, nil}, socket) do
+    handle_event("toggle_generate_threat_statement", nil, socket)
+  end
+
+  @impl true
+  def handle_info({:update_metadata, params}, socket) do
+    handle_event("update_metadata", params, socket)
   end
 
   defp broadcast(topic, payload) do

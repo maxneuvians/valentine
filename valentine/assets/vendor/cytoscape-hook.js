@@ -251,6 +251,7 @@ const CytoscapeHook = {
             switch (event) {
                 case "add_node":
                     this.addNode(payload);
+                    this.fitView();
                     break;
 
                 case "clear_dfd":

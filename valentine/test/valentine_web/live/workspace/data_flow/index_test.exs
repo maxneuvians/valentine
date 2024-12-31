@@ -12,6 +12,7 @@ defmodule ValentineWeb.WorkspaceLive.DataFlow.IndexTest do
         live_action: nil,
         flash: %{},
         selected_elements: %{"nodes" => %{}, "edges" => %{}},
+        show_threat_statement_generator: false,
         touched: false,
         workspace_id: dfd.workspace_id
       }
@@ -137,6 +138,19 @@ defmodule ValentineWeb.WorkspaceLive.DataFlow.IndexTest do
       assert dfd.raw_image == "test"
     end
 
+    test "handles toggling the threat statement generator", %{
+      socket: socket
+    } do
+      {:noreply, socket} =
+        ValentineWeb.WorkspaceLive.DataFlow.Index.handle_event(
+          "toggle_generate_threat_statement",
+          %{},
+          socket
+        )
+
+      assert socket.assigns.show_threat_statement_generator == true
+    end
+
     test "handles generic events and applys them to the DFD and pushes the event to the client",
          %{
            socket: socket
@@ -216,6 +230,31 @@ defmodule ValentineWeb.WorkspaceLive.DataFlow.IndexTest do
         )
 
       assert socket.assigns.saved == false
+    end
+
+    test "receives toggle_generate_threat_statement from a component and forwards it to handle_event",
+         %{
+           socket: socket
+         } do
+      {:noreply, socket} =
+        ValentineWeb.WorkspaceLive.DataFlow.Index.handle_info(
+          {:toggle_generate_threat_statement, nil},
+          socket
+        )
+
+      assert socket.assigns.show_threat_statement_generator == true
+    end
+
+    test "receives update_metadata from a component and forwards it to handle_event", %{
+      socket: socket
+    } do
+      {:noreply, socket} =
+        ValentineWeb.WorkspaceLive.DataFlow.Index.handle_info(
+          {:update_metadata, %{"id" => "id", "field" => "field"}},
+          socket
+        )
+
+      assert socket.assigns.flash["error"] == "Invalid element id"
     end
   end
 end
