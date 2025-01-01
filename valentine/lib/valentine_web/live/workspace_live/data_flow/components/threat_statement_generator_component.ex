@@ -95,7 +95,10 @@ defmodule ValentineWeb.WorkspaceLive.DataFlow.Components.ThreatStatementGenerato
       _ ->
         {:ok, threat} =
           socket.assigns.threat
-          |> Composer.change_threat(%{workspace_id: socket.assigns.workspace_id})
+          |> Composer.change_threat(%{
+            tags: ["AI generated"],
+            workspace_id: socket.assigns.workspace_id
+          })
           |> Valentine.Repo.insert()
 
         send(

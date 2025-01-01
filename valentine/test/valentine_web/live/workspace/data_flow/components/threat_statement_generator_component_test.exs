@@ -123,6 +123,7 @@ defmodule ValentineWeb.WorkspaceLive.DataFlow.Components.ThreatStatementGenerato
 
       assert updated_socket.assigns.threat == nil
       assert length(Valentine.Composer.list_threats()) == 2
+      assert Enum.find(Valentine.Composer.list_threats(), &(&1.tags == ["AI generated"])) != nil
     end
 
     test "returns an error if the threat is nil", %{socket: socket} do
