@@ -3,6 +3,13 @@ defmodule ValentineWeb.WorkspaceLive.ThreatModel.Components.ReportComponent do
   use PrimerLive
 
   def render(assigns) do
+    threats =
+      Enum.reduce(assigns.workspace.threats, %{}, fn threat, acc ->
+        Map.put(acc, threat.id, threat)
+      end)
+
+    assigns = Map.put(assigns, :threats_by_id, threats)
+
     ~H"""
     <.styled_html>
       <h3>Table of Contents</h3>
@@ -30,6 +37,79 @@ defmodule ValentineWeb.WorkspaceLive.ThreatModel.Components.ReportComponent do
       >
         <img src={@workspace.data_flow_diagram.raw_image} alt="Data flow diagram" />
       </.box>
+
+      <h4>Entities</h4>
+      <table :if={@workspace.data_flow_diagram} class="report-table">
+        <thead>
+          <tr>
+            <th>Type</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Features</th>
+            <th>Linked threats</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr :for={{_id, entity} <- @workspace.data_flow_diagram.nodes}>
+            <td>{normalize_type(entity["data"]["type"], entity["data"]["out_of_scope"])}</td>
+            <td>{entity["data"]["label"]}</td>
+            <td>{entity["data"]["description"]}</td>
+            <td>
+              <ul :for={key <- ["data_tags", "security_tags", "technology_tags"]}>
+                <li :for={value <- entity["data"][key]} :if={value != nil}>
+                  {normalize(value)}
+                </li>
+              </ul>
+            </td>
+            <td>
+              <ul>
+                <li :for={id <- entity["data"]["linked_threats"]}>
+                  <a href={"#T-#{@threats_by_id[id].numeric_id}"}>
+                    T-{@threats_by_id[id].numeric_id}
+                  </a>
+                </li>
+              </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <h4>Data flow definitions</h4>
+      <table :if={@workspace.data_flow_diagram} class="report-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Source</th>
+            <th>Target</th>
+            <th>Features</th>
+            <th>Linked threats</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr :for={{_id, edge} <- @workspace.data_flow_diagram.edges}>
+            <td>{edge["data"]["label"]}</td>
+            <td>{edge["data"]["description"]}</td>
+            <td>{@workspace.data_flow_diagram.nodes[edge["data"]["source"]]["data"]["label"]}</td>
+            <td>{@workspace.data_flow_diagram.nodes[edge["data"]["target"]]["data"]["label"]}</td>
+            <td>
+              <ul :for={key <- ["data_tags", "security_tags", "technology_tags"]}>
+                <li :for={value <- edge["data"][key]} :if={value != nil}>
+                  {normalize(value)}
+                </li>
+              </ul>
+            </td>
+            <td>
+              <ul>
+                <li :for={id <- edge["data"]["linked_threats"]}>
+                  <a href={"#T-#{@threats_by_id[id].numeric_id}"}>
+                    T-{@threats_by_id[id].numeric_id}
+                  </a>
+                </li>
+              </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table>
       <h3 id="assumptions">4. Assumptions</h3>
       <table class="report-table">
         <thead>
@@ -83,7 +163,9 @@ defmodule ValentineWeb.WorkspaceLive.ThreatModel.Components.ReportComponent do
         <tbody>
           <tr :for={threat <- @workspace.threats} id={"T-#{threat.numeric_id}"}>
             <td>T-{threat.numeric_id}</td>
-            <td></td>
+            <td>
+              {Valentine.Composer.Threat.show_statement(threat)}
+            </td>
             <td>
               <ul>
                 <li :for={assumption <- threat.assumptions}>
@@ -181,6 +263,11 @@ defmodule ValentineWeb.WorkspaceLive.ThreatModel.Components.ReportComponent do
     end)
     |> Enum.with_index()
   end
+
+  defp normalize(s), do: String.capitalize(s) |> String.replace("_", " ")
+
+  defp normalize_type(s, "false"), do: normalize(s)
+  defp normalize_type(s, "true"), do: normalize(s) <> " (Out of scope)"
 
   defp optional_content(nil), do: "<i>Not set</i>"
   defp optional_content(model), do: model.content
