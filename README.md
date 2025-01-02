@@ -1,4 +1,4 @@
-# Valentine
+# 🍁 Valentine
 
 Valentine is a real-time collaborative threat modeling tool that combines human expertise with generative AI to streamline the security design process while maintaining simplicity and rigor.
 
