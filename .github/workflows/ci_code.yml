@@ -12,31 +12,19 @@ on:
 jobs:
   tests:
     runs-on: ubuntu-latest
-    services:
-      postgres:
-        image: postgres
-        env:
-          POSTGRES_PASSWORD: postgres
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          - 5432:5432
     steps:
       - name: Checkout
-        uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3.6.0
+        uses: actions/checkout@4
 
       - name: Setup Elixir
         uses: erlef/setup-beam@v1
         with:
-          otp-version: 26
+          otp-version: 27.2
           elixir-version: 1.18.1
 
       - name: Install dependencies
-        working-directory: ./valentine
-        run: mix deps.get
+        run: |
+          cd valentine && mix deps.get
 
       - name: Test and lint
         working-directory: ./valentine
