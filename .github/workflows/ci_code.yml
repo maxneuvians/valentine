@@ -35,4 +35,5 @@ jobs:
           elixir-version: 1.18.1
 
       - name: Test and lint
+        working-directory: ./valentine
         run: mix test && mix format --check-formatted
