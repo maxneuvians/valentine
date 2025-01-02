@@ -34,6 +34,25 @@ jobs:
           otp-version: 27.2
           elixir-version: 1.18.1
 
+      - name: Debug Environment
+        working-directory: ./valentine
+        run: |
+          pwd
+          ls -la
+          echo "Elixir version:"
+          elixir --version
+          echo "Mix version:"
+          mix --version
+          echo "Contents of mix.exs:"
+          cat mix.exs
+
+      - name: Install dependencies
+        working-directory: ./valentine
+        run: |
+          mix local.hex --force
+          mix local.rebar --force
+          mix deps.get
+
       - name: Install dependencies
         working-directory: ./valentine
         run: mix deps.get
