@@ -10,23 +10,11 @@ on:
       - .github/workflows/ci_docker.yml
 
 jobs:
-  tests:
+  continer-build:
     runs-on: ubuntu-24.04
     env:
       DATABASE_URL: "ecto://postgres:postgres@localhost"
       MIX_ENV: test
-    services:
-      postgres:
-        image: postgres
-        env:
-          POSTGRES_PASSWORD: postgres
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          - 5432:5432
     steps:
       - name: Checkout
         uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3.6.0
@@ -34,5 +22,4 @@ jobs:
       - name: Build container
         working-directory: ./valentine
         run: |
-          docker build \
-          -t valentine:latest \
+          docker build -t valentine:latest .
