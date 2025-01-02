@@ -28,6 +28,11 @@ While Valentine streamlines the threat modeling process, it recognizes that comp
 
 Valentine's flexibility allows it to be used for threat modeling both individual features and entire systems, without imposing a rigid workflow on teams. This adaptability enables organizations to integrate security thinking into their development process in a way that suits their specific needs and maturity level.
 
+## Quickstart using codespaces
+1. [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/maxneuvians/valentine)
+2. `make setup`
+3. `make dev`
+
 ## Setup for development
 
 ```

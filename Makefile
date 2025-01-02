@@ -1,4 +1,4 @@
-phony: cover dev install test
+phony: cover dev install setup test
 
 cover:
 	cd valentine && mix test --cover
@@ -11,6 +11,9 @@ install:
 
 fmt:
 	cd valentine && mix format
+
+setup: 
+	cd valentine && mix deps.get && mix ecto.create && mix ecto.migrate && mix run priv/repo/seeds.exs && cd assets && npm install
 
 test:
 	cd valentine && mix test
