@@ -34,7 +34,7 @@ jobs:
         uses: erlef/setup-beam@v1
         with:
           otp-version: 27.2
-          elixir-version: 1.17
+          elixir-version: 1.18.1
 
       - name: Test and lint
         working-directory: ./valentine
