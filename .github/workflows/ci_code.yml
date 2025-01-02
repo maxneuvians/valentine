@@ -13,7 +13,7 @@ jobs:
   tests:
     runs-on: ubuntu-24.04
     env:
-      DATABASE_URL: "ecto://postgres:postgres@db"
+      DATABASE_URL: "ecto://postgres:postgres@postgres"
       MIX_ENV: test
     services:
       postgres:
@@ -43,6 +43,10 @@ jobs:
       - name: Install dependencies
         working-directory: ./valentine
         run: mix deps.get
+
+      - name: Compile dependencies
+        working-directory: ./valentine
+        run: mix deps.compile
 
       - name: Test and lint
         working-directory: ./valentine
