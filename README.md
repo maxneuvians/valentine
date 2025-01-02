@@ -1,4 +1,32 @@
-# valentine
+# Valentine
+
+Valentine is a collaborative threat modeling tool that is focused on simplicity and tries to leverage generative AI in a thoughful way so that it does not detract from, or replace, the work that goes into threat modeling.
+
+![Screenshot of a data flow diagram in Valentine](screenshots/data_flow_diagram.png)
+
+## Features
+
+1. Threat modeling with STRIDE based on the [AWS Threat Composer methodology](https://catalog.workshops.aws/threatmodel/en-US/introduction).
+
+2. Collaborative, real-time editing of threat models, data flow diagrams, and application architecture.
+
+3. Generative AI to help assist threat modeling and explain architectures and data flow.
+
+4. Mapping of assumptions and mitigations to NIST controls for easy compliance documentation.
+
+5. Use of shareable reference packs to help establish common assumptions, threats, and mitigation across teams in an organization.
+
+## Rationale
+
+Valentine offers an alternative to the compliance-driven security approach commonly practiced in organizations. In teams following agile development practices, compliance-driven security often creates a bottleneck: controls must either be determined before development begins or after it concludes. This paradigm positions security as an obstacle to development rather than a collaborative partner in the process.
+
+Valentine is built on the premise that a system's attack surface expands primarily through the addition of features and their interactions. While the most secure system [might be the one that does nothing](https://github.com/kelseyhightower/nocode), real-world applications must balance security with functionality. As new features are implemented or system components evolve, the threat model should adapt to reflect both direct threats from new capabilities and emergent threats from feature interactions, environmental changes, and dependencies.
+
+Threat modeling, particularly the STRIDE methodology, provides teams with an accessible framework for identifying and understanding threats throughout the development lifecycle. Through an iterative process, teams can build and maintain a comprehensive threat model that reflects their system's actual architecture, interactions, and environmental context, rather than relying solely on upfront design assumptions.
+
+While Valentine streamlines the threat modeling process, it recognizes that compliance documentation remains a necessary business requirement. Rather than treating compliance as an afterthought or barrier, a key design goal has been to automatically generate documentation from the ongoing threat modeling process. Teams can map assumptions and mitigations to specific NIST controls, and export the resulting documentation for security assessments, making compliance a natural outcome of good security practices.
+
+Valentine's flexibility allows it to be used for threat modeling both individual features and entire systems, without imposing a rigid workflow on teams. This adaptability enables organizations to integrate security thinking into their development process in a way that suits their specific needs and maturity level.
 
 ## Setup for development
 
