@@ -33,6 +33,9 @@ Valentine's flexibility allows it to be used for threat modeling both individual
 2. `make setup`
 3. `make dev`
 
+Note: It is normal to see warnings during the setup process. Also depending on the amount of memory available to the codespace, the setup process may take longer than usual.
+```
+
 ## Running with docker compose
 
 You can run the app locally using docker compose. It is not recommended to use this in production.
