@@ -14,9 +14,7 @@ defmodule ValentineWeb.WorkspaceLive.Components.DataFlowMetadataComponent do
 
     threats =
       if element do
-        element["data"]["linked_threats"]
-        # This should be a batch call
-        |> Enum.map(&Valentine.Composer.get_threat!(&1))
+        Valentine.Composer.list_threats_by_ids(element["data"]["linked_threats"])
       else
         []
       end

@@ -26,10 +26,41 @@
         <.styled_html>
           {item.data["content"]}
         </.styled_html>
+        <div :if={item.data["tags"]} class="mt-2">
+          <.button
+            :for={tag <- item.data["tags"]}
+            phx-click="view_control_modal"
+            phx-value-nist_id={tag}
+          >
+            {tag}
+          </.button>
+        </div>
       <% :mitigation -> %>
         <.styled_html>
           {item.data["content"]}
         </.styled_html>
+        <div :if={item.data["tags"]} class="mt-2">
+          <.button
+            :for={tag <- item.data["tags"]}
+            phx-click="view_control_modal"
+            phx-value-nist_id={tag}
+          >
+            {tag}
+          </.button>
+        </div>
+      <% :threat  -> %>
+        <.styled_html>
+          {Valentine.Composer.Threat.show_statement(cast_keys_to_atoms(item.data))}
+        </.styled_html>
+        <div :if={item.data["tags"]} class="mt-2">
+          <.button
+            :for={tag <- item.data["tags"]}
+            phx-click="view_control_modal"
+            phx-value-nist_id={tag}
+          >
+            {tag}
+          </.button>
+        </div>
       <% _ -> %>
         {item.id}
     <% end %>

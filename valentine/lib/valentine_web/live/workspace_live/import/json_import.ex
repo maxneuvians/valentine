@@ -6,8 +6,8 @@ defmodule ValentineWeb.WorkspaceLive.Import.JsonImport do
     with {:ok, workspace} <- create_base_workspace(data),
          :ok <- create_application_info(workspace.id, data),
          :ok <- create_architecture(workspace.id, data),
-         :ok <- create_data_flow_diagram(workspace.id, data),
          crosswalks <- create_core_elements(workspace.id, data),
+         :ok <- create_data_flow_diagram(workspace.id, data, crosswalks),
          :ok <- create_relationships(data, crosswalks) do
       {:ok, workspace}
     end
@@ -67,9 +67,33 @@ defmodule ValentineWeb.WorkspaceLive.Import.JsonImport do
     :ok
   end
 
-  defp create_data_flow_diagram(workspace_id, data) do
-    edges = get_in(data, ["data_flow_diagram", "edges"]) || ""
-    nodes = get_in(data, ["data_flow_diagram", "nodes"]) || ""
+  defp create_data_flow_diagram(workspace_id, data, crosswalks) do
+    edges = get_in(data, ["data_flow_diagram", "edges"]) || %{}
+    nodes = get_in(data, ["data_flow_diagram", "nodes"]) || %{}
+
+    # For each node, replace any linked_threats with the corresponding threat ID from the crosswalk
+    nodes =
+      Enum.reduce(nodes, %{}, fn {id, node}, acc ->
+        threats =
+          Enum.map(node["data"]["linked_threats"], fn threat_id ->
+            Map.fetch!(crosswalks[:threats], threat_id)
+          end)
+
+        node = put_in(node["data"]["linked_threats"], threats)
+        Map.put(acc, id, node)
+      end)
+
+    # For each edge, replace any linked_threats with the corresponding threat ID from the crosswalk
+    edges =
+      Enum.reduce(edges, %{}, fn {id, edge}, acc ->
+        threats =
+          Enum.map(edge["data"]["linked_threats"], fn threat_id ->
+            Map.fetch!(crosswalks[:threats], threat_id)
+          end)
+
+        edge = put_in(edge["data"]["linked_threats"], threats)
+        Map.put(acc, id, edge)
+      end)
 
     {:ok, _} =
       Composer.create_data_flow_diagram(%{

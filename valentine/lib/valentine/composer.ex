@@ -172,6 +172,11 @@ defmodule Valentine.Composer do
     end)
   end
 
+  def list_threats_by_ids(ids) do
+    from(t in Threat, where: t.id in ^ids)
+    |> Repo.all()
+  end
+
   @doc """
   Returns the list of threats for a specific workspace.
 
@@ -1127,21 +1132,36 @@ defmodule Valentine.Composer do
         %{
           "workspace_id" => workspace_id
         }
-        |> Map.merge(reference_pack_item.data)
+        |> Map.merge(
+          reference_pack_item.data
+          |> Map.delete("mitigations")
+          |> Map.delete("threats")
+        )
         |> create_assumption()
 
       :threat ->
         %{
           "workspace_id" => workspace_id
         }
-        |> Map.merge(reference_pack_item.data)
+        |> Map.merge(
+          reference_pack_item.data
+          |> Map.delete("assumptions")
+          |> Map.delete("mitigations")
+          |> Map.delete("priority")
+          |> Map.delete("status")
+        )
         |> create_threat()
 
       :mitigation ->
         %{
           "workspace_id" => workspace_id
         }
-        |> Map.merge(reference_pack_item.data)
+        |> Map.merge(
+          reference_pack_item.data
+          |> Map.delete("assumptions")
+          |> Map.delete("threats")
+          |> Map.delete("status")
+        )
         |> create_mitigation()
 
       _ ->

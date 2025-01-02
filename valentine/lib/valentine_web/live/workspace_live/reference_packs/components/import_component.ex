@@ -139,15 +139,37 @@ defmodule ValentineWeb.WorkspaceLive.ReferencePacks.Components.ImportComponent d
     end
   end
 
-  defp validate(data) do
-    case Jason.decode(data) do
-      {:ok, json} -> {:ok, json}
-      {:error, _} -> {:error, "Invalid JSON"}
-    end
-  end
-
   defp upload_error_to_string(:too_many_files), do: "You can only upload one file at a time"
   defp upload_error_to_string(:too_large), do: "The file is too large"
   defp upload_error_to_string(:not_accepted), do: "You have selected an unacceptable file type"
   defp upload_error_to_string(:external_client_failure), do: "Something went terribly wrong"
+
+  def validate(data) do
+    with {:ok, json} <- Jason.decode(data),
+         {:ok, data} <- validate_required_fields(json) do
+      {:ok, data}
+    else
+      {:missing_fields, fields} -> {:error, "Missing required fields: #{Enum.join(fields, ", ")}"}
+      {:error, _} -> {:error, "Invalid JSON"}
+    end
+  end
+
+  defp validate_required_fields(data) do
+    data =
+      if Map.has_key?(data, "workspace") do
+        data["workspace"]
+      else
+        data
+      end
+
+    required_keys =
+      ~w(name)
+
+    missing_keys = Enum.filter(required_keys, &(!Map.has_key?(data, &1)))
+
+    case missing_keys do
+      [] -> {:ok, data}
+      keys -> {:missing_fields, keys}
+    end
+  end
 end

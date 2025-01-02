@@ -63,7 +63,7 @@ defmodule ValentineWeb.WorkspaceLive.ThreatModel.Components.ReportComponent do
             </td>
             <td>
               <ul>
-                <li :for={id <- entity["data"]["linked_threats"]}>
+                <li :for={id <- entity["data"]["linked_threats"]} :if={@threats_by_id[id] != nil}>
                   <a href={"#T-#{@threats_by_id[id].numeric_id}"}>
                     T-{@threats_by_id[id].numeric_id}
                   </a>
@@ -100,7 +100,7 @@ defmodule ValentineWeb.WorkspaceLive.ThreatModel.Components.ReportComponent do
             </td>
             <td>
               <ul>
-                <li :for={id <- edge["data"]["linked_threats"]}>
+                <li :for={id <- edge["data"]["linked_threats"]} :if={@threats_by_id[id] != nil}>
                   <a href={"#T-#{@threats_by_id[id].numeric_id}"}>
                     T-{@threats_by_id[id].numeric_id}
                   </a>

@@ -46,23 +46,21 @@ defmodule ValentineWeb.WorkspaceLive.Components.PaginatedListComponent do
           :for={item <- slice_collection(assigns)}
           class="d-flex flex-items-center flex-justify-between"
         >
-          <div class="clearfix width-full">
-            <div :if={@selectable} class="float-left mt-1">
-              <.checkbox
-                id={item.id}
-                name={item.id}
-                value={item.id}
-                checked={@selected |> Enum.member?(item.id)}
-                phx-click="toggle_select"
-                phx-value-id={item.id}
-                phx-target={@myself}
-              >
-                <:label></:label>
-              </.checkbox>
-            </div>
-            <div class="float-left">
-              {render_slot(@row, item)}
-            </div>
+          <div :if={@selectable} class="mr-2 mt-1">
+            <.checkbox
+              id={item.id}
+              name={item.id}
+              value={item.id}
+              checked={@selected |> Enum.member?(item.id)}
+              phx-click="toggle_select"
+              phx-value-id={item.id}
+              phx-target={@myself}
+            >
+              <:label></:label>
+            </.checkbox>
+          </div>
+          <div class="flex-1">
+            {render_slot(@row, item)}
           </div>
         </:row>
       </.box>

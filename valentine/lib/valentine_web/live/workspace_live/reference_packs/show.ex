@@ -56,4 +56,8 @@ defmodule ValentineWeb.WorkspaceLive.ReferencePacks.Show do
   def handle_info({:selected, selected_references}, socket) do
     {:noreply, assign(socket, :selected_references, selected_references)}
   end
+
+  defp cast_keys_to_atoms(map) do
+    Enum.reduce(map, %{}, fn {k, v}, acc -> Map.put(acc, String.to_existing_atom(k), v) end)
+  end
 end

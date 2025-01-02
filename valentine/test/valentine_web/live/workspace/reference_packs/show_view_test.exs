@@ -35,5 +35,24 @@ defmodule ValentineWeb.WorkspaceLive.ReferencePacks.ShowViewTest do
 
       assert html =~ reference_pack_item.id
     end
+
+    test "shows all tags for the reference pack items", %{
+      conn: conn,
+      workspace_id: workspace_id
+    } do
+      reference_pack_item =
+        reference_pack_item_fixture(
+          data: %{"content" => "some content", "tags" => ["tag1", "tag2"]}
+        )
+
+      {:ok, _index_live, html} =
+        live(
+          conn,
+          ~p"/workspaces/#{workspace_id}/reference_packs/#{reference_pack_item.collection_id}/#{reference_pack_item.collection_type}"
+        )
+
+      assert html =~ "tag1"
+      assert html =~ "tag2"
+    end
   end
 end
