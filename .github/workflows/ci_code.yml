@@ -13,7 +13,7 @@ jobs:
   tests:
     runs-on: ubuntu-24.04
     env:
-      DATABASE_URL: "ecto://postgres:postgres@postgres"
+      DATABASE_URL: "ecto://postgres:postgres@localhost"
       MIX_ENV: test
     services:
       postgres:
