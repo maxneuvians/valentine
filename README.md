@@ -1,6 +1,6 @@
 # Valentine
 
-Valentine is a collaborative threat modeling tool that is focused on simplicity and tries to leverage generative AI in a thoughful way so that it does not detract from, or replace, the work that goes into threat modeling.
+Valentine is a collaborative threat modeling tool that combines human expertise with generative AI to streamline the security design process while maintaining simplicity and rigor.
 
 ![Screenshot of a data flow diagram in Valentine](screenshots/data_flow_diagram.png)
 
