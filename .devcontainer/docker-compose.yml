@@ -11,7 +11,9 @@ services:
       - "4000:4000"
     depends_on:
       - db
-    env_file: devcontainer.env
+    env_file: 
+      - path: devcontainer.env
+        required: false
     environment:
       DATABASE_URL: "ecto://postgres:postgres@db"
   db:
