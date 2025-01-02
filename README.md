@@ -6,7 +6,7 @@ Valentine is a collaborative threat modeling tool that is focused on simplicity 
 
 ## Features
 
-1. Threat modeling with STRIDE based on the [AWS Threat Composer methodology](https://catalog.workshops.aws/threatmodel/en-US/introduction).
+1. Threat modeling with STRIDE based on the [AWS threat grammar](https://catalog.workshops.aws/threatmodel/en-US/what-can-go-wrong/threat-grammar). For more information see the [AWS Threat Composer](https://github.com/awslabs/threat-composer).
 
 2. Collaborative, real-time editing of threat models, data flow diagrams, and application architecture.
 
