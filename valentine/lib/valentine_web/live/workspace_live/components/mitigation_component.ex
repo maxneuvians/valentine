@@ -5,6 +5,13 @@ defmodule ValentineWeb.WorkspaceLive.Components.MitigationComponent do
   alias Valentine.Composer
 
   @impl true
+  def mount(socket) do
+    {:ok,
+     socket
+     |> assign(:summary_state, nil)}
+  end
+
+  @impl true
   def render(assigns) do
     ~H"""
     <div style="width:100%">
@@ -55,8 +62,8 @@ defmodule ValentineWeb.WorkspaceLive.Components.MitigationComponent do
           {@mitigation.content}
         </p>
       </.styled_html>
-      <details class="mt-4">
-        <summary>Comments</summary>
+      <details class="mt-4" {if @summary_state, do: %{open: true}, else: %{}}>
+        <summary phx-click="toggle_summary_state" phx-target={@myself}>Comments</summary>
         <.live_component
           module={ValentineWeb.WorkspaceLive.Components.TabNavComponent}
           id={"tabs-component-mitigation-#{@mitigation.id}"}
@@ -66,7 +73,12 @@ defmodule ValentineWeb.WorkspaceLive.Components.MitigationComponent do
           ]}
         >
           <:tab_content :let={tab}>
-            <form phx-value-id={@mitigation.id} phx-submit="update_comments" phx-target={@myself}>
+            <form
+              phx-value-id={@mitigation.id}
+              phx-submit="save_comments"
+              phx-change="update_comments"
+              phx-target={@myself}
+            >
               <%= case tab do %>
                 <% "tab1" -> %>
                   <.textarea
@@ -174,13 +186,29 @@ defmodule ValentineWeb.WorkspaceLive.Components.MitigationComponent do
   end
 
   @impl true
+  def handle_event("save_comments", %{"comments" => comments}, socket) do
+    # Forces a changeset change
+    Composer.update_mitigation(Map.put(socket.assigns.mitigation, :comments, nil), %{
+      :comments => comments
+    })
+
+    {:noreply,
+     socket
+     |> assign(:summary_state, nil)
+     |> assign(:mitigation, %{socket.assigns.mitigation | comments: comments})}
+  end
+
+  @impl true
   def handle_event("set_tag", %{"value" => value} = _params, socket) do
     {:noreply, assign(socket, :tag, value)}
   end
 
   @impl true
+  def handle_event("toggle_summary_state", _, socket) do
+    {:noreply, assign(socket, :summary_state, !socket.assigns.summary_state)}
+  end
+
   def handle_event("update_comments", %{"comments" => comments}, socket) do
-    Composer.update_mitigation(socket.assigns.mitigation, %{comments: comments})
     {:noreply, assign(socket, :mitigation, %{socket.assigns.mitigation | comments: comments})}
   end
 end
