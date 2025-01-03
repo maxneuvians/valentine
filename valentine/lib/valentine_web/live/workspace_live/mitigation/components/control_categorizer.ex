@@ -245,7 +245,7 @@ defmodule ValentineWeb.WorkspaceLive.Mitigation.Components.ControlCategorizer do
 
   defp user_prompt(mitigation) do
     """
-    Please suggest up to five NIST controls that this mitigation could be categorized under. Please also provide a rational why this control applies.
+    Please suggest up to five NIST controls that the implementation of this mitigation would meet. Please also provide a rational why this control applies.
 
     Threats statements:
     #{if mitigation.threats, do: mitigation.threats |> Enum.map(&("START:" <> Valentine.Composer.Threat.show_statement(&1) <> "END\n")), else: "No content available"}

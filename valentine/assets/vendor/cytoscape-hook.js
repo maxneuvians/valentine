@@ -279,6 +279,7 @@ const CytoscapeHook = {
 
                 case "group_nodes":
                     this.groupNodes(payload);
+                    this.fitView();
                     break;
 
                 case "merge_group":
