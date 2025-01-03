@@ -37,6 +37,18 @@ defmodule ValentineWeb.WorkspaceLive.Components.MitigationComponent do
         <div class="float-right">
           <.button
             is_icon_button
+            aria-label="Categorize"
+            phx-click={
+              JS.patch(
+                ~p"/workspaces/#{@mitigation.workspace_id}/mitigations/#{@mitigation.id}/categorize"
+              )
+            }
+            id={"categorize-mitigation-#{@mitigation.id}"}
+          >
+            <.octicon name="dependabot-16" />
+          </.button>
+          <.button
+            is_icon_button
             aria-label="Edit"
             phx-click={
               JS.patch(~p"/workspaces/#{@mitigation.workspace_id}/mitigations/#{@mitigation.id}/edit")

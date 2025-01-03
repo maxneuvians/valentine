@@ -65,3 +65,12 @@
   mitigation={@mitigation}
   patch={~p"/workspaces/#{@workspace_id}/mitigations"}
 />
+
+<.live_component
+  :if={@live_action in [:categorize]}
+  module={ValentineWeb.WorkspaceLive.Mitigation.Components.ControlCategorizer}
+  id={@mitigation.id}
+  mitigation={@mitigation}
+  workspace_id={@workspace_id}
+  patch={~p"/workspaces/#{@workspace_id}/mitigations"}
+/>

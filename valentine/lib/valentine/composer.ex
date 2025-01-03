@@ -473,7 +473,14 @@ defmodule Valentine.Composer do
       ** (Ecto.NoResultsError)
 
   """
-  def get_mitigation!(id), do: Repo.get!(Mitigation, id)
+  def get_mitigation!(id, _preload \\ nil)
+
+  def get_mitigation!(id, preload) when is_list(preload) do
+    Repo.get!(Mitigation, id)
+    |> Repo.preload(preload)
+  end
+
+  def get_mitigation!(id, preload) when is_nil(preload), do: Repo.get!(Mitigation, id)
 
   @doc """
   Creates a mitigation.

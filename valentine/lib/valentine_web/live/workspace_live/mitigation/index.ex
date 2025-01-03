@@ -14,12 +14,21 @@ defmodule ValentineWeb.WorkspaceLive.Mitigation.Index do
      socket
      |> assign(:workspace_id, workspace_id)
      |> assign(:filters, %{})
-     |> assign(:mitigations, workspace.mitigations)}
+     |> assign(
+       :mitigations,
+       get_sorted_mitgations(workspace)
+     )}
   end
 
   @impl true
   def handle_params(params, _url, socket) do
     {:noreply, apply_action(socket, socket.assigns.live_action, params)}
+  end
+
+  defp apply_action(socket, :categorize, %{"id" => id}) do
+    socket
+    |> assign(:page_title, "Categorize Mitigation")
+    |> assign(:mitigation, Composer.get_mitigation!(id, [:threats]))
   end
 
   defp apply_action(socket, :edit, %{"id" => id}) do
@@ -58,7 +67,7 @@ defmodule ValentineWeb.WorkspaceLive.Mitigation.Index do
              |> put_flash(:info, "Mitigation deleted successfully")
              |> assign(
                :mitigations,
-               workspace.mitigations
+               get_sorted_mitgations(workspace)
              )}
 
           {:error, _} ->
@@ -80,14 +89,14 @@ defmodule ValentineWeb.WorkspaceLive.Mitigation.Index do
 
   @impl true
   def handle_info(
-        {ValentineWeb.WorkspaceLive.Mitigation.Components.FormComponent, {:saved, _mitigation}},
+        {_, {:saved, _mitigation}},
         socket
       ) do
     workspace = get_workspace(socket.assigns.workspace_id)
 
     {:noreply,
      socket
-     |> assign(:mitigations, workspace.mitigations)}
+     |> assign(:mitigations, get_sorted_mitgations(workspace))}
   end
 
   @impl true
@@ -101,6 +110,10 @@ defmodule ValentineWeb.WorkspaceLive.Mitigation.Index do
         Composer.list_mitigations_by_workspace(socket.assigns.workspace_id, filters)
       )
     }
+  end
+
+  defp get_sorted_mitgations(workspace) do
+    workspace.mitigations |> Enum.sort(&(&1.numeric_id >= &2.numeric_id))
   end
 
   defp get_workspace(id) do

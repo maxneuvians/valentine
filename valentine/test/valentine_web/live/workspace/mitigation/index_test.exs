@@ -51,6 +51,34 @@ defmodule ValentineWeb.WorkspaceLive.Mitigation.IndexTest do
       assert updated_socket.assigns.page_title == "Listing Mitigations"
       assert updated_socket.assigns.workspace_id == workspace_id
     end
+
+    test "sets page title for categorize action", %{socket: socket, mitigation: mitigation} do
+      socket = put_in(socket.assigns.live_action, :categorize)
+
+      {:noreply, updated_socket} =
+        ValentineWeb.WorkspaceLive.Mitigation.Index.handle_params(
+          %{"id" => mitigation.id},
+          "",
+          socket
+        )
+
+      assert updated_socket.assigns.page_title == "Categorize Mitigation"
+      assert updated_socket.assigns.mitigation.id == mitigation.id
+    end
+
+    test "sets page title for edit action", %{socket: socket, mitigation: mitigation} do
+      socket = put_in(socket.assigns.live_action, :edit)
+
+      {:noreply, updated_socket} =
+        ValentineWeb.WorkspaceLive.Mitigation.Index.handle_params(
+          %{"id" => mitigation.id},
+          "",
+          socket
+        )
+
+      assert updated_socket.assigns.page_title == "Edit Mitigation"
+      assert updated_socket.assigns.mitigation.id == mitigation.id
+    end
   end
 
   describe "handle_info {:saved, _mitigation}" do
