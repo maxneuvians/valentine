@@ -154,6 +154,28 @@ defmodule ValentineWeb.WorkspaceLive.Components.ChatComponent do
     end
   end
 
+  def handle_event("chat_submit", %{"value" => "/clear"}, socket) do
+    chain =
+      build_chain(%{
+        stream: true,
+        stream_options: %{include_usage: true},
+        json_response: true,
+        json_schema:
+          PromptRegistry.get_schema(
+            socket.assigns.active_module,
+            socket.assigns.active_action
+          ),
+        callbacks: [llm_handler(self(), socket.assigns.myself)],
+        cid: socket.assigns.myself
+      })
+
+    Valentine.Cache.put({socket.id, :chatbot_history}, chain, expire: :timer.hours(24))
+
+    {:noreply,
+     socket
+     |> assign(chain: chain)}
+  end
+
   def handle_event("chat_submit", %{"value" => value}, socket) do
     %{active_module: active_module, active_action: active_action, workspace_id: workspace_id} =
       socket.assigns

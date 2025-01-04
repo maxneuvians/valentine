@@ -191,6 +191,41 @@ defmodule ValentineWeb.WorkspaceLive.Components.ChatComponentTest do
   describe "handle_event/3" do
     setup [:create_component]
 
+    test "clears the existing messages from the llm chain if the value is /clear",
+         %{socket: socket} do
+      value = "/clear"
+
+      socket =
+        Map.put(
+          socket,
+          :assigns,
+          Map.put(socket.assigns, :chain, %{
+            messages: [
+              %LangChain.Message{
+                role: :system,
+                content: "I am a system"
+              },
+              %LangChain.Message{
+                role: :user,
+                content: "Hello, world!"
+              }
+            ]
+          })
+        )
+
+      socket =
+        Map.put(
+          socket,
+          :assigns,
+          Map.put(socket.assigns, :myself, "myself")
+        )
+
+      {:noreply, updated_socket} =
+        ChatComponent.handle_event("chat_submit", %{"value" => value}, socket)
+
+      assert length(updated_socket.assigns.chain.messages) == 0
+    end
+
     test "adds a new system and user message to the llm chain", %{socket: socket} do
       value = "Hello, world!"
 
