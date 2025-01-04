@@ -97,6 +97,8 @@ defmodule ValentineWeb.WorkspaceLive.Components.ChatComponent do
       socket.assigns.chain
       |> LLMChain.apply_delta(data)
 
+    Valentine.Cache.put({socket.id, :chatbot_history}, chain, expire: :timer.hours(24))
+
     {:ok,
      socket
      |> assign(chain: chain)}
@@ -123,6 +125,8 @@ defmodule ValentineWeb.WorkspaceLive.Components.ChatComponent do
   end
 
   def update(assigns, socket) do
+    cached_chain = Valentine.Cache.get({socket.id, :chatbot_history}) || %LLMChain{}
+
     {:ok,
      socket
      |> assign(
@@ -148,7 +152,7 @@ defmodule ValentineWeb.WorkspaceLive.Components.ChatComponent do
          callbacks: [llm_handler(self(), socket.assigns.myself)]
        }
        |> LLMChain.new!()
-       |> LLMChain.add_messages(socket.assigns.chain.messages)
+       |> LLMChain.add_messages(cached_chain.messages)
      )
      |> assign(assigns)}
   end
@@ -177,6 +181,8 @@ defmodule ValentineWeb.WorkspaceLive.Components.ChatComponent do
         ),
         Message.new_user!(value)
       ])
+
+    Valentine.Cache.put({socket.id, :chatbot_history}, chain, expire: :timer.hours(24))
 
     {:noreply,
      socket
@@ -267,7 +273,6 @@ defmodule ValentineWeb.WorkspaceLive.Components.ChatComponent do
       _ ->
         content
         |> extract()
-        |> MDEx.to_html!()
         |> Phoenix.HTML.raw()
     end
   end
