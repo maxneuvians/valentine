@@ -13,13 +13,7 @@ defmodule ValentineWeb.WorkspaceLive.Components.ChatComponent do
   def mount(socket) do
     {:ok,
      socket
-     |> assign(
-       :chain,
-       %{
-         llm: ChatOpenAI.new!(llm_params())
-       }
-       |> LLMChain.new!()
-     )
+     |> assign(:chain, build_chain(%{cid: socket.assigns.myself}))
      |> assign(:skills, [])
      |> assign(:usage, nil)
      |> assign(:async_result, AsyncResult.loading())}
@@ -131,27 +125,18 @@ defmodule ValentineWeb.WorkspaceLive.Components.ChatComponent do
      socket
      |> assign(
        :chain,
-       %{
-         llm:
-           ChatOpenAI.new!(
-             Map.merge(
-               %{
-                 stream: true,
-                 stream_options: %{include_usage: true},
-                 json_response: true,
-                 json_schema:
-                   PromptRegistry.get_schema(
-                     assigns.active_module,
-                     assigns.active_action
-                   ),
-                 callbacks: [llm_handler(self(), socket.assigns.myself)]
-               },
-               llm_params()
-             )
+       build_chain(%{
+         stream: true,
+         stream_options: %{include_usage: true},
+         json_response: true,
+         json_schema:
+           PromptRegistry.get_schema(
+             assigns.active_module,
+             assigns.active_action
            ),
-         callbacks: [llm_handler(self(), socket.assigns.myself)]
-       }
-       |> LLMChain.new!()
+         callbacks: [llm_handler(self(), socket.assigns.myself)],
+         cid: socket.assigns.myself
+       })
        |> LLMChain.add_messages(cached_chain.messages)
      )
      |> assign(assigns)}
@@ -217,6 +202,14 @@ defmodule ValentineWeb.WorkspaceLive.Components.ChatComponent do
           :ok
       end
     end)
+  end
+
+  defp build_chain(params) do
+    %{
+      llm: ChatOpenAI.new!(Map.merge(params, llm_params())),
+      callbacks: [llm_handler(self(), params.cid)]
+    }
+    |> LLMChain.new!()
   end
 
   defp extract(input) do
