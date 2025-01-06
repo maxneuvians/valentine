@@ -3,9 +3,9 @@ defmodule ValentineWeb.PageController do
 
   def home(conn, _params) do
     if auth_active?() do
-      render(conn, :home, layout: false, auth: true)
+      render(conn, :home, layout: false, auth: true, theme: "light")
     else
-      render(conn, :home, layout: false, auth: false)
+      render(conn, :home, layout: false, auth: false, theme: "light")
     end
   end
 
