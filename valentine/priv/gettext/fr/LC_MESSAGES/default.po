@@ -34,39 +34,39 @@ msgstr ""
 #: lib/valentine_web/live/workspace_live/mitigation/index.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Listing Mitigations"
-msgstr ""
+msgstr "Liste des atténuations"
 
 #: lib/valentine_web/live/workspace_live/mitigation/index.html.heex:5
 #, elixir-autogen, elixir-format
 msgid "New Mitigation"
-msgstr ""
+msgstr "Nouvelle atténuation"
 
 #: lib/valentine_web/components/core_components.ex:87
 #, elixir-autogen, elixir-format
 msgid "Something went wrong!"
-msgstr ""
+msgstr "Quelque chose s'est mal passé!"
 
 #: lib/valentine_web/components/core_components.ex:71
 #, elixir-autogen, elixir-format
 msgid "Success!"
-msgstr ""
+msgstr "Succès!"
 
 #: lib/valentine_web/components/core_components.ex:76
 #, elixir-autogen, elixir-format
 msgid "We can't find the internet"
-msgstr ""
+msgstr "Nous ne trouvons pas internet"
 
 #: lib/valentine_web/components/core_components.ex:52
 #, elixir-autogen, elixir-format
 msgid "close"
-msgstr ""
+msgstr "fermer"
 
-#: lib/valentine_web/components/layouts/app.html.heex:63
+#: lib/valentine_web/components/layouts/app.html.heex:64
 #, elixir-autogen, elixir-format
 msgid "English"
 msgstr "Anglais"
 
-#: lib/valentine_web/components/layouts/app.html.heex:71
+#: lib/valentine_web/components/layouts/app.html.heex:73
 #, elixir-autogen, elixir-format
 msgid "French"
 msgstr "Français"
@@ -76,7 +76,63 @@ msgstr "Français"
 msgid "New Workspace"
 msgstr "Nouvel espace de travail"
 
+#: lib/valentine_web/components/layouts/app.html.heex:133
 #: lib/valentine_web/live/workspace_live/index.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Workspaces"
 msgstr "Espaces de travail"
+
+#: lib/valentine_web/components/layouts/app.html.heex:140
+#, elixir-autogen, elixir-format
+msgid "Application Information"
+msgstr "Informations sur l'application"
+
+#: lib/valentine_web/components/layouts/app.html.heex:147
+#, elixir-autogen, elixir-format
+msgid "Architecture"
+msgstr "Architecture"
+
+#: lib/valentine_web/components/layouts/app.html.heex:161
+#, elixir-autogen, elixir-format
+msgid "Assumptions"
+msgstr "Hypothèses"
+
+#: lib/valentine_web/components/layouts/app.html.heex:154
+#, elixir-autogen, elixir-format
+msgid "Data Flow"
+msgstr "Flux de données"
+
+#: lib/valentine_web/components/layouts/app.html.heex:127
+#, elixir-autogen, elixir-format
+msgid "Menu"
+msgstr "Menu"
+
+#: lib/valentine_web/components/layouts/app.html.heex:175
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Mitigations"
+msgstr "Atteintes"
+
+#: lib/valentine_web/components/layouts/app.html.heex:203
+#, elixir-autogen, elixir-format
+msgid "NIST Controls"
+msgstr "Contrôles NIST"
+
+#: lib/valentine_web/components/layouts/app.html.heex:191
+#, elixir-autogen, elixir-format
+msgid "Reference Packs"
+msgstr "Packs de référence"
+
+#: lib/valentine_web/components/layouts/app.html.heex:197
+#, elixir-autogen, elixir-format
+msgid "SRTM View"
+msgstr "Vue SRTM"
+
+#: lib/valentine_web/components/layouts/app.html.heex:183
+#, elixir-autogen, elixir-format
+msgid "Threat Model"
+msgstr "Modèle de menace"
+
+#: lib/valentine_web/components/layouts/app.html.heex:168
+#, elixir-autogen, elixir-format
+msgid "Threats"
+msgstr "Menaces"

@@ -61,12 +61,12 @@ msgstr ""
 msgid "close"
 msgstr ""
 
-#: lib/valentine_web/components/layouts/app.html.heex:63
+#: lib/valentine_web/components/layouts/app.html.heex:64
 #, elixir-autogen, elixir-format
 msgid "English"
 msgstr ""
 
-#: lib/valentine_web/components/layouts/app.html.heex:71
+#: lib/valentine_web/components/layouts/app.html.heex:73
 #, elixir-autogen, elixir-format
 msgid "French"
 msgstr ""
@@ -76,7 +76,63 @@ msgstr ""
 msgid "New Workspace"
 msgstr ""
 
+#: lib/valentine_web/components/layouts/app.html.heex:133
 #: lib/valentine_web/live/workspace_live/index.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Workspaces"
+msgstr ""
+
+#: lib/valentine_web/components/layouts/app.html.heex:140
+#, elixir-autogen, elixir-format
+msgid "Application Information"
+msgstr ""
+
+#: lib/valentine_web/components/layouts/app.html.heex:147
+#, elixir-autogen, elixir-format
+msgid "Architecture"
+msgstr ""
+
+#: lib/valentine_web/components/layouts/app.html.heex:161
+#, elixir-autogen, elixir-format
+msgid "Assumptions"
+msgstr ""
+
+#: lib/valentine_web/components/layouts/app.html.heex:154
+#, elixir-autogen, elixir-format
+msgid "Data Flow"
+msgstr ""
+
+#: lib/valentine_web/components/layouts/app.html.heex:127
+#, elixir-autogen, elixir-format
+msgid "Menu"
+msgstr ""
+
+#: lib/valentine_web/components/layouts/app.html.heex:175
+#, elixir-autogen, elixir-format
+msgid "Mitigations"
+msgstr ""
+
+#: lib/valentine_web/components/layouts/app.html.heex:203
+#, elixir-autogen, elixir-format
+msgid "NIST Controls"
+msgstr ""
+
+#: lib/valentine_web/components/layouts/app.html.heex:191
+#, elixir-autogen, elixir-format
+msgid "Reference Packs"
+msgstr ""
+
+#: lib/valentine_web/components/layouts/app.html.heex:197
+#, elixir-autogen, elixir-format
+msgid "SRTM View"
+msgstr ""
+
+#: lib/valentine_web/components/layouts/app.html.heex:183
+#, elixir-autogen, elixir-format
+msgid "Threat Model"
+msgstr ""
+
+#: lib/valentine_web/components/layouts/app.html.heex:168
+#, elixir-autogen, elixir-format
+msgid "Threats"
 msgstr ""

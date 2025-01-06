@@ -124,55 +124,55 @@
           phx-click={JS.toggle_class("collapsed-sidebar ", to: ".Layout--sidebar-narrow")}
         >
           <.octicon name="three-bars-16" />
-          <h5>Menu</h5>
+          <h5>{gettext("Menu")}</h5>
         </:item>
         <:item
           is_selected={@active_module == "Index" || @active_module == "Show"}
           navigate={"/workspaces/#{@workspace_id}"}
         >
-          <.octicon name="tools-16" /> Workspaces
+          <.octicon name="tools-16" /> {gettext("Workspaces")}
         </:item>
         <:item
           :if={@workspace_id}
           is_selected={@active_module == "ApplicationInformation"}
           navigate={~p"/workspaces/#{@workspace_id}/application_information"}
         >
-          <.octicon name="star-16" /> Application information
+          <.octicon name="star-16" /> {gettext("Application Information")}
         </:item>
         <:item
           :if={@workspace_id}
           is_selected={@active_module == "Architecture"}
           navigate={~p"/workspaces/#{@workspace_id}/architecture"}
         >
-          <.octicon name="container-16" /> Architecture
+          <.octicon name="container-16" /> {gettext("Architecture")}
         </:item>
         <:item
           :if={@workspace_id}
           is_selected={@active_module == "DataFlow"}
           navigate={~p"/workspaces/#{@workspace_id}/data_flow"}
         >
-          <.octicon name="workflow-16" /> Data flow
+          <.octicon name="workflow-16" /> {gettext("Data Flow")}
         </:item>
         <:item
           :if={@workspace_id}
           is_selected={@active_module == "Assumption"}
           navigate={~p"/workspaces/#{@workspace_id}/assumptions"}
         >
-          <.octicon name="discussion-closed-16" /> Assumptions
+          <.octicon name="discussion-closed-16" /> {gettext("Assumptions")}
         </:item>
         <:item
           :if={@workspace_id}
           is_selected={@active_module == "Threat"}
           navigate={~p"/workspaces/#{@workspace_id}/threats"}
         >
-          <.octicon name="squirrel-16" /> Threats
+          <.octicon name="squirrel-16" /> {gettext("Threats")}
         </:item>
         <:item
           :if={@workspace_id}
           is_selected={@active_module == "Mitigation"}
           navigate={~p"/workspaces/#{@workspace_id}/mitigations"}
         >
-          <.octicon name="check-circle-16" /> Mitigations
+          <.octicon name="check-circle-16" /> {gettext("Mitigations")}
         </:item>
       </.side_nav>
       <.side_nav :if={@workspace_id} aria_label="model" class="mt-4" is_border>
@@ -180,7 +180,7 @@
           is_selected={@active_module == "Report"}
           navigate={~p"/workspaces/#{@workspace_id}/threat_model"}
         >
-          <.octicon name="file-badge-16" /> Threat model
+          <.octicon name="file-badge-16" /> {gettext("Threat Model")}
         </:item>
       </.side_nav>
       <.side_nav :if={@workspace_id} aria_label="reference-packs" class="mt-4" is_border>
@@ -188,19 +188,19 @@
           is_selected={@active_module == "ReferencePacks"}
           navigate={~p"/workspaces/#{@workspace_id}/reference_packs"}
         >
-          <.octicon name="repo-16" /> Reference packs
+          <.octicon name="repo-16" /> {gettext("Reference Packs")}
         </:item>
         <:item
           is_selected={@active_module == "SRTM"}
           navigate={~p"/workspaces/#{@workspace_id}/srtm"}
         >
-          <.octicon name="tasklist-16" /> SRTM view
+          <.octicon name="tasklist-16" /> {gettext("SRTM View")}
         </:item>
         <:item
           is_selected={@active_module == "Controls"}
           navigate={~p"/workspaces/#{@workspace_id}/controls"}
         >
-          <.octicon name="shield-lock-16" /> NIST Controls
+          <.octicon name="shield-lock-16" /> {gettext("NIST Controls")}
         </:item>
       </.side_nav>
     </:sidebar>

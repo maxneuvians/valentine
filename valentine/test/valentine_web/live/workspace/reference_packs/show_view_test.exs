@@ -26,7 +26,7 @@ defmodule ValentineWeb.WorkspaceLive.ReferencePacks.ShowViewTest do
           ~p"/workspaces/#{workspace_id}/reference_packs/#{reference_pack_item.collection_id}/#{reference_pack_item.collection_type}"
         )
 
-      assert html =~ "Reference packs"
+      assert html =~ "Reference Packs"
       assert html =~ reference_pack_item.collection_name
 
       assert html =~
