@@ -1,5 +1,9 @@
 /* This file is for your main application CSS */
 
+html[data-theme="dark"] {
+    background-color: #0d1117;
+}
+
 /* Layout structure */
 .layout {
     min-height: 100vh;
