@@ -49,14 +49,14 @@ defmodule ValentineWeb.WorkspaceLive.Index do
       {:ok, _} ->
         {:noreply,
          socket
-         |> put_flash(:info, "Workspace deleted successfully")
+         |> put_flash(:info, gettext("Workspace deleted successfully"))
          |> assign(
            :workspaces,
            Composer.list_workspaces()
          )}
 
       {:error, _} ->
-        {:noreply, socket |> put_flash(:error, "Failed to delete workspace")}
+        {:noreply, socket |> put_flash(:error, gettext("Failed to delete workspace"))}
     end
   end
 
@@ -75,18 +75,22 @@ defmodule ValentineWeb.WorkspaceLive.Index do
           {:ok, _workspace} ->
             {:noreply,
              socket
-             |> notify_chat(id, :success, "Workspace created successfully")
-             |> put_flash(:info, "Workspace created successfully")
+             |> notify_chat(id, :success, gettext("Workspace created successfully"))
+             |> put_flash(:info, gettext("Workspace created successfully"))
              |> assign(:workspaces, Composer.list_workspaces())}
 
           {:error, _} ->
-            {:noreply, socket |> notify_chat(id, :error, "Failed to create workspace")}
+            {:noreply, socket |> notify_chat(id, :error, gettext("Failed to create workspace"))}
         end
 
       {"create", %{}} ->
         {:noreply,
          socket
-         |> notify_chat(id, :unknown, "The user was given the option of creating a new workspace")
+         |> notify_chat(
+           id,
+           :unknown,
+           gettext("The user was given the option of creating a new workspace")
+         )
          |> push_patch(to: ~p"/workspaces/new")}
     end
   end

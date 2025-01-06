@@ -177,3 +177,115 @@ msgstr "Espaces de travail"
 #, elixir-autogen, elixir-format
 msgid "Listing Workspaces"
 msgstr "Liste des espaces de travail"
+
+#: lib/valentine_web/live/workspace_live/show.html.heex:5
+#, elixir-autogen, elixir-format
+msgid "Back to all workspaces"
+msgstr "Retour à tous les espaces de travail"
+
+#: lib/valentine_web/live/workspace_live/show.html.heex:17
+#, elixir-autogen, elixir-format
+msgid "Details"
+msgstr "Détails"
+
+#: lib/valentine_web/live/workspace_live/show.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Export"
+msgstr "Exporter"
+
+#: lib/valentine_web/live/workspace_live/index.ex:83
+#, elixir-autogen, elixir-format
+msgid "Failed to create workspace"
+msgstr "Échec de la création de l'espace de travail"
+
+#: lib/valentine_web/live/workspace_live/index.ex:59
+#, elixir-autogen, elixir-format
+msgid "Failed to delete workspace"
+msgstr "Échec de la suppression de l'espace de travail"
+
+#: lib/valentine_web/live/workspace_live/show.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "High threats"
+msgstr "Menaces élevées"
+
+#: lib/valentine_web/live/workspace_live/show.html.heex:34
+#, elixir-autogen, elixir-format
+msgid "Low threats"
+msgstr "Menaces faibles"
+
+#: lib/valentine_web/live/workspace_live/show.html.heex:30
+#, elixir-autogen, elixir-format
+msgid "Medium threats"
+msgstr "Menaces moyennes"
+
+#: lib/valentine_web/live/workspace_live/show.html.heex:99
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Mitigation status"
+msgstr "Atteintes"
+
+#: lib/valentine_web/live/workspace_live/show.ex:27
+#, elixir-autogen, elixir-format
+msgid "Not set"
+msgstr "Non défini"
+
+#: lib/valentine_web/live/workspace_live/show.html.heex:38
+#: lib/valentine_web/live/workspace_live/show.html.heex:50
+#, elixir-autogen, elixir-format
+msgid "Resolved"
+msgstr "Résolu"
+
+#: lib/valentine_web/live/workspace_live/show.ex:21
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Show Workspace"
+msgstr "Nouvel espace de travail"
+
+#: lib/valentine_web/live/workspace_live/index.ex:92
+#, elixir-autogen, elixir-format
+msgid "The user was given the option of creating a new workspace"
+msgstr "L'utilisateur a eu la possibilité de créer un nouvel espace de travail"
+
+#: lib/valentine_web/live/workspace_live/show.html.heex:87
+#, elixir-autogen, elixir-format
+msgid "Threat STRIDE distribution"
+msgstr "Distribution des menaces STRIDE"
+
+#: lib/valentine_web/live/workspace_live/show.html.heex:73
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Threat status"
+msgstr "Menaces"
+
+#: lib/valentine_web/live/workspace_live/show.html.heex:61
+#, elixir-autogen, elixir-format
+msgid "Threats prioritization"
+msgstr "Priorisation des menaces"
+
+#: lib/valentine_web/live/workspace_live/show.html.heex:42
+#, elixir-autogen, elixir-format
+msgid "Total assumptions"
+msgstr "Total des hypothèses"
+
+#: lib/valentine_web/live/workspace_live/show.html.heex:46
+#, elixir-autogen, elixir-format
+msgid "Total mitigations"
+msgstr "Total des atténuations"
+
+#: lib/valentine_web/live/workspace_live/show.html.heex:22
+#, elixir-autogen, elixir-format
+msgid "Total threats"
+msgstr "Total des menaces"
+
+#: lib/valentine_web/live/workspace_live/show.html.heex:2
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Workspace"
+msgstr "Espaces de travail"
+
+#: lib/valentine_web/live/workspace_live/index.ex:78
+#: lib/valentine_web/live/workspace_live/index.ex:79
+#, elixir-autogen, elixir-format
+msgid "Workspace created successfully"
+msgstr "Espace de travail créé avec succès"
+
+#: lib/valentine_web/live/workspace_live/index.ex:52
+#, elixir-autogen, elixir-format
+msgid "Workspace deleted successfully"
+msgstr "Espace de travail supprimé avec succès"

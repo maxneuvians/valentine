@@ -1,12 +1,12 @@
 <.subhead>
-  Workspace: {@workspace.name}
+  {gettext("Workspace")}: {@workspace.name}
   <:actions>
     <.button phx-click={JS.patch(~p"/workspaces")}>
-      Back to all workspaces
+      {gettext("Back to all workspaces")}
     </.button>
     <a href={"/workspaces/#{@workspace.id}/export"} target="_blank">
       <.button is_outline>
-        Export
+        {gettext("Export")}
       </.button>
     </a>
   </:actions>
@@ -14,40 +14,40 @@
 <div class="clearfix">
   <div class="col-12 col-md-4 float-left p-2">
     <.box>
-      <:header_title>Details</:header_title>
+      <:header_title>{gettext("Details")}</:header_title>
       <:body>
         <span class="f3">{@workspace.name}</span>
         <table class="summary">
           <tr>
-            <td>Total threats</td>
+            <td>{gettext("Total threats")}</td>
             <td>{length(@workspace.threats)}</td>
           </tr>
           <tr>
-            <td class="inset">High threats</td>
+            <td class="inset">{gettext("High threats")}</td>
             <td>{length(@workspace.threats |> Enum.filter(&(&1.priority == :high)))}</td>
           </tr>
           <tr>
-            <td class="inset">Medium threats</td>
+            <td class="inset">{gettext("Medium threats")}</td>
             <td>{length(@workspace.threats |> Enum.filter(&(&1.priority == :medium)))}</td>
           </tr>
           <tr>
-            <td class="inset">Low threats</td>
+            <td class="inset">{gettext("Low threats")}</td>
             <td>{length(@workspace.threats |> Enum.filter(&(&1.priority == :low)))}</td>
           </tr>
           <tr>
-            <td class="inset">Resolved</td>
+            <td class="inset">{gettext("Resolved")}</td>
             <td>{length(@workspace.threats |> Enum.filter(&(&1.status == :resolved)))}</td>
           </tr>
           <tr>
-            <td>Total assumptions</td>
+            <td>{gettext("Total assumptions")}</td>
             <td>{length(@workspace.assumptions)}</td>
           </tr>
           <tr>
-            <td>Total mitigations</td>
+            <td>{gettext("Total mitigations")}</td>
             <td>{length(@workspace.mitigations)}</td>
           </tr>
           <tr>
-            <td class="inset">Resolved</td>
+            <td class="inset">{gettext("Resolved")}</td>
             <td>{length(@workspace.mitigations |> Enum.filter(&(&1.status == :resolved)))}</td>
           </tr>
         </table>
@@ -58,7 +58,7 @@
     <div class="clearfix">
       <div class="float-left col-6 p-2">
         <.box>
-          <:header_title>Threats prioritization</:header_title>
+          <:header_title>{gettext("Threats prioritization")}</:header_title>
           <:body>
             <.live_component
               module={ValentineWeb.WorkspaceLive.Components.Charts.PieChartComponent}
@@ -70,7 +70,7 @@
       </div>
       <div class="float-right col-6 p-2">
         <.box>
-          <:header_title>Threat status</:header_title>
+          <:header_title>{gettext("Threat status")}</:header_title>
           <:body>
             <.live_component
               module={ValentineWeb.WorkspaceLive.Components.Charts.PieChartComponent}
@@ -84,7 +84,7 @@
     <div class="clearfix">
       <div class="float-left col-6 p-2">
         <.box>
-          <:header_title>Threat STRIDE distribution</:header_title>
+          <:header_title>{gettext("Threat STRIDE distribution")}</:header_title>
           <:body>
             <.live_component
               module={ValentineWeb.WorkspaceLive.Components.Charts.BarChartComponent}
@@ -96,7 +96,7 @@
       </div>
       <div class="float-right col-6 p-2">
         <.box>
-          <:header_title>Mitigation status</:header_title>
+          <:header_title>{gettext("Mitigation status")}</:header_title>
           <:body>
             <.live_component
               module={ValentineWeb.WorkspaceLive.Components.Charts.PieChartComponent}

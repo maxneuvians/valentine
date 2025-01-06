@@ -18,13 +18,13 @@ defmodule ValentineWeb.WorkspaceLive.Show do
      |> assign(:workspace_id, id)}
   end
 
-  defp page_title(:show), do: "Show Workspace"
+  defp page_title(:show), do: gettext("Show Workspace")
 
   defp data_by_field(data, field) do
     data
     |> Enum.group_by(&get_in(&1, [Access.key!(field)]))
     |> Enum.map(fn
-      {nil, data} -> {"Not set", Enum.count(data)}
+      {nil, data} -> {gettext("Not set"), Enum.count(data)}
       {value, data} -> {Phoenix.Naming.humanize(value), Enum.count(data)}
     end)
     |> Map.new()
