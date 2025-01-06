@@ -1,5 +1,5 @@
 <.subhead>
-  Data flow diagram
+  {gettext("Data flow diagram")}
 </.subhead>
 
 <div
@@ -12,26 +12,26 @@
 >
   <div class="d-flex mb-2">
     <div class="d-flex flex-column mr-4">
-      <span class="text-small text-bold mb-1">Save</span>
+      <span class="text-small text-bold mb-1">{gettext("Save")}</span>
       <%= if @saved do %>
         <.button is_disabled id="dfd-save-btn">
           <.octicon name="check-circle-16" />
-          <span>Saved</span>
+          <span>{gettext("Saved")}</span>
         </.button>
       <% else %>
         <.button is_primary id="dfd-save-btn" phx-click="save">
           <.octicon name="clock-16" />
-          <span>Save</span>
+          <span>{gettext("Save")}</span>
         </.button>
       <% end %>
     </div>
     <div class="d-flex flex-column mr-2">
-      <span class="text-small text-bold mb-1">Entities</span>
+      <span class="text-small text-bold mb-1">{gettext("Entities")}</span>
       <.button_group class="mr-2">
         <.button
           is_icon_button
-          aria-label="Add Actor"
-          title="Add actor"
+          aria-label={gettext("Add actor")}
+          title={gettext("Add actor")}
           phx-click="add_node"
           phx-value-type="actor"
         >
@@ -39,8 +39,8 @@
         </.button>
         <.button
           is_icon_button
-          aria-label="Add Process"
-          title="Add process"
+          aria-label={gettext("Add process")}
+          title={gettext("Add process")}
           phx-click="add_node"
           phx-value-type="process"
         >
@@ -48,8 +48,8 @@
         </.button>
         <.button
           is_icon_button
-          aria-label="Add Datastore"
-          title="Add datastore"
+          aria-label={gettext("Add datastore")}
+          title={gettext("Add datastore")}
           phx-click="add_node"
           phx-value-type="datastore"
         >
@@ -58,28 +58,28 @@
       </.button_group>
     </div>
     <div class="d-flex flex-column mr-2">
-      <span class="text-small text-bold mb-1">Boundaries</span>
+      <span class="text-small text-bold mb-1">{gettext("Boundaries")}</span>
       <.button_group class="mr-2">
         <.button
           is_icon_button
-          aria-label="Add Boundary"
-          title="Add boundary"
+          aria-label={gettext("Add boundary")}
+          title={gettext("Add boundary")}
           phx-click="group_nodes"
         >
           <.octicon name="fold-up-24" />
         </.button>
         <.button
           is_icon_button
-          aria-label="Extend Boundary"
-          title="Extend boundary"
+          aria-label={gettext("Extend boundary")}
+          title={gettext("Extend boundary")}
           phx-click="merge_group"
         >
           <.octicon name="unfold-24" />
         </.button>
         <.button
           is_icon_button
-          aria-label="Remove Boundary"
-          title="Remove boundary"
+          aria-label={gettext("Remove boundary")}
+          title={gettext("Remove boundary")}
           phx-click="remove_group"
         >
           <.octicon name="fold-24" />
@@ -87,34 +87,49 @@
       </.button_group>
     </div>
     <div class="d-flex flex-column mr-2">
-      <span class="text-small text-bold mb-1">View options</span>
+      <span class="text-small text-bold mb-1">{gettext("View options")}</span>
       <.button_group class="mr-2">
-        <.button is_icon_button aria-label="Fit View" title="Fit view" phx-click="fit_view">
+        <.button
+          is_icon_button
+          aria-label={gettext("Fit view")}
+          title={gettext("Fit view")}
+          phx-click="fit_view"
+        >
           <.octicon name="project-template-24" />
         </.button>
-        <.button is_icon_button aria-label="Zoom in" title="Zoom in" phx-click="zoom_in">
+        <.button
+          is_icon_button
+          aria-label={gettext("Zoom in")}
+          title={gettext("Zoom in")}
+          phx-click="zoom_in"
+        >
           <.octicon name="plus-24" />
         </.button>
-        <.button is_icon_button aria-label="Zoom out" title="Zoom out" phx-click="zoom_out">
+        <.button
+          is_icon_button
+          aria-label={gettext("Zoom out")}
+          title={gettext("Zoom out")}
+          phx-click="zoom_out"
+        >
           <.octicon name="horizontal-rule-24" />
         </.button>
       </.button_group>
     </div>
     <div class="d-flex flex-column mr-2">
-      <span class="text-small text-bold mb-1">Destructive actions</span>
+      <span class="text-small text-bold mb-1">{gettext("Destructive actions")}</span>
       <.button_group class="mr-2">
         <.button
           is_icon_button
-          aria-label="Remove selected elements"
-          title="Remove selected elements"
+          aria-label={gettext("Remove selected elements")}
+          title={gettext("Remove selected elements")}
           phx-click="remove_elements"
         >
           <.octicon name="x-24" />
         </.button>
         <.button
           is_icon_button
-          aria-label="Clear entire diagram"
-          title="Clear entire diagram"
+          aria-label={gettext("Clear entire diagram")}
+          title={gettext("Clear entire diagram")}
           phx-click="clear_dfd"
           is_danger
         >

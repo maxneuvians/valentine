@@ -90,6 +90,8 @@ msgid "Application Information"
 msgstr ""
 
 #: lib/valentine_web/components/layouts/app.html.heex:147
+#: lib/valentine_web/live/workspace_live/architecture/index.ex:41
+#: lib/valentine_web/live/workspace_live/architecture/index.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Architecture"
 msgstr ""
@@ -295,6 +297,7 @@ msgstr ""
 msgid "Workspace deleted successfully"
 msgstr ""
 
+#: lib/valentine_web/live/workspace_live/data_flow/components/threat_statement_generator_component.ex:56
 #: lib/valentine_web/live/workspace_live/form_component.ex:51
 #: lib/valentine_web/live/workspace_live/import_component.ex:41
 #, elixir-autogen, elixir-format
@@ -348,11 +351,144 @@ msgid "Application information"
 msgstr ""
 
 #: lib/valentine_web/live/workspace_live/application_information/index.html.heex:8
+#: lib/valentine_web/live/workspace_live/architecture/index.html.heex:8
+#: lib/valentine_web/live/workspace_live/data_flow/components/threat_statement_generator_component.ex:51
+#: lib/valentine_web/live/workspace_live/data_flow/index.html.heex:15
+#: lib/valentine_web/live/workspace_live/data_flow/index.html.heex:24
 #, elixir-autogen, elixir-format
 msgid "Save"
 msgstr ""
 
 #: lib/valentine_web/live/workspace_live/application_information/index.html.heex:13
+#: lib/valentine_web/live/workspace_live/architecture/index.html.heex:13
+#: lib/valentine_web/live/workspace_live/data_flow/index.html.heex:19
 #, elixir-autogen, elixir-format
 msgid "Saved"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/data_flow/index.html.heex:33
+#: lib/valentine_web/live/workspace_live/data_flow/index.html.heex:34
+#, elixir-autogen, elixir-format
+msgid "Add actor"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/data_flow/index.html.heex:65
+#: lib/valentine_web/live/workspace_live/data_flow/index.html.heex:66
+#, elixir-autogen, elixir-format
+msgid "Add boundary"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/data_flow/index.html.heex:51
+#: lib/valentine_web/live/workspace_live/data_flow/index.html.heex:52
+#, elixir-autogen, elixir-format
+msgid "Add datastore"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/data_flow/index.html.heex:42
+#: lib/valentine_web/live/workspace_live/data_flow/index.html.heex:43
+#, elixir-autogen, elixir-format
+msgid "Add process"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/data_flow/index.html.heex:61
+#, elixir-autogen, elixir-format
+msgid "Boundaries"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/data_flow/index.html.heex:131
+#: lib/valentine_web/live/workspace_live/data_flow/index.html.heex:132
+#, elixir-autogen, elixir-format
+msgid "Clear entire diagram"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/data_flow/index.ex:40
+#: lib/valentine_web/live/workspace_live/data_flow/index.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Data flow diagram"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/data_flow/index.html.heex:119
+#, elixir-autogen, elixir-format
+msgid "Destructive actions"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/data_flow/index.html.heex:29
+#, elixir-autogen, elixir-format
+msgid "Entities"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/data_flow/index.html.heex:73
+#: lib/valentine_web/live/workspace_live/data_flow/index.html.heex:74
+#, elixir-autogen, elixir-format
+msgid "Extend boundary"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/data_flow/index.html.heex:94
+#: lib/valentine_web/live/workspace_live/data_flow/index.html.heex:95
+#, elixir-autogen, elixir-format
+msgid "Fit view"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/data_flow/index.html.heex:81
+#: lib/valentine_web/live/workspace_live/data_flow/index.html.heex:82
+#, elixir-autogen, elixir-format
+msgid "Remove boundary"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/data_flow/index.html.heex:123
+#: lib/valentine_web/live/workspace_live/data_flow/index.html.heex:124
+#, elixir-autogen, elixir-format
+msgid "Remove selected elements"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/data_flow/index.html.heex:90
+#, elixir-autogen, elixir-format
+msgid "View options"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/data_flow/index.html.heex:102
+#: lib/valentine_web/live/workspace_live/data_flow/index.html.heex:103
+#, elixir-autogen, elixir-format
+msgid "Zoom in"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/data_flow/index.html.heex:110
+#: lib/valentine_web/live/workspace_live/data_flow/index.html.heex:111
+#, elixir-autogen, elixir-format
+msgid "Zoom out"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/data_flow/components/threat_statement_generator_component.ex:54
+#, elixir-autogen, elixir-format
+msgid "Generate another"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/data_flow/components/threat_statement_generator_component.ex:37
+#, elixir-autogen, elixir-format
+msgid "Generate threat statement"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/data_flow/components/threat_statement_generator_component.ex:429
+#, elixir-autogen, elixir-format
+msgid " Current token usage: (In: %{in}, Out: %{out}, Cost: $%{cost})"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/data_flow/components/threat_statement_generator_component.ex:419
+#, elixir-autogen, elixir-format
+msgid "Mistakes are possible. Review output carefully before use."
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/data_flow/components/threat_statement_generator_component.ex:99
+#, elixir-autogen, elixir-format
+msgid "AI generated"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/data_flow/components/threat_statement_generator_component.ex:141
+#, elixir-autogen, elixir-format
+msgid "Error decoding response"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/data_flow/components/threat_statement_generator_component.ex:93
+#, elixir-autogen, elixir-format
+msgid "No threat statement generated"
 msgstr ""

@@ -34,7 +34,7 @@ defmodule ValentineWeb.WorkspaceLive.DataFlow.Components.ThreatStatementGenerato
         on_cancel={JS.push("toggle_generate_threat_statement")}
       >
         <:header_title>
-          Generate threat statement
+          {gettext("Generate threat statement")}
         </:header_title>
         <:body>
           <.spinner :if={!@threat} />
@@ -48,12 +48,12 @@ defmodule ValentineWeb.WorkspaceLive.DataFlow.Components.ThreatStatementGenerato
           <span class="f6">{get_caption(@usage)}</span>
           <hr />
           <.button :if={@threat} is_primary phx-click="save" phx-target={@myself}>
-            Save
+            {gettext("Save")}
           </.button>
           <.button :if={@threat} phx-click="generate_again" phx-target={@myself}>
-            Generate another
+            {gettext("Generate another")}
           </.button>
-          <.button phx-click="toggle_generate_threat_statement">Cancel</.button>
+          <.button phx-click="toggle_generate_threat_statement">{gettext("Cancel")}</.button>
         </:footer>
       </.dialog>
     </div>
@@ -90,13 +90,13 @@ defmodule ValentineWeb.WorkspaceLive.DataFlow.Components.ThreatStatementGenerato
   def handle_event("save", _, socket) do
     case socket.assigns.threat do
       nil ->
-        {:noreply, socket |> assign(:error, "No threat statement generated")}
+        {:noreply, socket |> assign(:error, gettext("No threat statement generated"))}
 
       _ ->
         {:ok, threat} =
           socket.assigns.threat
           |> Composer.change_threat(%{
-            tags: ["AI generated"],
+            tags: [gettext("AI generated")],
             workspace_id: socket.assigns.workspace_id
           })
           |> Valentine.Repo.insert()
@@ -138,7 +138,7 @@ defmodule ValentineWeb.WorkspaceLive.DataFlow.Components.ThreatStatementGenerato
         {:ok, socket |> assign(:threat, threat)}
 
       _ ->
-        {:ok, socket |> assign(:error, "Error decoding response")}
+        {:ok, socket |> assign(:error, gettext("Error decoding response"))}
     end
   end
 
@@ -416,7 +416,7 @@ defmodule ValentineWeb.WorkspaceLive.DataFlow.Components.ThreatStatementGenerato
   end
 
   defp get_caption(usage) do
-    base = "Mistakes are possible. Review output carefully before use."
+    base = gettext("Mistakes are possible. Review output carefully before use.")
 
     if usage do
       # In cost $0.150 / 1M input tokens
@@ -425,7 +425,12 @@ defmodule ValentineWeb.WorkspaceLive.DataFlow.Components.ThreatStatementGenerato
       # Cost rounded to cents
       cost = Float.round(usage.input * 0.00000015 + usage.output * 0.0000006, 2)
 
-      base <> " Current token usage: (In: #{usage.input}, Out: #{usage.output}, Cost: $#{cost})"
+      base <>
+        gettext(" Current token usage: (In: %{in}, Out: %{out}, Cost: $%{cost})",
+          in: usage.input,
+          out: usage.output,
+          cost: cost
+        )
     else
       base
     end

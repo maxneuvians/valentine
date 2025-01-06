@@ -37,7 +37,7 @@ defmodule ValentineWeb.WorkspaceLive.DataFlow.Index do
 
   defp apply_action(socket, :index, _params) do
     socket
-    |> assign(:page_title, "Data flow diagram")
+    |> assign(:page_title, gettext("Data flow diagram"))
   end
 
   # Intercept select and unselect events
