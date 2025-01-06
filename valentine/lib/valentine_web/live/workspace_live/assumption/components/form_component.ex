@@ -25,29 +25,38 @@ defmodule ValentineWeb.WorkspaceLive.Assumption.Components.FormComponent do
         >
           <:header_title>
             <%= if @assumption.id do %>
-              Edit Assumption
+              {gettext("Edit Assumption")}
             <% else %>
-              New Assumption
+              {gettext("New Assumption")}
             <% end %>
           </:header_title>
           <:body>
             <.textarea
               form={f}
               field={:content}
+              form_control={
+                %{
+                  label: gettext("Content")
+                }
+              }
               class="mt-2"
-              placeholder="Add new assumption..."
+              placeholder={gettext("Add new assumption...")}
               is_full_width
               rows="7"
-              caption="Assumptions help you to make better decisions by identifying the things you believe to be true."
+              caption={
+                gettext(
+                  "Assumptions help you to make better decisions by identifying the things you believe to be true."
+                )
+              }
               is_form_control
             />
             <input type="hidden" value={@assumption.workspace_id} name="assumption[workspace_id]" />
           </:body>
           <:footer>
-            <.button is_primary is_submit phx-disable-with="Saving...">
-              Save Assumption
+            <.button is_primary is_submit phx-disable-with={gettext("Saving...")}>
+              {gettext("Save Assumption")}
             </.button>
-            <.button phx-click={cancel_dialog("assumption-modal")}>Cancel</.button>
+            <.button phx-click={cancel_dialog("assumption-modal")}>{gettext("Cancel")}</.button>
           </:footer>
         </.dialog>
       </.form>
@@ -82,7 +91,7 @@ defmodule ValentineWeb.WorkspaceLive.Assumption.Components.FormComponent do
 
         {:noreply,
          socket
-         |> put_flash(:info, "Assumption updated successfully")
+         |> put_flash(:info, gettext("Assumption updated successfully"))
          |> push_patch(to: socket.assigns.patch)}
 
       {:error, %Ecto.Changeset{} = changeset} ->
@@ -97,7 +106,7 @@ defmodule ValentineWeb.WorkspaceLive.Assumption.Components.FormComponent do
 
         {:noreply,
          socket
-         |> put_flash(:info, "Assumption created successfully")
+         |> put_flash(:info, gettext("Assumption created successfully"))
          |> push_patch(to: socket.assigns.patch)}
 
       {:error, %Ecto.Changeset{} = changeset} ->

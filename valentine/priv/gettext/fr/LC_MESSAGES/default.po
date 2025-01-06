@@ -141,6 +141,7 @@ msgstr "Modèle de menace"
 msgid "Threats"
 msgstr "Menaces"
 
+#: lib/valentine_web/live/workspace_live/assumption/index.html.heex:26
 #: lib/valentine_web/live/workspace_live/index.html.heex:36
 #, elixir-autogen, elixir-format
 msgid "Get started"
@@ -156,6 +157,7 @@ msgstr "Importer un fichier JSON"
 msgid "Let's create a workspace"
 msgstr "Créons un espace de travail"
 
+#: lib/valentine_web/live/workspace_live/assumption/index.html.heex:30
 #: lib/valentine_web/live/workspace_live/index.html.heex:40
 #, elixir-autogen, elixir-format
 msgid "Start by clicking the button below and work from there..."
@@ -297,6 +299,7 @@ msgstr "Espace de travail créé avec succès"
 msgid "Workspace deleted successfully"
 msgstr "Espace de travail supprimé avec succès"
 
+#: lib/valentine_web/live/workspace_live/assumption/components/form_component.ex:59
 #: lib/valentine_web/live/workspace_live/data_flow/components/threat_statement_generator_component.ex:56
 #: lib/valentine_web/live/workspace_live/form_component.ex:51
 #: lib/valentine_web/live/workspace_live/import_component.ex:41
@@ -309,6 +312,7 @@ msgstr "Annuler"
 msgid "Save Workspace"
 msgstr "Nouvel espace de travail"
 
+#: lib/valentine_web/live/workspace_live/assumption/components/form_component.ex:56
 #: lib/valentine_web/live/workspace_live/form_component.ex:48
 #, elixir-autogen, elixir-format
 msgid "Saving..."
@@ -492,3 +496,81 @@ msgstr "Erreur de décodage de la réponse"
 #, elixir-autogen, elixir-format
 msgid "No threat statement generated"
 msgstr "Aucune déclaration de menace générée"
+
+#: lib/valentine_web/live/workspace_live/assumption/index.ex:70
+#, elixir-autogen, elixir-format
+msgid "Assumption deleted successfully"
+msgstr "Hypothèse supprimée avec succès"
+
+#: lib/valentine_web/live/workspace_live/assumption/index.ex:61
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Assumption not found"
+msgstr "Hypothèse non trouvée"
+
+#: lib/valentine_web/live/workspace_live/assumption/components/form_component.ex:28
+#: lib/valentine_web/live/workspace_live/assumption/index.ex:27
+#, elixir-autogen, elixir-format
+msgid "Edit Assumption"
+msgstr "Modifier l'hypothèse"
+
+#: lib/valentine_web/live/workspace_live/assumption/index.html.heex:6
+#, elixir-autogen, elixir-format
+msgid "Export reference pack"
+msgstr "Exporter le pack de référence"
+
+#: lib/valentine_web/live/workspace_live/assumption/index.ex:77
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Failed to delete assumption"
+msgstr "Échec de la suppression de l'espace de travail"
+
+#: lib/valentine_web/live/workspace_live/assumption/index.html.heex:29
+#, elixir-autogen, elixir-format
+msgid "Let's make some assumptions"
+msgstr "Faisons quelques hypothèses"
+
+#: lib/valentine_web/live/workspace_live/assumption/index.ex:42
+#: lib/valentine_web/live/workspace_live/assumption/index.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Listing Assumptions"
+msgstr "Liste des hypothèses"
+
+#: lib/valentine_web/live/workspace_live/assumption/components/form_component.ex:30
+#: lib/valentine_web/live/workspace_live/assumption/index.html.heex:10
+#, elixir-autogen, elixir-format, fuzzy
+msgid "New Assumption"
+msgstr "Nouvelle hypothèse"
+
+#: lib/valentine_web/live/workspace_live/assumption/index.html.heex:16
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Your assumptions"
+msgstr "Hypothèses"
+
+#: lib/valentine_web/live/workspace_live/assumption/components/form_component.ex:43
+#, elixir-autogen, elixir-format
+msgid "Add new assumption..."
+msgstr "Ajouter une nouvelle hypothèse..."
+
+#: lib/valentine_web/live/workspace_live/assumption/components/form_component.ex:109
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Assumption created successfully"
+msgstr "Hypothèse supprimée avec succès"
+
+#: lib/valentine_web/live/workspace_live/assumption/components/form_component.ex:94
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Assumption updated successfully"
+msgstr "Hypothèse supprimée avec succès"
+
+#: lib/valentine_web/live/workspace_live/assumption/components/form_component.ex:47
+#, elixir-autogen, elixir-format
+msgid "Assumptions help you to make better decisions by identifying the things you believe to be true."
+msgstr "Les hypothèses vous aident à prendre de meilleures décisions en identifiant les choses que vous croyez être vraies."
+
+#: lib/valentine_web/live/workspace_live/assumption/components/form_component.ex:39
+#, elixir-autogen, elixir-format
+msgid "Content"
+msgstr "Contenu"
+
+#: lib/valentine_web/live/workspace_live/assumption/components/form_component.ex:57
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Save Assumption"
+msgstr "Nouvelle hypothèse"

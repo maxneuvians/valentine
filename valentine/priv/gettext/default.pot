@@ -141,6 +141,7 @@ msgstr ""
 msgid "Threats"
 msgstr ""
 
+#: lib/valentine_web/live/workspace_live/assumption/index.html.heex:26
 #: lib/valentine_web/live/workspace_live/index.html.heex:36
 #, elixir-autogen, elixir-format
 msgid "Get started"
@@ -156,6 +157,7 @@ msgstr ""
 msgid "Let's create a workspace"
 msgstr ""
 
+#: lib/valentine_web/live/workspace_live/assumption/index.html.heex:30
 #: lib/valentine_web/live/workspace_live/index.html.heex:40
 #, elixir-autogen, elixir-format
 msgid "Start by clicking the button below and work from there..."
@@ -297,6 +299,7 @@ msgstr ""
 msgid "Workspace deleted successfully"
 msgstr ""
 
+#: lib/valentine_web/live/workspace_live/assumption/components/form_component.ex:59
 #: lib/valentine_web/live/workspace_live/data_flow/components/threat_statement_generator_component.ex:56
 #: lib/valentine_web/live/workspace_live/form_component.ex:51
 #: lib/valentine_web/live/workspace_live/import_component.ex:41
@@ -309,6 +312,7 @@ msgstr ""
 msgid "Save Workspace"
 msgstr ""
 
+#: lib/valentine_web/live/workspace_live/assumption/components/form_component.ex:56
 #: lib/valentine_web/live/workspace_live/form_component.ex:48
 #, elixir-autogen, elixir-format
 msgid "Saving..."
@@ -491,4 +495,82 @@ msgstr ""
 #: lib/valentine_web/live/workspace_live/data_flow/components/threat_statement_generator_component.ex:93
 #, elixir-autogen, elixir-format
 msgid "No threat statement generated"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/assumption/index.ex:70
+#, elixir-autogen, elixir-format
+msgid "Assumption deleted successfully"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/assumption/index.ex:61
+#, elixir-autogen, elixir-format
+msgid "Assumption not found"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/assumption/components/form_component.ex:28
+#: lib/valentine_web/live/workspace_live/assumption/index.ex:27
+#, elixir-autogen, elixir-format
+msgid "Edit Assumption"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/assumption/index.html.heex:6
+#, elixir-autogen, elixir-format
+msgid "Export reference pack"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/assumption/index.ex:77
+#, elixir-autogen, elixir-format
+msgid "Failed to delete assumption"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/assumption/index.html.heex:29
+#, elixir-autogen, elixir-format
+msgid "Let's make some assumptions"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/assumption/index.ex:42
+#: lib/valentine_web/live/workspace_live/assumption/index.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Listing Assumptions"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/assumption/components/form_component.ex:30
+#: lib/valentine_web/live/workspace_live/assumption/index.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "New Assumption"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/assumption/index.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Your assumptions"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/assumption/components/form_component.ex:43
+#, elixir-autogen, elixir-format
+msgid "Add new assumption..."
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/assumption/components/form_component.ex:109
+#, elixir-autogen, elixir-format
+msgid "Assumption created successfully"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/assumption/components/form_component.ex:94
+#, elixir-autogen, elixir-format
+msgid "Assumption updated successfully"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/assumption/components/form_component.ex:47
+#, elixir-autogen, elixir-format
+msgid "Assumptions help you to make better decisions by identifying the things you believe to be true."
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/assumption/components/form_component.ex:39
+#, elixir-autogen, elixir-format
+msgid "Content"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/assumption/components/form_component.ex:57
+#, elixir-autogen, elixir-format
+msgid "Save Assumption"
 msgstr ""

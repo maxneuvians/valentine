@@ -24,7 +24,7 @@ defmodule ValentineWeb.WorkspaceLive.Assumption.Index do
 
   defp apply_action(socket, :edit, %{"id" => id}) do
     socket
-    |> assign(:page_title, "Edit Assumption")
+    |> assign(:page_title, gettext("Edit Assumption"))
     |> assign(:assumption, Composer.get_assumption!(id))
   end
 
@@ -39,7 +39,7 @@ defmodule ValentineWeb.WorkspaceLive.Assumption.Index do
 
   defp apply_action(socket, :index, _params) do
     socket
-    |> assign(:page_title, "Listing Assumptions")
+    |> assign(:page_title, gettext("Listing Assumptions"))
   end
 
   @impl true
@@ -58,7 +58,7 @@ defmodule ValentineWeb.WorkspaceLive.Assumption.Index do
   def handle_event("delete", %{"id" => id}, socket) do
     case Composer.get_assumption!(id) do
       nil ->
-        {:noreply, socket |> put_flash(:error, "Assumption not found")}
+        {:noreply, socket |> put_flash(:error, gettext("Assumption not found"))}
 
       assumption ->
         case Composer.delete_assumption(assumption) do
@@ -67,14 +67,14 @@ defmodule ValentineWeb.WorkspaceLive.Assumption.Index do
 
             {:noreply,
              socket
-             |> put_flash(:info, "Assumption deleted successfully")
+             |> put_flash(:info, gettext("Assumption deleted successfully"))
              |> assign(
                :assumptions,
                workspace.assumptions
              )}
 
           {:error, _} ->
-            {:noreply, socket |> put_flash(:error, "Failed to delete assumption")}
+            {:noreply, socket |> put_flash(:error, gettext("Failed to delete assumption"))}
         end
     end
   end

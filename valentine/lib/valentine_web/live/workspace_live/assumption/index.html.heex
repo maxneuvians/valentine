@@ -1,19 +1,19 @@
 <.subhead>
-  Listing Assumptions
+  {gettext("Listing Assumptions")}
   <:actions>
     <a href={"/workspaces/#{@workspace_id}/export/assumptions"} target="_blank">
       <.button is_outline>
-        Export reference pack
+        {gettext("Export reference pack")}
       </.button>
     </a>
     <.button is_primary phx-click={JS.patch(~p"/workspaces/#{@workspace_id}/assumptions/new")}>
-      New Assumption
+      {gettext("New Assumption")}
     </.button>
   </:actions>
 </.subhead>
 
 <.box id="assumptions" row_id={fn r -> "assumption-#{r.id}" end}>
-  <:header>Your assumptions</:header>
+  <:header>{gettext("Your assumptions")}</:header>
   <div class="stream-row hidden">
     <%= if length(@assumptions) == 0 do %>
       <.blankslate class="color-bg-default">
@@ -23,11 +23,11 @@
             phx-click={JS.patch(~p"/workspaces/#{@workspace_id}/assumptions/new")}
             is_primary
           >
-            Get started
+            {gettext("Get started")}
           </.button>
         </:action>
-        <h3>Let's make some assumptions</h3>
-        <p>Start by clicking the button below and work from there...</p>
+        <h3>{gettext("Let's make some assumptions")}</h3>
+        <p>{gettext("Start by clicking the button below and work from there...")}</p>
       </.blankslate>
     <% end %>
   </div>
