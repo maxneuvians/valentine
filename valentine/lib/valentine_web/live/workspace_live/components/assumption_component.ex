@@ -35,7 +35,7 @@ defmodule ValentineWeb.WorkspaceLive.Components.AssumptionComponent do
             is_danger
             aria-label="Delete"
             phx-click={JS.push("delete", value: %{id: @assumption.id})}
-            data-confirm="Are you sure?"
+            data-confirm={gettext("Are you sure?")}
             id={"delete-assumption-#{@assumption.id}"}
           >
             <.octicon name="trash-16" />

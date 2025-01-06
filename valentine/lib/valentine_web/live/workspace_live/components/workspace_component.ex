@@ -24,7 +24,7 @@ defmodule ValentineWeb.WorkspaceLive.Components.WorkspaceComponent do
             is_danger
             aria-label="Delete"
             phx-click={JS.push("delete", value: %{id: @workspace.id})}
-            data-confirm="Are you sure?"
+            data-confirm={gettext("Are you sure?")}
             id={"delete-workspace-#{@workspace.id}"}
           >
             <.octicon name="trash-16" />

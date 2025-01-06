@@ -56,7 +56,7 @@ defmodule ValentineWeb.WorkspaceLive.Components.ThreatComponent do
               is_danger
               aria-label="Delete"
               phx-click={JS.push("delete", value: %{id: @threat.id})}
-              data-confirm="Are you sure?"
+              data-confirm={gettext("Are you sure?")}
             >
               <.octicon name="trash-16" />
             </.button>

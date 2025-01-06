@@ -36,7 +36,7 @@
             aria-label="Delete"
             phx-click={JS.push("delete", value: %{id: reference_pack.collection_id})}
             phx-value-type={reference_pack.collection_type}
-            data-confirm="Are you sure?"
+            data-confirm={gettext("Are you sure?")}
             id={"delete-reference-pack-#{reference_pack.collection_id}-#{reference_pack.collection_type}"}
           >
             <.octicon name="trash-16" />

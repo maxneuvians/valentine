@@ -62,7 +62,7 @@ defmodule ValentineWeb.WorkspaceLive.Components.MitigationComponent do
             is_danger
             aria-label="Delete"
             phx-click={JS.push("delete", value: %{id: @mitigation.id})}
-            data-confirm="Are you sure?"
+            data-confirm={gettext("Are you sure?")}
             id={"delete-mitigation-#{@mitigation.id}"}
           >
             <.octicon name="trash-16" />

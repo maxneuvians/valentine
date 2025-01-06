@@ -211,7 +211,7 @@ defmodule ValentineWeb.WorkspaceLive.Components.DataFlowMetadataComponent do
                   phx-value-value="0"
                   phx-value-field="linked_threats"
                   phx-value-checked={threat.id}
-                  data-confirm="Are you sure?"
+                  data-confirm={gettext("Are you sure?")}
                 >
                   <.octicon name="trash-16" />
                 </.button>

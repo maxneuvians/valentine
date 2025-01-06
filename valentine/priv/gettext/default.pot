@@ -823,3 +823,13 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "Clear all"
 msgstr ""
+
+#: lib/valentine_web/live/workspace_live/components/assumption_component.ex:38
+#: lib/valentine_web/live/workspace_live/components/data_flow_metadata_component.ex:214
+#: lib/valentine_web/live/workspace_live/components/mitigation_component.ex:65
+#: lib/valentine_web/live/workspace_live/components/threat_component.ex:59
+#: lib/valentine_web/live/workspace_live/components/workspace_component.ex:27
+#: lib/valentine_web/live/workspace_live/reference_packs/index.html.heex:39
+#, elixir-autogen, elixir-format
+msgid "Are you sure?"
+msgstr ""
