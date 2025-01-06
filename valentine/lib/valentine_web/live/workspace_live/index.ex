@@ -19,25 +19,25 @@ defmodule ValentineWeb.WorkspaceLive.Index do
 
   defp apply_action(socket, :edit, %{"id" => id}) do
     socket
-    |> assign(:page_title, "Edit Workspace")
+    |> assign(:page_title, gettext("Edit Workspace"))
     |> assign(:workspace, Composer.get_workspace!(id))
   end
 
   defp apply_action(socket, :import, _params) do
     socket
-    |> assign(:page_title, "Import Workspace")
+    |> assign(:page_title, gettext("Import Workspace"))
     |> assign(:workspace, %Workspace{})
   end
 
   defp apply_action(socket, :new, _params) do
     socket
-    |> assign(:page_title, "New Workspace")
+    |> assign(:page_title, gettext("New Workspace"))
     |> assign(:workspace, %Workspace{})
   end
 
   defp apply_action(socket, :index, _params) do
     socket
-    |> assign(:page_title, "Listing Workspaces")
+    |> assign(:page_title, gettext("Listing Workspaces"))
     |> assign(:workspace, nil)
   end
 

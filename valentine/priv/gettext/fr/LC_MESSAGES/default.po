@@ -14,22 +14,22 @@ msgstr ""
 #: lib/valentine_web/components/core_components.ex:136
 #, elixir-autogen, elixir-format
 msgid "Actions"
-msgstr ""
+msgstr "Actions"
 
 #: lib/valentine_web/components/core_components.ex:81
 #, elixir-autogen, elixir-format
 msgid "Attempting to reconnect"
-msgstr ""
+msgstr "Tentative de reconnexion"
 
 #: lib/valentine_web/components/core_components.ex:72
 #, elixir-autogen, elixir-format
 msgid "Error!"
-msgstr ""
+msgstr "Erreur!"
 
 #: lib/valentine_web/components/core_components.ex:92
 #, elixir-autogen, elixir-format
 msgid "Hang in there while we get back on track"
-msgstr ""
+msgstr "Accrochez-vous pendant que nous reprenons le contrôle"
 
 #: lib/valentine_web/live/workspace_live/mitigation/index.html.heex:2
 #, elixir-autogen, elixir-format
@@ -71,6 +71,7 @@ msgstr "Anglais"
 msgid "French"
 msgstr "Français"
 
+#: lib/valentine_web/live/workspace_live/index.ex:34
 #: lib/valentine_web/live/workspace_live/index.html.heex:6
 #, elixir-autogen, elixir-format
 msgid "New Workspace"
@@ -136,3 +137,43 @@ msgstr "Modèle de menace"
 #, elixir-autogen, elixir-format
 msgid "Threats"
 msgstr "Menaces"
+
+#: lib/valentine_web/live/workspace_live/index.html.heex:36
+#, elixir-autogen, elixir-format
+msgid "Get started"
+msgstr "Commencer"
+
+#: lib/valentine_web/live/workspace_live/index.html.heex:20
+#, elixir-autogen, elixir-format
+msgid "Import JSON file"
+msgstr "Importer un fichier JSON"
+
+#: lib/valentine_web/live/workspace_live/index.html.heex:39
+#, elixir-autogen, elixir-format
+msgid "Let's create a workspace"
+msgstr "Créons un espace de travail"
+
+#: lib/valentine_web/live/workspace_live/index.html.heex:40
+#, elixir-autogen, elixir-format
+msgid "Start by clicking the button below and work from there..."
+msgstr "Commencez en cliquant sur le bouton ci-dessous et travaillez à partir de là..."
+
+#: lib/valentine_web/live/workspace_live/index.html.heex:29
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Your workspaces"
+msgstr "Espaces de travail"
+
+#: lib/valentine_web/live/workspace_live/index.ex:22
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Edit Workspace"
+msgstr "Espaces de travail"
+
+#: lib/valentine_web/live/workspace_live/index.ex:28
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Import Workspace"
+msgstr "Espaces de travail"
+
+#: lib/valentine_web/live/workspace_live/index.ex:40
+#, elixir-autogen, elixir-format
+msgid "Listing Workspaces"
+msgstr "Liste des espaces de travail"

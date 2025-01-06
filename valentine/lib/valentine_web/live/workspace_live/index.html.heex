@@ -17,7 +17,7 @@
             id="import-workspace-btn"
             phx-click={JS.patch(~p"/workspaces/import")}
           >
-            Import json file
+            {gettext("Import JSON file")}
           </.action_list_item>
         </.action_list>
       </.action_menu>
@@ -26,18 +26,18 @@
 </.subhead>
 
 <.box id="workspaces" row_id={fn r -> "workspace-#{r.id}" end}>
-  <:header>Your workspaces</:header>
+  <:header>{gettext("Your workspaces")}</:header>
   <div class="stream-row hidden">
     <%= if length(@workspaces) == 0 do %>
       <.blankslate class="color-bg-default">
         <:octicon name="tools-24" />
         <:action>
           <.button phx-click={JS.patch(~p"/workspaces/new")} is_primary>
-            Get started
+            {gettext("Get started")}
           </.button>
         </:action>
-        <h3>Let's create a workspace</h3>
-        <p>Start by clicking the button below and work from there...</p>
+        <h3>{gettext("Let's create a workspace")}</h3>
+        <p>{gettext("Start by clicking the button below and work from there...")}</p>
       </.blankslate>
     <% end %>
   </div>

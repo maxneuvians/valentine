@@ -71,6 +71,7 @@ msgstr ""
 msgid "French"
 msgstr ""
 
+#: lib/valentine_web/live/workspace_live/index.ex:34
 #: lib/valentine_web/live/workspace_live/index.html.heex:6
 #, elixir-autogen, elixir-format
 msgid "New Workspace"
@@ -135,4 +136,44 @@ msgstr ""
 #: lib/valentine_web/components/layouts/app.html.heex:168
 #, elixir-autogen, elixir-format
 msgid "Threats"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/index.html.heex:36
+#, elixir-autogen, elixir-format
+msgid "Get started"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/index.html.heex:20
+#, elixir-autogen, elixir-format
+msgid "Import JSON file"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/index.html.heex:39
+#, elixir-autogen, elixir-format
+msgid "Let's create a workspace"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/index.html.heex:40
+#, elixir-autogen, elixir-format
+msgid "Start by clicking the button below and work from there..."
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/index.html.heex:29
+#, elixir-autogen, elixir-format
+msgid "Your workspaces"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/index.ex:22
+#, elixir-autogen, elixir-format
+msgid "Edit Workspace"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/index.ex:28
+#, elixir-autogen, elixir-format
+msgid "Import Workspace"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/index.ex:40
+#, elixir-autogen, elixir-format
+msgid "Listing Workspaces"
 msgstr ""
