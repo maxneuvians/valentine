@@ -340,3 +340,19 @@ msgstr "Vous avez sélectionné un type de fichier inacceptable"
 #, elixir-autogen, elixir-format
 msgid "Name"
 msgstr "Nom"
+
+#: lib/valentine_web/live/workspace_live/application_information/index.ex:41
+#: lib/valentine_web/live/workspace_live/application_information/index.html.heex:2
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Application information"
+msgstr "Informations sur l'application"
+
+#: lib/valentine_web/live/workspace_live/application_information/index.html.heex:8
+#, elixir-autogen, elixir-format
+msgid "Save"
+msgstr "Sauvegarder"
+
+#: lib/valentine_web/live/workspace_live/application_information/index.html.heex:13
+#, elixir-autogen, elixir-format
+msgid "Saved"
+msgstr "Sauvegardé"

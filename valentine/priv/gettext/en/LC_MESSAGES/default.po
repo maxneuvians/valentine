@@ -340,3 +340,19 @@ msgstr ""
 #, elixir-autogen, elixir-format
 msgid "Name"
 msgstr ""
+
+#: lib/valentine_web/live/workspace_live/application_information/index.ex:41
+#: lib/valentine_web/live/workspace_live/application_information/index.html.heex:2
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Application information"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/application_information/index.html.heex:8
+#, elixir-autogen, elixir-format
+msgid "Save"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/application_information/index.html.heex:13
+#, elixir-autogen, elixir-format
+msgid "Saved"
+msgstr ""

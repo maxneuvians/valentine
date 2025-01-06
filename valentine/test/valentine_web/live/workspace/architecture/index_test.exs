@@ -56,7 +56,7 @@ defmodule ValentineWeb.WorkspaceLive.Architecture.IndexTest do
       {:noreply, socket} =
         ValentineWeb.WorkspaceLive.Architecture.Index.handle_params(nil, nil, socket)
 
-      assert socket.assigns.page_title == "Application information"
+      assert socket.assigns.page_title == "Architecture"
     end
   end
 

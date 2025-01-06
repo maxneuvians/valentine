@@ -38,7 +38,7 @@ defmodule ValentineWeb.WorkspaceLive.ApplicationInformation.Index do
 
   defp apply_action(socket, :index, _params) do
     socket
-    |> assign(:page_title, "Application information")
+    |> assign(:page_title, gettext("Application information"))
   end
 
   @impl true

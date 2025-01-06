@@ -1,16 +1,16 @@
 <.subhead>
-  Architecture
+  {gettext("Architecture")}
 </.subhead>
 
 <%= if @touched do %>
   <.button is_primary class="mb-2" id="quill-save-btn">
     <.octicon name="clock-16" />
-    <span>Save</span>
+    <span>{gettext("Save")}</span>
   </.button>
 <% else %>
   <.button is_disabled class="mb-2" id="quill-save-btn">
     <.octicon name="check-circle-16" />
-    <span>Saved</span>
+    <span>{gettext("Saved")}</span>
   </.button>
 <% end %>
 <.live_component
