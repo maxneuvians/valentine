@@ -71,6 +71,7 @@ msgstr "Anglais"
 msgid "French"
 msgstr "Français"
 
+#: lib/valentine_web/live/workspace_live/form_component.ex:30
 #: lib/valentine_web/live/workspace_live/index.ex:34
 #: lib/valentine_web/live/workspace_live/index.html.heex:6
 #, elixir-autogen, elixir-format
@@ -163,11 +164,14 @@ msgstr "Commencez en cliquant sur le bouton ci-dessous et travaillez à partir d
 msgid "Your workspaces"
 msgstr "Espaces de travail"
 
+#: lib/valentine_web/live/workspace_live/form_component.ex:28
 #: lib/valentine_web/live/workspace_live/index.ex:22
 #, elixir-autogen, elixir-format, fuzzy
 msgid "Edit Workspace"
 msgstr "Espaces de travail"
 
+#: lib/valentine_web/live/workspace_live/import_component.ex:20
+#: lib/valentine_web/live/workspace_live/import_component.ex:39
 #: lib/valentine_web/live/workspace_live/index.ex:28
 #, elixir-autogen, elixir-format, fuzzy
 msgid "Import Workspace"
@@ -279,6 +283,7 @@ msgstr "Total des menaces"
 msgid "Workspace"
 msgstr "Espaces de travail"
 
+#: lib/valentine_web/live/workspace_live/form_component.ex:99
 #: lib/valentine_web/live/workspace_live/index.ex:78
 #: lib/valentine_web/live/workspace_live/index.ex:79
 #, elixir-autogen, elixir-format
@@ -289,3 +294,49 @@ msgstr "Espace de travail créé avec succès"
 #, elixir-autogen, elixir-format
 msgid "Workspace deleted successfully"
 msgstr "Espace de travail supprimé avec succès"
+
+#: lib/valentine_web/live/workspace_live/form_component.ex:51
+#: lib/valentine_web/live/workspace_live/import_component.ex:41
+#, elixir-autogen, elixir-format
+msgid "Cancel"
+msgstr "Annuler"
+
+#: lib/valentine_web/live/workspace_live/form_component.ex:49
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Save Workspace"
+msgstr "Nouvel espace de travail"
+
+#: lib/valentine_web/live/workspace_live/form_component.ex:48
+#, elixir-autogen, elixir-format
+msgid "Saving..."
+msgstr "Sauvegarde..."
+
+#: lib/valentine_web/live/workspace_live/import_component.ex:92
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Something went terribly wrong"
+msgstr "Quelque chose s'est mal passé!"
+
+#: lib/valentine_web/live/workspace_live/import_component.ex:86
+#, elixir-autogen, elixir-format
+msgid "The file is too large"
+msgstr "Le fichier est trop volumineux"
+
+#: lib/valentine_web/live/workspace_live/form_component.ex:84
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Workspace updated successfully"
+msgstr "Espace de travail supprimé avec succès"
+
+#: lib/valentine_web/live/workspace_live/import_component.ex:84
+#, elixir-autogen, elixir-format
+msgid "You can only upload one file at a time"
+msgstr "Vous ne pouvez télécharger qu'un seul fichier à la fois"
+
+#: lib/valentine_web/live/workspace_live/import_component.ex:89
+#, elixir-autogen, elixir-format
+msgid "You have selected an unacceptable file type"
+msgstr "Vous avez sélectionné un type de fichier inacceptable"
+
+#: lib/valentine_web/live/workspace_live/form_component.ex:39
+#, elixir-autogen, elixir-format
+msgid "Name"
+msgstr "Nom"

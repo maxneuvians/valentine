@@ -25,19 +25,30 @@ defmodule ValentineWeb.WorkspaceLive.FormComponent do
         >
           <:header_title>
             <%= if @workspace.id do %>
-              Edit Workspace
+              {gettext("Edit Workspace")}
             <% else %>
-              New Workspace
+              {gettext("New Workspace")}
             <% end %>
           </:header_title>
           <:body>
-            <.text_input form={f} field={:name} class="mt-2" is_full_width is_form_control />
+            <.text_input
+              form={f}
+              field={:name}
+              form_control={
+                %{
+                  label: gettext("Name")
+                }
+              }
+              class="mt-2"
+              is_full_width
+              is_form_control
+            />
           </:body>
           <:footer>
-            <.button is_primary is_submit phx-disable-with="Saving...">
-              Save Workspace
+            <.button is_primary is_submit phx-disable-with={gettext("Saving...")}>
+              {gettext("Save Workspace")}
             </.button>
-            <.button phx-click={cancel_dialog("workspace-modal")}>Cancel</.button>
+            <.button phx-click={cancel_dialog("workspace-modal")}>{gettext("Cancel")}</.button>
           </:footer>
         </.dialog>
       </.form>
@@ -70,7 +81,7 @@ defmodule ValentineWeb.WorkspaceLive.FormComponent do
 
         {:noreply,
          socket
-         |> put_flash(:info, "Workspace updated successfully")
+         |> put_flash(:info, gettext("Workspace updated successfully"))
          |> push_patch(to: socket.assigns.patch)}
 
       {:error, %Ecto.Changeset{} = changeset} ->
@@ -85,7 +96,7 @@ defmodule ValentineWeb.WorkspaceLive.FormComponent do
 
         {:noreply,
          socket
-         |> put_flash(:info, "Workspace created successfully")
+         |> put_flash(:info, gettext("Workspace created successfully"))
          |> push_patch(to: socket.assigns.patch)}
 
       {:error, %Ecto.Changeset{} = changeset} ->

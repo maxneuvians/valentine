@@ -17,7 +17,7 @@ defmodule ValentineWeb.WorkspaceLive.ImportComponent do
           on_cancel={JS.patch(~p"/workspaces")}
         >
           <:header_title>
-            Import Workspace
+            {gettext("Import Workspace")}
           </:header_title>
           <:body>
             <.live_file_input upload={@uploads.import} />
@@ -36,9 +36,9 @@ defmodule ValentineWeb.WorkspaceLive.ImportComponent do
           </:body>
           <:footer>
             <.button is_primary is_submit phx-disable-with="Importing...">
-              Import Workspace
+              {gettext("Import Workspace")}
             </.button>
-            <.button phx-click={cancel_dialog("workspace-import-modal")}>Cancel</.button>
+            <.button phx-click={cancel_dialog("workspace-import-modal")}>{gettext("Cancel")}</.button>
           </:footer>
         </.dialog>
       </form>
@@ -80,8 +80,14 @@ defmodule ValentineWeb.WorkspaceLive.ImportComponent do
     end
   end
 
-  defp upload_error_to_string(:too_many_files), do: "You can only upload one file at a time"
-  defp upload_error_to_string(:too_large), do: "The file is too large"
-  defp upload_error_to_string(:not_accepted), do: "You have selected an unacceptable file type"
-  defp upload_error_to_string(:external_client_failure), do: "Something went terribly wrong"
+  defp upload_error_to_string(:too_many_files),
+    do: gettext("You can only upload one file at a time")
+
+  defp upload_error_to_string(:too_large), do: gettext("The file is too large")
+
+  defp upload_error_to_string(:not_accepted),
+    do: gettext("You have selected an unacceptable file type")
+
+  defp upload_error_to_string(:external_client_failure),
+    do: gettext("Something went terribly wrong")
 end
