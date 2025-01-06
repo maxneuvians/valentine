@@ -9,7 +9,7 @@
 
 <.box id="mitigations" row_id={fn r -> "mitigation-#{r.id}" end}>
   <:header class="d-flex flex-items-center">
-    Filters:
+    {gettext("Filters")}:
     <.live_component
       module={ValentineWeb.WorkspaceLive.Components.FilterComponent}
       id="status-filter"
@@ -26,10 +26,10 @@
         <.blankslate class="color-bg-default">
           <:octicon name="question-24" />
           <:action>
-            <.button phx-click="clear_filters">Clear all filters</.button>
+            <.button phx-click="clear_filters">{gettext("Clear all filters")}</.button>
           </:action>
-          <h3>No results found</h3>
-          <p>You may have filters set that are hiding mitigations</p>
+          <h3>{gettext("No results found")}</h3>
+          <p>{gettext("You may have filters set that are hiding mitigations")}</p>
         </.blankslate>
       <% else %>
         <.blankslate class="color-bg-default">
@@ -39,11 +39,11 @@
               phx-click={JS.patch(~p"/workspaces/#{@workspace_id}/mitigations/new")}
               is_primary
             >
-              Get started
+              {gettext("Get started")}
             </.button>
           </:action>
-          <h3>Let's add some mitigations</h3>
-          <p>Start by clicking the button below and work from there...</p>
+          <h3>{gettext("Let's add some mitigations")}</h3>
+          <p>{gettext("Start by clicking the button below and work from there...")}</p>
         </.blankslate>
       <% end %>
     <% end %>

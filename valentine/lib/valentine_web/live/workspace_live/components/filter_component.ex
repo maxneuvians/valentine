@@ -15,7 +15,10 @@ defmodule ValentineWeb.WorkspaceLive.Components.FilterComponent do
     <div class={@class}>
       <.action_menu is_dropdown_caret id={"#{@id}-dropdown"}>
         <:toggle>
-          <.octicon name={"#{@icon}-16"} /><span>{Phoenix.Naming.humanize(@name)}</span>
+          <.octicon name={"#{@icon}-16"} />
+          <span>
+            {Gettext.gettext(ValentineWeb.Gettext, Phoenix.Naming.humanize(@name))}
+          </span>
           <%= if is_list(@filters[@name]) && length(@filters[@name]) > 0 do %>
             <.counter>
               {length(@filters[@name])}
@@ -24,7 +27,7 @@ defmodule ValentineWeb.WorkspaceLive.Components.FilterComponent do
         </:toggle>
         <.action_list is_multiple_select>
           <.action_list_item is_inline_description phx-click="clear_filter" phx-target={@myself}>
-            <:description><.octicon name="x-16" /> Clear all</:description>
+            <:description><.octicon name="x-16" />{gettext("Clear all")}</:description>
           </.action_list_item>
           <.action_list_section_divider />
           <%= for value <- @values do %>
@@ -37,7 +40,7 @@ defmodule ValentineWeb.WorkspaceLive.Components.FilterComponent do
               phx-target={@myself}
               phx-value-checked={value}
             >
-              {humanize(value)}
+              {Gettext.gettext(ValentineWeb.Gettext, humanize(value))}
             </.action_list_item>
           <% end %>
         </.action_list>

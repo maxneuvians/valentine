@@ -31,11 +31,13 @@ msgstr ""
 msgid "Hang in there while we get back on track"
 msgstr ""
 
+#: lib/valentine_web/live/workspace_live/mitigation/index.ex:51
 #: lib/valentine_web/live/workspace_live/mitigation/index.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Listing Mitigations"
 msgstr ""
 
+#: lib/valentine_web/live/workspace_live/mitigation/components/form_component.ex:30
 #: lib/valentine_web/live/workspace_live/mitigation/index.html.heex:5
 #, elixir-autogen, elixir-format
 msgid "New Mitigation"
@@ -143,6 +145,7 @@ msgstr ""
 
 #: lib/valentine_web/live/workspace_live/assumption/index.html.heex:26
 #: lib/valentine_web/live/workspace_live/index.html.heex:36
+#: lib/valentine_web/live/workspace_live/mitigation/index.html.heex:42
 #: lib/valentine_web/live/workspace_live/threat/index.html.heex:57
 #, elixir-autogen, elixir-format
 msgid "Get started"
@@ -160,6 +163,7 @@ msgstr ""
 
 #: lib/valentine_web/live/workspace_live/assumption/index.html.heex:30
 #: lib/valentine_web/live/workspace_live/index.html.heex:40
+#: lib/valentine_web/live/workspace_live/mitigation/index.html.heex:46
 #: lib/valentine_web/live/workspace_live/threat/index.html.heex:61
 #, elixir-autogen, elixir-format
 msgid "Start by clicking the button below and work from there..."
@@ -305,6 +309,8 @@ msgstr ""
 #: lib/valentine_web/live/workspace_live/data_flow/components/threat_statement_generator_component.ex:56
 #: lib/valentine_web/live/workspace_live/form_component.ex:51
 #: lib/valentine_web/live/workspace_live/import_component.ex:41
+#: lib/valentine_web/live/workspace_live/mitigation/components/control_categorizer.ex:56
+#: lib/valentine_web/live/workspace_live/mitigation/components/form_component.ex:59
 #, elixir-autogen, elixir-format
 msgid "Cancel"
 msgstr ""
@@ -316,6 +322,7 @@ msgstr ""
 
 #: lib/valentine_web/live/workspace_live/assumption/components/form_component.ex:56
 #: lib/valentine_web/live/workspace_live/form_component.ex:48
+#: lib/valentine_web/live/workspace_live/mitigation/components/form_component.ex:56
 #, elixir-autogen, elixir-format
 msgid "Saving..."
 msgstr ""
@@ -361,6 +368,7 @@ msgstr ""
 #: lib/valentine_web/live/workspace_live/data_flow/components/threat_statement_generator_component.ex:51
 #: lib/valentine_web/live/workspace_live/data_flow/index.html.heex:15
 #: lib/valentine_web/live/workspace_live/data_flow/index.html.heex:24
+#: lib/valentine_web/live/workspace_live/mitigation/components/control_categorizer.ex:51
 #: lib/valentine_web/live/workspace_live/threat/show.html.heex:11
 #, elixir-autogen, elixir-format
 msgid "Save"
@@ -476,11 +484,13 @@ msgid "Generate threat statement"
 msgstr ""
 
 #: lib/valentine_web/live/workspace_live/data_flow/components/threat_statement_generator_component.ex:429
+#: lib/valentine_web/live/workspace_live/mitigation/components/control_categorizer.ex:276
 #, elixir-autogen, elixir-format
 msgid " Current token usage: (In: %{in}, Out: %{out}, Cost: $%{cost})"
 msgstr ""
 
 #: lib/valentine_web/live/workspace_live/data_flow/components/threat_statement_generator_component.ex:419
+#: lib/valentine_web/live/workspace_live/mitigation/components/control_categorizer.ex:266
 #, elixir-autogen, elixir-format
 msgid "Mistakes are possible. Review output carefully before use."
 msgstr ""
@@ -569,6 +579,7 @@ msgid "Assumptions help you to make better decisions by identifying the things y
 msgstr ""
 
 #: lib/valentine_web/live/workspace_live/assumption/components/form_component.ex:39
+#: lib/valentine_web/live/workspace_live/mitigation/components/form_component.ex:39
 #, elixir-autogen, elixir-format
 msgid "Content"
 msgstr ""
@@ -588,6 +599,7 @@ msgstr ""
 msgid "Back"
 msgstr ""
 
+#: lib/valentine_web/live/workspace_live/mitigation/index.html.heex:29
 #: lib/valentine_web/live/workspace_live/threat/index.html.heex:47
 #, elixir-autogen, elixir-format
 msgid "Clear all filters"
@@ -618,6 +630,7 @@ msgstr ""
 msgid "Failed to delete threat"
 msgstr ""
 
+#: lib/valentine_web/live/workspace_live/mitigation/index.html.heex:12
 #: lib/valentine_web/live/workspace_live/threat/index.html.heex:12
 #, elixir-autogen, elixir-format
 msgid "Filters"
@@ -669,6 +682,7 @@ msgstr ""
 msgid "New Threat Statement"
 msgstr ""
 
+#: lib/valentine_web/live/workspace_live/mitigation/index.html.heex:31
 #: lib/valentine_web/live/workspace_live/threat/index.html.heex:49
 #, elixir-autogen, elixir-format
 msgid "No results found"
@@ -727,4 +741,85 @@ msgstr ""
 #: lib/valentine_web/live/workspace_live/threat/show.html.heex:249
 #, elixir-autogen, elixir-format
 msgid "Status"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/mitigation/components/form_component.ex:43
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Add new mitigation..."
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/mitigation/index.ex:30
+#, elixir-autogen, elixir-format
+msgid "Categorize Mitigation"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/mitigation/components/form_component.ex:28
+#: lib/valentine_web/live/workspace_live/mitigation/index.ex:36
+#, elixir-autogen, elixir-format
+msgid "Edit Mitigation"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/mitigation/index.ex:74
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Failed to delete mitigation"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/mitigation/index.html.heex:45
+#, elixir-autogen, elixir-format
+msgid "Let's add some mitigations"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/mitigation/components/form_component.ex:109
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Mitigation created successfully"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/mitigation/index.ex:67
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Mitigation deleted successfully"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/mitigation/index.ex:58
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Mitigation not found"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/mitigation/components/form_component.ex:94
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Mitigation updated successfully"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/mitigation/components/form_component.ex:47
+#, elixir-autogen, elixir-format
+msgid "Mitigations are actions taken to reduce the likelihood of a threat exploiting a vulnerability."
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/mitigation/components/form_component.ex:57
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Save Mitigation"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/mitigation/index.html.heex:32
+#, elixir-autogen, elixir-format, fuzzy
+msgid "You may have filters set that are hiding mitigations"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/mitigation/components/control_categorizer.ex:28
+#, elixir-autogen, elixir-format
+msgid "Categorize this mitigation based on NIST controls"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/mitigation/components/control_categorizer.ex:33
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Mitigation"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/mitigation/components/control_categorizer.ex:54
+#, elixir-autogen, elixir-format
+msgid "Try again"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/components/filter_component.ex:30
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Clear all"
 msgstr ""

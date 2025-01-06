@@ -27,13 +27,13 @@ defmodule ValentineWeb.WorkspaceLive.Mitigation.Index do
 
   defp apply_action(socket, :categorize, %{"id" => id}) do
     socket
-    |> assign(:page_title, "Categorize Mitigation")
+    |> assign(:page_title, gettext("Categorize Mitigation"))
     |> assign(:mitigation, Composer.get_mitigation!(id, [:threats]))
   end
 
   defp apply_action(socket, :edit, %{"id" => id}) do
     socket
-    |> assign(:page_title, "Edit Mitigation")
+    |> assign(:page_title, gettext("Edit Mitigation"))
     |> assign(:mitigation, Composer.get_mitigation!(id))
   end
 
@@ -48,14 +48,14 @@ defmodule ValentineWeb.WorkspaceLive.Mitigation.Index do
 
   defp apply_action(socket, :index, _params) do
     socket
-    |> assign(:page_title, "Listing Mitigations")
+    |> assign(:page_title, gettext("Listing Mitigations"))
   end
 
   @impl true
   def handle_event("delete", %{"id" => id}, socket) do
     case Composer.get_mitigation!(id) do
       nil ->
-        {:noreply, socket |> put_flash(:error, "Mitigation not found")}
+        {:noreply, socket |> put_flash(:error, gettext("Mitigation not found"))}
 
       mitigation ->
         case Composer.delete_mitigation(mitigation) do
@@ -64,14 +64,14 @@ defmodule ValentineWeb.WorkspaceLive.Mitigation.Index do
 
             {:noreply,
              socket
-             |> put_flash(:info, "Mitigation deleted successfully")
+             |> put_flash(:info, gettext("Mitigation deleted successfully"))
              |> assign(
                :mitigations,
                get_sorted_mitgations(workspace)
              )}
 
           {:error, _} ->
-            {:noreply, socket |> put_flash(:error, "Failed to delete mitigation")}
+            {:noreply, socket |> put_flash(:error, gettext("Failed to delete mitigation"))}
         end
     end
   end

@@ -25,12 +25,12 @@ defmodule ValentineWeb.WorkspaceLive.Mitigation.Components.ControlCategorizer do
       <form phx-value-id={@mitigation.id} phx-submit="save_tags" phx-target={@myself}>
         <.dialog id="categorization-modal" is_backdrop is_show is_wide on_cancel={JS.patch(@patch)}>
           <:header_title>
-            Categorize this mitigation based on NIST controls
+            {gettext("Categorize this mitigation based on NIST controls")}
           </:header_title>
           <:body>
             <.spinner :if={!@suggestion} />
             <div :if={@suggestion} class="mb-3">
-              <b>Mitigation</b>: {@mitigation.content}
+              <b>{gettext("Mitigation")}</b>: {@mitigation.content}
               <hr />
               <.checkbox
                 :for={%{"control" => control, "name" => name, "rational" => rational} <- @suggestion}
@@ -48,12 +48,12 @@ defmodule ValentineWeb.WorkspaceLive.Mitigation.Components.ControlCategorizer do
             <span class="f6">{get_caption(@usage)}</span>
             <hr />
             <.button :if={@suggestion} is_primary type="submit">
-              Save
+              {gettext("Save")}
             </.button>
             <.button :if={@suggestion} phx-click="generate_again" phx-target={@myself}>
-              Try again
+              {gettext("Try again")}
             </.button>
-            <.button phx-click={cancel_dialog("categorization-modal")}>Cancel</.button>
+            <.button phx-click={cancel_dialog("categorization-modal")}>{gettext("Cancel")}</.button>
           </:footer>
         </.dialog>
       </form>
@@ -263,7 +263,7 @@ defmodule ValentineWeb.WorkspaceLive.Mitigation.Components.ControlCategorizer do
   end
 
   defp get_caption(usage) do
-    base = "Mistakes are possible. Review output carefully before use."
+    base = gettext("Mistakes are possible. Review output carefully before use.")
 
     if usage do
       # In cost $0.150 / 1M input tokens
@@ -272,7 +272,12 @@ defmodule ValentineWeb.WorkspaceLive.Mitigation.Components.ControlCategorizer do
       # Cost rounded to cents
       cost = Float.round(usage.input * 0.00000015 + usage.output * 0.0000006, 2)
 
-      base <> " Current token usage: (In: #{usage.input}, Out: #{usage.output}, Cost: $#{cost})"
+      base <>
+        gettext(" Current token usage: (In: %{in}, Out: %{out}, Cost: $%{cost})",
+          in: usage.input,
+          out: usage.output,
+          cost: cost
+        )
     else
       base
     end

@@ -25,29 +25,38 @@ defmodule ValentineWeb.WorkspaceLive.Mitigation.Components.FormComponent do
         >
           <:header_title>
             <%= if @mitigation.id do %>
-              Edit Mitigation
+              {gettext("Edit Mitigation")}
             <% else %>
-              New Mitigation
+              {gettext("New Mitigation")}
             <% end %>
           </:header_title>
           <:body>
             <.textarea
               form={f}
               field={:content}
+              form_control={
+                %{
+                  label: gettext("Content")
+                }
+              }
               class="mt-2"
-              placeholder="Add new mitigation..."
+              placeholder={gettext("Add new mitigation...")}
               is_full_width
               rows="7"
-              caption="Mitigations are actions taken to reduce the likelihood of a threat exploiting a vulnerability."
+              caption={
+                gettext(
+                  "Mitigations are actions taken to reduce the likelihood of a threat exploiting a vulnerability."
+                )
+              }
               is_form_control
             />
             <input type="hidden" value={@mitigation.workspace_id} name="mitigation[workspace_id]" />
           </:body>
           <:footer>
-            <.button is_primary is_submit phx-disable-with="Saving...">
-              Save Mitigation
+            <.button is_primary is_submit phx-disable-with={gettext("Saving...")}>
+              {gettext("Save Mitigation")}
             </.button>
-            <.button phx-click={cancel_dialog("mitigation-modal")}>Cancel</.button>
+            <.button phx-click={cancel_dialog("mitigation-modal")}>{gettext("Cancel")}</.button>
           </:footer>
         </.dialog>
       </.form>
@@ -82,7 +91,7 @@ defmodule ValentineWeb.WorkspaceLive.Mitigation.Components.FormComponent do
 
         {:noreply,
          socket
-         |> put_flash(:info, "Mitigation updated successfully")
+         |> put_flash(:info, gettext("Mitigation updated successfully"))
          |> push_patch(to: socket.assigns.patch)}
 
       {:error, %Ecto.Changeset{} = changeset} ->
@@ -97,7 +106,7 @@ defmodule ValentineWeb.WorkspaceLive.Mitigation.Components.FormComponent do
 
         {:noreply,
          socket
-         |> put_flash(:info, "Mitigation created successfully")
+         |> put_flash(:info, gettext("Mitigation created successfully"))
          |> push_patch(to: socket.assigns.patch)}
 
       {:error, %Ecto.Changeset{} = changeset} ->
