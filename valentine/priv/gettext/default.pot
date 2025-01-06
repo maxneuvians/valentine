@@ -143,6 +143,7 @@ msgstr ""
 
 #: lib/valentine_web/live/workspace_live/assumption/index.html.heex:26
 #: lib/valentine_web/live/workspace_live/index.html.heex:36
+#: lib/valentine_web/live/workspace_live/threat/index.html.heex:57
 #, elixir-autogen, elixir-format
 msgid "Get started"
 msgstr ""
@@ -159,6 +160,7 @@ msgstr ""
 
 #: lib/valentine_web/live/workspace_live/assumption/index.html.heex:30
 #: lib/valentine_web/live/workspace_live/index.html.heex:40
+#: lib/valentine_web/live/workspace_live/threat/index.html.heex:61
 #, elixir-autogen, elixir-format
 msgid "Start by clicking the button below and work from there..."
 msgstr ""
@@ -359,6 +361,7 @@ msgstr ""
 #: lib/valentine_web/live/workspace_live/data_flow/components/threat_statement_generator_component.ex:51
 #: lib/valentine_web/live/workspace_live/data_flow/index.html.heex:15
 #: lib/valentine_web/live/workspace_live/data_flow/index.html.heex:24
+#: lib/valentine_web/live/workspace_live/threat/show.html.heex:11
 #, elixir-autogen, elixir-format
 msgid "Save"
 msgstr ""
@@ -573,4 +576,155 @@ msgstr ""
 #: lib/valentine_web/live/workspace_live/assumption/components/form_component.ex:57
 #, elixir-autogen, elixir-format
 msgid "Save Assumption"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/threat/show.html.heex:166
+#, elixir-autogen, elixir-format
+msgid "Add a comment..."
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/threat/show.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Back"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/threat/index.html.heex:47
+#, elixir-autogen, elixir-format
+msgid "Clear all filters"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/threat/show.html.heex:150
+#, elixir-autogen, elixir-format
+msgid "Comments"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/threat/show.ex:30
+#, elixir-autogen, elixir-format
+msgid "Create new threat statement"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/threat/show.html.heex:3
+#, elixir-autogen, elixir-format
+msgid "Edit Threat Statement"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/threat/show.ex:45
+#, elixir-autogen, elixir-format
+msgid "Edit threat statement"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/threat/index.ex:57
+#, elixir-autogen, elixir-format
+msgid "Failed to delete threat"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/threat/index.html.heex:12
+#, elixir-autogen, elixir-format
+msgid "Filters"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/threat/show.html.heex:301
+#, elixir-autogen, elixir-format
+msgid "Inputs for mitigation"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/threat/show.html.heex:325
+#, elixir-autogen, elixir-format
+msgid "Inputs for prioritization"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/threat/index.html.heex:60
+#, elixir-autogen, elixir-format
+msgid "Let's write a threat statement!"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/threat/show.html.heex:191
+#, elixir-autogen, elixir-format
+msgid "Linked Assumptions"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/threat/show.html.heex:221
+#, elixir-autogen, elixir-format
+msgid "Linked Mitigations"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/threat/index.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Listing Threats"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/threat/index.ex:26
+#, elixir-autogen, elixir-format
+msgid "Listing threats"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/threat/show.html.heex:171
+#, elixir-autogen, elixir-format
+msgid "Markdown is supported"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/threat/index.html.heex:5
+#: lib/valentine_web/live/workspace_live/threat/show.html.heex:5
+#, elixir-autogen, elixir-format
+msgid "New Threat Statement"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/threat/index.html.heex:49
+#, elixir-autogen, elixir-format
+msgid "No results found"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/threat/show.html.heex:156
+#, elixir-autogen, elixir-format
+msgid "Preview"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/threat/show.html.heex:20
+#, elixir-autogen, elixir-format
+msgid "Start by clicking ANY field you like and work from there..."
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/threat/show.ex:175
+#, elixir-autogen, elixir-format
+msgid "Threat created successfully"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/threat/index.ex:47
+#, elixir-autogen, elixir-format
+msgid "Threat deleted successfully"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/threat/index.ex:34
+#, elixir-autogen, elixir-format
+msgid "Threat not found"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/threat/show.ex:160
+#, elixir-autogen, elixir-format
+msgid "Threat updated successfully"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/threat/show.html.heex:155
+#, elixir-autogen, elixir-format
+msgid "Write"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/threat/index.html.heex:50
+#, elixir-autogen, elixir-format
+msgid "You may have filters set that are hiding threats"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/threat/show.html.heex:263
+#, elixir-autogen, elixir-format
+msgid "Priority"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/threat/show.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "Statement"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/threat/show.html.heex:249
+#, elixir-autogen, elixir-format
+msgid "Status"
 msgstr ""

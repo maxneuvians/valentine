@@ -27,7 +27,7 @@ defmodule ValentineWeb.WorkspaceLive.Threat.Show do
 
   defp apply_action(socket, :new, _params) do
     socket
-    |> assign(:page_title, "Create new threat statement")
+    |> assign(:page_title, gettext("Create new threat statement"))
     |> assign(:threat, %Threat{})
     |> assign(:changes, %{workspace_id: socket.assigns.workspace_id})
   end
@@ -42,7 +42,7 @@ defmodule ValentineWeb.WorkspaceLive.Threat.Show do
     socket
     |> assign(:assumptions, workspace.assumptions)
     |> assign(:mitigations, workspace.mitigations)
-    |> assign(:page_title, "Edit threat statement")
+    |> assign(:page_title, gettext("Edit threat statement"))
     |> assign(:threat, threat)
     |> assign(:changes, Map.from_struct(threat))
   end
@@ -157,7 +157,7 @@ defmodule ValentineWeb.WorkspaceLive.Threat.Show do
 
         {:noreply,
          socket
-         |> put_flash(:info, "Threat updated successfully")
+         |> put_flash(:info, gettext("Threat updated successfully"))
          |> push_navigate(to: ~p"/workspaces/#{threat.workspace_id}/threats/#{threat.id}")}
 
       {:error, %Ecto.Changeset{} = changeset} ->
@@ -172,7 +172,7 @@ defmodule ValentineWeb.WorkspaceLive.Threat.Show do
 
         {:noreply,
          socket
-         |> put_flash(:info, "Threat created successfully")
+         |> put_flash(:info, gettext("Threat created successfully"))
          |> push_navigate(to: ~p"/workspaces/#{threat.workspace_id}/threats/#{threat.id}")}
 
       {:error, %Ecto.Changeset{} = changeset} ->

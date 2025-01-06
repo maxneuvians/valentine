@@ -1,23 +1,23 @@
 <.subhead>
   <%= if @threat.id do %>
-    Edit Threat Statement
+    {gettext("Edit Threat Statement")}
   <% else %>
-    New Threat Statement
+    {gettext("New Threat Statement")}
   <% end %>
   <:actions>
     <.link navigate={~p"/workspaces/#{@workspace_id}/threats"}>
-      <.button>Back</.button>
+      <.button>{gettext("Back")}</.button>
     </.link>
-    <.button phx-click="save" is_primary>Save</.button>
+    <.button phx-click="save" is_primary>{gettext("Save")}</.button>
   </:actions>
 </.subhead>
 
 <div class="clearfix">
   <div class="float-left col-8">
     <.box class="p-4">
-      <h3>Statement</h3>
+      <h3>{gettext("Statement")}</h3>
       <p class="my-4">
-        Start by clicking ANY field you like and work from there...
+        {gettext("Start by clicking ANY field you like and work from there...")}
       </p>
 
       <div class="clearfix">
@@ -147,13 +147,13 @@
     <% end %>
 
     <.box class="p-4 mt-2">
-      <h3>Comments</h3>
+      <h3>{gettext("Comments")}</h3>
       <.live_component
         module={ValentineWeb.WorkspaceLive.Components.TabNavComponent}
         id={"tabs-component-threat-#{@threat.id}"}
         tabs={[
-          %{label: "Write", id: "tab1"},
-          %{label: "Preview", id: "tab2"}
+          %{label: gettext("Write"), id: "tab1"},
+          %{label: gettext("Preview"), id: "tab2"}
         ]}
       >
         <:tab_content :let={tab}>
@@ -163,12 +163,12 @@
                 <.textarea
                   name="comments"
                   class="mt-2"
-                  placeholder="Add a comment..."
+                  placeholder={gettext("Add a comment...")}
                   input_id="comments"
                   is_full_width
                   rows="7"
                   value={@changes[:comments]}
-                  caption="Markdown is supported"
+                  caption={gettext("Markdown is supported")}
                 />
               </form>
             <% "tab2" -> %>
@@ -188,7 +188,7 @@
       :if={@threat.id}
       module={ValentineWeb.WorkspaceLive.Components.DrawerComponent}
       id="assumption-dropdown"
-      title="Linked Assumptions"
+      title={gettext("Linked Assumptions")}
       count={@threat.assumptions |> Enum.count()}
     >
       <:content>
@@ -218,7 +218,7 @@
       :if={@threat.id}
       module={ValentineWeb.WorkspaceLive.Components.DrawerComponent}
       id="mitigation-dropdown"
-      title="Linked Mitigations"
+      title={gettext("Linked Mitigations")}
       count={@threat.mitigations |> Enum.count()}
     >
       <:content>
@@ -246,7 +246,7 @@
   </div>
   <div class="float-left col-3 pl-4">
     <.action_list_section_divider>
-      <:title><.octicon name="stack-16" />Status</:title>
+      <:title><.octicon name="stack-16" />{gettext("Status")}</:title>
     </.action_list_section_divider>
     <form phx-change="update_field">
       <.select
@@ -260,7 +260,7 @@
     </form>
     <.action_list_section_divider />
     <.action_list_section_divider>
-      <:title><.octicon name="list-ordered-16" />Priority</:title>
+      <:title><.octicon name="list-ordered-16" />{gettext("Priority")}</:title>
     </.action_list_section_divider>
     <form phx-change="update_field">
       <.select
@@ -298,7 +298,7 @@
     </form>
     <.action_list_section_divider />
     <.action_list_section_divider>
-      <:title>Inputs for mitigation</:title>
+      <:title>{gettext("Inputs for mitigation")}</:title>
     </.action_list_section_divider>
     <ul style="list-style:none">
       <li
@@ -322,7 +322,7 @@
     </ul>
     <.action_list_section_divider />
     <.action_list_section_divider>
-      <:title>Inputs for prioritization</:title>
+      <:title>{gettext("Inputs for prioritization")}</:title>
     </.action_list_section_divider>
     <ul style="list-style:none">
       <li

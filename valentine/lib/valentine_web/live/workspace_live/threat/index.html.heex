@@ -1,15 +1,15 @@
 <.subhead>
-  Listing Threats
+  {gettext("Listing Threats")}
   <:actions>
     <.link navigate={~p"/workspaces/#{@workspace_id}/threats/new"}>
-      <.button is_primary>New Threat Statement</.button>
+      <.button is_primary>{gettext("New Threat Statement")}</.button>
     </.link>
   </:actions>
 </.subhead>
 
 <.box id="threat-list">
   <:header class="d-flex flex-items-center">
-    Filters:
+    {gettext("Filters")}:
     <.live_component
       module={ValentineWeb.WorkspaceLive.Components.FilterComponent}
       id="status-filter"
@@ -44,21 +44,21 @@
         <.blankslate class="color-bg-default">
           <:octicon name="question-24" />
           <:action>
-            <.button phx-click="clear_filters">Clear all filters</.button>
+            <.button phx-click="clear_filters">{gettext("Clear all filters")}</.button>
           </:action>
-          <h3>No results found</h3>
-          <p>You may have filters set that are hiding threats</p>
+          <h3>{gettext("No results found")}</h3>
+          <p>{gettext("You may have filters set that are hiding threats")}</p>
         </.blankslate>
       <% else %>
         <.blankslate class="color-bg-default">
           <:octicon name="squirrel-24" />
           <:action>
             <.link navigate={~p"/workspaces/#{@workspace_id}/threats/new"}>
-              <.button is_primary>Get started</.button>
+              <.button is_primary>{gettext("Get started")}</.button>
             </.link>
           </:action>
-          <h3>Let's write a threat statement!</h3>
-          <p>Start by clicking the button below and work from there...</p>
+          <h3>{gettext("Let's write a threat statement!")}</h3>
+          <p>{gettext("Start by clicking the button below and work from there...")}</p>
         </.blankslate>
       <% end %>
     <% end %>

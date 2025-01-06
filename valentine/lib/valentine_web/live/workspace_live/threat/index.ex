@@ -23,7 +23,7 @@ defmodule ValentineWeb.WorkspaceLive.Threat.Index do
 
   defp apply_action(socket, :index, %{"workspace_id" => workspace_id} = _params) do
     socket
-    |> assign(:page_title, "Listing threats")
+    |> assign(:page_title, gettext("Listing threats"))
     |> assign(:workspace_id, workspace_id)
   end
 
@@ -31,7 +31,7 @@ defmodule ValentineWeb.WorkspaceLive.Threat.Index do
   def handle_event("delete", %{"id" => id}, socket) do
     case Composer.get_threat!(id) do
       nil ->
-        {:noreply, socket |> put_flash(:error, "Threat not found")}
+        {:noreply, socket |> put_flash(:error, gettext("Threat not found"))}
 
       threat ->
         case Composer.delete_threat(threat) do
@@ -44,7 +44,7 @@ defmodule ValentineWeb.WorkspaceLive.Threat.Index do
 
             {:noreply,
              socket
-             |> put_flash(:info, "Threat deleted successfully")
+             |> put_flash(:info, gettext("Threat deleted successfully"))
              |> assign(
                :threats,
                Composer.list_threats_by_workspace(
@@ -54,7 +54,7 @@ defmodule ValentineWeb.WorkspaceLive.Threat.Index do
              )}
 
           {:error, _} ->
-            {:noreply, socket |> put_flash(:error, "Failed to delete threat")}
+            {:noreply, socket |> put_flash(:error, gettext("Failed to delete threat"))}
         end
     end
   end
