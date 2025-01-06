@@ -449,3 +449,8 @@ table.summary td {
 table.summary td.inset {
     padding-left: 40px;
 }
+
+/* Quill.js dark mode */
+[data-color-mode="dark"] .ql-snow .ql-editor code {
+    background-color: rgba(255, 255, 255, 0.04);
+}

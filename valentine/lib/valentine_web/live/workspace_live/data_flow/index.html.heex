@@ -7,6 +7,7 @@
   phx-hook="Cytoscape"
   data-nodes={Jason.encode!(Map.values(@dfd.nodes))}
   data-edges={Jason.encode!(Map.values(@dfd.edges))}
+  data-selectedtheme={@theme}
   user={"user-#{System.unique_integer([:positive])}"}
 >
   <div class="d-flex mb-2">

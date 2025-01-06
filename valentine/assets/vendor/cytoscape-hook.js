@@ -1,5 +1,275 @@
+
+
 import cytoscape from 'cytoscape';
 import edgehandles from 'cytoscape-edgehandles';
+
+// Themes for Cytoscape.js
+let themes = {};
+themes["dark"] = [
+    {
+        selector: 'node[type="actor"]',
+        style: {
+            'background-color': '#2d333b',
+            'border-color': '#adbac7',
+            'border-width': 2,
+            'label': 'data(label)',
+            'color': '#adbac7',
+            'text-valign': 'bottom',
+            'text-halign': 'center',
+            'width': 120,
+            'height': 50,
+            'shape': 'rectangle',
+            'font-size': '18px',
+            'text-wrap': 'wrap',
+            'text-max-width': 80,
+            'text-margin-y': 10
+        }
+    },
+    {
+        selector: 'node[type="process"]',
+        style: {
+            'background-color': '#2d333b',
+            'border-color': '#adbac7',
+            'border-width': 2,
+            'label': 'data(label)',
+            'color': '#adbac7',
+            'text-valign': 'bottom',
+            'text-halign': 'center',
+            'width': 100,
+            'height': 100,
+            'shape': 'ellipse',
+            'font-size': '18px',
+            'text-wrap': 'wrap',
+            'text-max-width': 80,
+            'text-margin-y': 10
+        }
+    },
+    {
+        selector: 'node[type="datastore"]',
+        style: {
+            'background-color': '#2d333b',
+            'border-color': '#adbac7',
+            'border-width': 2,
+            'label': 'data(label)',
+            'color': '#adbac7',
+            'text-valign': 'bottom',
+            'text-halign': 'center',
+            'width': 120,
+            'height': 50,
+            'shape': 'round-octagon',
+            'font-size': '18px',
+            'text-wrap': 'wrap',
+            'text-max-width': 80,
+            'text-margin-y': 10
+        }
+    },
+    {
+        selector: 'node:selected',
+        style: {
+            'background-color': '#1c2128',
+            'border-width': 3,
+            'border-color': '#539bf5'
+        }
+    },
+    {
+        selector: 'edge',
+        style: {
+            'width': 2,
+            'line-color': '#768390',
+            'target-arrow-color': '#768390',
+            'target-arrow-shape': 'triangle',
+            'curve-style': 'bezier',
+            'label': 'data(label)',
+            'font-size': '10px',
+            'text-rotation': 'autorotate',
+            'text-background-color': '#22272e',
+            'text-background-opacity': 1,
+            'text-background-padding': 3,
+            'color': '#adbac7'
+        }
+    },
+    {
+        selector: 'edge:selected',
+        style: {
+            'line-color': '#57ab5a',
+            'target-arrow-color': '#57ab5a',
+            'width': 3
+        }
+    },
+    {
+        selector: '.eh-handle',
+        style: {
+            'background-color': '#57ab5a',
+            'width': 12,
+            'height': 12,
+            'shape': 'ellipse',
+            'overlay-opacity': 0
+        }
+    },
+    {
+        selector: '.eh-hover',
+        style: {
+            'background-color': '#46954a'
+        }
+    },
+    {
+        selector: '.eh-preview, .eh-ghost-edge',
+        style: {
+            'line-color': '#57ab5a',
+            'target-arrow-color': '#57ab5a',
+            'target-arrow-shape': 'triangle'
+        }
+    },
+    {
+        selector: ':parent',
+        css: {
+            'text-valign': 'top',
+            'text-halign': 'center',
+            'shape': 'round-rectangle',
+            'corner-radius': "10",
+            'padding': 75,
+            'border-color': '#cf222e',
+            'border-width': 2,
+            "border-style": "dashed",
+            'label': 'data(label)',
+            'text-margin-y': -10,
+            'background-color': '#1c2128',
+            'color': '#adbac7'
+        }
+    }
+];
+
+// Light theme style configuration for Cytoscape.js
+themes["light"] = [
+    {
+        selector: 'node[type="actor"]',
+        style: {
+            'background-color': '#fff',
+            'border-color': '#000',
+            'border-width': 2,
+            'label': 'data(label)',
+            'color': '#000',
+            'text-valign': 'bottom',
+            'text-halign': 'center',
+            'width': 120,
+            'height': 50,
+            'shape': 'rectangle',
+            'font-size': '18px',
+            'text-wrap': 'wrap',
+            'text-max-width': 80,
+            'text-margin-y': 10
+        }
+    },
+    {
+        selector: 'node[type="process"]',
+        style: {
+            'background-color': '#fff',
+            'border-color': '#000',
+            'border-width': 2,
+            'label': 'data(label)',
+            'color': '#000',
+            'text-valign': 'bottom',
+            'text-halign': 'center',
+            'width': 100,
+            'height': 100,
+            'shape': 'ellipse',
+            'font-size': '18px',
+            'text-wrap': 'wrap',
+            'text-max-width': 80,
+            'text-margin-y': 10
+        }
+    },
+    {
+        selector: 'node[type="datastore"]',
+        style: {
+            'background-color': '#fff',
+            'border-color': '#000',
+            'border-width': 2,
+            'label': 'data(label)',
+            'color': '#000',
+            'text-valign': 'bottom',
+            'text-halign': 'center',
+            'width': 120,
+            'height': 50,
+            'shape': 'round-octagon',
+            'font-size': '18px',
+            'text-wrap': 'wrap',
+            'text-max-width': 80,
+            'text-margin-y': 10
+        }
+    },
+    {
+        selector: 'node:selected',
+        style: {
+            'background-color': 'rgb(219, 241, 254)',
+            'border-width': 3,
+            'border-color': 'rgb(86, 189, 249)'
+        }
+    },
+    {
+        selector: 'edge',
+        style: {
+            'width': 2,
+            'line-color': '#57606a',
+            'target-arrow-color': '#57606a',
+            'target-arrow-shape': 'triangle',
+            'curve-style': 'bezier',
+            'label': 'data(label)',
+            'font-size': '10px',
+            'text-rotation': 'autorotate',
+            'text-background-color': '#ffffff',
+            'text-background-opacity': 1,
+            'text-background-padding': 3
+        }
+    },
+    {
+        selector: 'edge:selected',
+        style: {
+            'line-color': '#3fb950',
+            'target-arrow-color': '#3fb950',
+            'width': 3
+        }
+    },
+    {
+        selector: '.eh-handle',
+        style: {
+            'background-color': '#3fb950',
+            'width': 12,
+            'height': 12,
+            'shape': 'ellipse',
+            'overlay-opacity': 0
+        }
+    },
+    {
+        selector: '.eh-hover',
+        style: {
+            'background-color': '#1a7f37'
+        }
+    },
+    {
+        selector: '.eh-preview, .eh-ghost-edge',
+        style: {
+            'line-color': '#3fb950',
+            'target-arrow-color': '#3fb950',
+            'target-arrow-shape': 'triangle'
+        }
+    },
+    {
+        selector: ':parent',
+        css: {
+            'text-valign': 'top',
+            'text-halign': 'center',
+            'shape': 'round-rectangle',
+            'corner-radius': "10",
+            'padding': 75,
+            'border-color': '#EE4B2B',
+            'border-width': 2,
+            "border-style": "dashed",
+            'label': 'data(label)',
+            'text-margin-y': -10
+        }
+    },
+]
 
 const CytoscapeHook = {
     mounted() {
@@ -10,6 +280,7 @@ const CytoscapeHook = {
 
     updated() {
         console.log("Cytoscape Hook updated");
+        this.cy.style().fromJson(themes[this.el.dataset.selectedtheme || "light"]).update();
     },
 
     destroyed() {
@@ -22,142 +293,14 @@ const CytoscapeHook = {
     initializeCytoscape() {
         const nodes = JSON.parse(this.el.dataset.nodes || "[]");
         const edges = JSON.parse(this.el.dataset.edges || "[]");
+        const theme = this.el.dataset.selectedtheme || "light";
 
         this.user = this.el.dataset.user || "user-" + Math.floor(Math.random() * 1000);
 
         this.cy = cytoscape({
             container: document.getElementById("cy"),
             elements: [...nodes, ...edges],
-            style: [
-                {
-                    selector: 'node[type="actor"]',
-                    style: {
-                        'background-color': '#fff',
-                        'border-color': '#000',
-                        'border-width': 2,
-                        'label': 'data(label)',
-                        'color': '#000',
-                        'text-valign': 'bottom',
-                        'text-halign': 'center',
-                        'width': 120,
-                        'height': 50,
-                        'shape': 'rectangle',
-                        'font-size': '18px',
-                        'text-wrap': 'wrap',
-                        'text-max-width': 80,
-                        'text-margin-y': 10
-                    }
-                },
-                {
-                    selector: 'node[type="process"]',
-                    style: {
-                        'background-color': '#fff',
-                        'border-color': '#000',
-                        'border-width': 2,
-                        'label': 'data(label)',
-                        'color': '#000',
-                        'text-valign': 'bottom',
-                        'text-halign': 'center',
-                        'width': 100,
-                        'height': 100,
-                        'shape': 'ellipse',
-                        'font-size': '18px',
-                        'text-wrap': 'wrap',
-                        'text-max-width': 80,
-                        'text-margin-y': 10
-                    }
-                },
-                {
-                    selector: 'node[type="datastore"]',
-                    style: {
-                        'background-color': '#fff',
-                        'border-color': '#000',
-                        'border-width': 2,
-                        'label': 'data(label)',
-                        'color': '#000',
-                        'text-valign': 'bottom',
-                        'text-halign': 'center',
-                        'width': 120,
-                        'height': 50,
-                        'shape': 'round-octagon',
-                        'font-size': '18px',
-                        'text-wrap': 'wrap',
-                        'text-max-width': 80,
-                        'text-margin-y': 10
-                    }
-                },
-                {
-                    selector: 'node:selected',
-                    style: {
-                        'background-color': 'rgb(219, 241, 254)',
-                        'border-width': 3,
-                        'border-color': 'rgb(86, 189, 249)'
-                    }
-                },
-                {
-                    selector: 'edge',
-                    style: {
-                        'width': 2,
-                        'line-color': '#57606a',
-                        'target-arrow-color': '#57606a',
-                        'target-arrow-shape': 'triangle',
-                        'curve-style': 'bezier',
-                        'label': 'data(label)',
-                        'font-size': '10px',
-                        'text-rotation': 'autorotate',
-                        'text-background-color': '#ffffff',
-                        'text-background-opacity': 1,
-                        'text-background-padding': 3
-                    }
-                },
-                {
-                    selector: 'edge:selected',
-                    style: {
-                        'line-color': '#3fb950',
-                        'target-arrow-color': '#3fb950',
-                        'width': 3
-                    }
-                },
-                {
-                    selector: '.eh-handle',
-                    style: {
-                        'background-color': '#3fb950',
-                        'width': 12,
-                        'height': 12,
-                        'shape': 'ellipse',
-                        'overlay-opacity': 0
-                    }
-                },
-                {
-                    selector: '.eh-hover',
-                    style: {
-                        'background-color': '#1a7f37'
-                    }
-                },
-                {
-                    selector: '.eh-preview, .eh-ghost-edge',
-                    style: {
-                        'line-color': '#3fb950',
-                        'target-arrow-color': '#3fb950',
-                        'target-arrow-shape': 'triangle'
-                    }
-                },
-                {
-                    selector: ':parent',
-                    css: {
-                        'text-valign': 'top',
-                        'text-halign': 'center',
-                        'shape': 'round-rectangle',
-                        'corner-radius': "10",
-                        'padding': 75,
-                        'border-color': '#EE4B2B',
-                        'border-width': 2,
-                        "border-style": "dashed",
-                        'label': 'data(label)',
-                        'text-margin-y': -10
-                    }
-                },
-            ],
+            style: themes[theme],
             layout: {
                 name: 'preset',
                 fit: false
