@@ -13,6 +13,7 @@ defmodule ValentineWeb.WorkspaceLive.DataFlow.IndexTest do
         flash: %{},
         selected_elements: %{"nodes" => %{}, "edges" => %{}},
         show_threat_statement_generator: false,
+        show_threat_statement_linker: false,
         touched: false,
         workspace_id: dfd.workspace_id
       }
@@ -149,6 +150,19 @@ defmodule ValentineWeb.WorkspaceLive.DataFlow.IndexTest do
         )
 
       assert socket.assigns.show_threat_statement_generator == true
+    end
+
+    test "handles toggling the threat statement linker", %{
+      socket: socket
+    } do
+      {:noreply, socket} =
+        ValentineWeb.WorkspaceLive.DataFlow.Index.handle_event(
+          "toggle_link_threat_statement",
+          %{},
+          socket
+        )
+
+      assert socket.assigns.show_threat_statement_linker == true
     end
 
     test "handles generic events and applys them to the DFD and pushes the event to the client",

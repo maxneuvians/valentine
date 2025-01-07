@@ -170,3 +170,16 @@
     Map.merge(@selected_elements["nodes"], @selected_elements["edges"]) |> Map.keys() |> hd()
   }
 />
+
+<.live_component
+  :if={
+    Kernel.map_size(Map.merge(@selected_elements["nodes"], @selected_elements["edges"])) == 1 &&
+      @show_threat_statement_linker
+  }
+  module={ValentineWeb.WorkspaceLive.DataFlow.Components.ThreatStatementLinkerComponent}
+  id={:threat_statement_linker_component}
+  workspace_id={@workspace_id}
+  element_id={
+    Map.merge(@selected_elements["nodes"], @selected_elements["edges"]) |> Map.keys() |> hd()
+  }
+/>

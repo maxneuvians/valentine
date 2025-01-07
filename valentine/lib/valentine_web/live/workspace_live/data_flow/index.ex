@@ -26,6 +26,7 @@ defmodule ValentineWeb.WorkspaceLive.DataFlow.Index do
      |> assign(:saved, true)
      |> assign(:selected_elements, %{"nodes" => %{}, "edges" => %{}})
      |> assign(:show_threat_statement_generator, false)
+     |> assign(:show_threat_statement_linker, false)
      |> assign(:touched, true)
      |> assign(:workspace_id, workspace_id)}
   end
@@ -93,6 +94,17 @@ defmodule ValentineWeb.WorkspaceLive.DataFlow.Index do
     {:noreply,
      socket
      |> assign(:show_threat_statement_generator, !socket.assigns.show_threat_statement_generator)}
+  end
+
+  # Handle link threat statement event
+  @impl true
+  def handle_event("toggle_link_threat_statement", _, socket) do
+    # Save the DFD
+    DataFlowDiagram.save(socket.assigns.workspace_id)
+
+    {:noreply,
+     socket
+     |> assign(:show_threat_statement_linker, !socket.assigns.show_threat_statement_linker)}
   end
 
   # Local event from HTML or JS

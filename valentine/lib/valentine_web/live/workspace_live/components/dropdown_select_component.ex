@@ -12,6 +12,7 @@ defmodule ValentineWeb.WorkspaceLive.Components.DropdownSelectComponent do
           phx-keyup="search"
           phx-target={@myself}
           phx-click="toggle_dropdown"
+          autocomplete="off"
         >
           <:leading_visual>
             <.octicon name="search-16" />
@@ -44,7 +45,8 @@ defmodule ValentineWeb.WorkspaceLive.Components.DropdownSelectComponent do
        search_text: "",
        items: [],
        filtered_items: [],
-       show_dropdown: false
+       show_dropdown: false,
+       target: nil
      )}
   end
 
@@ -75,7 +77,11 @@ defmodule ValentineWeb.WorkspaceLive.Components.DropdownSelectComponent do
   def handle_event("select_item", %{"id" => id}, socket) do
     selected_item = Enum.find(socket.assigns.items, &(&1.id == id))
 
-    send(self(), {socket.assigns.name, :selected_item, selected_item})
+    if socket.assigns.target do
+      send_update(socket.assigns.target, %{selected_item: selected_item})
+    else
+      send(self(), {socket.assigns.name, :selected_item, selected_item})
+    end
 
     {:noreply,
      socket

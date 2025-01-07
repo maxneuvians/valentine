@@ -12,6 +12,7 @@ defmodule ValentineWeb.WorkspaceLive.Components.DropdownSelectComponentTest do
       items: [],
       filtered_items: [],
       show_dropdown: false,
+      target: nil,
       id: "dropdown-component"
     }
 
@@ -47,6 +48,7 @@ defmodule ValentineWeb.WorkspaceLive.Components.DropdownSelectComponentTest do
       assert socket.assigns.items == []
       assert socket.assigns.filtered_items == []
       assert socket.assigns.show_dropdown == false
+      assert socket.assigns.target == nil
     end
   end
 
@@ -101,7 +103,28 @@ defmodule ValentineWeb.WorkspaceLive.Components.DropdownSelectComponentTest do
             %{id: 3, name: "Two"},
             %{id: 4, name: "Three"}
           ],
-          name: "name"
+          name: "name",
+          target: nil
+        }
+      }
+
+      {:noreply, socket} =
+        DropdownSelectComponent.handle_event("select_item", %{"id" => 3}, socket)
+
+      assert socket.assigns.show_dropdown == false
+    end
+
+    test "selects the item when a target is defined" do
+      socket = %Phoenix.LiveView.Socket{
+        assigns: %{
+          __changed__: %{},
+          items: [
+            %{id: 1, name: "One"},
+            %{id: 3, name: "Two"},
+            %{id: 4, name: "Three"}
+          ],
+          name: "name",
+          target: %Phoenix.LiveComponent.CID{}
         }
       }
 

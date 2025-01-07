@@ -185,12 +185,19 @@ defmodule ValentineWeb.WorkspaceLive.Components.DataFlowMetadataComponent do
                 <label>Associated threat statements</label>
                 <div class="float-right">
                   <.button
+                    is_small
+                    phx-click="toggle_link_threat_statement"
+                    phx-value-id={@element["data"]["id"]}
+                  >
+                    <.octicon name="squirrel-16" />
+                  </.button>
+                  <.button
                     is_primary
                     is_small
                     phx-click="toggle_generate_threat_statement"
                     phx-value-id={@element["data"]["id"]}
                   >
-                    <.octicon name="dependabot-16" /> Generate threat statement
+                    <.octicon name="dependabot-16" />
                   </.button>
                 </div>
               </:header>
