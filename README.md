@@ -18,6 +18,8 @@ This project is still missing feature and has bugs. Please review the [issues](h
 
 5. Use of shareable reference packs to help establish common assumptions, threats, and mitigation across teams in an organization.
 
+If you prefer images over text you can look at the [gallery](screenshots/GALLERY.md).
+
 ## Rationale
 
 Valentine offers an alternative to the compliance-driven security approach commonly practiced in large organizations. In teams following agile development practices, compliance-driven security often creates a bottleneck: controls must either be determined before development begins or after it concludes. This paradigm positions security as an obstacle to development rather than a collaborative partner in the process.
