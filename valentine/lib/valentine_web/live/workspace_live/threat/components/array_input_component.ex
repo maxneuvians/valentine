@@ -24,7 +24,7 @@ defmodule ValentineWeb.WorkspaceLive.Threat.Components.ArrayInputComponent do
           value={@value}
         >
           <:group_button>
-            <.button phx-click="add_tag" phx-target={@myself}>Add</.button>
+            <.button phx-click="add_tag" phx-target={@myself}>{gettext("Add")}</.button>
           </:group_button>
         </.text_input>
         <div class="mt-2">

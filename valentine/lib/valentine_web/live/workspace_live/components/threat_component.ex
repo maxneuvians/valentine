@@ -73,13 +73,13 @@ defmodule ValentineWeb.WorkspaceLive.Components.ThreatComponent do
           {Valentine.Composer.Threat.show_statement(@threat)}
         </.styled_html>
         <details class="mt-4" {if @summary_state, do: %{open: true}, else: %{}}>
-          <summary phx-click="toggle_summary_state" phx-target={@myself}>Comments</summary>
+          <summary phx-click="toggle_summary_state" phx-target={@myself}>{gettext("Comments")}</summary>
           <.live_component
             module={ValentineWeb.WorkspaceLive.Components.TabNavComponent}
             id={"tabs-component-threat-#{@threat.id}"}
             tabs={[
-              %{label: "Write", id: "tab1"},
-              %{label: "Preview", id: "tab2"}
+              %{label: gettext("Write"), id: "tab1"},
+              %{label: gettext("Preview"), id: "tab2"}
             ]}
           >
             <:tab_content :let={tab}>
@@ -94,19 +94,19 @@ defmodule ValentineWeb.WorkspaceLive.Components.ThreatComponent do
                     <.textarea
                       name="comments"
                       class="mt-2"
-                      placeholder="Add a comment..."
+                      placeholder={gettext("Add a comment...")}
                       input_id={"comments-for-#{@threat.id}"}
                       is_full_width
                       rows="7"
                       value={@threat.comments}
-                      caption="Markdown is supported"
+                      caption={gettext("Markdown is supported")}
                     />
                   <% "tab2" -> %>
                     <ValentineWeb.WorkspaceLive.Components.MarkdownComponent.render text={
                       @threat.comments
                     } />
                 <% end %>
-                <.button is_primary class="mt-2" type="submit">Save</.button>
+                <.button is_primary class="mt-2" type="submit">{gettext("Save")}</.button>
               </form>
             </:tab_content>
           </.live_component>
@@ -117,13 +117,13 @@ defmodule ValentineWeb.WorkspaceLive.Components.ThreatComponent do
             <.text_input
               id={"#{@threat.id}-tag-field"}
               name={"#{@threat.id}-tag"}
-              placeholder="Add a tag"
+              placeholder={gettext("Add a tag")}
               phx-keyup="set_tag"
               phx-target={@myself}
               value={@tag}
             >
               <:group_button>
-                <.button phx-click="add_tag" phx-target={@myself}>Add</.button>
+                <.button phx-click="add_tag" phx-target={@myself}>{gettext("Add")}</.button>
               </:group_button>
             </.text_input>
           </div>
