@@ -77,11 +77,9 @@ defmodule ValentineWeb.WorkspaceLive.Components.AssumptionComponent do
                     caption="Markdown is supported"
                   />
                 <% "tab2" -> %>
-                  <.live_component
-                    module={ValentineWeb.WorkspaceLive.Components.MarkdownComponent}
-                    id={"markdown-component-assumption-#{@assumption.id}"}
-                    text={@assumption.comments}
-                  />
+                  <ValentineWeb.WorkspaceLive.Components.MarkdownComponent.render text={
+                    @assumption.comments
+                  } />
               <% end %>
               <.button is_primary class="mt-2" type="submit">Save</.button>
             </form>

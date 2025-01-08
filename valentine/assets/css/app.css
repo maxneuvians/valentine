@@ -461,7 +461,7 @@ table.summary td.inset {
     text-align: left;
 }
 
-.tabnav-container .markdown ol {
-    list-style-type: decimal;
+.tabnav-container .markdown ol,
+ul {
     padding-left: 1.5rem;
 }

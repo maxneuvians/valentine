@@ -173,11 +173,9 @@
               </form>
             <% "tab2" -> %>
               <div class="markdown-body">
-                <.live_component
-                  module={ValentineWeb.WorkspaceLive.Components.MarkdownComponent}
-                  id="markdown-component"
-                  text={@changes[:comments]}
-                />
+                <ValentineWeb.WorkspaceLive.Components.MarkdownComponent.render text={
+                  @changes[:comments]
+                } />
               </div>
           <% end %>
         </:tab_content>

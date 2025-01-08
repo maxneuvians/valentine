@@ -138,11 +138,9 @@
                       </summary>
                       <%= if item.comments do %>
                         <div class="mt-1 pl-4">
-                          <.live_component
-                            module={ValentineWeb.WorkspaceLive.Components.MarkdownComponent}
-                            id={"markdown-component-mitigation-#{item.id}-#{control.id}"}
-                            text={item.comments}
-                          />
+                          <ValentineWeb.WorkspaceLive.Components.MarkdownComponent.render text={
+                            item.comments
+                          } />
                         </div>
                       <% end %>
                     </details>

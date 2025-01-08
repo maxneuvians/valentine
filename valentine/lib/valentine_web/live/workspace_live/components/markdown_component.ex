@@ -1,20 +1,21 @@
 defmodule ValentineWeb.WorkspaceLive.Components.MarkdownComponent do
-  use ValentineWeb, :live_component
+  use Phoenix.Component
+
+  attr :text, :string, default: ""
 
   def render(assigns) do
-    text = if assigns.text == nil, do: "", else: assigns.text
-
-    markdown_html =
-      String.trim(text)
-      |> MDEx.to_html!(extension: [shortcodes: true])
-      |> Phoenix.HTML.raw()
-
-    assigns = assign(assigns, :markdown, markdown_html)
-
     ~H"""
     <div class="markdown">
-      {@markdown}
+      {to_markdown(@text)}
     </div>
     """
+  end
+
+  defp to_markdown(nil), do: ""
+
+  defp to_markdown(text) do
+    String.trim(text)
+    |> MDEx.to_html!(extension: [shortcodes: true])
+    |> Phoenix.HTML.raw()
   end
 end

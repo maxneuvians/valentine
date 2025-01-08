@@ -104,11 +104,9 @@ defmodule ValentineWeb.WorkspaceLive.Components.MitigationComponent do
                     caption="Markdown is supported"
                   />
                 <% "tab2" -> %>
-                  <.live_component
-                    module={ValentineWeb.WorkspaceLive.Components.MarkdownComponent}
-                    id={"markdown-component-mitigation-#{@mitigation.id}"}
-                    text={@mitigation.comments}
-                  />
+                  <ValentineWeb.WorkspaceLive.Components.MarkdownComponent.render text={
+                    @mitigation.comments
+                  } />
               <% end %>
               <.button is_primary class="mt-2" type="submit">Save</.button>
             </form>
