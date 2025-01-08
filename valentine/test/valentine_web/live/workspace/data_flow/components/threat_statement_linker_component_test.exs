@@ -123,6 +123,7 @@ defmodule ValentineWeb.WorkspaceLive.DataFlow.Components.ThreatStatementLinkerCo
         ThreatStatementLinkerComponent.update(assigns, socket)
 
       assert updated_socket.assigns.element["data"]["id"] == assigns.element_id
+      assert updated_socket.assigns.element["data"]["linked_threats"] == [linked_threat.id]
       assert updated_socket.assigns.threats == [other_threat]
       assert updated_socket.assigns.linked_threats == [linked_threat]
     end

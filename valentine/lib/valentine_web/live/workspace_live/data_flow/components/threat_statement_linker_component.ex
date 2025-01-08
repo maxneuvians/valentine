@@ -85,11 +85,13 @@ defmodule ValentineWeb.WorkspaceLive.DataFlow.Components.ThreatStatementLinkerCo
 
   @impl true
   def update(%{selected_item: %{id: id}}, socket) do
+    %{element_id: element_id, element: element} = socket.assigns
+
     send(
       self(),
       {:update_metadata,
        %{
-         "id" => socket.assigns.element_id,
+         "id" => element_id,
          "field" => "linked_threats",
          "checked" => id,
          "value" => 0
@@ -97,12 +99,13 @@ defmodule ValentineWeb.WorkspaceLive.DataFlow.Components.ThreatStatementLinkerCo
     )
 
     linked_threats =
-      Valentine.Composer.list_threats_by_ids(
-        socket.assigns.element["data"]["linked_threats"] ++ [id]
-      )
+      Valentine.Composer.list_threats_by_ids(element["data"]["linked_threats"] ++ [id])
+
+    element = put_in(element["data"]["linked_threats"], Enum.map(linked_threats, & &1.id))
 
     {:ok,
      socket
+     |> assign(:element, element)
      |> assign(:linked_threats, linked_threats)}
   end
 

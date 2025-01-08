@@ -190,6 +190,7 @@ defmodule ValentineWeb.WorkspaceLive.Components.DataFlowMetadataComponent do
                     phx-value-id={@element["data"]["id"]}
                   >
                     <.octicon name="squirrel-16" />
+                    <.counter>{length(@element["data"]["linked_threats"])}</.counter>
                   </.button>
                   <.button
                     is_primary
