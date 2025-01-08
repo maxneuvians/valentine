@@ -98,6 +98,12 @@ defmodule ValentineWeb.WorkspaceLive.Components.ThreatComponentTest do
       html = render_component(ThreatComponent, assigns)
       assert html =~ "Not useful"
     end
+
+    test "shows the details as open is summary_state is set", %{assigns: assigns} do
+      assigns = Map.put(assigns, :summary_state, true)
+      html = render_component(ThreatComponent, assigns)
+      assert html =~ "open"
+    end
   end
 
   describe "update/2" do
@@ -161,6 +167,17 @@ defmodule ValentineWeb.WorkspaceLive.Components.ThreatComponentTest do
       assert !Enum.member?(updated_socket.assigns.threat.tags, tag)
     end
 
+    test "saves a comment and clears the summary_state", %{assigns: assigns, socket: socket} do
+      comments = "new comments"
+      socket = Map.put(socket, :assigns, Map.put(assigns, :tag, comments))
+
+      {:noreply, updated_socket} =
+        ThreatComponent.handle_event("save_comments", %{"comments" => comments}, socket)
+
+      assert updated_socket.assigns.threat.comments == comments
+      assert updated_socket.assigns.summary_state == nil
+    end
+
     test "sets a tag", %{assigns: assigns, socket: socket} do
       tag = "new-tag"
       socket = Map.put(socket, :assigns, Map.put(assigns, :tag, tag))
@@ -169,6 +186,29 @@ defmodule ValentineWeb.WorkspaceLive.Components.ThreatComponentTest do
         ThreatComponent.handle_event("set_tag", %{"value" => tag}, socket)
 
       assert updated_socket.assigns.tag == tag
+    end
+
+    test "toggles the summary_state", %{assigns: assigns, socket: socket} do
+      socket = Map.put(socket, :assigns, Map.put(assigns, :summary_state, true))
+
+      {:noreply, updated_socket} =
+        ThreatComponent.handle_event("toggle_summary_state", %{}, socket)
+
+      assert updated_socket.assigns.summary_state == false
+    end
+
+    test "updates comments", %{assigns: assigns, socket: socket} do
+      comments = "new comments"
+      socket = Map.put(socket, :assigns, Map.put(assigns, :tag, comments))
+
+      {:noreply, updated_socket} =
+        ThreatComponent.handle_event(
+          "update_comments",
+          %{"comments" => comments},
+          socket
+        )
+
+      assert updated_socket.assigns.threat.comments == comments
     end
   end
 end

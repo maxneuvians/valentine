@@ -19,7 +19,7 @@ defmodule ValentineWeb.WorkspaceLive.Components.TabNavComponent do
 
   def render(assigns) do
     ~H"""
-    <div class="mt-2">
+    <div class="mt-2 tabnav-container">
       <.tabnav class="mb-0">
         <:item
           :for={%{label: label, id: id} <- @tabs}

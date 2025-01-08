@@ -12,7 +12,7 @@ defmodule ValentineWeb.WorkspaceLive.Components.MarkdownComponent do
     assigns = assign(assigns, :markdown, markdown_html)
 
     ~H"""
-    <div>
+    <div class="markdown">
       {@markdown}
     </div>
     """

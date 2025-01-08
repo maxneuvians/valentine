@@ -195,6 +195,7 @@ defmodule Valentine.Composer do
   def list_threats_by_workspace(workspace_id, enum_filters \\ %{}) do
     from(t in Threat, where: t.workspace_id == ^workspace_id)
     |> list_threats_with_enum_filters(enum_filters)
+    |> order_by([t], desc: t.numeric_id)
     |> Repo.all()
   end
 

@@ -311,9 +311,9 @@ defmodule ValentineWeb.WorkspaceLive.DataFlow.Components.ThreatStatementGenerato
 
     Conditions or requirements that must be met for a threat source's action to be viable. For example:
 
-    With access to another user's token.
-    Who has administrator access.
-    With user permissions.
+    with access to another user's token.
+    who has administrator access.
+    with user permissions.
 
     If there are no prerequisites, that might be a signal to decompose the threat into several statements. These would include multiple prerequisites for the same threat source.
 
@@ -321,17 +321,17 @@ defmodule ValentineWeb.WorkspaceLive.DataFlow.Components.ThreatStatementGenerato
 
     The action being performed by the threat source. For example:
 
-    Spoof another user.
-    Tamper with data stored in the database.
-    Make thousands of concurrent requests.
+    spoof another user.
+    tamper with data stored in the database.
+    make thousands of concurrent requests.
 
     4. Threat impact:
 
     The direct impact of a successful threat action. For example:
 
-    Unauthorized access to the user's bank account information.
-    Modifying the username for the all-time high score.
-    A web application being unable to handle other user requests.
+    unauthorized access to the user's bank account information.
+    modifying the username for the all-time high score.
+    a web application being unable to handle other user requests.
 
     5. Impacted goal:
 
@@ -346,17 +346,68 @@ defmodule ValentineWeb.WorkspaceLive.DataFlow.Components.ThreatStatementGenerato
 
     The assets affected by a successful threat action. For example:
 
-    User banking data.
-    Video game high score list.
-    The web application.
+    user banking data.
+    video game high score list.
+    the web application.
 
     Here are some sample statements:
 
-    An [internet-based threat actor][with access to another user's token] can [spoof another user] which leads to [viewing the user's bank account information], negatively impacting [user banking data]
+    1. An [internet-based threat actor] [who has identified an SQL injection vulnerability] can [inject malicious SQL commands into the application's input fields] which leads to [unauthorized access and extraction of all user credentials from the database], resulting in reduced [confidentiality], negatively impacting [user authentication data and personal information].
 
-    An [internal threat actor] [who has administrator access] can [tamper with data stored in the database] which leads to [modifying the username for the all-time high score], negatively impacting [the video game high score list]
+    2. An [external threat actor] [with access to a valid user account] can [exploit weak password reset functionality] which leads to [taking over other user accounts through password reset poisoning], resulting in reduced [integrity], negatively impacting [user account security and personal data].
 
-    An [internet-based threat actor] [with user permissions] can [make thousands of concurrent requests] which leads to [the application being unable to handle other user requests], negatively impacting [the web application’s responsiveness to valid requests].
+    3. An [internet-based threat actor] [who has intercepted unencrypted data in transit] can [capture sensitive information transmitted over insecure channels] which leads to [exposure of user payment information and session tokens], resulting in reduced [confidentiality], negatively impacting [customer financial data and session security].
+
+    4. An [authenticated threat actor] [with basic user permissions] can [manipulate API endpoints by modifying request parameters] which leads to [unauthorized access to other users' profiles and data], resulting in reduced [integrity], negatively impacting [user privacy and data boundaries].
+
+    5. An [external threat actor] [who has discovered exposed system configuration files] can [access detailed error messages and system information] which leads to [obtaining sensitive implementation details and default credentials], resulting in reduced [confidentiality], negatively impacting [system security and infrastructure integrity].
+
+    6. An [internet-based threat actor] [who has discovered Cross-Site Scripting (XSS) vulnerabilities] can [inject malicious JavaScript code into web forms] which leads to [stealing user session cookies and hijacking active sessions], resulting in reduced [confidentiality], negatively impacting [user session security and account access].
+
+    7. A [cybercriminal] [with access to automated scanning tools] can [exploit XML External Entity (XXE) processing] which leads to [reading sensitive configuration files and internal system data], resulting in reduced [confidentiality], negatively impacting [server configuration security and internal data].
+
+    8. An [authenticated threat actor] [who has access to file upload functionality] can [upload maliciously crafted files] which leads to [remote code execution on the application server], resulting in reduced [integrity], negatively impacting [application server security].
+
+    9. A [disgruntled insider] [with database access credentials] can [modify stored procedures and database triggers] which leads to [manipulation of critical business logic and data processing], resulting in reduced [integrity], negatively impacting [business operations and data accuracy].
+
+    10. An [external threat actor] [who has identified broken object-level authorization] can [modify API requests to access unauthorized resources] which leads to [viewing and modifying other users' data], resulting in reduced [confidentiality], negatively impacting [user data privacy].
+
+    11. A [thrill-seeking hacker] [with knowledge of cryptographic weaknesses] can [exploit weak encryption implementation] which leads to [decrypting sensitive data in transit], resulting in reduced [confidentiality], negatively impacting [data transmission security].
+
+    12. An [internet-based threat actor] [who has discovered missing rate limiting] can [perform credential stuffing attacks] which leads to [automated account takeover attempts], resulting in reduced [availability], negatively impacting [user account security].
+
+    13. A [cybercriminal] [with access to automated tools] can [exploit deserialization vulnerabilities] which leads to [executing arbitrary code on the application server], resulting in reduced [integrity], negatively impacting [application infrastructure].
+
+    14. An [external threat actor] [who has identified CORS misconfiguration] can [execute cross-origin attacks] which leads to [unauthorized data access from victim browsers], resulting in reduced [confidentiality], negatively impacting [client-side data security].
+
+    15. A [malicious user] [with basic authentication] can [exploit broken function level authorization] which leads to [accessing administrative functions], resulting in reduced [integrity], negatively impacting [application administrative controls].
+
+    16. An [internet-based threat actor] [who has identified JWT vulnerabilities] can [manipulate JSON Web Tokens] which leads to [escalating privileges and impersonating other users], resulting in reduced [integrity], negatively impacting [authentication system].
+
+    17. A [cybercriminal] [with network access] can [exploit server-side request forgery vulnerabilities] which leads to [accessing internal services and systems], resulting in reduced [confidentiality], negatively impacting [internal network security].
+
+    18. An [authenticated user] [with access to bulk export functionality] can [perform mass assignment attacks] which leads to [modifying unauthorized object properties], resulting in reduced [integrity], negatively impacting [data model security].
+
+    19. A [malicious actor] [who has identified missing security headers] can [exploit client-side security weaknesses] which leads to [executing cross-site scripting and clickjacking attacks], resulting in reduced [integrity], negatively impacting [client-side security].
+
+    20. An [external threat actor] [with automated scanning capabilities] can [exploit GraphQL query vulnerabilities] which leads to [performing resource-exhausting queries], resulting in reduced [availability], negatively impacting [API performance and stability].
+
+    21. A [cybercriminal] [who has discovered logging vulnerabilities] can [inject malicious data into log files] which leads to [log forging and log injection attacks], resulting in reduced [integrity], negatively impacting [system audit trails].
+
+    22. An [authenticated threat actor] [with access to search functionality] can [perform NoSQL injection attacks] which leads to [bypassing authentication and accessing unauthorized data], resulting in reduced [confidentiality], negatively impacting [database security].
+
+    23. A [malicious user] [who has identified webhook misconfiguration] can [manipulate callback URLs] which leads to [redirecting sensitive data to attacker-controlled servers], resulting in reduced [confidentiality], negatively impacting [data flow security].
+
+    24. An [internet-based threat actor] [with knowledge of application logic] can [exploit race conditions in transactions] which leads to [duplicate transaction processing], resulting in reduced [integrity], negatively impacting [financial operations].
+
+    25. A [thrill-seeking hacker] [who has identified caching vulnerabilities] can [poison web cache contents] which leads to [serving malicious content to other users], resulting in reduced [integrity], negatively impacting [content delivery security].
+
+    26. An [internet-based threat actor][with access to another user's token] can [spoof another user] which leads to [viewing the user's bank account information], negatively impacting [user banking data]
+
+    27. An [internal threat actor] [who has administrator access] can [tamper with data stored in the database] which leads to [modifying the username for the all-time high score], negatively impacting [the video game high score list]
+
+    28. An [internet-based threat actor] [with user permissions] can [make thousands of concurrent requests] which leads to [the application being unable to handle other user requests], negatively impacting [the web application’s responsiveness to valid requests].
+
 
     The statements must then also be categorized using the STRIDE model.
 
