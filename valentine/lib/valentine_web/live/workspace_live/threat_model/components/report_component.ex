@@ -2,6 +2,8 @@ defmodule ValentineWeb.WorkspaceLive.ThreatModel.Components.ReportComponent do
   use Phoenix.Component
   use PrimerLive
 
+  use Gettext, backend: ValentineWeb.Gettext
+
   def render(assigns) do
     threats =
       Enum.reduce(assigns.workspace.threats, %{}, fn threat, acc ->
@@ -12,25 +14,25 @@ defmodule ValentineWeb.WorkspaceLive.ThreatModel.Components.ReportComponent do
 
     ~H"""
     <.styled_html>
-      <h3>Table of Contents</h3>
+      <h3>{gettext("Table of Contents")}</h3>
 
       <ol>
-        <li><a href="#application_information">Application Information</a></li>
-        <li><a href="#architecture">Architecture</a></li>
-        <li><a href="#data_flow_diagram">Data Flow</a></li>
-        <li><a href="#assumptions">Assumptions</a></li>
-        <li><a href="#threats">Threats</a></li>
-        <li><a href="#mitigations">Mitigations</a></li>
-        <li><a href="#impacted_assets">Impacted Assets</a></li>
+        <li><a href="#application_information">{gettext("Application Information")}</a></li>
+        <li><a href="#architecture">{gettext("Architecture")}</a></li>
+        <li><a href="#data_flow_diagram">{gettext("Data Flow")}</a></li>
+        <li><a href="#assumptions">{gettext("Assumptions")}</a></li>
+        <li><a href="#threats">{gettext("Threats")}</a></li>
+        <li><a href="#mitigations">{gettext("Mitigations")}</a></li>
+        <li><a href="#impacted_assets">{gettext("Impacted Assets")}</a></li>
       </ol>
 
-      <h3 id="application_information">1. Application Information</h3>
+      <h3 id="application_information">1. {gettext("Application Information")}</h3>
       {optional_content(@workspace.application_information) |> Phoenix.HTML.raw()}
 
-      <h3 id="architecture">2. Architecture</h3>
+      <h3 id="architecture">2. {gettext("Architecture")}</h3>
       {optional_content(@workspace.architecture) |> Phoenix.HTML.raw()}
 
-      <h3 id="data_flow_diagram">3. Data Flow</h3>
+      <h3 id="data_flow_diagram">3. {gettext("Data Flow")}</h3>
       <.box
         :if={@workspace.data_flow_diagram && @workspace.data_flow_diagram.raw_image}
         id="data-flow-diagram-container"
@@ -38,15 +40,15 @@ defmodule ValentineWeb.WorkspaceLive.ThreatModel.Components.ReportComponent do
         <img src={@workspace.data_flow_diagram.raw_image} alt="Data flow diagram" />
       </.box>
 
-      <h4>Entities</h4>
+      <h4>{gettext("Entities")}</h4>
       <table :if={@workspace.data_flow_diagram} class="report-table">
         <thead>
           <tr>
-            <th>Type</th>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Features</th>
-            <th>Linked threats</th>
+            <th>{gettext("Type")}</th>
+            <th>{gettext("Name")}</th>
+            <th>{gettext("Description")}</th>
+            <th>{gettext("Features")}</th>
+            <th>{gettext("Linked threats")}</th>
           </tr>
         </thead>
         <tbody>
@@ -73,16 +75,16 @@ defmodule ValentineWeb.WorkspaceLive.ThreatModel.Components.ReportComponent do
           </tr>
         </tbody>
       </table>
-      <h4>Data flow definitions</h4>
+      <h4>{gettext("Data flow definitions")}</h4>
       <table :if={@workspace.data_flow_diagram} class="report-table">
         <thead>
           <tr>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Source</th>
-            <th>Target</th>
-            <th>Features</th>
-            <th>Linked threats</th>
+            <th>{gettext("Name")}</th>
+            <th>{gettext("Description")}</th>
+            <th>{gettext("Source")}</th>
+            <th>{gettext("Target")}</th>
+            <th>{gettext("Features")}</th>
+            <th>{gettext("Linked threats")}</th>
           </tr>
         </thead>
         <tbody>
@@ -110,15 +112,15 @@ defmodule ValentineWeb.WorkspaceLive.ThreatModel.Components.ReportComponent do
           </tr>
         </tbody>
       </table>
-      <h3 id="assumptions">4. Assumptions</h3>
+      <h3 id="assumptions">4. {gettext("Assumptions")}</h3>
       <table class="report-table">
         <thead>
           <tr>
-            <th>Assumption ID</th>
-            <th>Assumption</th>
-            <th>Linked Threats</th>
-            <th>Linked Mitigations</th>
-            <th>Comments</th>
+            <th>{gettext("Assumption ID")}</th>
+            <th>{gettext("Assumption")}</th>
+            <th>{gettext("Linked Threats")}</th>
+            <th>{gettext("Linked Mitigations")}</th>
+            <th>{gettext("Comments")}</th>
           </tr>
         </thead>
         <tbody>
@@ -146,18 +148,18 @@ defmodule ValentineWeb.WorkspaceLive.ThreatModel.Components.ReportComponent do
         </tbody>
       </table>
 
-      <h3 id="threats">5. Threats</h3>
+      <h3 id="threats">5. {gettext("Threats")}</h3>
       <table class="report-table">
         <thead>
           <tr>
-            <th>Threat ID</th>
-            <th>Threat</th>
-            <th>Assumptions</th>
-            <th>Mitigations</th>
-            <th>Status</th>
-            <th>Priority</th>
-            <th>STRIDE</th>
-            <th>Comments</th>
+            <th>{gettext("Threat ID")}</th>
+            <th>{gettext("Threat")}</th>
+            <th>{gettext("Assumptions")}</th>
+            <th>{gettext("Mitigations")}</th>
+            <th>{gettext("Status")}</th>
+            <th>{gettext("Priority")}</th>
+            <th>{gettext("STRIDE")}</th>
+            <th>{gettext("Comments")}</th>
           </tr>
         </thead>
         <tbody>
@@ -190,15 +192,15 @@ defmodule ValentineWeb.WorkspaceLive.ThreatModel.Components.ReportComponent do
         </tbody>
       </table>
 
-      <h3 id="mitigations">6. Mitigations</h3>
+      <h3 id="mitigations">6. {gettext("Mitigations")}</h3>
       <table class="report-table">
         <thead>
           <tr>
-            <th>Mitigation ID</th>
-            <th>Mitigation</th>
-            <th>Threats Mitigating</th>
-            <th>Assumptions</th>
-            <th>Comments</th>
+            <th>{gettext("Mitigation ID")}</th>
+            <th>{gettext("Mitigation")}</th>
+            <th>{gettext("Threats Mitigating")}</th>
+            <th>{gettext("Assumptions")}</th>
+            <th>{gettext("Comments")}</th>
           </tr>
         </thead>
         <tbody>
@@ -226,13 +228,13 @@ defmodule ValentineWeb.WorkspaceLive.ThreatModel.Components.ReportComponent do
         </tbody>
       </table>
 
-      <h3 id="impacted_assets">7. Impacted Assets</h3>
+      <h3 id="impacted_assets">7. {gettext("Impacted Assets")}</h3>
       <table class="report-table">
         <thead>
           <tr>
-            <th>Asset ID</th>
-            <th>Asset</th>
-            <th>Related Threats</th>
+            <th>{gettext("Asset ID")}</th>
+            <th>{gettext("Asset")}</th>
+            <th>{gettext("Related Threats")}</th>
           </tr>
         </thead>
         <tbody>
