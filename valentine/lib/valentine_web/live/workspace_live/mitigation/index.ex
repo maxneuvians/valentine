@@ -13,6 +13,7 @@ defmodule ValentineWeb.WorkspaceLive.Mitigation.Index do
     {:ok,
      socket
      |> assign(:workspace_id, workspace_id)
+     |> assign(:workspace, workspace)
      |> assign(:filters, %{})
      |> assign(
        :mitigations,
@@ -25,6 +26,13 @@ defmodule ValentineWeb.WorkspaceLive.Mitigation.Index do
     {:noreply, apply_action(socket, socket.assigns.live_action, params)}
   end
 
+  defp apply_action(socket, :assumptions, %{"id" => id}) do
+    socket
+    |> assign(:page_title, gettext("Link assumptions to mitigation"))
+    |> assign(:assumptions, socket.assigns.workspace.assumptions)
+    |> assign(:mitigation, Composer.get_mitigation!(id, [:assumptions]))
+  end
+
   defp apply_action(socket, :categorize, %{"id" => id}) do
     socket
     |> assign(:page_title, gettext("Categorize Mitigation"))
@@ -35,6 +43,13 @@ defmodule ValentineWeb.WorkspaceLive.Mitigation.Index do
     socket
     |> assign(:page_title, gettext("Edit Mitigation"))
     |> assign(:mitigation, Composer.get_mitigation!(id))
+  end
+
+  defp apply_action(socket, :threats, %{"id" => id}) do
+    socket
+    |> assign(:page_title, gettext("Link threats to mitigation"))
+    |> assign(:threats, socket.assigns.workspace.threats)
+    |> assign(:mitigation, Composer.get_mitigation!(id, [:threats]))
   end
 
   defp apply_action(socket, :new, _params) do
@@ -117,6 +132,6 @@ defmodule ValentineWeb.WorkspaceLive.Mitigation.Index do
   end
 
   defp get_workspace(id) do
-    Composer.get_workspace!(id, [:mitigations])
+    Composer.get_workspace!(id, [:assumptions, :threats, mitigations: [:assumptions, :threats]])
   end
 end

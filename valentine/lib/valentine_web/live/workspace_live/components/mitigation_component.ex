@@ -37,6 +37,32 @@ defmodule ValentineWeb.WorkspaceLive.Components.MitigationComponent do
         <div class="float-right">
           <.button
             is_icon_button
+            aria-label="Linked assumptions"
+            phx-click={
+              JS.patch(
+                ~p"/workspaces/#{@mitigation.workspace_id}/mitigations/#{@mitigation.id}/assumptions"
+              )
+            }
+            id={"linked-mitigation-assumptions-#{@mitigation.id}"}
+          >
+            <.octicon name="discussion-closed-16" />
+            <.counter>{assoc_length(@mitigation.assumptions)}</.counter>
+          </.button>
+          <.button
+            is_icon_button
+            aria-label="Linked threats"
+            phx-click={
+              JS.patch(
+                ~p"/workspaces/#{@mitigation.workspace_id}/mitigations/#{@mitigation.id}/threats"
+              )
+            }
+            id={"linked-mitigation-threats-#{@mitigation.id}"}
+          >
+            <.octicon name="squirrel-16" />
+            <.counter>{assoc_length(@mitigation.threats)}</.counter>
+          </.button>
+          <.button
+            is_icon_button
             aria-label="Categorize"
             phx-click={
               JS.patch(
@@ -221,4 +247,7 @@ defmodule ValentineWeb.WorkspaceLive.Components.MitigationComponent do
   def handle_event("update_comments", %{"comments" => comments}, socket) do
     {:noreply, assign(socket, :mitigation, %{socket.assigns.mitigation | comments: comments})}
   end
+
+  defp assoc_length(l) when is_list(l), do: length(l)
+  defp assoc_length(_), do: 0
 end

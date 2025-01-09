@@ -666,6 +666,27 @@ defmodule Valentine.Composer do
     end
   end
 
+  def add_threat_to_assumption(%Assumption{} = assumption, %Threat{} = threat) do
+    %AssumptionThreat{assumption_id: assumption.id, threat_id: threat.id}
+    |> Repo.insert()
+    |> case do
+      {:ok, _} -> {:ok, assumption |> Repo.preload(:threats, force: true)}
+      {:error, _} -> {:error, assumption}
+    end
+  end
+
+  def remove_threat_from_assumption(%Assumption{} = assumption, %Threat{} = threat) do
+    Repo.delete_all(
+      from(at in AssumptionThreat,
+        where: at.assumption_id == ^assumption.id and at.threat_id == ^threat.id
+      )
+    )
+    |> case do
+      {1, nil} -> {:ok, assumption |> Repo.preload(:threats, force: true)}
+      {:error, _} -> {:error, assumption}
+    end
+  end
+
   def add_assumption_to_mitigation(%Mitigation{} = mitigation, %Assumption{} = assumption) do
     %AssumptionMitigation{assumption_id: assumption.id, mitigation_id: mitigation.id}
     |> Repo.insert()
@@ -683,6 +704,27 @@ defmodule Valentine.Composer do
     )
     |> case do
       {1, nil} -> {:ok, mitigation |> Repo.preload(:assumptions, force: true)}
+      {:error, _} -> {:error, mitigation}
+    end
+  end
+
+  def add_threat_to_mitigation(%Mitigation{} = mitigation, %Threat{} = threat) do
+    %MitigationThreat{mitigation_id: mitigation.id, threat_id: threat.id}
+    |> Repo.insert()
+    |> case do
+      {:ok, _} -> {:ok, mitigation |> Repo.preload(:threats, force: true)}
+      {:error, _} -> {:error, mitigation}
+    end
+  end
+
+  def remove_threat_from_mitigation(%Mitigation{} = mitigation, %Threat{} = threat) do
+    Repo.delete_all(
+      from(mt in MitigationThreat,
+        where: mt.mitigation_id == ^mitigation.id and mt.threat_id == ^threat.id
+      )
+    )
+    |> case do
+      {1, nil} -> {:ok, mitigation |> Repo.preload(:threats, force: true)}
       {:error, _} -> {:error, mitigation}
     end
   end

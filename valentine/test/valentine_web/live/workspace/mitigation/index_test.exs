@@ -6,18 +6,20 @@ defmodule ValentineWeb.WorkspaceLive.Mitigation.IndexTest do
   import Valentine.ComposerFixtures
 
   setup do
-    mitigation = mitigation_fixture()
+    workspace = workspace_fixture()
+    mitigation = mitigation_fixture(%{workspace_id: workspace.id})
 
     socket = %Phoenix.LiveView.Socket{
       assigns: %{
         __changed__: %{},
         live_action: nil,
         flash: %{},
-        workspace_id: mitigation.workspace_id
+        workspace_id: mitigation.workspace_id,
+        workspace: workspace
       }
     }
 
-    %{mitigation: mitigation, socket: socket, workspace_id: mitigation.workspace_id}
+    %{mitigation: mitigation, socket: socket, workspace_id: workspace.id, workspace: workspace}
   end
 
   describe "mount/3" do
@@ -33,6 +35,7 @@ defmodule ValentineWeb.WorkspaceLive.Mitigation.IndexTest do
         )
 
       assert socket.assigns.workspace_id == mitigation.workspace_id
+      assert socket.assigns.workspace.id == mitigation.workspace_id
       assert Map.has_key?(socket.assigns, :mitigations)
     end
   end
@@ -50,6 +53,20 @@ defmodule ValentineWeb.WorkspaceLive.Mitigation.IndexTest do
 
       assert updated_socket.assigns.page_title == "Listing Mitigations"
       assert updated_socket.assigns.workspace_id == workspace_id
+    end
+
+    test "sets page title for assumptions action", %{socket: socket, mitigation: mitigation} do
+      socket = put_in(socket.assigns.live_action, :assumptions)
+
+      {:noreply, updated_socket} =
+        ValentineWeb.WorkspaceLive.Mitigation.Index.handle_params(
+          %{"id" => mitigation.id},
+          "",
+          socket
+        )
+
+      assert updated_socket.assigns.page_title == "Link assumptions to mitigation"
+      assert updated_socket.assigns.mitigation.id == mitigation.id
     end
 
     test "sets page title for categorize action", %{socket: socket, mitigation: mitigation} do
@@ -79,6 +96,20 @@ defmodule ValentineWeb.WorkspaceLive.Mitigation.IndexTest do
       assert updated_socket.assigns.page_title == "Edit Mitigation"
       assert updated_socket.assigns.mitigation.id == mitigation.id
     end
+
+    test "sets page title for threats action", %{socket: socket, mitigation: mitigation} do
+      socket = put_in(socket.assigns.live_action, :threats)
+
+      {:noreply, updated_socket} =
+        ValentineWeb.WorkspaceLive.Mitigation.Index.handle_params(
+          %{"id" => mitigation.id},
+          "",
+          socket
+        )
+
+      assert updated_socket.assigns.page_title == "Link threats to mitigation"
+      assert updated_socket.assigns.mitigation.id == mitigation.id
+    end
   end
 
   describe "handle_info {:saved, _mitigation}" do
@@ -94,7 +125,7 @@ defmodule ValentineWeb.WorkspaceLive.Mitigation.IndexTest do
           socket
         )
 
-      assert updated_socket.assigns.mitigations == [mitigation]
+      assert hd(updated_socket.assigns.mitigations).id == mitigation.id
     end
 
     test "updates filters on filter changes", %{socket: socket} do

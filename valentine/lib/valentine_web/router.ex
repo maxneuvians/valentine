@@ -80,9 +80,17 @@ defmodule ValentineWeb.Router do
       live "/workspaces/:workspace_id/mitigations/new", WorkspaceLive.Mitigation.Index, :new
       live "/workspaces/:workspace_id/mitigations/:id/edit", WorkspaceLive.Mitigation.Index, :edit
 
+      live "/workspaces/:workspace_id/mitigations/:id/assumptions",
+           WorkspaceLive.Mitigation.Index,
+           :assumptions
+
       live "/workspaces/:workspace_id/mitigations/:id/categorize",
            WorkspaceLive.Mitigation.Index,
            :categorize
+
+      live "/workspaces/:workspace_id/mitigations/:id/threats",
+           WorkspaceLive.Mitigation.Index,
+           :threats
 
       live "/workspaces/:workspace_id/threats", WorkspaceLive.Threat.Index, :index
       live "/workspaces/:workspace_id/threats/new", WorkspaceLive.Threat.Show, :new

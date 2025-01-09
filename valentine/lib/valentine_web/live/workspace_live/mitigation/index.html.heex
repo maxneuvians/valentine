@@ -74,3 +74,29 @@
   workspace_id={@workspace_id}
   patch={~p"/workspaces/#{@workspace_id}/mitigations"}
 />
+
+<.live_component
+  :if={@live_action in [:assumptions]}
+  module={ValentineWeb.WorkspaceLive.Components.EntityLinkerComponent}
+  id={@mitigation.id}
+  source_entity_type={:mitigation}
+  target_entity_type={:assumptions}
+  entity={@mitigation}
+  linkable_entities={@assumptions}
+  linked_entities={@mitigation.assumptions}
+  workspace_id={@workspace_id}
+  patch={~p"/workspaces/#{@workspace_id}/mitigations"}
+/>
+
+<.live_component
+  :if={@live_action in [:threats]}
+  module={ValentineWeb.WorkspaceLive.Components.EntityLinkerComponent}
+  id={@mitigation.id}
+  source_entity_type={:mitigation}
+  target_entity_type={:threats}
+  entity={@mitigation}
+  linkable_entities={@threats}
+  linked_entities={@mitigation.threats}
+  workspace_id={@workspace_id}
+  patch={~p"/workspaces/#{@workspace_id}/mitigations"}
+/>
