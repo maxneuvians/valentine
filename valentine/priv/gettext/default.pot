@@ -942,6 +942,7 @@ msgid "Export to Excel"
 msgstr ""
 
 #: lib/valentine_web/live/workspace_live/srtm/index.html.heex:85
+#: lib/valentine_web/live/workspace_live/srtm/index.html.heex:112
 #, elixir-autogen, elixir-format
 msgid "In scope"
 msgstr ""
@@ -952,11 +953,13 @@ msgid "Mitigated by"
 msgstr ""
 
 #: lib/valentine_web/live/workspace_live/srtm/index.html.heex:44
+#: lib/valentine_web/live/workspace_live/srtm/index.html.heex:110
 #, elixir-autogen, elixir-format
 msgid "Not allocated"
 msgstr ""
 
 #: lib/valentine_web/live/workspace_live/srtm/index.html.heex:67
+#: lib/valentine_web/live/workspace_live/srtm/index.html.heex:111
 #, elixir-autogen, elixir-format
 msgid "Out of scope"
 msgstr ""
@@ -968,6 +971,18 @@ msgid "Security Requirements Traceability Matrix"
 msgstr ""
 
 #: lib/valentine_web/live/workspace_live/srtm/index.html.heex:2
+#: lib/valentine_web/live/workspace_live/threat_model/index.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "for"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/threat_model/index.html.heex:6
+#, elixir-autogen, elixir-format
+msgid "Download PDF"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/threat_model/index.ex:24
+#: lib/valentine_web/live/workspace_live/threat_model/index.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Threat model"
 msgstr ""

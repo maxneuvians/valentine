@@ -21,7 +21,7 @@ defmodule ValentineWeb.WorkspaceLive.ThreatModel.Index do
 
   defp apply_action(socket, :index, _params) do
     socket
-    |> assign(:page_title, "Threat model")
+    |> assign(:page_title, gettext("Threat model"))
   end
 
   defp get_workspace(id) do
