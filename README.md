@@ -1,5 +1,7 @@
 # 🍁 Valentine
 
+![Lint, format, and test workflow](https://github.com/maxneuvians/valentine/actions/workflows/ci_code.yml/badge.svg)
+
 Valentine is a real-time collaborative threat modeling tool that combines human expertise with generative AI to streamline the security design process while maintaining simplicity and rigor.
 
 ![Screenshot of a data flow diagram in Valentine](screenshots/data_flow_diagram.png)
