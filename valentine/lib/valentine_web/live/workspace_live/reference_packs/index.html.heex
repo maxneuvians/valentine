@@ -1,18 +1,18 @@
 <.subhead>
-  Reference packs
+  {gettext("Reference packs")}
   <:actions>
     <.button
       id="import-reference-pack"
       is_primary
       phx-click={JS.patch(~p"/workspaces/#{@workspace.id}/reference_packs/import")}
     >
-      Import reference pack
+      {gettext("Import reference pack")}
     </.button>
   </:actions>
 </.subhead>
 
 <.box id="reference_packs" row_id={fn r -> "reference-pack-#{r.id}" end}>
-  <:header>Your reference packs</:header>
+  <:header>{gettext("Your reference packs")}</:header>
   <:row
     :for={reference_pack <- @reference_packs}
     class="d-flex flex-items-center flex-justify-between"
@@ -33,7 +33,7 @@
           <.button
             is_icon_button
             is_danger
-            aria-label="Delete"
+            aria-label={gettext("Delete")}
             phx-click={JS.push("delete", value: %{id: reference_pack.collection_id})}
             phx-value-type={reference_pack.collection_type}
             data-confirm={gettext("Are you sure?")}

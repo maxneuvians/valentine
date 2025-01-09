@@ -57,7 +57,7 @@ defmodule ValentineWeb.WorkspaceLive.SRTM.Index do
 
   defp apply_action(socket, :index, _params) do
     socket
-    |> assign(:page_title, "Security Requirements Traceability Matrix")
+    |> assign(:page_title, gettext("Security Requirements Traceability Matrix"))
   end
 
   defp allocated_controls(controls, assumed, mitigated) do

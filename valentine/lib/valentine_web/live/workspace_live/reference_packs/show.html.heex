@@ -2,21 +2,21 @@
   {hd(@reference_pack).collection_type |> Phoenix.Naming.humanize()} pack: {hd(@reference_pack).collection_name}
   <:actions>
     <.button phx-click={JS.patch(~p"/workspaces/#{@workspace_id}/reference_packs")}>
-      Back
+      {gettext("Back")}
     </.button>
     <.button is_primary phx-click="add_references">
-      Add selected
+      {gettext("Add selected")}
       <span :if={length(@selected_references) > 0}>
         {length(@selected_references)}
       </span>
-      references
+      {gettext("references")}
     </.button>
   </:actions>
 </.subhead>
 <.live_component
   module={ValentineWeb.WorkspaceLive.Components.PaginatedListComponent}
   id="paginated-list"
-  title="References"
+  title={gettext("References")}
   collection={@reference_pack}
   selectable={true}
 >

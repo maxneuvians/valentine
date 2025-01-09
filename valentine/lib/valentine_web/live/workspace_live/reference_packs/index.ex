@@ -20,7 +20,7 @@ defmodule ValentineWeb.WorkspaceLive.ReferencePacks.Index do
 
     {:noreply,
      socket
-     |> put_flash(:info, "Reference pack deleted successfully")
+     |> put_flash(:info, gettext("Reference pack deleted successfully"))
      |> assign(:reference_packs, Composer.list_reference_packs())}
   end
 
@@ -31,12 +31,12 @@ defmodule ValentineWeb.WorkspaceLive.ReferencePacks.Index do
 
   defp apply_action(socket, :import, _params) do
     socket
-    |> assign(:page_title, "Import reference pack")
+    |> assign(:page_title, gettext("Import reference pack"))
   end
 
   defp apply_action(socket, :index, _params) do
     socket
-    |> assign(:page_title, "Reference packs")
+    |> assign(:page_title, gettext("Reference packs"))
   end
 
   defp get_workspace(id) do

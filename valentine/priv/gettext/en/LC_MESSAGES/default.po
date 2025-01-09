@@ -600,6 +600,7 @@ msgstr ""
 msgid "Add a comment..."
 msgstr ""
 
+#: lib/valentine_web/live/workspace_live/reference_packs/show.html.heex:5
 #: lib/valentine_web/live/workspace_live/threat/show.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "Back"
@@ -640,6 +641,7 @@ msgid "Failed to delete threat"
 msgstr ""
 
 #: lib/valentine_web/live/workspace_live/mitigation/index.html.heex:12
+#: lib/valentine_web/live/workspace_live/srtm/index.html.heex:14
 #: lib/valentine_web/live/workspace_live/threat/index.html.heex:12
 #, elixir-autogen, elixir-format
 msgid "Filters"
@@ -875,4 +877,97 @@ msgstr ""
 #: lib/valentine_web/live/workspace_live/components/threat_component.ex:120
 #, elixir-autogen, elixir-format
 msgid "Add a tag"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/reference_packs/index.html.heex:36
+#, elixir-autogen, elixir-format
+msgid "Delete"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/reference_packs/index.ex:34
+#: lib/valentine_web/live/workspace_live/reference_packs/index.html.heex:9
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Import reference pack"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/reference_packs/index.ex:39
+#: lib/valentine_web/live/workspace_live/reference_packs/index.html.heex:2
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Reference packs"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/reference_packs/index.html.heex:15
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Your reference packs"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/reference_packs/show.html.heex:8
+#, elixir-autogen, elixir-format
+msgid "Add selected"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/reference_packs/show.html.heex:12
+#, elixir-autogen, elixir-format
+msgid "references"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/reference_packs/show.ex:51
+#, elixir-autogen, elixir-format
+msgid "Added %{total} reference items to workspace"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/reference_packs/show.ex:31
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Reference pack"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/reference_packs/index.ex:23
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Reference pack deleted successfully"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/reference_packs/show.html.heex:19
+#, elixir-autogen, elixir-format, fuzzy
+msgid "References"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/srtm/index.html.heex:133
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Covered by assumption"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/srtm/index.html.heex:6
+#, elixir-autogen, elixir-format
+msgid "Export to Excel"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/srtm/index.html.heex:85
+#, elixir-autogen, elixir-format
+msgid "In scope"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/srtm/index.html.heex:135
+#, elixir-autogen, elixir-format
+msgid "Mitigated by"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/srtm/index.html.heex:44
+#, elixir-autogen, elixir-format
+msgid "Not allocated"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/srtm/index.html.heex:67
+#, elixir-autogen, elixir-format
+msgid "Out of scope"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/srtm/index.ex:60
+#: lib/valentine_web/live/workspace_live/srtm/index.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Security Requirements Traceability Matrix"
+msgstr ""
+
+#: lib/valentine_web/live/workspace_live/srtm/index.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "for"
 msgstr ""

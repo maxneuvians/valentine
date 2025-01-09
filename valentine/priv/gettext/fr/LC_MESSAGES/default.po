@@ -131,7 +131,7 @@ msgstr "Packs de référence"
 #: lib/valentine_web/components/layouts/app.html.heex:197
 #, elixir-autogen, elixir-format
 msgid "SRTM View"
-msgstr "Vue SRTM"
+msgstr "Vue MTES"
 
 #: lib/valentine_web/components/layouts/app.html.heex:183
 #, elixir-autogen, elixir-format
@@ -600,6 +600,7 @@ msgstr "Nouvelle hypothèse"
 msgid "Add a comment..."
 msgstr "Ajouter un commentaire..."
 
+#: lib/valentine_web/live/workspace_live/reference_packs/show.html.heex:5
 #: lib/valentine_web/live/workspace_live/threat/show.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "Back"
@@ -640,6 +641,7 @@ msgid "Failed to delete threat"
 msgstr "Échec de la suppression de la déclaration de menace"
 
 #: lib/valentine_web/live/workspace_live/mitigation/index.html.heex:12
+#: lib/valentine_web/live/workspace_live/srtm/index.html.heex:14
 #: lib/valentine_web/live/workspace_live/threat/index.html.heex:12
 #, elixir-autogen, elixir-format
 msgid "Filters"
@@ -876,3 +878,96 @@ msgstr "Liens de déclaration de menace"
 #, elixir-autogen, elixir-format
 msgid "Add a tag"
 msgstr "Ajouter une étiquette"
+
+#: lib/valentine_web/live/workspace_live/reference_packs/index.html.heex:36
+#, elixir-autogen, elixir-format
+msgid "Delete"
+msgstr "Supprimer"
+
+#: lib/valentine_web/live/workspace_live/reference_packs/index.ex:34
+#: lib/valentine_web/live/workspace_live/reference_packs/index.html.heex:9
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Import reference pack"
+msgstr "Importer le pack de référence"
+
+#: lib/valentine_web/live/workspace_live/reference_packs/index.ex:39
+#: lib/valentine_web/live/workspace_live/reference_packs/index.html.heex:2
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Reference packs"
+msgstr "Packs de référence"
+
+#: lib/valentine_web/live/workspace_live/reference_packs/index.html.heex:15
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Your reference packs"
+msgstr "Vos packs de référence"
+
+#: lib/valentine_web/live/workspace_live/reference_packs/show.html.heex:8
+#, elixir-autogen, elixir-format
+msgid "Add selected"
+msgstr "Ajouter la sélection"
+
+#: lib/valentine_web/live/workspace_live/reference_packs/show.html.heex:12
+#, elixir-autogen, elixir-format
+msgid "references"
+msgstr "références"
+
+#: lib/valentine_web/live/workspace_live/reference_packs/show.ex:51
+#, elixir-autogen, elixir-format
+msgid "Added %{total} reference items to workspace"
+msgstr "Ajouté %{total} éléments de référence à l'espace de travail"
+
+#: lib/valentine_web/live/workspace_live/reference_packs/show.ex:31
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Reference pack"
+msgstr "Packs de référence"
+
+#: lib/valentine_web/live/workspace_live/reference_packs/index.ex:23
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Reference pack deleted successfully"
+msgstr "Pack de référence supprimé avec succès"
+
+#: lib/valentine_web/live/workspace_live/reference_packs/show.html.heex:19
+#, elixir-autogen, elixir-format, fuzzy
+msgid "References"
+msgstr "Références"
+
+#: lib/valentine_web/live/workspace_live/srtm/index.html.heex:133
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Covered by assumption"
+msgstr "Couvert par l'hypothèse"
+
+#: lib/valentine_web/live/workspace_live/srtm/index.html.heex:6
+#, elixir-autogen, elixir-format
+msgid "Export to Excel"
+msgstr "Exporter vers Excel"
+
+#: lib/valentine_web/live/workspace_live/srtm/index.html.heex:85
+#, elixir-autogen, elixir-format
+msgid "In scope"
+msgstr "Dans le champ d'application"
+
+#: lib/valentine_web/live/workspace_live/srtm/index.html.heex:135
+#, elixir-autogen, elixir-format
+msgid "Mitigated by"
+msgstr "Atténué par"
+
+#: lib/valentine_web/live/workspace_live/srtm/index.html.heex:44
+#, elixir-autogen, elixir-format
+msgid "Not allocated"
+msgstr "Non alloué"
+
+#: lib/valentine_web/live/workspace_live/srtm/index.html.heex:67
+#, elixir-autogen, elixir-format
+msgid "Out of scope"
+msgstr "Hors du champ d'application"
+
+#: lib/valentine_web/live/workspace_live/srtm/index.ex:60
+#: lib/valentine_web/live/workspace_live/srtm/index.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Security Requirements Traceability Matrix"
+msgstr "Matrice de traçabilité des exigences de sécurité"
+
+#: lib/valentine_web/live/workspace_live/srtm/index.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "for"
+msgstr "pour"

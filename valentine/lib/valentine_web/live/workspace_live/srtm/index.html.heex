@@ -1,9 +1,9 @@
 <.subhead>
-  Security Requirements Traceability Matrix for {@workspace.name}
+  {gettext("Security Requirements Traceability Matrix")} {gettext("for")} {@workspace.name}
   <:actions>
     <a href={"/workspaces/#{@workspace.id}/srtm"} target="_blank">
       <.button is_primary>
-        Export to Excel
+        {gettext("Export to Excel")}
       </.button>
     </a>
   </:actions>
@@ -11,7 +11,7 @@
 
 <.box id="control-list">
   <:header class="d-flex flex-items-center">
-    Filters:
+    {gettext("Filters")}:
     <.live_component
       module={ValentineWeb.WorkspaceLive.Components.FilterComponent}
       id="profile-filter"
@@ -41,7 +41,7 @@
   <div class="clearfix">
     <div class="col-12 col-md-4 float-left py-4 pl-4">
       <div class="p-4 border rounded-2">
-        <div class="f4">Not allocated</div>
+        <div class="f4">{gettext("Not allocated")}</div>
         <div class="clearfix">
           <div class="float-left">
             <div class="f2 text-bold">{map_size(@controls[:not_allocated])}</div>
@@ -64,7 +64,7 @@
     <div class="col-12 col-md-8 float-left p-4">
       <div class="clearfix">
         <div class="p-4 border border-right-0 rounded-left-2 col-12 col-md-6 float-left">
-          <div class="f4">Out of scope</div>
+          <div class="f4">{gettext("Out of scope")}</div>
           <div class="float-left">
             <div class="f2 text-bold">{map_size(@controls[:out_of_scope])}</div>
           </div>
@@ -82,7 +82,7 @@
           </div>
         </div>
         <div class="p-4 border rounded-right-2 col-12 col-md-6 float-left">
-          <div class="f4">In scope</div>
+          <div class="f4">{gettext("In scope")}</div>
           <div class="float-left">
             <div class="f2 text-bold">{map_size(@controls[:in_scope])}</div>
           </div>
@@ -107,9 +107,9 @@
       module={ValentineWeb.WorkspaceLive.Components.TabNavComponent}
       id="tabs-component-srtm"
       tabs={[
-        %{label: "Not allocated", id: "not_allocated"},
-        %{label: "Out of scope", id: "out_of_scope"},
-        %{label: "In scope", id: "in_scope"}
+        %{label: gettext("Not allocated"), id: "not_allocated"},
+        %{label: gettext("Out of scope"), id: "out_of_scope"},
+        %{label: gettext("In scope"), id: "in_scope"}
       ]}
     >
       <:tab_content :let={tab}>
@@ -130,9 +130,9 @@
                       <summary class="">
                         <%= case String.to_existing_atom(tab) do %>
                           <% :out_of_scope -> %>
-                            Covered by assumption:
+                            {gettext("Covered by assumption")}:
                           <% :in_scope -> %>
-                            Mitigated by:
+                            {gettext("Mitigated by")}:
                         <% end %>
                         {item.content}
                       </summary>

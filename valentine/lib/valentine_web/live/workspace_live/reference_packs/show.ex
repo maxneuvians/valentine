@@ -28,7 +28,7 @@ defmodule ValentineWeb.WorkspaceLive.ReferencePacks.Show do
   def handle_params(_params, _url, socket) do
     {:noreply,
      socket
-     |> assign(:page_title, "Reference pack")}
+     |> assign(:page_title, gettext("Reference pack"))}
   end
 
   @impl true
@@ -48,7 +48,7 @@ defmodule ValentineWeb.WorkspaceLive.ReferencePacks.Show do
 
     {:noreply,
      socket
-     |> put_flash(:info, "Added #{total} reference items to workspace")
+     |> put_flash(:info, gettext("Added %{total} reference items to workspace", total: total))
      |> push_navigate(to: ~p"/workspaces/#{socket.assigns.workspace_id}/reference_packs")}
   end
 
