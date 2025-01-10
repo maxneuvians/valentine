@@ -35,7 +35,7 @@ defmodule ValentineWeb.WorkspaceLive.Assumption.IndexTest do
         )
 
       assert socket.assigns.workspace_id == assumption.workspace_id
-      assert socket.assigns.assumptions == [assumption]
+      assert hd(socket.assigns.assumptions).id == assumption.id
     end
   end
 
@@ -68,7 +68,7 @@ defmodule ValentineWeb.WorkspaceLive.Assumption.IndexTest do
           socket
         )
 
-      assert updated_socket.assigns.assumptions == [assumption]
+      assert hd(updated_socket.assigns.assumptions).id == assumption.id
     end
   end
 

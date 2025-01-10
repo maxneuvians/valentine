@@ -314,7 +314,14 @@ defmodule Valentine.Composer do
       ** (Ecto.NoResultsError)
 
   """
-  def get_assumption!(id), do: Repo.get!(Assumption, id)
+  def get_assumption!(id, _preload \\ nil)
+
+  def get_assumption!(id, preload) when is_list(preload) do
+    Repo.get!(Assumption, id)
+    |> Repo.preload(preload)
+  end
+
+  def get_assumption!(id, preload) when is_nil(preload), do: Repo.get!(Assumption, id)
 
   @doc """
   Creates a assumption.

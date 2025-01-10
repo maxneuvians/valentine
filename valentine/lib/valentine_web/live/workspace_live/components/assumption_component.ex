@@ -22,6 +22,32 @@ defmodule ValentineWeb.WorkspaceLive.Components.AssumptionComponent do
         <div class="float-right">
           <.button
             is_icon_button
+            aria-label="Linked threats"
+            phx-click={
+              JS.patch(
+                ~p"/workspaces/#{@assumption.workspace_id}/assumptions/#{@assumption.id}/threats"
+              )
+            }
+            id={"linked-assumption-threats-#{@assumption.id}"}
+          >
+            <.octicon name="squirrel-16" />
+            <.counter>{assoc_length(@assumption.threats)}</.counter>
+          </.button>
+          <.button
+            is_icon_button
+            aria-label="Linked mitigations"
+            phx-click={
+              JS.patch(
+                ~p"/workspaces/#{@assumption.workspace_id}/assumptions/#{@assumption.id}/mitigations"
+              )
+            }
+            id={"linked-assumption-mitigations-#{@assumption.id}"}
+          >
+            <.octicon name="check-circle-16" />
+            <.counter>{assoc_length(@assumption.mitigations)}</.counter>
+          </.button>
+          <.button
+            is_icon_button
             aria-label="Edit"
             phx-click={
               JS.patch(~p"/workspaces/#{@assumption.workspace_id}/assumptions/#{@assumption.id}/edit")
@@ -180,4 +206,7 @@ defmodule ValentineWeb.WorkspaceLive.Components.AssumptionComponent do
   def handle_event("update_comments", %{"comments" => comments}, socket) do
     {:noreply, assign(socket, :assumption, %{socket.assigns.assumption | comments: comments})}
   end
+
+  defp assoc_length(l) when is_list(l), do: length(l)
+  defp assoc_length(_), do: 0
 end

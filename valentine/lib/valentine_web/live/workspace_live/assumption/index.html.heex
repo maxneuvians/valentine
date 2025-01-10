@@ -48,3 +48,29 @@
   assumption={@assumption}
   patch={~p"/workspaces/#{@workspace_id}/assumptions"}
 />
+
+<.live_component
+  :if={@live_action in [:mitigations]}
+  module={ValentineWeb.WorkspaceLive.Components.EntityLinkerComponent}
+  id={@assumption.id}
+  source_entity_type={:assumption}
+  target_entity_type={:mitigations}
+  entity={@assumption}
+  linkable_entities={@mitigations}
+  linked_entities={@assumption.mitigations}
+  workspace_id={@workspace_id}
+  patch={~p"/workspaces/#{@workspace_id}/assumptions"}
+/>
+
+<.live_component
+  :if={@live_action in [:threats]}
+  module={ValentineWeb.WorkspaceLive.Components.EntityLinkerComponent}
+  id={@assumption.id}
+  source_entity_type={:assumption}
+  target_entity_type={:threats}
+  entity={@assumption}
+  linkable_entities={@threats}
+  linked_entities={@assumption.threats}
+  workspace_id={@workspace_id}
+  patch={~p"/workspaces/#{@workspace_id}/assumptions"}
+/>

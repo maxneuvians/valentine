@@ -14,6 +14,7 @@ defmodule ValentineWeb.WorkspaceLive.Assumption.Index do
     {:ok,
      socket
      |> assign(:workspace_id, workspace_id)
+     |> assign(:workspace, workspace)
      |> assign(:assumptions, workspace.assumptions)}
   end
 
@@ -42,9 +43,23 @@ defmodule ValentineWeb.WorkspaceLive.Assumption.Index do
     |> assign(:page_title, gettext("Listing Assumptions"))
   end
 
+  defp apply_action(socket, :mitigations, %{"id" => id}) do
+    socket
+    |> assign(:page_title, gettext("Link mitigations to mitigation"))
+    |> assign(:mitigations, socket.assigns.workspace.mitigations)
+    |> assign(:assumption, Composer.get_assumption!(id, [:mitigations]))
+  end
+
+  defp apply_action(socket, :threats, %{"id" => id}) do
+    socket
+    |> assign(:page_title, gettext("Link threats to assumption"))
+    |> assign(:threats, socket.assigns.workspace.threats)
+    |> assign(:assumption, Composer.get_assumption!(id, [:threats]))
+  end
+
   @impl true
   def handle_info(
-        {ValentineWeb.WorkspaceLive.Assumption.Components.FormComponent, {:saved, _assumption}},
+        {_, {:saved, _assumption}},
         socket
       ) do
     workspace = get_workspace(socket.assigns.workspace_id)
@@ -80,6 +95,6 @@ defmodule ValentineWeb.WorkspaceLive.Assumption.Index do
   end
 
   defp get_workspace(id) do
-    Composer.get_workspace!(id, [:assumptions])
+    Composer.get_workspace!(id, [:mitigations, :threats, assumptions: [:mitigations, :threats]])
   end
 end
