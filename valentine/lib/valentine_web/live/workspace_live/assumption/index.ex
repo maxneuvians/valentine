@@ -15,7 +15,10 @@ defmodule ValentineWeb.WorkspaceLive.Assumption.Index do
      socket
      |> assign(:workspace_id, workspace_id)
      |> assign(:workspace, workspace)
-     |> assign(:assumptions, workspace.assumptions)}
+     |> assign(
+       :assumptions,
+       get_sorted_assumptions(workspace)
+     )}
   end
 
   @impl true
@@ -66,7 +69,7 @@ defmodule ValentineWeb.WorkspaceLive.Assumption.Index do
 
     {:noreply,
      socket
-     |> assign(:assumptions, workspace.assumptions)}
+     |> assign(:assumptions, get_sorted_assumptions(workspace))}
   end
 
   @impl true
@@ -85,13 +88,17 @@ defmodule ValentineWeb.WorkspaceLive.Assumption.Index do
              |> put_flash(:info, gettext("Assumption deleted successfully"))
              |> assign(
                :assumptions,
-               workspace.assumptions
+               get_sorted_assumptions(workspace)
              )}
 
           {:error, _} ->
             {:noreply, socket |> put_flash(:error, gettext("Failed to delete assumption"))}
         end
     end
+  end
+
+  defp get_sorted_assumptions(workspace) do
+    workspace.assumptions |> Enum.sort(&(&1.numeric_id >= &2.numeric_id))
   end
 
   defp get_workspace(id) do

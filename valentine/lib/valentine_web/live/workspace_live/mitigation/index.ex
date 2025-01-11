@@ -17,7 +17,7 @@ defmodule ValentineWeb.WorkspaceLive.Mitigation.Index do
      |> assign(:filters, %{})
      |> assign(
        :mitigations,
-       get_sorted_mitgations(workspace)
+       get_sorted_mitigations(workspace)
      )}
   end
 
@@ -82,7 +82,7 @@ defmodule ValentineWeb.WorkspaceLive.Mitigation.Index do
              |> put_flash(:info, gettext("Mitigation deleted successfully"))
              |> assign(
                :mitigations,
-               get_sorted_mitgations(workspace)
+               get_sorted_mitigations(workspace)
              )}
 
           {:error, _} ->
@@ -111,7 +111,7 @@ defmodule ValentineWeb.WorkspaceLive.Mitigation.Index do
 
     {:noreply,
      socket
-     |> assign(:mitigations, get_sorted_mitgations(workspace))}
+     |> assign(:mitigations, get_sorted_mitigations(workspace))}
   end
 
   @impl true
@@ -127,7 +127,7 @@ defmodule ValentineWeb.WorkspaceLive.Mitigation.Index do
     }
   end
 
-  defp get_sorted_mitgations(workspace) do
+  defp get_sorted_mitigations(workspace) do
     workspace.mitigations |> Enum.sort(&(&1.numeric_id >= &2.numeric_id))
   end
 
