@@ -60,9 +60,9 @@ defmodule ValentineWeb.WorkspaceLive.SRTM.Index do
     |> assign(:page_title, gettext("Security Requirements Traceability Matrix"))
   end
 
-  defp allocated_controls(controls, assumed, mitigated) do
-    assumed_ids = Map.keys(assumed)
-    mitigated_ids = Map.keys(mitigated)
+  defp allocated_controls(controls, assumed, mitigated, threats) do
+    out_of_scope_ids = Map.keys(assumed)
+    in_scope_ids = (Map.keys(mitigated) ++ Map.keys(threats)) |> Enum.uniq()
 
     initial_acc = %{
       not_allocated: %{},
@@ -72,18 +72,18 @@ defmodule ValentineWeb.WorkspaceLive.SRTM.Index do
 
     Enum.reduce(controls, initial_acc, fn control, acc ->
       cond do
-        control.nist_id in assumed_ids ->
+        control.nist_id in out_of_scope_ids ->
           put_in(
             acc,
             [:out_of_scope, control.nist_id],
             [{control, assumed[control.nist_id]}]
           )
 
-        control.nist_id in mitigated_ids ->
+        control.nist_id in in_scope_ids ->
           put_in(
             acc,
             [:in_scope, control.nist_id],
-            [{control, mitigated[control.nist_id]}]
+            [{control, (mitigated[control.nist_id] || []) ++ (threats[control.nist_id] || [])}]
           )
 
         true ->
@@ -124,10 +124,14 @@ defmodule ValentineWeb.WorkspaceLive.SRTM.Index do
     )
   end
 
+  defp item_content(item = %Composer.Threat{}), do: Composer.Threat.show_statement(item)
+  defp item_content(item), do: item.content
+
   defp map_controls(controls, workspace) do
     assumed_controls = get_tagged_controls(workspace.assumptions)
     mitigated_controls = get_tagged_controls(workspace.mitigations)
-    allocated_controls(controls, assumed_controls, mitigated_controls)
+    threat_controls = get_tagged_controls(workspace.threats)
+    allocated_controls(controls, assumed_controls, mitigated_controls, threat_controls)
   end
 
   defp calculate_percentage(controls, scope) do

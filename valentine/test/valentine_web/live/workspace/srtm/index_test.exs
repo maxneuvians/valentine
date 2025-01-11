@@ -96,6 +96,28 @@ defmodule ValentineWeb.WorkspaceLive.SRTM.IndexTest do
       assert assigned_mitigation.id == mitigation.id
       assert socket.assigns.workspace.id == workspace.id
     end
+
+    test "mounts threats into the correct category", %{
+      workspace: workspace,
+      socket: socket
+    } do
+      threat =
+        threat_fixture(%{
+          tags: ["AC-1"],
+          workspace_id: workspace.id
+        })
+
+      {:ok, socket} =
+        ValentineWeb.WorkspaceLive.SRTM.Index.mount(
+          %{"workspace_id" => workspace.id},
+          nil,
+          socket
+        )
+
+      [{_, [assigned_threat]}] = socket.assigns.controls[:in_scope]["AC-1"]
+      assert assigned_threat.id == threat.id
+      assert socket.assigns.workspace.id == workspace.id
+    end
   end
 
   describe "handle_event/3" do

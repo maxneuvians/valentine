@@ -132,9 +132,14 @@
                           <% :out_of_scope -> %>
                             {gettext("Covered by assumption")}:
                           <% :in_scope -> %>
-                            {gettext("Mitigated by")}:
+                            <%= case item do %>
+                              <% _ = %Valentine.Composer.Threat{} -> %>
+                                {gettext("Threatened by")}:
+                              <% _ -> %>
+                                {gettext("Mitigated by")}:
+                            <% end %>
                         <% end %>
-                        {item.content}
+                        {item_content(item)}
                       </summary>
                       <%= if item.comments do %>
                         <div class="mt-1 pl-4">
