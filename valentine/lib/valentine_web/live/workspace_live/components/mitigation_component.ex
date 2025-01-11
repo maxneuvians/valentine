@@ -133,6 +133,7 @@ defmodule ValentineWeb.WorkspaceLive.Components.MitigationComponent do
                   <ValentineWeb.WorkspaceLive.Components.MarkdownComponent.render text={
                     @mitigation.comments
                   } />
+                  <input type="hidden" name="comments" value={@mitigation.comments} />
               <% end %>
               <.button is_primary class="mt-2" type="submit">{gettext("Save")}</.button>
             </form>

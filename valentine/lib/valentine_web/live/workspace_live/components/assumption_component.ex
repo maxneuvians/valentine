@@ -106,6 +106,7 @@ defmodule ValentineWeb.WorkspaceLive.Components.AssumptionComponent do
                   <ValentineWeb.WorkspaceLive.Components.MarkdownComponent.render text={
                     @assumption.comments
                   } />
+                  <input type="hidden" name="comments" value={@assumption.comments} />
               <% end %>
               <.button is_primary class="mt-2" type="submit">{gettext("Save")}</.button>
             </form>
