@@ -40,6 +40,14 @@ defmodule ValentineWeb.WorkspaceLive.Components.FilterComponentTest do
       assert html =~ "filter"
     end
 
+    test "removes any selected field that are not actually in the values list", %{
+      assigns: assigns
+    } do
+      assigns = Map.put(assigns, :filters, Map.put(assigns.filters, :filter, [:four]))
+      html = render_component(FilterComponent, assigns)
+      refute html =~ "four"
+    end
+
     test "renders a counter if a filter has values", %{assigns: assigns} do
       assigns = Map.put(assigns, :filters, Map.put(assigns.filters, :filter, ["one"]))
       html = render_component(FilterComponent, assigns)

@@ -9,12 +9,18 @@ defmodule ValentineWeb.WorkspaceLive.SRTM.Index do
   @impl true
   def mount(%{"workspace_id" => workspace_id} = _params, _session, socket) do
     workspace = get_workspace(workspace_id)
-    controls = filter_controls(%{})
+
+    filters = %{
+      profile: [workspace.cloud_profile],
+      type: [workspace.cloud_profile_type]
+    }
+
+    controls = filter_controls(filters)
 
     {:ok,
      socket
      |> assign(:controls, map_controls(controls, workspace))
-     |> assign(:filters, %{})
+     |> assign(:filters, filters)
      |> assign(:workspace, workspace)}
   end
 
@@ -100,7 +106,18 @@ defmodule ValentineWeb.WorkspaceLive.SRTM.Index do
     do: Composer.list_controls()
 
   defp filter_controls(filters) do
-    filters = Map.values(filters) |> List.flatten()
+    # This should be dynamically generated
+    valid_tags = [
+      "CCCS Low Profile for Cloud",
+      "CCCS Medium Profile for Cloud",
+      "CSP Full Stack",
+      "CSP Stacked PaaS",
+      "CSP Stacked SaaS",
+      "Client IaaS / PaaS",
+      "Client SaaS"
+    ]
+
+    filters = Map.values(filters) |> List.flatten() |> Enum.filter(&(&1 in valid_tags))
     Composer.list_controls_by_tags(filters)
   end
 

@@ -5,7 +5,7 @@ defmodule ValentineWeb.WorkspaceLive.SRTM.IndexTest do
 
   setup do
     control = control_fixture(%{nist_id: "AC-1", tags: ["A", "B", "C"]})
-    workspace = workspace_fixture()
+    workspace = workspace_fixture(%{cloud_profile: "A", cloud_profile_type: "B"})
 
     workspace =
       Valentine.Composer.get_workspace!(workspace.id,

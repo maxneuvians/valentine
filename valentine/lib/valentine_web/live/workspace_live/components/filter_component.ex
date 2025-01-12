@@ -8,7 +8,14 @@ defmodule ValentineWeb.WorkspaceLive.Components.FilterComponent do
       if !Map.has_key?(assigns.filters, assigns.name) do
         assign(assigns, :filters, Map.put(assigns.filters, assigns.name, []))
       else
-        assigns
+        # Filter any values that are not in the list of atomic values
+        assign(
+          assigns,
+          :filters,
+          Map.update!(assigns.filters, assigns.name, fn values ->
+            Enum.filter(values, &(&1 in assigns.values))
+          end)
+        )
       end
 
     ~H"""
