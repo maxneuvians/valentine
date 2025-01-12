@@ -16,7 +16,9 @@
     <.box>
       <:header_title>{gettext("Details")}</:header_title>
       <:body>
-        <span class="f3">{@workspace.name}</span>
+        <div class="f3">{@workspace.name}</div>
+        <div class="f5 mt-1">{gettext("Profile")}: {@workspace.cloud_profile}</div>
+        <div class="f5 mt-1">{gettext("Type")}: {@workspace.cloud_profile_type}</div>
         <table class="summary">
           <tr>
             <td>{gettext("Total threats")}</td>

@@ -19,7 +19,10 @@ defmodule Valentine.ComposerFixtures do
     {:ok, workspace} =
       attrs
       |> Enum.into(%{
-        name: "some name"
+        name: "some name",
+        cloud_profile: "some cloud_profile",
+        cloud_profile_type: "some cloud_profile_type",
+        url: "some url"
       })
       |> Valentine.Composer.create_workspace()
 

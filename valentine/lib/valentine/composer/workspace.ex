@@ -11,6 +11,9 @@ defmodule Valentine.Composer.Workspace do
 
   schema "workspaces" do
     field :name, :string
+    field :cloud_profile, :string
+    field :cloud_profile_type, :string
+    field :url, :string
 
     has_one :application_information, Valentine.Composer.ApplicationInformation,
       on_delete: :delete_all
@@ -29,7 +32,7 @@ defmodule Valentine.Composer.Workspace do
   @doc false
   def changeset(workspace, attrs) do
     workspace
-    |> cast(attrs, [:name])
+    |> cast(attrs, [:name, :cloud_profile, :cloud_profile_type, :url])
     |> validate_required([:name])
   end
 end

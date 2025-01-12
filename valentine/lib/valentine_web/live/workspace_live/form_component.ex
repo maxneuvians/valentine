@@ -39,7 +39,49 @@ defmodule ValentineWeb.WorkspaceLive.FormComponent do
                   label: gettext("Name")
                 }
               }
-              class="mt-2"
+              class="my-2"
+              is_full_width
+              is_form_control
+            />
+
+            <.select
+              form={f}
+              name="cloud_profile"
+              options={[
+                [key: gettext("None selected"), value: "None selected"],
+                [key: gettext("CCCS Low Profile for Cloud"), value: "CCCS Low Profile for Cloud"],
+                [
+                  key: gettext("CCCS Medium Profile for Cloud"),
+                  value: "CCCS Medium Profile for Cloud"
+                ]
+              ]}
+              selected={@changeset.changes[:cloud_profile] || @workspace.cloud_profile}
+              is_form_control
+            />
+
+            <.select
+              form={f}
+              name="cloud_profile_type"
+              options={[
+                [key: gettext("None selected"), value: "None selected"],
+                [key: gettext("CSP Full Stack"), value: "CSP Full Stack"],
+                [key: gettext("CSP Stacked PaaS"), value: "CSP Stacked PaaS"],
+                [key: gettext("CSP Stacked SaaS"), value: "CSP Stacked SaaS"],
+                [key: gettext("Client IaaS / PaaS"), value: "Client IaaS / PaaS"],
+                [key: gettext("Client SaaS"), value: "Client SaaS"]
+              ]}
+              selected={@changeset.changes[:cloud_profile_type] || @workspace.cloud_profile_type}
+              is_form_control
+            />
+
+            <.text_input
+              form={f}
+              field={:url}
+              form_control={
+                %{
+                  label: gettext("URL")
+                }
+              }
               is_full_width
               is_form_control
             />
@@ -66,7 +108,9 @@ defmodule ValentineWeb.WorkspaceLive.FormComponent do
 
   @impl true
   def handle_event("validate", %{"workspace" => workspace_params}, socket) do
-    changeset = Composer.change_workspace(socket.assigns.workspace, workspace_params)
+    changeset =
+      Composer.change_workspace(socket.assigns.workspace, workspace_params)
+
     {:noreply, assign(socket, :changeset, changeset)}
   end
 

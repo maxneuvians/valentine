@@ -24,6 +24,20 @@ defmodule ValentineWeb.WorkspaceLive.ShowViewTest do
       assert html =~ workspace.name
     end
 
+    test "display workspace cloud profile", %{conn: conn, workspace: workspace} do
+      {:ok, _index_live, html} = live(conn, ~p"/workspaces/#{workspace.id}")
+
+      assert html =~ "Profile"
+      assert html =~ workspace.cloud_profile
+    end
+
+    test "display workspace cloud profile type", %{conn: conn, workspace: workspace} do
+      {:ok, _index_live, html} = live(conn, ~p"/workspaces/#{workspace.id}")
+
+      assert html =~ "Type"
+      assert html =~ workspace.cloud_profile_type
+    end
+
     test "display mitigation status", %{conn: conn, mitigation: mitigation} do
       {:ok, _index_live, html} = live(conn, ~p"/workspaces/#{mitigation.workspace_id}")
 

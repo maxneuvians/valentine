@@ -6,6 +6,10 @@ defmodule Valentine.Repo.Migrations.CreateWorkspaces do
       add :id, :uuid, primary_key: true, null: false
       add :name, :string
 
+      add :cloud_profile, :string
+      add :cloud_profile_type, :string
+      add :url, :string
+
       timestamps(type: :utc_datetime)
     end
   end
