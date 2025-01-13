@@ -6,12 +6,13 @@ defmodule ValentineWeb.WorkspaceLive.Threat.Index do
 
   @impl true
   def mount(%{"workspace_id" => workspace_id} = _params, _session, socket) do
-    workspace = Composer.get_workspace!(workspace_id)
+    workspace = Composer.get_workspace!(workspace_id, [:assumptions, :mitigations])
     ValentineWeb.Endpoint.subscribe("workspace_" <> workspace.id)
 
     {:ok,
      socket
      |> assign(:workspace_id, workspace_id)
+     |> assign(:workspace, workspace)
      |> assign(:filters, %{})
      |> assign(:threats, Composer.list_threats_by_workspace(workspace.id, %{}))}
   end
@@ -21,10 +22,24 @@ defmodule ValentineWeb.WorkspaceLive.Threat.Index do
     {:noreply, apply_action(socket, socket.assigns.live_action, params)}
   end
 
+  defp apply_action(socket, :assumptions, %{"id" => id}) do
+    socket
+    |> assign(:page_title, gettext("Link assumptions to threat"))
+    |> assign(:assumptions, socket.assigns.workspace.assumptions)
+    |> assign(:threat, Composer.get_threat!(id, [:assumptions]))
+  end
+
   defp apply_action(socket, :index, %{"workspace_id" => workspace_id} = _params) do
     socket
     |> assign(:page_title, gettext("Listing threats"))
     |> assign(:workspace_id, workspace_id)
+  end
+
+  defp apply_action(socket, :mitigations, %{"id" => id}) do
+    socket
+    |> assign(:page_title, gettext("Link mitigations to threat"))
+    |> assign(:mitigations, socket.assigns.workspace.mitigations)
+    |> assign(:threat, Composer.get_threat!(id, [:mitigations]))
   end
 
   @impl true
@@ -81,6 +96,19 @@ defmodule ValentineWeb.WorkspaceLive.Threat.Index do
         Composer.list_threats_by_workspace(socket.assigns.workspace_id, filters)
       )
     }
+  end
+
+  @impl true
+  def handle_info(
+        {_, {:saved, _threat}},
+        socket
+      ) do
+    {:noreply,
+     assign(
+       socket,
+       :threats,
+       Composer.list_threats_by_workspace(socket.assigns.workspace_id, socket.assigns.filters)
+     )}
   end
 
   @impl true

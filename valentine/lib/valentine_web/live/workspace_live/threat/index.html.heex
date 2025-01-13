@@ -71,3 +71,29 @@
     />
   </:row>
 </.box>
+
+<.live_component
+  :if={@live_action in [:assumptions]}
+  module={ValentineWeb.WorkspaceLive.Components.EntityLinkerComponent}
+  id={@threat.id}
+  source_entity_type={:threat}
+  target_entity_type={:assumptions}
+  entity={@threat}
+  linkable_entities={@assumptions}
+  linked_entities={@threat.assumptions}
+  workspace_id={@workspace_id}
+  patch={~p"/workspaces/#{@workspace_id}/threats"}
+/>
+
+<.live_component
+  :if={@live_action in [:mitigations]}
+  module={ValentineWeb.WorkspaceLive.Components.EntityLinkerComponent}
+  id={@threat.id}
+  source_entity_type={:threat}
+  target_entity_type={:mitigations}
+  entity={@threat}
+  linkable_entities={@mitigations}
+  linked_entities={@threat.mitigations}
+  workspace_id={@workspace_id}
+  patch={~p"/workspaces/#{@workspace_id}/threats"}
+/>

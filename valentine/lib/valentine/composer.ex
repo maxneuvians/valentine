@@ -196,6 +196,7 @@ defmodule Valentine.Composer do
     from(t in Threat, where: t.workspace_id == ^workspace_id)
     |> list_threats_with_enum_filters(enum_filters)
     |> order_by([t], desc: t.numeric_id)
+    |> preload([:assumptions, :mitigations])
     |> Repo.all()
   end
 
@@ -213,7 +214,14 @@ defmodule Valentine.Composer do
       ** (Ecto.NoResultsError)
 
   """
-  def get_threat!(id), do: Repo.get!(Threat, id)
+  def get_threat!(id, _preload \\ nil)
+
+  def get_threat!(id, preload) when is_list(preload) do
+    Repo.get!(Threat, id)
+    |> Repo.preload(preload)
+  end
+
+  def get_threat!(id, preload) when is_nil(preload), do: Repo.get!(Threat, id)
 
   @doc """
   Creates a threat.

@@ -48,7 +48,7 @@ defmodule ValentineWeb.WorkspaceLive.Assumption.Index do
 
   defp apply_action(socket, :mitigations, %{"id" => id}) do
     socket
-    |> assign(:page_title, gettext("Link mitigations to mitigation"))
+    |> assign(:page_title, gettext("Link mitigations to assumption"))
     |> assign(:mitigations, socket.assigns.workspace.mitigations)
     |> assign(:assumption, Composer.get_assumption!(id, [:mitigations]))
   end

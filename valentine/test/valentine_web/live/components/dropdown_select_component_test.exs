@@ -111,7 +111,7 @@ defmodule ValentineWeb.WorkspaceLive.Components.DropdownSelectComponentTest do
       {:noreply, socket} =
         DropdownSelectComponent.handle_event("select_item", %{"id" => 3}, socket)
 
-      assert socket.assigns.show_dropdown == false
+      assert socket.assigns.show_dropdown == true
     end
 
     test "selects the item when a target is defined" do
@@ -131,7 +131,7 @@ defmodule ValentineWeb.WorkspaceLive.Components.DropdownSelectComponentTest do
       {:noreply, socket} =
         DropdownSelectComponent.handle_event("select_item", %{"id" => 3}, socket)
 
-      assert socket.assigns.show_dropdown == false
+      assert socket.assigns.show_dropdown == true
     end
   end
 

@@ -53,6 +53,28 @@ defmodule ValentineWeb.WorkspaceLive.Components.ThreatComponent do
           <div class="float-right">
             <.button
               is_icon_button
+              aria-label="Linked assumptions"
+              phx-click={
+                JS.patch(~p"/workspaces/#{@threat.workspace_id}/threats/#{@threat.id}/assumptions")
+              }
+              id={"linked-threat-assumptions-#{@threat.id}"}
+            >
+              <.octicon name="discussion-closed-16" />
+              <.counter>{assoc_length(@threat.assumptions)}</.counter>
+            </.button>
+            <.button
+              is_icon_button
+              aria-label="Linked mitigations"
+              phx-click={
+                JS.patch(~p"/workspaces/#{@threat.workspace_id}/threats/#{@threat.id}/mitigations")
+              }
+              id={"linked-threat-mitigations-#{@threat.id}"}
+            >
+              <.octicon name="check-circle-16" />
+              <.counter>{assoc_length(@threat.mitigations)}</.counter>
+            </.button>
+            <.button
+              is_icon_button
               aria-label="Edit"
               navigate={~p"/workspaces/#{@threat.workspace_id}/threats/#{@threat.id}"}
             >
@@ -224,4 +246,7 @@ defmodule ValentineWeb.WorkspaceLive.Components.ThreatComponent do
   def handle_event("update_comments", %{"comments" => comments}, socket) do
     {:noreply, assign(socket, :threat, %{socket.assigns.threat | comments: comments})}
   end
+
+  defp assoc_length(l) when is_list(l), do: length(l)
+  defp assoc_length(_), do: 0
 end

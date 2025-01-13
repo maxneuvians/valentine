@@ -101,7 +101,7 @@ defmodule Valentine.ComposerTest do
 
     test "list_threats_by_workspace/2 returns all threats for a workspace" do
       threat = threat_fixture()
-      assert Composer.list_threats_by_workspace(threat.workspace_id) == [threat]
+      assert hd(Composer.list_threats_by_workspace(threat.workspace_id)).id == threat.id
     end
 
     test "list_threats_by_workspace/2 returns all threats for a workspace adnd not other workspaces" do

@@ -85,7 +85,7 @@ defmodule ValentineWeb.WorkspaceLive.Components.DropdownSelectComponent do
 
     {:noreply,
      socket
-     |> assign(show_dropdown: false)}
+     |> assign(show_dropdown: true)}
   end
 
   def handle_event("toggle_dropdown", _, socket) do
