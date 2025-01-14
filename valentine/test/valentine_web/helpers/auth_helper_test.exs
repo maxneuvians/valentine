@@ -74,13 +74,15 @@ defmodule ValentineWeb.Helpers.AuthHelperTest do
   end
 
   describe "on_mount/4" do
-    test "sets the current_user to nil if GOOGLE env variables are not set", %{socket: socket} do
+    test "sets the current_user to a random ID if GOOGLE env variables are not set", %{
+      socket: socket
+    } do
       System.put_env("GOOGLE_CLIENT_ID", "")
       System.put_env("GOOGLE_CLIENT_SECRET", "")
 
       {:cont, socket} = AuthHelper.on_mount(:default, %{}, %{}, socket)
 
-      assert socket.assigns[:current_user] == nil
+      assert socket.assigns[:current_user] != nil
     end
 
     test "halts and redirects to / if user_id is nil", %{socket: socket} do

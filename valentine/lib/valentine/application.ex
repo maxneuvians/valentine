@@ -12,6 +12,7 @@ defmodule Valentine.Application do
       Valentine.Repo,
       {DNSCluster, query: Application.get_env(:valentine, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: Valentine.PubSub},
+      ValentineWeb.Presence,
       # Start the Finch HTTP client for sending emails
       {Finch, name: Valentine.Finch},
       # Start a worker by calling: Valentine.Worker.start_link(arg)

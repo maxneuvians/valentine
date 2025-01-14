@@ -53,6 +53,7 @@ defmodule ValentineWeb.Router do
         ValentineWeb.Helpers.FlashHelper,
         ValentineWeb.Helpers.LocaleHelper,
         ValentineWeb.Helpers.NavHelper,
+        ValentineWeb.Helpers.PresenceHelper,
         ValentineWeb.Helpers.ThemeHelper
       ] do
       live "/workspaces", WorkspaceLive.Index, :index

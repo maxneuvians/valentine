@@ -27,7 +27,12 @@ defmodule ValentineWeb.Helpers.AuthHelper do
           {:cont, Phoenix.Component.assign(socket, :current_user, user_id)}
       end
     else
-      {:cont, Phoenix.Component.assign(socket, :current_user, nil)}
+      user_id =
+        Valentine.Cache.get({socket.id, :user_id}) || session["user_id"] || generate_user_id()
+
+      Valentine.Cache.put({socket.id, :user_id}, user_id, expire: :timer.hours(48))
+
+      {:cont, Phoenix.Component.assign(socket, :current_user, user_id)}
     end
   end
 
@@ -40,5 +45,11 @@ defmodule ValentineWeb.Helpers.AuthHelper do
     else
       _ -> false
     end
+  end
+
+  defp generate_user_id() do
+    :crypto.strong_rand_bytes(16)
+    |> Base.encode64()
+    |> String.trim_trailing("=")
   end
 end
