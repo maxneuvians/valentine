@@ -48,8 +48,6 @@ defmodule ValentineWeb.Helpers.AuthHelper do
   end
 
   defp generate_user_id() do
-    :crypto.strong_rand_bytes(16)
-    |> Base.encode64()
-    |> String.trim_trailing("=")
+    :crypto.strong_rand_bytes(8) |> Base.encode64() |> Kernel.<>("||") |> String.reverse()
   end
 end

@@ -30,6 +30,14 @@ defmodule ValentineWeb.WorkspaceLive.Components.WorkspaceComponent do
             <.octicon name="trash-16" />
           </.button>
         </div>
+        <div class="float-right mt-1">
+          <ValentineWeb.WorkspaceLive.Components.PresenceIndicatorComponent.render
+            current_user={@current_user}
+            presence={@presence}
+            active_module={nil}
+            workspace_id={@workspace.id}
+          />
+        </div>
       </div>
     </div>
     """

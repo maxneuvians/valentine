@@ -9,7 +9,11 @@ defmodule ValentineWeb.Helpers.NavHelper do
   end
 
   defp set_active_module(params, _url, socket) do
-    workspace_id = Map.get(params, "workspace_id", nil)
+    workspace_id =
+      case Map.get(params, "workspace_id") do
+        nil -> Map.get(params, "id", nil)
+        id -> id
+      end
 
     active_module =
       socket.view

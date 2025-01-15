@@ -7,9 +7,10 @@
     </:item>
     <:item is_full_width />
     <:item>
-      <ValentineWeb.WorkspaceLive.Components.PresenceIndicatorComponent.render presence={
-        @presence
-      } />
+      <ValentineWeb.WorkspaceLive.Components.PresenceIndicatorComponent.render
+        current_user={@current_user}
+        presence={@presence}
+      />
     </:item>
     <:item>
       <.button
@@ -134,78 +135,155 @@
         <:item
           is_selected={@active_module == "Index" || @active_module == "Show"}
           navigate={"/workspaces/#{@workspace_id}"}
+          class="d-flex flex-items-center flex-justify-between"
         >
-          <.octicon name="tools-16" /> {gettext("Workspaces")}
+          <span><.octicon name="tools-16" /> {gettext("Workspaces")}</span>
+          <ValentineWeb.WorkspaceLive.Components.PresenceIndicatorComponent.render
+            current_user={@current_user}
+            presence={@presence}
+            active_module={["Index", "Show"]}
+            workspace_id={@workspace_id}
+          />
         </:item>
         <:item
           :if={@workspace_id}
           is_selected={@active_module == "ApplicationInformation"}
           navigate={~p"/workspaces/#{@workspace_id}/application_information"}
+          class="d-flex flex-items-center flex-justify-between"
         >
-          <.octicon name="star-16" /> {gettext("Application Information")}
+          <span><.octicon name="star-16" /> {gettext("Application Information")}</span>
+          <ValentineWeb.WorkspaceLive.Components.PresenceIndicatorComponent.render
+            current_user={@current_user}
+            presence={@presence}
+            active_module="ApplicationInformation"
+            workspace_id={@workspace_id}
+          />
         </:item>
         <:item
           :if={@workspace_id}
           is_selected={@active_module == "Architecture"}
           navigate={~p"/workspaces/#{@workspace_id}/architecture"}
+          class="d-flex flex-items-center flex-justify-between"
         >
-          <.octicon name="container-16" /> {gettext("Architecture")}
+          <span><.octicon name="container-16" /> {gettext("Architecture")}</span>
+          <ValentineWeb.WorkspaceLive.Components.PresenceIndicatorComponent.render
+            current_user={@current_user}
+            presence={@presence}
+            active_module="Architecture"
+            workspace_id={@workspace_id}
+          />
         </:item>
         <:item
           :if={@workspace_id}
           is_selected={@active_module == "DataFlow"}
           navigate={~p"/workspaces/#{@workspace_id}/data_flow"}
+          class="d-flex flex-items-center flex-justify-between"
         >
-          <.octicon name="workflow-16" /> {gettext("Data Flow")}
+          <span><.octicon name="workflow-16" /> {gettext("Data Flow")}</span>
+          <ValentineWeb.WorkspaceLive.Components.PresenceIndicatorComponent.render
+            current_user={@current_user}
+            presence={@presence}
+            active_module="DataFlow"
+            workspace_id={@workspace_id}
+          />
         </:item>
         <:item
           :if={@workspace_id}
           is_selected={@active_module == "Assumption"}
           navigate={~p"/workspaces/#{@workspace_id}/assumptions"}
+          class="d-flex flex-items-center flex-justify-between"
         >
-          <.octicon name="discussion-closed-16" /> {gettext("Assumptions")}
+          <span><.octicon name="discussion-closed-16" /> {gettext("Assumptions")}</span>
+          <ValentineWeb.WorkspaceLive.Components.PresenceIndicatorComponent.render
+            current_user={@current_user}
+            presence={@presence}
+            active_module="Assumption"
+            workspace_id={@workspace_id}
+          />
         </:item>
         <:item
           :if={@workspace_id}
           is_selected={@active_module == "Threat"}
           navigate={~p"/workspaces/#{@workspace_id}/threats"}
+          class="d-flex flex-items-center flex-justify-between"
         >
-          <.octicon name="squirrel-16" /> {gettext("Threats")}
+          <span><.octicon name="squirrel-16" /> {gettext("Threats")}</span>
+          <ValentineWeb.WorkspaceLive.Components.PresenceIndicatorComponent.render
+            current_user={@current_user}
+            presence={@presence}
+            active_module="Threat"
+            workspace_id={@workspace_id}
+          />
         </:item>
         <:item
           :if={@workspace_id}
           is_selected={@active_module == "Mitigation"}
           navigate={~p"/workspaces/#{@workspace_id}/mitigations"}
+          class="d-flex flex-items-center flex-justify-between"
         >
-          <.octicon name="check-circle-16" /> {gettext("Mitigations")}
+          <span><.octicon name="check-circle-16" /> {gettext("Mitigations")}</span>
+          <ValentineWeb.WorkspaceLive.Components.PresenceIndicatorComponent.render
+            current_user={@current_user}
+            presence={@presence}
+            active_module="Mitigation"
+            workspace_id={@workspace_id}
+          />
         </:item>
       </.side_nav>
       <.side_nav :if={@workspace_id} aria_label="model" class="mt-4" is_border>
         <:item
-          is_selected={@active_module == "Report"}
+          is_selected={@active_module == "ThreatModel"}
           navigate={~p"/workspaces/#{@workspace_id}/threat_model"}
+          class="d-flex flex-items-center flex-justify-between"
         >
-          <.octicon name="file-badge-16" /> {gettext("Threat Model")}
+          <span><.octicon name="file-badge-16" /> {gettext("Threat Model")}</span>
+          <ValentineWeb.WorkspaceLive.Components.PresenceIndicatorComponent.render
+            current_user={@current_user}
+            presence={@presence}
+            active_module="ThreatModel"
+            workspace_id={@workspace_id}
+          />
         </:item>
       </.side_nav>
       <.side_nav :if={@workspace_id} aria_label="reference-packs" class="mt-4" is_border>
         <:item
           is_selected={@active_module == "ReferencePacks"}
           navigate={~p"/workspaces/#{@workspace_id}/reference_packs"}
+          class="d-flex flex-items-center flex-justify-between"
         >
-          <.octicon name="repo-16" /> {gettext("Reference Packs")}
+          <span><.octicon name="repo-16" /> {gettext("Reference Packs")}</span>
+          <ValentineWeb.WorkspaceLive.Components.PresenceIndicatorComponent.render
+            current_user={@current_user}
+            presence={@presence}
+            active_module="ReferencePacks"
+            workspace_id={@workspace_id}
+          />
         </:item>
         <:item
           is_selected={@active_module == "SRTM"}
           navigate={~p"/workspaces/#{@workspace_id}/srtm"}
+          class="d-flex flex-items-center flex-justify-between"
         >
-          <.octicon name="tasklist-16" /> {gettext("SRTM View")}
+          <span><.octicon name="tasklist-16" /> {gettext("SRTM View")}</span>
+          <ValentineWeb.WorkspaceLive.Components.PresenceIndicatorComponent.render
+            current_user={@current_user}
+            presence={@presence}
+            active_module="SRTM"
+            workspace_id={@workspace_id}
+          />
         </:item>
         <:item
           is_selected={@active_module == "Controls"}
           navigate={~p"/workspaces/#{@workspace_id}/controls"}
+          class="d-flex flex-items-center flex-justify-between"
         >
-          <.octicon name="shield-lock-16" /> {gettext("NIST Controls")}
+          <span><.octicon name="shield-lock-16" /> {gettext("NIST Controls")}</span>
+          <ValentineWeb.WorkspaceLive.Components.PresenceIndicatorComponent.render
+            current_user={@current_user}
+            presence={@presence}
+            active_module="Controls"
+            workspace_id={@workspace_id}
+          />
         </:item>
       </.side_nav>
     </:sidebar>

@@ -4,7 +4,6 @@ defmodule ValentineWeb.Presence do
     pubsub_server: Valentine.PubSub
 
   def init(_opts) do
-    # user-land state
     {:ok, %{}}
   end
 
@@ -15,6 +14,7 @@ defmodule ValentineWeb.Presence do
       |> Map.drop(Map.keys(leaves))
 
     Valentine.Cache.put("valentine:presence", presence)
+    Phoenix.PubSub.broadcast(Valentine.PubSub, "valentine:presence", %{event: "change"})
     {:ok, state}
   end
 end

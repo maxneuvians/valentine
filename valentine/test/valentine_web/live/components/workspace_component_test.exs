@@ -7,7 +7,7 @@ defmodule ValentineWeb.WorkspaceLive.Components.WorkspaceComponentTest do
 
   defp create_workspace(_) do
     workspace = workspace_fixture()
-    %{assigns: %{workspace: workspace}}
+    %{assigns: %{current_user: %{}, presence: %{}, workspace: workspace}}
   end
 
   describe "render" do

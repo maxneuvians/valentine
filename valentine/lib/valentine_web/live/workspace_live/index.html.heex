@@ -45,6 +45,8 @@
     <.live_component
       module={ValentineWeb.WorkspaceLive.Components.WorkspaceComponent}
       id={"workspace-#{workspace.id}"}
+      current_user={@current_user}
+      presence={@presence}
       workspace={workspace}
     />
   </:row>
