@@ -62,16 +62,20 @@ defmodule ValentineWeb.WorkspaceLive.Components.PresenceIndicatorComponent do
 
   defp get_name("||" <> _key, index) do
     [
-      "Anonymous Vancouverite",
-      "Anonymous Ottawan",
-      "Anonymous Haligonian",
-      "Anonymous Yellowknifer",
-      "Anonymous Calgarian",
-      "Anonymous Winnipegger",
-      "Anonymous Edmontonian",
-      "Anonymous Yukoner",
-      "Anonymous Montrealer",
-      "Anonymous Banffite"
+      "Adventurous Ant",
+      "Bashful Bumblebee",
+      "Clever Caterpillar",
+      "Daring Dragonfly",
+      "Eager Earwig",
+      "Friendly Firefly",
+      "Gentle Grasshopper",
+      "Happy Hornet",
+      "Inquisitive Inchworm",
+      "Jolly Junebug",
+      "Kindly Katydid",
+      "Lively Ladybug",
+      "Merry Mosquito",
+      "Nice Nematode"
     ]
     |> Enum.at(index)
   end

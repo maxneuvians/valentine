@@ -161,7 +161,7 @@ defmodule ValentineWeb.WorkspaceLive.Components.PresenceIndicatorComponentTest d
         current_user: "some_user"
       )
 
-    assert html =~ "Anonymous Vancouverite"
+    assert html =~ "Adventurous Ant"
   end
 
   test "renders a presence with their username if it does not start with ||" do
