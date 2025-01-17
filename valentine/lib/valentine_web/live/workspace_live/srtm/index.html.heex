@@ -119,6 +119,14 @@
               <div class="p-3">
                 <div class="">{control.nist_id}</div>
                 <div class="">{control.name}</div>
+                <details>
+                  <summary class="mt-2">
+                    {gettext("More information")}
+                  </summary>
+                  <div class="mt-1 pl-4">
+                    {control.description}
+                  </div>
+                </details>
               </div>
             <% {_, [{control, related_items}]} -> %>
               <div class="p-3">
