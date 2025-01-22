@@ -27,10 +27,12 @@ defmodule ValentineWeb.WorkspaceLive.ThreatModel.Components.ReportComponent do
       </ol>
 
       <h3 id="application_information">1. {gettext("Application Information")}</h3>
-      {optional_content(@workspace.application_information) |> Phoenix.HTML.raw()}
+      {optional_content(@workspace.application_information)
+      |> reduce_titles_in_content()
+      |> Phoenix.HTML.raw()}
 
       <h3 id="architecture">2. {gettext("Architecture")}</h3>
-      {optional_content(@workspace.architecture) |> Phoenix.HTML.raw()}
+      {optional_content(@workspace.architecture) |> reduce_titles_in_content() |> Phoenix.HTML.raw()}
 
       <h3 id="data_flow_diagram">3. {gettext("Data Flow")}</h3>
       <.box
@@ -273,6 +275,13 @@ defmodule ValentineWeb.WorkspaceLive.ThreatModel.Components.ReportComponent do
 
   defp optional_content(nil), do: "<i>Not set</i>"
   defp optional_content(model), do: model.content
+
+  defp reduce_titles_in_content(content) do
+    content
+    |> String.replace(~r/h1\>/, "h4>")
+    |> String.replace(~r/h2\>/, "h5>")
+    |> String.replace(~r/h3\>/, "h6>")
+  end
 
   defp stride_to_letter(nil), do: ""
 
