@@ -10,7 +10,7 @@ IMPORTANT: This project is still missing feature and has bugs. Please review the
 
 ## Features
 
-1. Threat modeling with [STRIDE](https://en.wikipedia.org/wiki/STRIDE_model) based on the [AWS threat grammar](https://catalog.workshops.aws/threatmodel/en-US/what-can-go-wrong/threat-grammar). For more information see the [AWS Threat Composer](https://github.com/awslabs/threat-composer).
+1. Threat modeling with [STRIDE](https://en.wikipedia.org/wiki/STRIDE_model) based on a pre-defined [threat grammar](https://catalog.workshops.aws/threatmodel/en-US/what-can-go-wrong/threat-grammar). For more information see [Threat Composer](https://github.com/awslabs/threat-composer).
 
 2. Collaborative, real-time editing of threat models, data flow diagrams, and application architecture.
 
@@ -96,6 +96,6 @@ You can get these by creating a new project in the Google Developer Console and 
 
 In this case to access the `/workspaces` route you need to be authenticated with Google, but visiting `/auth/google`. Currently nothing is done with the user information from Google, but you can use it to restrict access to the app.
 
-## Dev issues with formatting
+## License
 
-https://github.com/elixir-lsp/elixir-ls/issues/1110
+MIT 2025
