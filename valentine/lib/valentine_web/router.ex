@@ -7,7 +7,10 @@ defmodule ValentineWeb.Router do
     plug :fetch_live_flash
     plug :put_root_layout, html: {ValentineWeb.Layouts, :root}
     plug :protect_from_forgery
-    plug :put_secure_browser_headers
+
+    plug :put_secure_browser_headers, %{
+      "content-security-policy" => "default-src 'self' style-src 'self' 'unsafe-inline';"
+    }
   end
 
   pipeline :authenticated do
