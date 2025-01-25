@@ -1,5 +1,7 @@
 # 🍁 Valentine
 
+[La version française suit.](#---------------------------------------------------------------------)
+
 ![Lint, format, and test workflow](https://github.com/maxneuvians/valentine/actions/workflows/ci_code.yml/badge.svg)
 
 Valentine is a real-time collaborative threat modeling tool that combines human expertise with generative AI to streamline the security design process while maintaining simplicity and rigor.
@@ -40,7 +42,6 @@ Valentine's flexibility allows it to be used for threat modeling both individual
 3. `make dev`
 
 Note: It is normal to see warnings during the setup process. Also depending on the amount of memory available to the codespace, the setup process may take longer than usual.
-
 
 ## Running with docker compose
 
@@ -97,5 +98,107 @@ You can get these by creating a new project in the Google Developer Console and 
 In this case to access the `/workspaces` route you need to be authenticated with Google, but visiting `/auth/google`. Currently nothing is done with the user information from Google, but you can use it to restrict access to the app.
 
 ## License
+
+MIT 2025
+
+## ---------------------------------------------------------------------
+
+# Valentine 🍁 
+
+Valentine est un outil collaboratif de modélisation des menaces en temps réel qui associe l’expertise humaine à l’IA générative pour rationaliser le processus de conception de la sécurité tout en conservant simplicité et rigueur.
+
+![Capture d’écran d’un diagramme de flux de données dans Valentine](screenshots/data_flow_diagram.png)
+
+IMPORTANT : Ce projet est en cours de développement et peut subir des modifications importantes. Il manque encore des fonctionnalités à ce projet et il comporte des bogues. Veuillez examiner les [problèmes](https://github.com/maxneuvians/valentine/issues) pour plus de renseignements.
+
+## Fonctionnalités
+
+1. Modélisation des menaces à l’aide de [STRIDE](https://en.wikipedia.org/wiki/STRIDE_model) sur la base d’une [grammaire des menaces prédéfinie](https://catalog.workshops.aws/threatmodel/en-US/what-can-go-wrong/threat-grammar). Pour de plus amples renseignements, consultez : [Threat Composer](https://github.com/awslabs/threat-composer).
+
+2. Édition collaborative et en temps réel des modèles de menaces, des diagrammes de flux de données et de l’architecture des applications.
+
+3. L’IA générative pour aider à la modélisation des menaces et expliquer les architectures et les flux de données.
+
+4. Mise en correspondance des hypothèses et des mesures d’atténuation avec les contrôles NIST afin de faciliter les documents de la conformité.
+
+5. Utilisation de dossiers de référence partageables pour aider à établir des hypothèses communes, des menaces et des mesures d’atténuation au sein des équipes d’une organisation.
+
+Si vous préférez les images au lieu des textes, vous pouvez consulter la [galerie].
+
+## Justification
+
+
+Valentine offre une autre option que l’approche de la sécurité axée sur la conformité, souvent pratiquée dans les grandes organisations. Dans les équipes qui suivent des pratiques de développement agiles, la sécurité axée sur la conformité crée souvent un goulot d’étranglement : les contrôles doivent être déterminés soit avant le début du développement, soit après sa conclusion. Ce paradigme place la sécurité comme un obstacle au développement plutôt que comme un partenaire de collaboration dans le processus.
+
+Valentine repose sur le principe que la surface d’attaque d’un système s’étend principalement par l’ajout de fonctionnalités et leurs interactions. Si le système le plus sécurisé [peut-être celui qui ne fait rien](https://github.com/kelseyhightower/nocode), les applications du monde réel doivent trouver un équilibre entre la sécurité et la fonctionnalité. Au fur et à mesure que de nouvelles fonctionnalités sont mises en œuvre ou que les composants du système évoluent, le modèle de menace devrait s’adapter pour refléter à la fois les menaces directes provenant des nouvelles capacités et les menaces émergentes provenant des interactions entre les fonctionnalités, des changements environnementaux et des dépendances.
+
+La modélisation des menaces, en particulier la méthodologie de STRIDE, fournit aux équipes un cadre accessible pour identifier et comprendre les menaces tout au long du cycle de vie du développement. Grâce à un processus itératif, les équipes peuvent construire et maintenir un modèle de menace complet qui reflète l’architecture, les interactions et le contexte environnemental réels de leur système, plutôt que de se fier uniquement à des hypothèses de conception initiales.
+
+Si Valentine rationalise le processus de modélisation des menaces, cet outil reconnaît que les documents de conformité restent une nécessité pour l’organisation. Plutôt que de traiter la conformité comme une réflexion après coup ou comme un obstacle, l’un des principaux objectifs de la conception a été de générer automatiquement des documents à partir du processus de modélisation des menaces en cours. Les équipes peuvent faire correspondre les hypothèses et les mesures d’atténuation aux contrôles précis du NIST et exporter les documents qui en résultent pour les évaluations de sécurité, ce qui fait de la conformité un résultat naturel des bonnes pratiques de sécurité.
+
+La flexibilité de Valentine lui permet d’être utilisé pour la modélisation des menaces, qu’il s’agisse de fonctionnalités individuelles ou de systèmes entiers, sans imposer un flux de travail rigide aux équipes. Cette adaptabilité permet aux organisations d’intégrer l’approche de la sécurité dans leur processus de développement d’une manière qui corresponde à leurs besoins spécifiques et à leur niveau de maturité.
+
+## Relance de système en utilisant GitHub Codespaces
+
+1. [![Ouvrir dans GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/maxneuvians/valentine)
+2. `make setup`
+3. `make dev`
+
+Note : Il est normal de voir apparaître des avertissements au cours de la procédure d’installation. En outre, cela dépend de la capacité de mémoire disponible dans le Codespace, la procédure d’installation peut prendre plus de temps que d’habitude.
+
+
+## Exécuter avec docker compose
+Vous pouvez exécuter l’application localement en utilisant docker compose. Il n’est pas recommandé de l’utiliser dans le cadre de la production.
+
+```
+docker compose up
+```
+construira la dernière image et exécutera l'application sur `http://localhost:4000`. Si vous souhaitez utiliser la fonctionnalité LLM, vous devez fournir votre propre OPENAI API clé pour `gpt-4o-mini`.
+
+```
+OPENAI_API_KEY=sk-proj... docker compose up
+```
+
+Si vous apportez des modifications au code source, vous devez alors reconstruire l'image : 
+
+```
+docker compose up -d --no-deps --build app
+```
+
+## Configuration pour le développement
+
+```
+cd valentine
+mix deps.get
+mix ecto.create
+mix ecto.migrate
+mix run priv/repo/seeds.exs
+cd assets
+npm i 
+```
+
+## OpenAI sur Azure 
+Vous pouvez également utiliser OpenAI sur Azure. Vous devez fournir les variables d'environnement suivantes :
+
+```
+AZURE_OPENAI_ENDPOINT=
+AZURE_OPENAI_KEY=
+```
+
+## Authentification facultative avec Google Authentification
+
+Vous pouvez utiliser Google comme fournisseur d'identité si vous définissez les variables d'environnement suivantes :
+
+```
+GOOGLE_CLIENT_ID=votre-client-id
+GOOGLE_CLIENT_SECRET=votre-client-secret
+
+```
+
+Vous pouvez les obtenir en créant un nouveau projet sur Google Developer Console et en créant des identifiants OAuth 2.0.
+
+Dans ce cas, pour accéder à la route `/workspaces`, voous devez vous authentifier avec Google en visitant `/auth/google`. Actuellement, rien n’est fait avec l’information utilisateur provenant de Google, mais vous pouvez l’utiliser pour limiter l’accès à l’application.
+
+## Licence
 
 MIT 2025
