@@ -8,7 +8,7 @@ Valentine is a real-time collaborative threat modeling tool that combines human 
 
 ![Screenshot of a data flow diagram in Valentine](screenshots/data_flow_diagram.png)
 
-IMPORTANT: This project is undergoing active development and may experience breaking changes. This project is also still missing feature and has bugs. Please review the [issues](https://github.com/maxneuvians/valentine/issues) for more information.
+IMPORTANT: This project is undergoing active development and may experience breaking changes. This project is also still missing feature and has bugs. Please review the [issues](https://github.com/maxneuvians/valentine/issues) for more information. If you have any specific questions, please contact [max.neuvians@tbs-sct.gc.ca](mailto:max.neuvians@tbs-sct.gc.ca).
 
 ## Features
 
@@ -109,7 +109,7 @@ Valentine est un outil collaboratif de modélisation des menaces en temps réel 
 
 ![Capture d’écran d’un diagramme de flux de données dans Valentine](screenshots/data_flow_diagram.png)
 
-IMPORTANT : Ce projet est en cours de développement et peut subir des modifications importantes. Il manque encore des fonctionnalités à ce projet et il comporte des bogues. Veuillez examiner les [problèmes](https://github.com/maxneuvians/valentine/issues) pour plus de renseignements.
+IMPORTANT : Ce projet est en cours de développement et peut subir des modifications importantes. Il manque encore des fonctionnalités à ce projet et il comporte des bogues. Veuillez examiner les [problèmes](https://github.com/maxneuvians/valentine/issues) pour plus de renseignements. Si vous avez des questions spécifiques, veuillez contacter : [max.neuvians@tbs-sct.gc.ca](mailto:max.neuvians@tbs-sct.gc.ca).
 
 ## Fonctionnalités
 
